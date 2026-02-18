@@ -31,9 +31,14 @@ jobs:
       DATA_GO_KR_KEY: ${{ secrets.DATA_GO_KR_KEY }}
       DATABASE_URL: ${{ secrets.DATABASE_URL }}
       INTERNAL_JOB_TOKEN: ${{ secrets.INTERNAL_JOB_TOKEN }}
+      GH_TOKEN: ${{ github.token }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
+      - name: Secret preflight (fail-fast)
+        run: |
+          scripts/qa/preflight_required_secrets.sh
 
       - name: Setup Python 3.13
         uses: actions/setup-python@v5

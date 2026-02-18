@@ -158,6 +158,27 @@ if echo "$LABELS_JSON" | jq -e '[.[].name] | index("status/in-qa")' >/dev/null; 
   HAS_STATUS_IN_QA="yes"
 fi
 
+REQUIRED_CI_SECRETS=(
+  SUPABASE_URL
+  SUPABASE_SERVICE_ROLE_KEY
+  DATA_GO_KR_KEY
+  DATABASE_URL
+  INTERNAL_JOB_TOKEN
+)
+SECRET_HEALTH_STATUS="unavailable"
+MISSING_CI_SECRETS=()
+if SECRETS_JSON="$(gh secret list --repo "$REPO" --json name 2>/dev/null)"; then
+  SECRET_HEALTH_STATUS="ok"
+  for s in "${REQUIRED_CI_SECRETS[@]}"; do
+    if ! echo "$SECRETS_JSON" | jq -e --arg s "$s" '[.[].name] | index($s)' >/dev/null; then
+      MISSING_CI_SECRETS+=("$s")
+    fi
+  done
+  if [[ "${#MISSING_CI_SECRETS[@]}" -gt 0 ]]; then
+    SECRET_HEALTH_STATUS="missing"
+  fi
+fi
+
 APPLIED_ACTIONS=()
 CREATED_COUNT=0
 MODE_TITLE="Dry Run"
@@ -267,6 +288,19 @@ fi
   echo "## Label Health"
   echo "- role/qa label: ${HAS_ROLE_QA}"
   echo "- status/in-qa label: ${HAS_STATUS_IN_QA}"
+  echo
+  echo "## Secret Health (Review)"
+  echo "- status: ${SECRET_HEALTH_STATUS}"
+  if [[ "$SECRET_HEALTH_STATUS" == "missing" ]]; then
+    echo "- missing_required_secrets:"
+    for s in "${MISSING_CI_SECRETS[@]}"; do
+      echo "  - ${s}"
+    done
+  elif [[ "$SECRET_HEALTH_STATUS" == "unavailable" ]]; then
+    echo "- note: secret list 조회 권한이 없어 점검 불가"
+  else
+    echo "- missing_required_secrets: 0"
+  fi
   echo
   echo "## Open Issue Queue"
   if [[ "$OPEN_COUNT" -eq 0 ]]; then

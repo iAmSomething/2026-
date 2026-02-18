@@ -15,6 +15,20 @@ on:
 jobs:
   staging-smoke:
     runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: app
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres -d app"
+          --health-interval 5s
+          --health-timeout 3s
+          --health-retries 20
     env:
       SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
       SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
@@ -47,6 +61,50 @@ jobs:
       - name: Install Web dependencies
         run: |
           npm --prefix apps/staging-web ci
+
+      - name: Resolve DATABASE_URL bootstrap strategy
+        run: |
+          if [ -n "${DATABASE_URL:-}" ]; then
+            echo "[INFO] DATABASE_URL resolved from repository secret"
+            echo "DATABASE_URL=$DATABASE_URL" >> "$GITHUB_ENV"
+          else
+            FALLBACK_URL="postgresql://postgres:postgres@127.0.0.1:5432/app"
+            echo "::warning::DATABASE_URL secret is empty. Using workflow service postgres fallback."
+            echo "DATABASE_URL=$FALLBACK_URL" >> "$GITHUB_ENV"
+          fi
+
+      - name: Preflight required secrets (staging)
+        run: |
+          scripts/qa/preflight_required_secrets.sh \
+            SUPABASE_URL \
+            SUPABASE_SERVICE_ROLE_KEY \
+            DATA_GO_KR_KEY \
+            DATABASE_URL \
+            INTERNAL_JOB_TOKEN
+
+      - name: Wait until database is reachable
+        run: |
+          .venv/bin/python - <<'PY'
+          import os
+          import time
+          import psycopg
+
+          url = os.environ.get("DATABASE_URL", "")
+          if not url:
+              raise SystemExit("DATABASE_URL is empty after bootstrap resolution")
+
+          last_error = None
+          for i in range(30):
+              try:
+                  with psycopg.connect(url):
+                      print("db_ready", i + 1)
+                      break
+              except Exception as exc:  # noqa: BLE001
+                  last_error = exc
+                  time.sleep(1.0)
+          else:
+              raise SystemExit(f"database is not reachable: {last_error}")
+          PY
 
       - name: Apply schema and seed sample payload
         run: |
