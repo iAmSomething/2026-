@@ -1,0 +1,377 @@
+{
+  "run_type": "manual",
+  "extractor_version": "collector-freeze-v1",
+  "llm_model": null,
+  "records": [
+    {
+      "article": {
+        "url": "https://example.com/poll/1",
+        "title": "서울시장 가상대결 조사",
+        "publisher": "샘플뉴스",
+        "published_at": "2026-02-18T09:00:00+09:00",
+        "raw_text": "서울시장 여론조사 KBS 결과 정원오 44% vs 오세훈 31%, 표본오차 ±3.1%",
+        "raw_hash": "hash_846d98296d71b033"
+      },
+      "region": {
+        "region_code": "11-000",
+        "sido_name": "서울특별시",
+        "sigungu_name": "전체",
+        "admin_level": "sido",
+        "parent_region_code": null
+      },
+      "candidates": [
+        {
+          "candidate_id": "cand:정원오",
+          "name_ko": "정원오",
+          "party_name": null,
+          "gender": null,
+          "birth_date": null,
+          "job": null,
+          "career_summary": null,
+          "election_history": null
+        },
+        {
+          "candidate_id": "cand:오세훈",
+          "name_ko": "오세훈",
+          "party_name": null,
+          "gender": null,
+          "birth_date": null,
+          "job": null,
+          "career_summary": null,
+          "election_history": null
+        }
+      ],
+      "observation": {
+        "observation_key": "obs_fbd9097887081c5b",
+        "survey_name": "서울시장 가상대결 조사",
+        "pollster": "KBS",
+        "survey_start_date": null,
+        "survey_end_date": "2026-02-18",
+        "sample_size": null,
+        "response_rate": null,
+        "margin_of_error": 3.1,
+        "region_code": "11-000",
+        "office_type": "광역자치단체장",
+        "matchup_id": "20260603|광역자치단체장|11-000",
+        "verified": false,
+        "source_grade": "C"
+      },
+      "options": [
+        {
+          "option_type": "candidate_matchup",
+          "option_name": "정원오",
+          "value_raw": "44%",
+          "value_min": 44.0,
+          "value_max": 44.0,
+          "value_mid": 44.0,
+          "is_missing": false
+        },
+        {
+          "option_type": "candidate_matchup",
+          "option_name": "오세훈",
+          "value_raw": "31%",
+          "value_min": 31.0,
+          "value_max": 31.0,
+          "value_mid": 31.0,
+          "is_missing": false
+        }
+      ]
+    },
+    {
+      "article": {
+        "url": "https://example.com/poll/2",
+        "title": "부산시장 양자대결",
+        "publisher": "샘플뉴스",
+        "published_at": "2026-02-18T09:00:00+09:00",
+        "raw_text": "부산시장 여론조사 MBC 발표 김영춘 41% vs 박형준 39%, 응답률 12.5%",
+        "raw_hash": "hash_4a026662fe755422"
+      },
+      "region": {
+        "region_code": "26-000",
+        "sido_name": "부산광역시",
+        "sigungu_name": "전체",
+        "admin_level": "sido",
+        "parent_region_code": null
+      },
+      "candidates": [
+        {
+          "candidate_id": "cand:김영춘",
+          "name_ko": "김영춘",
+          "party_name": null,
+          "gender": null,
+          "birth_date": null,
+          "job": null,
+          "career_summary": null,
+          "election_history": null
+        },
+        {
+          "candidate_id": "cand:박형준",
+          "name_ko": "박형준",
+          "party_name": null,
+          "gender": null,
+          "birth_date": null,
+          "job": null,
+          "career_summary": null,
+          "election_history": null
+        }
+      ],
+      "observation": {
+        "observation_key": "obs_af723b9392a3addf",
+        "survey_name": "부산시장 양자대결",
+        "pollster": "MBC",
+        "survey_start_date": null,
+        "survey_end_date": "2026-02-18",
+        "sample_size": null,
+        "response_rate": 12.5,
+        "margin_of_error": null,
+        "region_code": "26-000",
+        "office_type": "광역자치단체장",
+        "matchup_id": "20260603|광역자치단체장|26-000",
+        "verified": false,
+        "source_grade": "C"
+      },
+      "options": [
+        {
+          "option_type": "candidate_matchup",
+          "option_name": "김영춘",
+          "value_raw": "41%",
+          "value_min": 41.0,
+          "value_max": 41.0,
+          "value_mid": 41.0,
+          "is_missing": false
+        },
+        {
+          "option_type": "candidate_matchup",
+          "option_name": "박형준",
+          "value_raw": "39%",
+          "value_min": 39.0,
+          "value_max": 39.0,
+          "value_mid": 39.0,
+          "is_missing": false
+        }
+      ]
+    },
+    {
+      "article": {
+        "url": "https://example.com/poll/3",
+        "title": "경기지사 조사",
+        "publisher": "샘플뉴스",
+        "published_at": "2026-02-18T09:00:00+09:00",
+        "raw_text": "경기지사 여론조사 SBS 결과 김동연 46% vs 유승민 35%",
+        "raw_hash": "hash_db94e9289d47effe"
+      },
+      "region": {
+        "region_code": "41-000",
+        "sido_name": "경기도",
+        "sigungu_name": "전체",
+        "admin_level": "sido",
+        "parent_region_code": null
+      },
+      "candidates": [
+        {
+          "candidate_id": "cand:김동연",
+          "name_ko": "김동연",
+          "party_name": null,
+          "gender": null,
+          "birth_date": null,
+          "job": null,
+          "career_summary": null,
+          "election_history": null
+        },
+        {
+          "candidate_id": "cand:유승민",
+          "name_ko": "유승민",
+          "party_name": null,
+          "gender": null,
+          "birth_date": null,
+          "job": null,
+          "career_summary": null,
+          "election_history": null
+        }
+      ],
+      "observation": {
+        "observation_key": "obs_b62e709658bb424b",
+        "survey_name": "경기지사 조사",
+        "pollster": "SBS",
+        "survey_start_date": null,
+        "survey_end_date": "2026-02-18",
+        "sample_size": null,
+        "response_rate": null,
+        "margin_of_error": null,
+        "region_code": "41-000",
+        "office_type": "광역자치단체장",
+        "matchup_id": "20260603|광역자치단체장|41-000",
+        "verified": false,
+        "source_grade": "C"
+      },
+      "options": [
+        {
+          "option_type": "candidate_matchup",
+          "option_name": "김동연",
+          "value_raw": "46%",
+          "value_min": 46.0,
+          "value_max": 46.0,
+          "value_mid": 46.0,
+          "is_missing": false
+        },
+        {
+          "option_type": "candidate_matchup",
+          "option_name": "유승민",
+          "value_raw": "35%",
+          "value_min": 35.0,
+          "value_max": 35.0,
+          "value_mid": 35.0,
+          "is_missing": false
+        }
+      ]
+    },
+    {
+      "article": {
+        "url": "https://example.com/poll/4",
+        "title": "인천 교육감 여론조사",
+        "publisher": "샘플뉴스",
+        "published_at": "2026-02-18T09:00:00+09:00",
+        "raw_text": "인천 교육감 여론조사 한국갤럽 발표 이학재 38% vs 김교흥 33%",
+        "raw_hash": "hash_7484e8a14076f43d"
+      },
+      "region": {
+        "region_code": "28-000",
+        "sido_name": "인천광역시",
+        "sigungu_name": "전체",
+        "admin_level": "sido",
+        "parent_region_code": null
+      },
+      "candidates": [
+        {
+          "candidate_id": "cand:이학재",
+          "name_ko": "이학재",
+          "party_name": null,
+          "gender": null,
+          "birth_date": null,
+          "job": null,
+          "career_summary": null,
+          "election_history": null
+        },
+        {
+          "candidate_id": "cand:김교흥",
+          "name_ko": "김교흥",
+          "party_name": null,
+          "gender": null,
+          "birth_date": null,
+          "job": null,
+          "career_summary": null,
+          "election_history": null
+        }
+      ],
+      "observation": {
+        "observation_key": "obs_facc02d5f8af1920",
+        "survey_name": "인천 교육감 여론조사",
+        "pollster": "한국갤럽",
+        "survey_start_date": null,
+        "survey_end_date": "2026-02-18",
+        "sample_size": null,
+        "response_rate": null,
+        "margin_of_error": null,
+        "region_code": "28-000",
+        "office_type": "교육감",
+        "matchup_id": "20260603|교육감|28-000",
+        "verified": false,
+        "source_grade": "C"
+      },
+      "options": [
+        {
+          "option_type": "candidate_matchup",
+          "option_name": "이학재",
+          "value_raw": "38%",
+          "value_min": 38.0,
+          "value_max": 38.0,
+          "value_mid": 38.0,
+          "is_missing": false
+        },
+        {
+          "option_type": "candidate_matchup",
+          "option_name": "김교흥",
+          "value_raw": "33%",
+          "value_min": 33.0,
+          "value_max": 33.0,
+          "value_mid": 33.0,
+          "is_missing": false
+        }
+      ]
+    },
+    {
+      "article": {
+        "url": "https://example.com/poll/5",
+        "title": "제주 재보궐 조사",
+        "publisher": "샘플뉴스",
+        "published_at": "2026-02-18T09:00:00+09:00",
+        "raw_text": "제주 재보궐 여론조사 리얼미터 결과 고희범 37% vs 허향진 34%",
+        "raw_hash": "hash_dc3b0b3a3390e7f4"
+      },
+      "region": {
+        "region_code": "50-000",
+        "sido_name": "제주특별자치도",
+        "sigungu_name": "전체",
+        "admin_level": "sido",
+        "parent_region_code": null
+      },
+      "candidates": [
+        {
+          "candidate_id": "cand:고희범",
+          "name_ko": "고희범",
+          "party_name": null,
+          "gender": null,
+          "birth_date": null,
+          "job": null,
+          "career_summary": null,
+          "election_history": null
+        },
+        {
+          "candidate_id": "cand:허향진",
+          "name_ko": "허향진",
+          "party_name": null,
+          "gender": null,
+          "birth_date": null,
+          "job": null,
+          "career_summary": null,
+          "election_history": null
+        }
+      ],
+      "observation": {
+        "observation_key": "obs_e023ca67c73c80a4",
+        "survey_name": "제주 재보궐 조사",
+        "pollster": "리얼미터",
+        "survey_start_date": null,
+        "survey_end_date": "2026-02-18",
+        "sample_size": null,
+        "response_rate": null,
+        "margin_of_error": null,
+        "region_code": "50-000",
+        "office_type": "재보궐",
+        "matchup_id": "20260603|재보궐|50-000",
+        "verified": false,
+        "source_grade": "C"
+      },
+      "options": [
+        {
+          "option_type": "candidate_matchup",
+          "option_name": "고희범",
+          "value_raw": "37%",
+          "value_min": 37.0,
+          "value_max": 37.0,
+          "value_mid": 37.0,
+          "is_missing": false
+        },
+        {
+          "option_type": "candidate_matchup",
+          "option_name": "허향진",
+          "value_raw": "34%",
+          "value_min": 34.0,
+          "value_max": 34.0,
+          "value_mid": 34.0,
+          "is_missing": false
+        }
+      ]
+    }
+  ]
+}
