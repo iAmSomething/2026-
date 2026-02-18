@@ -38,3 +38,8 @@ uvicorn app.main:app --reload
 - 서비스 키는 로컬 파일이 아닌 배포 Secret으로 주입
 - Supabase `service_role` 키는 노출 이력 발생 시 즉시 rotate 후 재주입
 - 내부 실행 API는 `INTERNAL_JOB_TOKEN`으로 보호
+
+## QA
+- 로컬 Phase1 체크: `scripts/qa/check_phase1.sh`
+- DB 포함 체크: `scripts/qa/check_phase1.sh --with-db`
+- API 포함 체크: `scripts/qa/check_phase1.sh --with-api`

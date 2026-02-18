@@ -1,0 +1,63 @@
+name: Phase1 QA
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+  workflow_dispatch:
+    inputs:
+      with_db:
+        description: "Run DB checks"
+        required: false
+        default: "false"
+        type: choice
+        options:
+          - "false"
+          - "true"
+      with_api:
+        description: "Run API checks"
+        required: false
+        default: "false"
+        type: choice
+        options:
+          - "false"
+          - "true"
+
+jobs:
+  phase1-qa:
+    runs-on: ubuntu-latest
+    env:
+      SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+      SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+      DATA_GO_KR_KEY: ${{ secrets.DATA_GO_KR_KEY }}
+      DATABASE_URL: ${{ secrets.DATABASE_URL }}
+      INTERNAL_JOB_TOKEN: ${{ secrets.INTERNAL_JOB_TOKEN }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python 3.13
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+
+      - name: Create venv and install deps
+        run: |
+          python -m venv .venv
+          .venv/bin/pip install -r requirements.txt
+
+      - name: Run Phase1 QA (PR default)
+        if: github.event_name == 'pull_request'
+        run: |
+          scripts/qa/check_phase1.sh
+
+      - name: Run Phase1 QA (manual)
+        if: github.event_name == 'workflow_dispatch'
+        run: |
+          ARGS=""
+          if [ "${{ inputs.with_db }}" = "true" ]; then
+            ARGS="$ARGS --with-db"
+          fi
+          if [ "${{ inputs.with_api }}" = "true" ]; then
+            ARGS="$ARGS --with-api"
+          fi
+          scripts/qa/check_phase1.sh $ARGS
