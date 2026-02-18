@@ -1,0 +1,85 @@
+name: PM Cycle
+
+on:
+  schedule:
+    - cron: "0 */2 * * *"
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: "dry-run or apply"
+        required: false
+        default: "dry-run"
+        type: choice
+        options:
+          - dry-run
+          - apply
+      max_create:
+        description: "Max auto-created issues in apply mode"
+        required: false
+        default: "4"
+        type: string
+      date_filter:
+        description: "Optional report date filter (YYYY-MM-DD)"
+        required: false
+        type: string
+      comment_issue:
+        description: "Optional issue number to receive summary comment"
+        required: false
+        type: string
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  pm-cycle:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Run PM cycle
+        env:
+          GH_TOKEN: ${{ github.token }}
+          MODE_INPUT: ${{ github.event.inputs.mode }}
+          MAX_CREATE_INPUT: ${{ github.event.inputs.max_create }}
+          DATE_FILTER: ${{ github.event.inputs.date_filter }}
+          COMMENT_ISSUE_INPUT: ${{ github.event.inputs.comment_issue }}
+          PM_CYCLE_MODE: ${{ vars.PM_CYCLE_MODE }}
+          PM_CYCLE_MAX_CREATE: ${{ vars.PM_CYCLE_MAX_CREATE }}
+          PM_CYCLE_ISSUE_NUMBER: ${{ vars.PM_CYCLE_ISSUE_NUMBER }}
+        run: |
+          set -euo pipefail
+          chmod +x scripts/pm/pm_cycle_dry_run.sh
+
+          ARGS=(--repo "${GITHUB_REPOSITORY}")
+
+          MODE="${MODE_INPUT:-${PM_CYCLE_MODE:-dry-run}}"
+          ARGS+=(--mode "${MODE}")
+
+          MAX_CREATE="${MAX_CREATE_INPUT:-${PM_CYCLE_MAX_CREATE:-4}}"
+          ARGS+=(--max-create "${MAX_CREATE}")
+
+          if [ -n "${DATE_FILTER:-}" ]; then
+            ARGS+=(--date "${DATE_FILTER}")
+          fi
+
+          COMMENT_ISSUE="${COMMENT_ISSUE_INPUT:-${PM_CYCLE_ISSUE_NUMBER:-}}"
+          if [ -n "${COMMENT_ISSUE}" ]; then
+            ARGS+=(--comment-issue "${COMMENT_ISSUE}")
+          fi
+
+          bash scripts/pm/pm_cycle_dry_run.sh "${ARGS[@]}"
+
+      - name: Publish run summary
+        run: |
+          set -euo pipefail
+          LATEST_REPORT=$(ls -1t reports/pm/pm_cycle_*.md | head -n 1)
+          cat "$LATEST_REPORT" >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: pm-cycle-dry-run-${{ github.run_id }}
+          path: reports/pm/pm_cycle_*.md
+          if-no-files-found: error

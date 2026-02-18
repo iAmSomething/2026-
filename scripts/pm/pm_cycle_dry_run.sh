@@ -1,0 +1,343 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+REPO=""
+DATE_FILTER=""
+COMMENT_ISSUE=""
+LIMIT=200
+MODE="dry-run"   # dry-run | apply
+MAX_CREATE=4
+
+usage() {
+  cat <<USAGE
+Usage: $0 --repo <owner/repo> [--date YYYY-MM-DD] [--comment-issue <number>] [--mode dry-run|apply] [--max-create N]
+
+- dry-run: 이슈 변경 없이 PM 요약/제안만 생성
+- apply: QA 게이트/리마인드/QA FAIL 후속이슈 자동 반영
+- 출력 파일: reports/pm/pm_cycle_<mode>_<UTC timestamp>.md
+USAGE
+}
+
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    --repo)
+      REPO="${2:-}"
+      shift 2
+      ;;
+    --date)
+      DATE_FILTER="${2:-}"
+      shift 2
+      ;;
+    --comment-issue)
+      COMMENT_ISSUE="${2:-}"
+      shift 2
+      ;;
+    --mode)
+      MODE="${2:-}"
+      shift 2
+      ;;
+    --max-create)
+      MAX_CREATE="${2:-}"
+      shift 2
+      ;;
+    -h|--help)
+      usage
+      exit 0
+      ;;
+    *)
+      echo "Unknown argument: $1"
+      usage
+      exit 1
+      ;;
+  esac
+done
+
+if [[ -z "$REPO" ]]; then
+  echo "Missing required --repo <owner/repo>"
+  exit 1
+fi
+if [[ "$MODE" != "dry-run" && "$MODE" != "apply" ]]; then
+  echo "Invalid --mode: $MODE (use dry-run|apply)"
+  exit 1
+fi
+if ! [[ "$MAX_CREATE" =~ ^[0-9]+$ ]]; then
+  echo "Invalid --max-create: $MAX_CREATE"
+  exit 1
+fi
+
+for cmd in gh jq; do
+  if ! command -v "$cmd" >/dev/null 2>&1; then
+    echo "$cmd is required"
+    exit 1
+  fi
+done
+
+TIMESTAMP_UTC="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+TODAY_UTC="$(date -u +%Y-%m-%d)"
+STAMP="$(date -u +%Y%m%d_%H%M%S)"
+OUT_DIR="reports/pm"
+MODE_SLUG="${MODE//-/_}"
+OUT_FILE="${OUT_DIR}/pm_cycle_${MODE_SLUG}_${STAMP}.md"
+mkdir -p "$OUT_DIR"
+
+DIRS=("UIUX_reports" "Collector_reports" "develop_report" "QA_reports")
+REPORT_PATTERN="*_report.md"
+if [[ -n "$DATE_FILTER" ]]; then
+  REPORT_PATTERN="${DATE_FILTER}_*_report.md"
+fi
+
+suggest_owner_from_path() {
+  local path="$1"
+  case "$path" in
+    apps/web/*|UIUX_reports/*)
+      echo "role/uiux"
+      ;;
+    src/pipeline/*|Collector_reports/*)
+      echo "role/collector"
+      ;;
+    app/*|db/*|scripts/qa/*|develop_report/*|tests/*)
+      echo "role/develop"
+      ;;
+    *)
+      echo "role/develop"
+      ;;
+  esac
+}
+
+extract_primary_path() {
+  local file="$1"
+  grep -Eo '([A-Za-z0-9_.-]+/[A-Za-z0-9_./-]+\.(py|ts|tsx|js|md|sql|sh))(:[0-9]+)?' "$file" | head -n 1 || true
+}
+
+is_qa_fail_report() {
+  local file="$1"
+  if grep -Eq '\[QA FAIL\]|Status:[[:space:]]*FAIL|판정[[:space:]]*:[[:space:]]*FAIL|결론:[[:space:]]*Done 처리 불가' "$file"; then
+    return 0
+  fi
+  return 1
+}
+
+gh auth status >/dev/null 2>&1
+
+ALL_ISSUES_JSON="$(gh issue list --repo "$REPO" --state all --limit "$LIMIT" --json number,title,state,labels,updatedAt,url)"
+OPEN_ISSUES_JSON="$(gh issue list --repo "$REPO" --state open --limit "$LIMIT" --json number,title,state,labels,updatedAt,url)"
+LABELS_JSON="$(gh label list --repo "$REPO" --limit 200 --json name)"
+
+TOTAL_COUNT="$(echo "$ALL_ISSUES_JSON" | jq 'length')"
+OPEN_COUNT="$(echo "$OPEN_ISSUES_JSON" | jq 'length')"
+CLOSED_COUNT=$((TOTAL_COUNT - OPEN_COUNT))
+
+role_open_count() {
+  local role="$1"
+  echo "$OPEN_ISSUES_JSON" | jq --arg role "$role" '[.[] | select(([.labels[].name] | index($role)))] | length'
+}
+
+ROLE_UIUX_OPEN="$(role_open_count "role/uiux")"
+ROLE_COLLECTOR_OPEN="$(role_open_count "role/collector")"
+ROLE_DEVELOP_OPEN="$(role_open_count "role/develop")"
+ROLE_QA_OPEN="$(role_open_count "role/qa")"
+
+BLOCKED_OPEN="$(echo "$OPEN_ISSUES_JSON" | jq '[.[] | select(([.labels[].name] | index("status/blocked")))] | length')"
+READY_OPEN="$(echo "$OPEN_ISSUES_JSON" | jq '[.[] | select(([.labels[].name] | index("status/ready")))] | length')"
+
+MISSING_QA_PASS=()
+while IFS= read -r issue_no; do
+  [[ -z "$issue_no" ]] && continue
+  ISSUE_COMMENTS="$(gh issue view "$issue_no" --repo "$REPO" --json comments --jq '.comments[].body' || true)"
+  if ! printf "%s" "$ISSUE_COMMENTS" | grep -q '\[QA PASS\]'; then
+    MISSING_QA_PASS+=("$issue_no")
+  fi
+done < <(echo "$ALL_ISSUES_JSON" | jq -r '.[] | select(.state=="CLOSED" and ([.labels[].name] | index("status/done"))) | .number')
+
+HAS_ROLE_QA="no"
+HAS_STATUS_IN_QA="no"
+if echo "$LABELS_JSON" | jq -e '[.[].name] | index("role/qa")' >/dev/null; then
+  HAS_ROLE_QA="yes"
+fi
+if echo "$LABELS_JSON" | jq -e '[.[].name] | index("status/in-qa")' >/dev/null; then
+  HAS_STATUS_IN_QA="yes"
+fi
+
+APPLIED_ACTIONS=()
+CREATED_COUNT=0
+MODE_TITLE="Dry Run"
+if [[ "$MODE" == "apply" ]]; then
+  MODE_TITLE="Apply"
+fi
+
+if [[ "$MODE" == "apply" ]]; then
+  # 1) QA gate backfill: done+closed but no QA PASS -> reopen + status/in-qa
+  for n in "${MISSING_QA_PASS[@]}"; do
+    gh issue edit "$n" --repo "$REPO" --add-label "status/in-qa" >/dev/null
+    gh issue edit "$n" --repo "$REPO" --remove-label "status/done" >/dev/null || true
+    gh issue reopen "$n" --repo "$REPO" >/dev/null || true
+    gh issue comment "$n" --repo "$REPO" --body "[PM AUTO][QA GATE]\nauto_key: qa-gate-${n}-${TODAY_UTC}\n\n해당 이슈는 \`status/done\` 상태였지만 \`[QA PASS]\` 코멘트가 확인되지 않아 \`status/in-qa\`로 복귀되었습니다." >/dev/null
+    APPLIED_ACTIONS+=("qa_gate_reopen:#${n}")
+  done
+
+  # 2) blocked open issue daily nudge (idempotent by auto_key)
+  while IFS= read -r blocked_no; do
+    [[ -z "$blocked_no" ]] && continue
+    key="blocked-nudge-${blocked_no}-${TODAY_UTC}"
+    comments="$(gh issue view "$blocked_no" --repo "$REPO" --json comments --jq '.comments[].body' || true)"
+    if ! printf "%s" "$comments" | grep -q "$key"; then
+      gh issue comment "$blocked_no" --repo "$REPO" --body "[PM AUTO][BLOCKED NUDGE]\nauto_key: ${key}\n\n차단 상태가 유지 중입니다. 차단 원인/해소 조건/필요 권한을 업데이트해주세요." >/dev/null
+      APPLIED_ACTIONS+=("blocked_nudge:#${blocked_no}")
+    fi
+  done < <(echo "$OPEN_ISSUES_JSON" | jq -r '.[] | select(([.labels[].name] | index("status/blocked"))) | .number')
+
+  # 3) QA FAIL report -> follow-up issue auto create (dedup by auto_key)
+  if [[ -d "QA_reports" ]]; then
+    while IFS= read -r qa_file; do
+      [[ -z "$qa_file" ]] && continue
+      is_qa_fail_report "$qa_file" || continue
+      if [[ "$CREATED_COUNT" -ge "$MAX_CREATE" ]]; then
+        APPLIED_ACTIONS+=("qa_followup_skipped:max_create_reached")
+        break
+      fi
+
+      base="$(basename "$qa_file" .md)"
+      auto_key="qa-fail-${base}"
+      existing="$(gh issue list --repo "$REPO" --state open --search "in:body ${auto_key}" --limit 1 --json number | jq 'length')"
+      if [[ "$existing" -gt 0 ]]; then
+        APPLIED_ACTIONS+=("qa_followup_exists:${auto_key}")
+        continue
+      fi
+
+      root_path="$(extract_primary_path "$qa_file")"
+      owner_label="$(suggest_owner_from_path "$root_path")"
+      title="[AUTO][QA FAIL] ${base}"
+      body=$(cat <<EOF
+Goal
+- QA FAIL 보고서 기반 후속 수정 작업 생성
+
+Auto-Key
+- ${auto_key}
+
+Source
+- Report-Path: ${qa_file}
+- Root-Cause-Path: ${root_path:-unknown}
+- Suggested-Owner: ${owner_label}
+
+DoD
+- [ ] QA FAIL 재현
+- [ ] 원인 수정 반영
+- [ ] QA 재검증에서 [QA PASS] 획득
+EOF
+)
+      gh issue create \
+        --repo "$REPO" \
+        --title "$title" \
+        --body "$body" \
+        --label "$owner_label" \
+        --label "type/bug" \
+        --label "status/backlog" \
+        --label "priority/p1" \
+        --assignee "@me" >/dev/null
+      CREATED_COUNT=$((CREATED_COUNT + 1))
+      APPLIED_ACTIONS+=("qa_followup_created:${auto_key}")
+    done < <(find "QA_reports" -maxdepth 1 -type f -name "$REPORT_PATTERN" | sort)
+  fi
+fi
+
+{
+  echo "# PM Cycle ${MODE_TITLE}"
+  echo "- generated_at_utc: ${TIMESTAMP_UTC}"
+  echo "- repo: ${REPO}"
+  if [[ -n "$DATE_FILTER" ]]; then
+    echo "- report_date_filter: ${DATE_FILTER}"
+  else
+    echo "- report_date_filter: (none)"
+  fi
+  echo "- mode: ${MODE}"
+  echo
+  echo "## Snapshot"
+  echo "- total_issues: ${TOTAL_COUNT}"
+  echo "- closed_issues: ${CLOSED_COUNT}"
+  echo "- open_issues: ${OPEN_COUNT}"
+  echo "- blocked_open_issues: ${BLOCKED_OPEN}"
+  echo "- ready_open_issues: ${READY_OPEN}"
+  echo
+  echo "## Open By Role"
+  echo "- role/uiux: ${ROLE_UIUX_OPEN}"
+  echo "- role/collector: ${ROLE_COLLECTOR_OPEN}"
+  echo "- role/develop: ${ROLE_DEVELOP_OPEN}"
+  echo "- role/qa: ${ROLE_QA_OPEN}"
+  echo
+  echo "## Label Health"
+  echo "- role/qa label: ${HAS_ROLE_QA}"
+  echo "- status/in-qa label: ${HAS_STATUS_IN_QA}"
+  echo
+  echo "## Open Issue Queue"
+  if [[ "$OPEN_COUNT" -eq 0 ]]; then
+    echo "- (none)"
+  else
+    echo "$OPEN_ISSUES_JSON" | jq -r '.[] | "- [#\(.number)](\(.url)) \(.title)"'
+  fi
+  echo
+  echo "## Latest Reports"
+  for dir in "${DIRS[@]}"; do
+    if [[ ! -d "$dir" ]]; then
+      echo "- ${dir}: (missing directory)"
+      continue
+    fi
+    latest_file="$(find "$dir" -maxdepth 1 -type f -name "$REPORT_PATTERN" | sort | tail -n 1 || true)"
+    if [[ -z "$latest_file" ]]; then
+      echo "- ${dir}: (no matching report)"
+    else
+      echo "- ${dir}: \`${latest_file}\`"
+    fi
+  done
+  echo
+  echo "## QA Reassignment Hints"
+  QA_FOUND=0
+  if [[ -d "QA_reports" ]]; then
+    while IFS= read -r qa_file; do
+      [[ -z "$qa_file" ]] && continue
+      QA_FOUND=1
+      root_path="$(extract_primary_path "$qa_file")"
+      if [[ -n "$root_path" ]]; then
+        suggested_owner="$(suggest_owner_from_path "$root_path")"
+      else
+        suggested_owner="role/develop"
+      fi
+      echo "- \`${qa_file}\`: root_cause=\`${root_path:-unknown}\`, suggested_reassign=\`${suggested_owner}\`"
+    done < <(find "QA_reports" -maxdepth 1 -type f -name "$REPORT_PATTERN" | sort)
+  fi
+  if [[ "$QA_FOUND" -eq 0 ]]; then
+    echo "- (no QA reports matched)"
+  fi
+  echo
+  echo "## Gate Checks"
+  if [[ "${#MISSING_QA_PASS[@]}" -eq 0 ]]; then
+    echo "- closed+done without [QA PASS]: 0"
+  else
+    echo "- closed+done without [QA PASS]: ${#MISSING_QA_PASS[@]}"
+    for n in "${MISSING_QA_PASS[@]}"; do
+      issue_url="$(echo "$ALL_ISSUES_JSON" | jq -r --arg n "$n" '.[] | select((.number|tostring)==$n) | .url')"
+      issue_title="$(echo "$ALL_ISSUES_JSON" | jq -r --arg n "$n" '.[] | select((.number|tostring)==$n) | .title')"
+      echo "  - [#${n}](${issue_url}) ${issue_title}"
+    done
+  fi
+  echo
+  echo "## Applied Actions"
+  if [[ "${#APPLIED_ACTIONS[@]}" -eq 0 ]]; then
+    echo "- (none)"
+  else
+    for a in "${APPLIED_ACTIONS[@]}"; do
+      echo "- ${a}"
+    done
+  fi
+  echo
+  echo "## Suggested Next Actions"
+  echo "1. blocked 이슈 우선 해소 후 ready 이슈 순차 진행"
+  echo "2. QA FAIL 보고서는 auto_key 기반 중복 없이 후속 이슈 생성"
+  echo "3. 운영 안정화 후 schedule 모드를 apply로 전환"
+} > "$OUT_FILE"
+
+echo "Wrote: ${OUT_FILE}"
+
+if [[ -n "$COMMENT_ISSUE" ]]; then
+  gh issue comment "$COMMENT_ISSUE" --repo "$REPO" --body-file "$OUT_FILE"
+  echo "Commented cycle summary to issue #${COMMENT_ISSUE}"
+fi
