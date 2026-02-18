@@ -1,0 +1,44 @@
+{
+  "suite": "qa_week3_integrated_gate",
+  "generated_at": "2026-02-18T15:17:45.849748+00:00",
+  "api_contract": {
+    "total": 19,
+    "pass": 19,
+    "fail": 0,
+    "pass_rate": 100.0
+  },
+  "staging_smoke": {
+    "manual": {
+      "conclusion": "success",
+      "createdAt": "2026-02-18T15:13:48Z",
+      "databaseId": 22145452995,
+      "event": "workflow_dispatch",
+      "headSha": "80596ee3ab58fabd981f81c46a2ca23cc7a4b0f1",
+      "name": "Staging Smoke",
+      "status": "completed",
+      "updatedAt": "2026-02-18T15:14:55Z",
+      "url": "https://github.com/iAmSomething/2026-/actions/runs/22145452995",
+      "workflowName": "Staging Smoke"
+    },
+    "auto": {
+      "conclusion": "success",
+      "createdAt": "2026-02-18T15:13:42Z",
+      "databaseId": 22145449865,
+      "event": "push",
+      "headSha": "80596ee3ab58fabd981f81c46a2ca23cc7a4b0f1",
+      "name": "Staging Smoke",
+      "status": "completed",
+      "updatedAt": "2026-02-18T15:14:57Z",
+      "url": "https://github.com/iAmSomething/2026-/actions/runs/22145449865",
+      "workflowName": "Staging Smoke"
+    }
+  },
+  "summary": {
+    "overall_status": "PASS",
+    "gate_decision": "Week3 integrated QA gate passed"
+  },
+  "notes": [
+    "API contract suite + staging smoke manual/auto run were combined as a single integrated gate.",
+    "Staging smoke provides UI/API/ingest E2E coverage."
+  ]
+}
