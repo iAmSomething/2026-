@@ -1,0 +1,82 @@
+{
+  "regions": [
+    {
+      "region_code": "KR-11",
+      "region_name": "서울특별시",
+      "has_data": true,
+      "latest": {
+        "office_type": "metro_mayor",
+        "matchup_id": "m_2026_seoul_mayor",
+        "title": "서울특별시장",
+        "pollster": "KBS",
+        "survey_end_date": "2026-02-18",
+        "value_mid": 44.0,
+        "margin_of_error": 3.1,
+        "top_candidates": [
+          { "candidate_id": "cand_jwo", "option_name": "정원오", "value_mid": 44.0 },
+          { "candidate_id": "cand_osh", "option_name": "오세훈", "value_mid": 31.0 }
+        ]
+      }
+    },
+    {
+      "region_code": "KR-26",
+      "region_name": "부산광역시",
+      "has_data": false,
+      "latest": null
+    },
+    {
+      "region_code": "KR-28",
+      "region_name": "인천광역시",
+      "has_data": false,
+      "latest": null
+    },
+    {
+      "region_code": "KR-41",
+      "region_name": "경기도",
+      "has_data": false,
+      "latest": null
+    },
+    {
+      "region_code": "KR-42",
+      "region_name": "강원특별자치도",
+      "has_data": false,
+      "latest": null
+    },
+    {
+      "region_code": "KR-44",
+      "region_name": "충청남도",
+      "has_data": false,
+      "latest": null
+    },
+    {
+      "region_code": "KR-43",
+      "region_name": "충청북도",
+      "has_data": false,
+      "latest": null
+    },
+    {
+      "region_code": "KR-30",
+      "region_name": "대전광역시",
+      "has_data": false,
+      "latest": null
+    },
+    {
+      "region_code": "KR-27",
+      "region_name": "대구광역시",
+      "has_data": false,
+      "latest": null
+    },
+    {
+      "region_code": "KR-29",
+      "region_name": "광주광역시",
+      "has_data": false,
+      "latest": null
+    },
+    {
+      "region_code": "KR-49",
+      "region_name": "제주특별자치도",
+      "has_data": false,
+      "latest": null
+    }
+  ]
+}

@@ -35,6 +35,7 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--election-id", default="2026_local", help="Election id used for matchup_id")
     parser.add_argument("--output", help="Write output JSON to this file")
     parser.add_argument("--print-contracts", action="store_true", help="Print input/error contract schemas")
+    parser.add_argument("--print-query-templates", action="store_true", help="Print discovery query templates")
     return parser
 
 
@@ -52,6 +53,8 @@ def main() -> None:
             "input": INPUT_CONTRACT_SCHEMAS,
             "error": {"review_queue": REVIEW_QUEUE_SCHEMA},
         }
+    if args.print_query_templates:
+        payload["query_templates"] = collector.discovery_query_templates()
 
     _dump_json(payload, args.output)
 

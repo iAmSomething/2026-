@@ -1,7 +1,7 @@
 # 수집기 최소 계약 명세
 
-- 문서 버전: v0.2
-- 최종 수정일: 2026-02-18
+- 문서 버전: v0.4
+- 최종 수정일: 2026-02-19
 - 수정자: Codex
 
 ## 1. 입력 계약(JSON 스키마)
@@ -32,6 +32,11 @@
 4. `기초자치단체장`
 5. `기초의회`
 6. `재보궐`
+
+지역 매핑 원칙:
+1. 시도 레벨 우선코드: `xx-000`
+2. 시군구 레벨: `xx-yyy` 형식(예: `11-680` 강남구)
+3. 매핑 불가 시 임시코드를 출력하지 않고 `mapping_error`로 `review_queue` 전송
 
 ## 3. 정규화 계약
 `poll_option` 값 정규화는 아래 필드를 반드시 채웁니다.
@@ -88,3 +93,114 @@ python -m src.pipeline.run_collector \
   --seed "https://example.com/news/1" \
   --print-contracts
 ```
+
+## 6. 실데이터 오류분석 운영
+1. 50건 오류분석:
+```bash
+PYTHONPATH=. .venv/bin/python scripts/analyze_collector_real_errors.py
+```
+2. 실기사 라벨셋(30건) 생성:
+```bash
+PYTHONPATH=. .venv/bin/python scripts/build_real_article_labelset.py
+```
+3. 실기사 precision 측정:
+```bash
+PYTHONPATH=. .venv/bin/python scripts/evaluate_collector_real_precision.py
+```
+
+4. CommonCodeService 코드 동기화:
+```bash
+PYTHONPATH=. .venv/bin/python scripts/sync_common_codes.py \
+  --region-url "$COMMON_CODE_REGION_URL" \
+  --party-url "$COMMON_CODE_PARTY_URL" \
+  --election-url "$COMMON_CODE_ELECTION_URL"
+```
+
+5. discovery v1 실행(후속 classify 입력 생성):
+```bash
+PYTHONPATH=. .venv/bin/python scripts/run_discovery_v1.py \
+  --target-count 100 \
+  --per-query-limit 10 \
+  --output-dir data
+```
+
+6. discovery v1.1 실행(ROBOTS_DISALLOW 완화):
+```bash
+PYTHONPATH=. .venv/bin/python scripts/run_discovery_v11.py \
+  --target-count 100 \
+  --per-query-limit 10 \
+  --per-feed-limit 40 \
+  --output-dir data \
+  --baseline-report data/discovery_report_v1.json
+```
+
+## 7. Discovery v1.1 소스 전략
+1. 소스 우선순위:
+- 1순위: 언론사 직접 RSS (`publisher_rss`)
+- 2순위: Google RSS query (`google_rss`)
+2. canonicalization:
+- `news.google.com/rss/articles/...`는 tracking query를 제거한 안정 경로로 정규화
+3. robots 완화:
+- `news.google.com` 도메인은 blocklist로 처리
+- 본문 fetch 대신 RSS title/summary 기반 fallback article 생성
+4. 비교 지표:
+- `fetch_fail_rate` (v1 대비)
+- `valid_article_rate` (v1 대비)
+
+## 8. Classify 선별게이트 규칙
+`POLL_REPORT` 기사에 대해 extract 이전에 선별게이트를 적용한다.
+
+통과 조건:
+1. 후보명+수치 신호 존재 (`extract_candidate_pairs(...)` 결과 1개 이상)
+2. 지역/직위 매핑 가능 (`_extract_region_office(...)` 성공)
+3. 정책/정성 단독 기사 아님
+
+제외 규칙:
+1. `국정지지율/정당지지도/국정평가` 중심 기사 + 선거 직위 힌트 부재 -> 제외
+2. `찬성/반대/호감도` 중심 기사 + 후보 수치 페어 부재 -> 제외
+
+게이트 실패 처리:
+1. `issue_type=classify_error`
+2. `error_code`:
+- `GATE_POLICY_QUALITATIVE_ONLY`
+- `GATE_NO_CANDIDATE_NUMERIC_SIGNAL`
+- `GATE_REGION_OFFICE_UNMAPPED`
+
+비교 실험 실행:
+```bash
+PYTHONPATH=. .venv/bin/python scripts/evaluate_classify_gate_effect.py
+```
+
+## 9. Extractor v2 (본문 기반) 규칙
+1. 기본 추출 모드:
+- `extract_candidate_pairs(..., mode="v2")`
+2. v2 처리 순서:
+- 본문 클리닝(`_clean_body_for_extraction`)으로 광고/메타/URL 노이즈 제거
+- 후보/수치 신호 문장 추출(`_candidate_value_signals`)
+- `MATCHUP_RE` 우선, 실패 시 `NAME_VALUE_RE` fallback
+3. 후보명 필터:
+- 비후보 토큰/정책 토큰(예: `찬성`, `반대`, `정부`, `정당`) 제외
+4. taxonomy 유지:
+- `issue_type`는 기존 enum 유지(`extract_error`)
+- 원인 세분화는 `error_code`로 처리
+
+v2 `extract_error` 세분화 코드:
+1. `POLICY_ONLY_SIGNAL`
+2. `NO_NUMERIC_SIGNAL`
+3. `NO_TITLE_CANDIDATE_SIGNAL`
+4. `NO_BODY_CANDIDATE_SIGNAL`
+
+성능 비교 실행:
+```bash
+PYTHONPATH=. .venv/bin/python scripts/evaluate_extractor_v2_compare.py
+```
+
+## 10. 도메인 품질 운영
+1. 도메인별 fetch/parse/extract 성공률 집계:
+```bash
+PYTHONPATH=. .venv/bin/python scripts/analyze_domain_extraction_quality.py
+```
+2. 산출물:
+- `data/collector_domain_extraction_quality_report.json`
+3. 주간 템플릿:
+- `Collector_reports/collector_weekly_domain_quality_template.md`
