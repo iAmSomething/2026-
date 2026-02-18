@@ -32,9 +32,9 @@
 - `poll_uiux_docs_v0.1/MAP_GEOJSON_A11Y_REGRESSION_v0.3.md`
 
 ## 4) 시연 스크린샷
-1. 데스크톱 기본 지도: `UIUX_reports/screenshots/2026-02-19_home_geojson_desktop.png`
-2. 데스크톱 선택 상태: `UIUX_reports/screenshots/2026-02-19_home_geojson_desktop_selected.png`
-3. 모바일 선택 상태: `UIUX_reports/screenshots/2026-02-19_home_geojson_mobile_selected.png`
+1. 데스크톱 기본 지도: `reports/uiux_screenshots/2026-02-19_home_geojson_desktop.png`
+2. 데스크톱 선택 상태: `reports/uiux_screenshots/2026-02-19_home_geojson_desktop_selected.png`
+3. 모바일 선택 상태: `reports/uiux_screenshots/2026-02-19_home_geojson_mobile_selected.png`
 
 ## 5) 접근성 회귀 체크 결과
 - 체크리스트 문서: `poll_uiux_docs_v0.1/MAP_GEOJSON_A11Y_REGRESSION_v0.3.md`
