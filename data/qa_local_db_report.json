@@ -1,0 +1,61 @@
+{
+  "target": "local",
+  "started_at": "2026-02-18T13:27:35.780497+00:00",
+  "database_url": "postgresql://***@localhost:5432/election2026_dev",
+  "input": "data/sample_ingest.json",
+  "status": "success",
+  "stages": [
+    {
+      "name": "schema_apply",
+      "status": "ok"
+    },
+    {
+      "name": "load_payload",
+      "status": "ok",
+      "records": 1
+    },
+    {
+      "name": "ingest_first_run",
+      "status": "ok",
+      "result": {
+        "run_id": 5,
+        "processed_count": 1,
+        "error_count": 0,
+        "status": "success"
+      }
+    },
+    {
+      "name": "ingest_second_run",
+      "status": "ok",
+      "result": {
+        "run_id": 6,
+        "processed_count": 1,
+        "error_count": 0,
+        "status": "success"
+      }
+    },
+    {
+      "name": "db_checks",
+      "status": "ok",
+      "counts": {
+        "articles_total": 1,
+        "observations_total": 1,
+        "ingestion_runs": 6
+      }
+    },
+    {
+      "name": "api_checks",
+      "status": "ok",
+      "api_contract": {
+        "summary_keys": [
+          "as_of",
+          "party_support",
+          "presidential_approval"
+        ],
+        "regions_count": 1,
+        "candidate_id": "cand-jwo"
+      }
+    }
+  ],
+  "finished_at": "2026-02-18T13:27:35.869966+00:00"
+}

@@ -43,3 +43,5 @@ uvicorn app.main:app --reload
 - 로컬 Phase1 체크: `scripts/qa/check_phase1.sh`
 - DB 포함 체크: `scripts/qa/check_phase1.sh --with-db`
 - API 포함 체크: `scripts/qa/check_phase1.sh --with-api`
+- DB 동등성 자동검증(로컬): `DATABASE_URL=<dsn> .venv/bin/python scripts/qa/run_db_equivalence.py --target local --report data/qa_local_db_report.json`
+- DB 동등성 자동검증(원격): `REMOTE_DATABASE_URL=<dsn> .venv/bin/python scripts/qa/run_db_equivalence.py --target remote --report data/qa_remote_db_report.json`
