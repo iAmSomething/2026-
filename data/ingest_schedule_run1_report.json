@@ -1,0 +1,16 @@
+{
+  "success": true,
+  "attempts": [
+    {
+      "attempt": 1,
+      "http_status": 200,
+      "job_status": "success",
+      "retryable": false,
+      "error": null
+    }
+  ],
+  "run_ids": [
+    7
+  ],
+  "finished_at": "2026-02-18T14:00:32.410666+00:00"
+}

@@ -5,6 +5,9 @@ class PostgresRepository:
     def __init__(self, conn):
         self.conn = conn
 
+    def rollback(self) -> None:
+        self.conn.rollback()
+
     def create_ingestion_run(self, run_type: str, extractor_version: str, llm_model: str | None) -> int:
         with self.conn.cursor() as cur:
             cur.execute(

@@ -17,6 +17,20 @@
 6. 게시: 통과 데이터만 공개 API 반영
 7. 기록: `ingestion_runs` 결과 저장
 
+## 2.1 자동 실행 경로 (2시간)
+1. GitHub Actions 스케줄 워크플로: `.github/workflows/ingest-schedule.yml`
+2. 주기: `0 */2 * * *` (UTC 기준 2시간 간격)
+3. 실행 방식:
+- 워크플로가 API 서버(`uvicorn`)를 기동
+- `scripts/qa/run_ingest_with_retry.py`로 `POST /api/v1/jobs/run-ingest` 호출
+- 결과 리포트 `data/ingest_schedule_report.json` 아티팩트 업로드
+4. 필수 Secret:
+- `SUPABASE_URL`
+- `SUPABASE_SERVICE_ROLE_KEY`
+- `DATA_GO_KR_KEY`
+- `DATABASE_URL`
+- `INTERNAL_JOB_TOKEN`
+
 ## 3. 수동/자동 경계
 ### 자동 처리
 1. 중복 제거
@@ -56,6 +70,14 @@
 - 헬스체크
 - 직전 배포 버전 롤백
 
+## 6.1 재시도 운영 규칙
+1. 내부 배치 호출 실패(네트워크/5xx/partial_success) 시 최대 2회 재시도
+2. 재시도 간 backoff: 1초, 2초
+3. 최종 실패 시:
+- 실행 리포트(`ingest_schedule_report.json`) 확인
+- `review_queue` 적재 여부 확인
+- `ingestion_runs`에서 `partial_success`/오류 카운트 확인
+
 ## 7. 재처리 운영
 1. 기간 지정 재처리
 2. 소스 지정 재처리
@@ -90,3 +112,21 @@
 2. Supabase Dashboard > Project Settings > API에서 `service_role` rotate
 3. 기존 키 폐기 확인 후 새 키만 Secret Manager에 저장
 4. `.env`, `supabase_info.txt`, 실행 로그에 구키/신키 출력 금지
+
+## 11.1 회전 후 자동 검증 (스크립트)
+1. 아래 환경변수 준비:
+- `SUPABASE_URL`
+- `SUPABASE_SERVICE_ROLE_KEY` (신키)
+- `OLD_SUPABASE_SERVICE_ROLE_KEY` (선택, 구키)
+2. 검증 실행:
+```bash
+REPORT_FILE=develop_report/rotation_verify_latest.md \
+SUPABASE_URL=... \
+SUPABASE_SERVICE_ROLE_KEY=... \
+OLD_SUPABASE_SERVICE_ROLE_KEY=... \
+bash scripts/qa/verify_supabase_service_role_rotation.sh
+```
+3. 판정 기준:
+- 신키 상태코드 `200` 필수
+- 구키 제공 시 상태코드 `200`이면 실패(폐기 미완료)
+4. 결과 파일(`REPORT_FILE`)을 이슈 코멘트에 `Report-Path`로 연결

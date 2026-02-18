@@ -1,0 +1,46 @@
+{
+  "run_type": "manual",
+  "extractor_version": "manual-v1",
+  "llm_model": null,
+  "records": [
+    {
+      "article": {
+        "url": "https://example.com/poll-fail-2026-02-18",
+        "title": "[실패샘플] 미등록 지역 조사",
+        "publisher": "샘플뉴스",
+        "published_at": "2026-02-18T23:30:00+09:00",
+        "raw_text": "미등록 지역에서 가상대결 A 40% B 30%",
+        "raw_hash": "samplefailhash1"
+      },
+      "region": null,
+      "candidates": [],
+      "observation": {
+        "observation_key": "obs-fail-20260218-missing-region",
+        "survey_name": "실패샘플 조사",
+        "pollster": "테스트기관",
+        "survey_start_date": "2026-02-18",
+        "survey_end_date": "2026-02-18",
+        "sample_size": 500,
+        "response_rate": 10.0,
+        "margin_of_error": null,
+        "region_code": "99-999",
+        "office_type": "광역자치단체장",
+        "matchup_id": "20260603|광역자치단체장|99-999",
+        "verified": false,
+        "source_grade": "C"
+      },
+      "options": [
+        {
+          "option_type": "candidate_matchup",
+          "option_name": "A",
+          "value_raw": "40%"
+        },
+        {
+          "option_type": "candidate_matchup",
+          "option_name": "B",
+          "value_raw": "30%"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,58 @@
+name: Ingest Schedule
+
+on:
+  schedule:
+    - cron: "0 */2 * * *"
+  workflow_dispatch:
+
+jobs:
+  scheduled-ingest:
+    runs-on: ubuntu-latest
+    env:
+      SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+      SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+      DATA_GO_KR_KEY: ${{ secrets.DATA_GO_KR_KEY }}
+      DATABASE_URL: ${{ secrets.DATABASE_URL }}
+      INTERNAL_JOB_TOKEN: ${{ secrets.INTERNAL_JOB_TOKEN }}
+      API_BASE_URL: http://127.0.0.1:8100
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python 3.13
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+
+      - name: Create venv and install deps
+        run: |
+          python -m venv .venv
+          .venv/bin/pip install -r requirements.txt
+
+      - name: Start API server
+        run: |
+          nohup .venv/bin/uvicorn app.main:app --host 127.0.0.1 --port 8100 >/tmp/ingest-schedule-api.log 2>&1 &
+          for _ in $(seq 1 30); do
+            if curl -fsS http://127.0.0.1:8100/health >/dev/null 2>&1; then
+              exit 0
+            fi
+            sleep 1
+          done
+          echo "::error::API server failed to start"
+          exit 1
+
+      - name: Run scheduled ingest with retry
+        run: |
+          .venv/bin/python scripts/qa/run_ingest_with_retry.py \
+            --api-base "$API_BASE_URL" \
+            --input data/sample_ingest.json \
+            --max-retries 2 \
+            --backoff-seconds 1 \
+            --report data/ingest_schedule_report.json
+
+      - name: Upload ingest report artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ingest-schedule-report
+          path: data/ingest_schedule_report.json
+          if-no-files-found: error

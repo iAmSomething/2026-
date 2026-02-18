@@ -1,0 +1,32 @@
+{
+  "success": false,
+  "attempts": [
+    {
+      "attempt": 1,
+      "http_status": 200,
+      "job_status": "partial_success",
+      "retryable": true,
+      "error": null
+    },
+    {
+      "attempt": 2,
+      "http_status": 200,
+      "job_status": "partial_success",
+      "retryable": true,
+      "error": null
+    },
+    {
+      "attempt": 3,
+      "http_status": 200,
+      "job_status": "partial_success",
+      "retryable": true,
+      "error": null
+    }
+  ],
+  "run_ids": [
+    12,
+    13,
+    14
+  ],
+  "finished_at": "2026-02-18T14:01:25.771011+00:00"
+}

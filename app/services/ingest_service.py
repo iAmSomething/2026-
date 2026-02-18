@@ -68,12 +68,19 @@ def ingest_payload(payload: IngestPayload, repo) -> IngestResult:
             processed_count += 1
         except Exception as exc:  # noqa: BLE001
             error_count += 1
-            repo.insert_review_queue(
-                entity_type="ingest_record",
-                entity_id=record.observation.observation_key,
-                issue_type="ingestion_error",
-                review_note=str(exc),
-            )
+            rollback = getattr(repo, "rollback", None)
+            if callable(rollback):
+                rollback()
+            try:
+                repo.insert_review_queue(
+                    entity_type="ingest_record",
+                    entity_id=record.observation.observation_key,
+                    issue_type="ingestion_error",
+                    review_note=str(exc),
+                )
+            except Exception:  # noqa: BLE001
+                # Keep batch loop alive even when review_queue insert fails.
+                pass
 
     status = "success" if error_count == 0 else "partial_success"
     repo.finish_ingestion_run(run_id, status, processed_count, error_count)
