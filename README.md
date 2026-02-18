@@ -39,6 +39,18 @@ uvicorn app.main:app --reload
 - Supabase `service_role` 키는 노출 이력 발생 시 즉시 rotate 후 재주입
 - 내부 실행 API는 `INTERNAL_JOB_TOKEN`으로 보호
 
+## GitHub Secrets (CI 필수)
+- `SUPABASE_URL`
+- `SUPABASE_SERVICE_ROLE_KEY`
+- `DATA_GO_KR_KEY`
+- `DATABASE_URL`
+- `INTERNAL_JOB_TOKEN`
+- Preflight 스크립트: `scripts/qa/preflight_required_secrets.sh`
+- Preflight 적용 워크플로:
+  - `.github/workflows/phase1-qa.yml`
+  - `.github/workflows/ingest-schedule.yml`
+  - `.github/workflows/staging-smoke.yml` (DB는 서비스 postgres fallback 허용)
+
 ## QA
 - 로컬 Phase1 체크: `scripts/qa/check_phase1.sh`
 - DB 포함 체크: `scripts/qa/check_phase1.sh --with-db`
