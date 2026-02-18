@@ -1,6 +1,6 @@
 {
   "suite": "qa_api_contract_suite",
-  "generated_at": "2026-02-18T14:38:30.862835+00:00",
+  "generated_at": "2026-02-18T15:17:43.974576+00:00",
   "python": "3.13.5",
   "summary": {
     "total": 19,
@@ -41,7 +41,7 @@
         null,
         true
       ],
-      "executed_at": "2026-02-18T14:38:30.836259+00:00"
+      "executed_at": "2026-02-18T15:17:43.946579+00:00"
     },
     {
       "name": "map_latest_success",
@@ -53,7 +53,7 @@
         true,
         true
       ],
-      "executed_at": "2026-02-18T14:38:30.840118+00:00"
+      "executed_at": "2026-02-18T15:17:43.951066+00:00"
     },
     {
       "name": "big_matches_success",
@@ -65,7 +65,7 @@
         true,
         true
       ],
-      "executed_at": "2026-02-18T14:38:30.841393+00:00"
+      "executed_at": "2026-02-18T15:17:43.952587+00:00"
     },
     {
       "name": "regions_search_success",
@@ -78,7 +78,7 @@
         true,
         true
       ],
-      "executed_at": "2026-02-18T14:38:30.842574+00:00"
+      "executed_at": "2026-02-18T15:17:43.953704+00:00"
     },
     {
       "name": "region_elections_success",
@@ -91,7 +91,7 @@
         true,
         true
       ],
-      "executed_at": "2026-02-18T14:38:30.843896+00:00"
+      "executed_at": "2026-02-18T15:17:43.955176+00:00"
     },
     {
       "name": "matchup_success",
@@ -103,7 +103,7 @@
         true,
         null
       ],
-      "executed_at": "2026-02-18T14:38:30.845185+00:00"
+      "executed_at": "2026-02-18T15:17:43.956330+00:00"
     },
     {
       "name": "candidate_success",
@@ -115,7 +115,7 @@
         true,
         null
       ],
-      "executed_at": "2026-02-18T14:38:30.846374+00:00"
+      "executed_at": "2026-02-18T15:17:43.957551+00:00"
     },
     {
       "name": "run_ingest_success",
@@ -127,7 +127,7 @@
         true,
         true
       ],
-      "executed_at": "2026-02-18T14:38:30.847528+00:00"
+      "executed_at": "2026-02-18T15:17:43.958628+00:00"
     },
     {
       "name": "summary_empty",
@@ -140,7 +140,7 @@
         true,
         true
       ],
-      "executed_at": "2026-02-18T14:38:30.849989+00:00"
+      "executed_at": "2026-02-18T15:17:43.961682+00:00"
     },
     {
       "name": "regions_search_empty",
@@ -152,7 +152,7 @@
         true,
         true
       ],
-      "executed_at": "2026-02-18T14:38:30.851074+00:00"
+      "executed_at": "2026-02-18T15:17:43.963036+00:00"
     },
     {
       "name": "map_latest_empty",
@@ -164,7 +164,7 @@
         true,
         true
       ],
-      "executed_at": "2026-02-18T14:38:30.852172+00:00"
+      "executed_at": "2026-02-18T15:17:43.964424+00:00"
     },
     {
       "name": "big_matches_empty",
@@ -176,7 +176,7 @@
         true,
         true
       ],
-      "executed_at": "2026-02-18T14:38:30.853461+00:00"
+      "executed_at": "2026-02-18T15:17:43.965553+00:00"
     },
     {
       "name": "region_elections_empty",
@@ -188,7 +188,7 @@
         true,
         true
       ],
-      "executed_at": "2026-02-18T14:38:30.854659+00:00"
+      "executed_at": "2026-02-18T15:17:43.966588+00:00"
     },
     {
       "name": "run_ingest_auth_missing",
@@ -199,7 +199,7 @@
       "details": [
         true
       ],
-      "executed_at": "2026-02-18T14:38:30.855721+00:00"
+      "executed_at": "2026-02-18T15:17:43.967551+00:00"
     },
     {
       "name": "run_ingest_auth_invalid",
@@ -210,7 +210,7 @@
       "details": [
         true
       ],
-      "executed_at": "2026-02-18T14:38:30.856683+00:00"
+      "executed_at": "2026-02-18T15:17:43.968547+00:00"
     },
     {
       "name": "summary_internal_error_500",
@@ -221,7 +221,7 @@
       "details": [
         true
       ],
-      "executed_at": "2026-02-18T14:38:30.857631+00:00"
+      "executed_at": "2026-02-18T15:17:43.969779+00:00"
     },
     {
       "name": "candidate_not_found_404",
@@ -232,7 +232,7 @@
       "details": [
         true
       ],
-      "executed_at": "2026-02-18T14:38:30.858690+00:00"
+      "executed_at": "2026-02-18T15:17:43.970841+00:00"
     },
     {
       "name": "matchup_not_found_404",
@@ -243,7 +243,7 @@
       "details": [
         true
       ],
-      "executed_at": "2026-02-18T14:38:30.859653+00:00"
+      "executed_at": "2026-02-18T15:17:43.971985+00:00"
     },
     {
       "name": "run_ingest_invalid_payload_422",
@@ -254,7 +254,7 @@
       "details": [
         true
       ],
-      "executed_at": "2026-02-18T14:38:30.860605+00:00"
+      "executed_at": "2026-02-18T15:17:43.973077+00:00"
     }
   ]
 }
