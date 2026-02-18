@@ -113,6 +113,7 @@ PYTHONPATH=. .venv/bin/python scripts/sync_common_codes.py \
 - `GET /api/v1/regions/search`
 - `GET /api/v1/candidates/{candidate_id}`
 - `GET /` (Next.js 홈)
+- `DATABASE_URL` secret 부재 시 workflow fallback postgres 연결 정상 동작
 3. 실행 예시:
 ```bash
 API_BASE=http://127.0.0.1:8100 \
