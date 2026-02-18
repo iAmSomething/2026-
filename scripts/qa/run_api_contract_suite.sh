@@ -10,7 +10,7 @@ usage() {
   cat <<USAGE
 Usage: $0 [--report <path>]
 
-Runs API 8-endpoint contract suite with success/failure/empty/auth-failure cases.
+Runs API 11-endpoint contract suite with success/failure/empty/auth-failure cases.
 Writes JSON report (default: data/qa_api_contract_report.json).
 USAGE
 }
@@ -183,6 +183,107 @@ class FakeRepo:
             "career_summary": "성동구청장",
             "election_history": "지방선거 출마",
         }
+
+    def fetch_review_queue_items(  # noqa: ARG002
+        self,
+        *,
+        status=None,
+        issue_type=None,
+        assigned_to=None,
+        limit=50,
+        offset=0,
+    ):
+        self._maybe_fail()
+        if self.mode == "empty":
+            return []
+        rows = [
+            {
+                "id": 101,
+                "entity_type": "ingest_record",
+                "entity_id": "obs-1",
+                "issue_type": "ingestion_error",
+                "status": "pending",
+                "assigned_to": "qa.user",
+                "review_note": "invalid region code",
+                "created_at": "2026-02-18T14:00:00+00:00",
+                "updated_at": "2026-02-18T14:10:00+00:00",
+            },
+            {
+                "id": 100,
+                "entity_type": "ingest_record",
+                "entity_id": "obs-0",
+                "issue_type": "mapping_error:region_not_found",
+                "status": "in_progress",
+                "assigned_to": None,
+                "review_note": "manual check required",
+                "created_at": "2026-02-18T13:00:00+00:00",
+                "updated_at": "2026-02-18T13:05:00+00:00",
+            },
+        ]
+        if status:
+            rows = [r for r in rows if r["status"] == status]
+        if issue_type:
+            rows = [r for r in rows if r["issue_type"] == issue_type]
+        if assigned_to:
+            rows = [r for r in rows if r["assigned_to"] == assigned_to]
+        return rows[offset : offset + limit]
+
+    def fetch_review_queue_stats(self, *, window_hours=24):  # noqa: ARG002
+        self._maybe_fail()
+        if self.mode == "empty":
+            return {
+                "total_count": 0,
+                "pending_count": 0,
+                "in_progress_count": 0,
+                "resolved_count": 0,
+                "issue_type_counts": [],
+                "error_code_counts": [],
+            }
+        return {
+            "total_count": 7,
+            "pending_count": 3,
+            "in_progress_count": 2,
+            "resolved_count": 2,
+            "issue_type_counts": [
+                {"issue_type": "ingestion_error", "count": 3},
+                {"issue_type": "mapping_error:region_not_found", "count": 2},
+            ],
+            "error_code_counts": [
+                {"error_code": "region_not_found", "count": 2},
+                {"error_code": "unknown", "count": 5},
+            ],
+        }
+
+    def fetch_review_queue_trends(  # noqa: ARG002
+        self,
+        *,
+        window_hours=24,
+        bucket_hours=6,
+        issue_type=None,
+        error_code=None,
+    ):
+        self._maybe_fail()
+        if self.mode == "empty":
+            return []
+        rows = [
+            {
+                "bucket_start": "2026-02-18T12:00:00+00:00",
+                "issue_type": "ingestion_error",
+                "error_code": "unknown",
+                "count": 2,
+            },
+            {
+                "bucket_start": "2026-02-18T12:00:00+00:00",
+                "issue_type": "mapping_error",
+                "error_code": "region_not_found",
+                "count": 1,
+            },
+        ]
+        if issue_type:
+            rows = [r for r in rows if r["issue_type"] == issue_type]
+        if error_code:
+            rows = [r for r in rows if r["error_code"] == error_code]
+        return rows
 
     def create_ingestion_run(self, run_type, extractor_version, llm_model):
         self._run_id += 1
@@ -386,6 +487,53 @@ def main() -> int:
     )
 
     run_case(
+        "review_queue_items_success",
+        "success",
+        "GET /api/v1/review-queue/items",
+        lambda: (
+            lambda r: (
+                r.status_code == 200 or (_ for _ in ()).throw(AssertionError(f"status={r.status_code}")),
+                isinstance(r.json(), list) or (_ for _ in ()).throw(AssertionError("not list")),
+                len(r.json()) >= 1 or (_ for _ in ()).throw(AssertionError("empty")),
+            )
+        )(
+            make_client(FakeRepo("success")).get(
+                "/api/v1/review-queue/items",
+                params={"status": "pending"},
+            )
+        ),
+    )
+
+    run_case(
+        "review_queue_stats_success",
+        "success",
+        "GET /api/v1/review-queue/stats",
+        lambda: (
+            lambda r: (
+                r.status_code == 200 or (_ for _ in ()).throw(AssertionError(f"status={r.status_code}")),
+                assert_keys(r.json(), ["total_count", "issue_type_counts", "error_code_counts"]),
+            )
+        )(make_client(FakeRepo("success")).get("/api/v1/review-queue/stats", params={"window_hours": 48})),
+    )
+
+    run_case(
+        "review_queue_trends_success",
+        "success",
+        "GET /api/v1/review-queue/trends",
+        lambda: (
+            lambda r: (
+                r.status_code == 200 or (_ for _ in ()).throw(AssertionError(f"status={r.status_code}")),
+                assert_keys(r.json(), ["bucket_hours", "points"]),
+            )
+        )(
+            make_client(FakeRepo("success")).get(
+                "/api/v1/review-queue/trends",
+                params={"window_hours": 24, "bucket_hours": 6},
+            )
+        ),
+    )
+
+    run_case(
         "run_ingest_success",
         "success",
         "POST /api/v1/jobs/run-ingest",
@@ -465,6 +613,42 @@ def main() -> int:
                 r.json() == [] or (_ for _ in ()).throw(AssertionError("expected []")),
             )
         )(make_client(FakeRepo("empty")).get("/api/v1/regions/11-000/elections")),
+    )
+
+    run_case(
+        "review_queue_items_empty",
+        "empty",
+        "GET /api/v1/review-queue/items",
+        lambda: (
+            lambda r: (
+                r.status_code == 200 or (_ for _ in ()).throw(AssertionError(f"status={r.status_code}")),
+                r.json() == [] or (_ for _ in ()).throw(AssertionError("expected []")),
+            )
+        )(make_client(FakeRepo("empty")).get("/api/v1/review-queue/items")),
+    )
+
+    run_case(
+        "review_queue_stats_empty",
+        "empty",
+        "GET /api/v1/review-queue/stats",
+        lambda: (
+            lambda r: (
+                r.status_code == 200 or (_ for _ in ()).throw(AssertionError(f"status={r.status_code}")),
+                r.json().get("total_count") == 0 or (_ for _ in ()).throw(AssertionError("expected total_count=0")),
+            )
+        )(make_client(FakeRepo("empty")).get("/api/v1/review-queue/stats")),
+    )
+
+    run_case(
+        "review_queue_trends_empty",
+        "empty",
+        "GET /api/v1/review-queue/trends",
+        lambda: (
+            lambda r: (
+                r.status_code == 200 or (_ for _ in ()).throw(AssertionError(f"status={r.status_code}")),
+                r.json().get("points") == [] or (_ for _ in ()).throw(AssertionError("expected empty points")),
+            )
+        )(make_client(FakeRepo("empty")).get("/api/v1/review-queue/trends")),
     )
 
     # auth-failure cases

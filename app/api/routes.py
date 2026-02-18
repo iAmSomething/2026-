@@ -18,6 +18,12 @@ from app.models.schemas import (
     OpsMetricsSummaryOut,
     OpsReviewMetricsOut,
     OpsWarningRuleOut,
+    ReviewQueueItemOut,
+    ReviewQueueStatsOut,
+    ReviewQueueTrendsOut,
+    ReviewQueueTrendPointOut,
+    ReviewQueueIssueCountOut,
+    ReviewQueueErrorCountOut,
     RegionElectionOut,
     RegionOut,
     SummaryPoint,
@@ -153,6 +159,65 @@ def get_ops_metrics_summary(
         review_queue=OpsReviewMetricsOut(**review),
         failure_distribution=[OpsFailureDistributionOut(**x) for x in failure_distribution],
         warnings=[OpsWarningRuleOut(**x) for x in warnings],
+    )
+
+
+@router.get("/review-queue/items", response_model=list[ReviewQueueItemOut])
+def get_review_queue_items(
+    status: str | None = Query(default=None),
+    issue_type: str | None = Query(default=None),
+    assigned_to: str | None = Query(default=None),
+    limit: int = Query(default=50, ge=1, le=200),
+    offset: int = Query(default=0, ge=0),
+    repo=Depends(get_repository),
+):
+    rows = repo.fetch_review_queue_items(
+        status=status,
+        issue_type=issue_type,
+        assigned_to=assigned_to,
+        limit=limit,
+        offset=offset,
+    )
+    return [ReviewQueueItemOut(**row) for row in rows]
+
+
+@router.get("/review-queue/stats", response_model=ReviewQueueStatsOut)
+def get_review_queue_stats(
+    window_hours: int = Query(default=24, ge=1, le=24 * 14),
+    repo=Depends(get_repository),
+):
+    stats = repo.fetch_review_queue_stats(window_hours=window_hours)
+    return ReviewQueueStatsOut(
+        generated_at=datetime.now(timezone.utc),
+        window_hours=window_hours,
+        total_count=stats["total_count"],
+        pending_count=stats["pending_count"],
+        in_progress_count=stats["in_progress_count"],
+        resolved_count=stats["resolved_count"],
+        issue_type_counts=[ReviewQueueIssueCountOut(**x) for x in stats["issue_type_counts"]],
+        error_code_counts=[ReviewQueueErrorCountOut(**x) for x in stats["error_code_counts"]],
+    )
+
+
+@router.get("/review-queue/trends", response_model=ReviewQueueTrendsOut)
+def get_review_queue_trends(
+    window_hours: int = Query(default=24, ge=1, le=24 * 14),
+    bucket_hours: int = Query(default=6, ge=1, le=24),
+    issue_type: str | None = Query(default=None),
+    error_code: str | None = Query(default=None),
+    repo=Depends(get_repository),
+):
+    rows = repo.fetch_review_queue_trends(
+        window_hours=window_hours,
+        bucket_hours=bucket_hours,
+        issue_type=issue_type,
+        error_code=error_code,
+    )
+    return ReviewQueueTrendsOut(
+        generated_at=datetime.now(timezone.utc),
+        window_hours=window_hours,
+        bucket_hours=bucket_hours,
+        points=[ReviewQueueTrendPointOut(**x) for x in rows],
     )
 
 

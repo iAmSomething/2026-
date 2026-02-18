@@ -135,6 +135,91 @@ class FakeApiRepo:
             {"issue_type": "value_conflict", "count": 2, "ratio": 0.5},
         ]
 
+    def fetch_review_queue_items(  # noqa: ARG002
+        self,
+        *,
+        status=None,
+        issue_type=None,
+        assigned_to=None,
+        limit=50,
+        offset=0,
+    ):
+        rows = [
+            {
+                "id": 101,
+                "entity_type": "ingest_record",
+                "entity_id": "obs-1",
+                "issue_type": "ingestion_error",
+                "status": "pending",
+                "assigned_to": "qa.user",
+                "review_note": "invalid region code",
+                "created_at": "2026-02-18T14:00:00+00:00",
+                "updated_at": "2026-02-18T14:10:00+00:00",
+            },
+            {
+                "id": 100,
+                "entity_type": "ingest_record",
+                "entity_id": "obs-0",
+                "issue_type": "mapping_error:region_not_found",
+                "status": "in_progress",
+                "assigned_to": None,
+                "review_note": "manual check required",
+                "created_at": "2026-02-18T13:00:00+00:00",
+                "updated_at": "2026-02-18T13:05:00+00:00",
+            },
+        ]
+        if status:
+            rows = [r for r in rows if r["status"] == status]
+        if issue_type:
+            rows = [r for r in rows if r["issue_type"] == issue_type]
+        if assigned_to:
+            rows = [r for r in rows if r["assigned_to"] == assigned_to]
+        return rows[offset : offset + limit]
+
+    def fetch_review_queue_stats(self, *, window_hours=24):  # noqa: ARG002
+        return {
+            "total_count": 7,
+            "pending_count": 3,
+            "in_progress_count": 2,
+            "resolved_count": 2,
+            "issue_type_counts": [
+                {"issue_type": "ingestion_error", "count": 3},
+                {"issue_type": "mapping_error:region_not_found", "count": 2},
+            ],
+            "error_code_counts": [
+                {"error_code": "region_not_found", "count": 2},
+                {"error_code": "unknown", "count": 5},
+            ],
+        }
+
+    def fetch_review_queue_trends(  # noqa: ARG002
+        self,
+        *,
+        window_hours=24,
+        bucket_hours=6,
+        issue_type=None,
+        error_code=None,
+    ):
+        rows = [
+            {
+                "bucket_start": "2026-02-18T12:00:00+00:00",
+                "issue_type": "ingestion_error",
+                "error_code": "unknown",
+                "count": 2,
+            },
+            {
+                "bucket_start": "2026-02-18T12:00:00+00:00",
+                "issue_type": "mapping_error",
+                "error_code": "region_not_found",
+                "count": 1,
+            },
+        ]
+        if issue_type:
+            rows = [r for r in rows if r["issue_type"] == issue_type]
+        if error_code:
+            rows = [r for r in rows if r["error_code"] == error_code]
+        return rows
+
     def create_ingestion_run(self, run_type, extractor_version, llm_model):
         self._run_id += 1
         return self._run_id
@@ -227,6 +312,33 @@ def test_api_contract_fields():
     assert "review_queue" in ops_body
     assert isinstance(ops_body["warnings"], list)
     assert len(ops_body["warnings"]) >= 2
+
+    review_items = client.get(
+        "/api/v1/review-queue/items",
+        params={"status": "pending", "limit": 10, "offset": 0},
+    )
+    assert review_items.status_code == 200
+    items_body = review_items.json()
+    assert len(items_body) == 1
+    assert items_body[0]["issue_type"] == "ingestion_error"
+
+    review_stats = client.get("/api/v1/review-queue/stats", params={"window_hours": 48})
+    assert review_stats.status_code == 200
+    stats_body = review_stats.json()
+    assert stats_body["window_hours"] == 48
+    assert stats_body["total_count"] == 7
+    assert stats_body["issue_type_counts"][0]["issue_type"] == "ingestion_error"
+    assert stats_body["error_code_counts"][0]["error_code"] == "region_not_found"
+
+    review_trends = client.get(
+        "/api/v1/review-queue/trends",
+        params={"window_hours": 24, "bucket_hours": 6, "error_code": "region_not_found"},
+    )
+    assert review_trends.status_code == 200
+    trends_body = review_trends.json()
+    assert trends_body["bucket_hours"] == 6
+    assert len(trends_body["points"]) == 1
+    assert trends_body["points"][0]["error_code"] == "region_not_found"
 
     app.dependency_overrides.clear()
 

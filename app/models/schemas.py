@@ -137,6 +137,53 @@ class OpsMetricsSummaryOut(BaseModel):
     warnings: list[OpsWarningRuleOut]
 
 
+class ReviewQueueItemOut(BaseModel):
+    id: int
+    entity_type: str
+    entity_id: str
+    issue_type: str
+    status: str
+    assigned_to: str | None = None
+    review_note: str | None = None
+    created_at: datetime
+    updated_at: datetime
+
+
+class ReviewQueueIssueCountOut(BaseModel):
+    issue_type: str
+    count: int
+
+
+class ReviewQueueErrorCountOut(BaseModel):
+    error_code: str
+    count: int
+
+
+class ReviewQueueStatsOut(BaseModel):
+    generated_at: datetime
+    window_hours: int
+    total_count: int
+    pending_count: int
+    in_progress_count: int
+    resolved_count: int
+    issue_type_counts: list[ReviewQueueIssueCountOut]
+    error_code_counts: list[ReviewQueueErrorCountOut]
+
+
+class ReviewQueueTrendPointOut(BaseModel):
+    bucket_start: datetime
+    issue_type: str
+    error_code: str
+    count: int
+
+
+class ReviewQueueTrendsOut(BaseModel):
+    generated_at: datetime
+    window_hours: int
+    bucket_hours: int
+    points: list[ReviewQueueTrendPointOut]
+
+
 class ArticleInput(BaseModel):
     url: str
     title: str
