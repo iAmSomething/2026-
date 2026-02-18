@@ -1,0 +1,75 @@
+{
+  "run_type": "bootstrap",
+  "extractor_version": "bootstrap-v1",
+  "llm_model": null,
+  "records": [
+    {
+      "article": {
+        "url": "https://example.com/bootstrap-ok-1",
+        "title": "[부트스트랩] 서울 샘플",
+        "publisher": "샘플뉴스"
+      },
+      "region": {
+        "region_code": "11-000",
+        "sido_name": "서울특별시",
+        "sigungu_name": "전체",
+        "admin_level": "sido",
+        "parent_region_code": null
+      },
+      "candidates": [],
+      "observation": {
+        "observation_key": "obs-bootstrap-ok-1",
+        "survey_name": "부트스트랩 조사 1",
+        "pollster": "테스트기관",
+        "survey_start_date": "2026-02-18",
+        "survey_end_date": "2026-02-18",
+        "sample_size": 500,
+        "response_rate": 10.0,
+        "margin_of_error": null,
+        "region_code": "11-000",
+        "office_type": "광역자치단체장",
+        "matchup_id": "20260603|광역자치단체장|11-000",
+        "verified": false,
+        "source_grade": "C"
+      },
+      "options": [
+        {
+          "option_type": "candidate_matchup",
+          "option_name": "A",
+          "value_raw": "40%"
+        }
+      ]
+    },
+    {
+      "article": {
+        "url": "https://example.com/bootstrap-fail-1",
+        "title": "[부트스트랩] 실패 샘플",
+        "publisher": "샘플뉴스"
+      },
+      "region": null,
+      "candidates": [],
+      "observation": {
+        "observation_key": "obs-bootstrap-fail-1",
+        "survey_name": "부트스트랩 실패 샘플",
+        "pollster": "테스트기관",
+        "survey_start_date": "2026-02-18",
+        "survey_end_date": "2026-02-18",
+        "sample_size": 500,
+        "response_rate": 10.0,
+        "margin_of_error": null,
+        "region_code": "99-999",
+        "office_type": "광역자치단체장",
+        "matchup_id": "20260603|광역자치단체장|99-999",
+        "verified": false,
+        "source_grade": "C"
+      },
+      "options": [
+        {
+          "option_type": "candidate_matchup",
+          "option_name": "B",
+          "value_raw": "30%"
+        }
+      ]
+    }
+  ]
+}

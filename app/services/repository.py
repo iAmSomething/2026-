@@ -206,6 +206,12 @@ class PostgresRepository:
             )
         self.conn.commit()
 
+    def count_review_queue(self) -> int:
+        with self.conn.cursor() as cur:
+            cur.execute("SELECT COUNT(*)::int AS count FROM review_queue")
+            row = cur.fetchone() or {}
+        return int(row.get("count", 0) or 0)
+
     def fetch_dashboard_summary(self, as_of: date | None):
         params = []
         as_of_filter = ""

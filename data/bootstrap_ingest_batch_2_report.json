@@ -1,0 +1,23 @@
+{
+  "started_at": "2026-02-18T16:01:17.780589+00:00",
+  "finished_at": "2026-02-18T16:01:21.692654+00:00",
+  "input_path": "data/bootstrap_ingest_batch_2.json",
+  "payload_count": 1,
+  "run_count": 1,
+  "total": 2,
+  "success": 1,
+  "fail": 1,
+  "review_queue_count": 1,
+  "review_queue_total_before": 0,
+  "review_queue_total_after": 1,
+  "runs": [
+    {
+      "source": "data/bootstrap_ingest_batch_2.json",
+      "run_id": 21,
+      "status": "partial_success",
+      "processed_count": 1,
+      "error_count": 1,
+      "record_count": 2
+    }
+  ]
+}
