@@ -90,10 +90,14 @@ from pathlib import Path
 obj=json.loads(Path("$SAMPLE_INPUT").read_text(encoding="utf-8"))
 candidate_id="cand-jwo"
 records=obj.get("records",[])
-if records:
-    candidates=records[0].get("candidates",[])
-    if candidates:
-        candidate_id=candidates[0].get("candidate_id") or candidate_id
+for record in records:
+    candidates = record.get("candidates", [])
+    if not candidates:
+        continue
+    resolved = candidates[0].get("candidate_id")
+    if resolved:
+        candidate_id = resolved
+        break
 print(candidate_id)
 PY
 )"
