@@ -96,6 +96,47 @@ class JobRunOut(BaseModel):
     status: str
 
 
+class OpsIngestionMetricsOut(BaseModel):
+    total_runs: int
+    success_runs: int
+    partial_success_runs: int
+    failed_runs: int
+    total_processed_count: int
+    total_error_count: int
+    fetch_fail_rate: float
+
+
+class OpsReviewMetricsOut(BaseModel):
+    pending_count: int
+    in_progress_count: int
+    resolved_count: int
+    pending_over_24h_count: int
+    mapping_error_24h_count: int
+
+
+class OpsFailureDistributionOut(BaseModel):
+    issue_type: str
+    count: int
+    ratio: float
+
+
+class OpsWarningRuleOut(BaseModel):
+    rule_key: str
+    description: str
+    threshold: float
+    actual: float
+    triggered: bool
+
+
+class OpsMetricsSummaryOut(BaseModel):
+    generated_at: datetime
+    window_hours: int
+    ingestion: OpsIngestionMetricsOut
+    review_queue: OpsReviewMetricsOut
+    failure_distribution: list[OpsFailureDistributionOut]
+    warnings: list[OpsWarningRuleOut]
+
+
 class ArticleInput(BaseModel):
     url: str
     title: str

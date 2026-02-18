@@ -109,6 +109,32 @@ class FakeApiRepo:
             "election_history": "지방선거 출마",
         }
 
+    def fetch_ops_ingestion_metrics(self, window_hours=24):  # noqa: ARG002
+        return {
+            "total_runs": 12,
+            "success_runs": 10,
+            "partial_success_runs": 1,
+            "failed_runs": 1,
+            "total_processed_count": 500,
+            "total_error_count": 30,
+            "fetch_fail_rate": 0.0566,
+        }
+
+    def fetch_ops_review_metrics(self, window_hours=24):  # noqa: ARG002
+        return {
+            "pending_count": 4,
+            "in_progress_count": 2,
+            "resolved_count": 11,
+            "pending_over_24h_count": 1,
+            "mapping_error_24h_count": 2,
+        }
+
+    def fetch_ops_failure_distribution(self, window_hours=24):  # noqa: ARG002
+        return [
+            {"issue_type": "mapping_error", "count": 2, "ratio": 0.5},
+            {"issue_type": "value_conflict", "count": 2, "ratio": 0.5},
+        ]
+
     def create_ingestion_run(self, run_type, extractor_version, llm_model):
         self._run_id += 1
         return self._run_id
@@ -192,6 +218,15 @@ def test_api_contract_fields():
     candidate = client.get("/api/v1/candidates/cand-jwo")
     assert candidate.status_code == 200
     assert candidate.json()["candidate_id"] == "cand-jwo"
+
+    ops = client.get("/api/v1/ops/metrics/summary")
+    assert ops.status_code == 200
+    ops_body = ops.json()
+    assert ops_body["window_hours"] == 24
+    assert "ingestion" in ops_body
+    assert "review_queue" in ops_body
+    assert isinstance(ops_body["warnings"], list)
+    assert len(ops_body["warnings"]) >= 2
 
     app.dependency_overrides.clear()
 

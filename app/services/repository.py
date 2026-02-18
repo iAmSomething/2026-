@@ -464,3 +464,88 @@ class PostgresRepository:
                 (candidate_id,),
             )
             return cur.fetchone()
+
+    def fetch_ops_ingestion_metrics(self, window_hours: int = 24):
+        with self.conn.cursor() as cur:
+            cur.execute(
+                """
+                SELECT
+                    COUNT(*)::int AS total_runs,
+                    COUNT(*) FILTER (WHERE status = 'success')::int AS success_runs,
+                    COUNT(*) FILTER (WHERE status = 'partial_success')::int AS partial_success_runs,
+                    COUNT(*) FILTER (WHERE status = 'failed')::int AS failed_runs,
+                    COALESCE(SUM(processed_count), 0)::int AS total_processed_count,
+                    COALESCE(SUM(error_count), 0)::int AS total_error_count
+                FROM ingestion_runs
+                WHERE started_at >= NOW() - (%s * INTERVAL '1 hour')
+                """,
+                (window_hours,),
+            )
+            row = cur.fetchone() or {}
+
+        processed = row.get("total_processed_count", 0) or 0
+        errors = row.get("total_error_count", 0) or 0
+        denominator = processed + errors
+        fetch_fail_rate = (errors / denominator) if denominator > 0 else 0.0
+
+        return {
+            "total_runs": row.get("total_runs", 0) or 0,
+            "success_runs": row.get("success_runs", 0) or 0,
+            "partial_success_runs": row.get("partial_success_runs", 0) or 0,
+            "failed_runs": row.get("failed_runs", 0) or 0,
+            "total_processed_count": processed,
+            "total_error_count": errors,
+            "fetch_fail_rate": round(fetch_fail_rate, 4),
+        }
+
+    def fetch_ops_review_metrics(self, window_hours: int = 24):
+        with self.conn.cursor() as cur:
+            cur.execute(
+                """
+                SELECT
+                    COUNT(*) FILTER (WHERE status = 'pending')::int AS pending_count,
+                    COUNT(*) FILTER (WHERE status = 'in_progress')::int AS in_progress_count,
+                    COUNT(*) FILTER (WHERE status NOT IN ('pending', 'in_progress'))::int AS resolved_count,
+                    COUNT(*) FILTER (
+                        WHERE status = 'pending'
+                          AND created_at < NOW() - INTERVAL '24 hours'
+                    )::int AS pending_over_24h_count,
+                    COUNT(*) FILTER (
+                        WHERE issue_type = 'mapping_error'
+                          AND created_at >= NOW() - (%s * INTERVAL '1 hour')
+                    )::int AS mapping_error_24h_count
+                FROM review_queue
+                """,
+                (window_hours,),
+            )
+            row = cur.fetchone() or {}
+
+        return {
+            "pending_count": row.get("pending_count", 0) or 0,
+            "in_progress_count": row.get("in_progress_count", 0) or 0,
+            "resolved_count": row.get("resolved_count", 0) or 0,
+            "pending_over_24h_count": row.get("pending_over_24h_count", 0) or 0,
+            "mapping_error_24h_count": row.get("mapping_error_24h_count", 0) or 0,
+        }
+
+    def fetch_ops_failure_distribution(self, window_hours: int = 24):
+        with self.conn.cursor() as cur:
+            cur.execute(
+                """
+                SELECT issue_type, COUNT(*)::int AS count
+                FROM review_queue
+                WHERE created_at >= NOW() - (%s * INTERVAL '1 hour')
+                GROUP BY issue_type
+                ORDER BY count DESC, issue_type
+                """,
+                (window_hours,),
+            )
+            rows = cur.fetchall()
+
+        total = sum(int(row["count"]) for row in rows) if rows else 0
+        out = []
+        for row in rows:
+            count = int(row["count"])
+            ratio = (count / total) if total > 0 else 0.0
+            out.append({"issue_type": row["issue_type"], "count": count, "ratio": round(ratio, 4)})
+        return out

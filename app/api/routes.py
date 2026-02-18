@@ -1,4 +1,4 @@
-from datetime import date
+from datetime import date, datetime, timezone
 
 from fastapi import APIRouter, Depends, HTTPException, Query
 
@@ -13,6 +13,11 @@ from app.models.schemas import (
     JobRunOut,
     MapLatestPoint,
     MatchupOut,
+    OpsFailureDistributionOut,
+    OpsIngestionMetricsOut,
+    OpsMetricsSummaryOut,
+    OpsReviewMetricsOut,
+    OpsWarningRuleOut,
     RegionElectionOut,
     RegionOut,
     SummaryPoint,
@@ -106,6 +111,49 @@ def get_candidate(
         raise HTTPException(status_code=404, detail="candidate not found")
     enriched = data_go_service.enrich_candidate(dict(candidate))
     return CandidateOut(**enriched)
+
+
+@router.get("/ops/metrics/summary", response_model=OpsMetricsSummaryOut)
+def get_ops_metrics_summary(
+    window_hours: int = Query(default=24, ge=1, le=24 * 14),
+    repo=Depends(get_repository),
+):
+    ingestion = repo.fetch_ops_ingestion_metrics(window_hours=window_hours)
+    review = repo.fetch_ops_review_metrics(window_hours=window_hours)
+    failure_distribution = repo.fetch_ops_failure_distribution(window_hours=window_hours)
+
+    warnings = [
+        {
+            "rule_key": "fetch_fail_rate",
+            "description": "ingestion fetch_fail_rate > 0.15",
+            "threshold": 0.15,
+            "actual": float(ingestion["fetch_fail_rate"]),
+            "triggered": float(ingestion["fetch_fail_rate"]) > 0.15,
+        },
+        {
+            "rule_key": "mapping_error_spike_24h",
+            "description": "review_queue mapping_error in last window >= 5",
+            "threshold": 5.0,
+            "actual": float(review["mapping_error_24h_count"]),
+            "triggered": int(review["mapping_error_24h_count"]) >= 5,
+        },
+        {
+            "rule_key": "pending_queue_backlog_24h",
+            "description": "pending review items older than 24h >= 10",
+            "threshold": 10.0,
+            "actual": float(review["pending_over_24h_count"]),
+            "triggered": int(review["pending_over_24h_count"]) >= 10,
+        },
+    ]
+
+    return OpsMetricsSummaryOut(
+        generated_at=datetime.now(timezone.utc),
+        window_hours=window_hours,
+        ingestion=OpsIngestionMetricsOut(**ingestion),
+        review_queue=OpsReviewMetricsOut(**review),
+        failure_distribution=[OpsFailureDistributionOut(**x) for x in failure_distribution],
+        warnings=[OpsWarningRuleOut(**x) for x in warnings],
+    )
 
 
 @router.post("/jobs/run-ingest", response_model=JobRunOut)

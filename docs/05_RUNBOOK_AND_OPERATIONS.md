@@ -53,8 +53,9 @@
 
 ## 5. 내부 운영 API
 1. 수동 배치 실행: `POST /api/v1/jobs/run-ingest`
-2. 검수 승인: `POST /api/v1/review/{item_id}/approve`
-3. 검수 반려: `POST /api/v1/review/{item_id}/reject`
+2. 운영 지표 요약: `GET /api/v1/ops/metrics/summary`
+3. 검수 승인: `POST /api/v1/review/{item_id}/approve`
+4. 검수 반려: `POST /api/v1/review/{item_id}/reject`
 
 ## 6. 장애 대응
 1. 수집 실패:
@@ -95,6 +96,19 @@
 1. 추출 품질 KPI: 핵심 수치 추출 Precision >= 0.90 (샘플 100건 수동 검수)
 2. 배치 안정성 KPI: 7일 연속 정기 배치 성공
 3. 검수 처리 KPI: `pending` 24시간 초과 건수 최소화
+
+## 8.2 지표 API 확인 절차
+1. `GET /api/v1/ops/metrics/summary?window_hours=24` 호출
+2. 확인 항목:
+- `ingestion.total_runs/success_runs/failed_runs`
+- `ingestion.fetch_fail_rate`
+- `review_queue.pending_over_24h_count`
+- `failure_distribution` 상위 `issue_type`
+
+## 8.3 경고 규칙 (기본값)
+1. `fetch_fail_rate > 0.15` 이면 경고
+2. `mapping_error_24h_count >= 5` 이면 경고
+3. `pending_over_24h_count >= 10` 이면 경고
 
 ## 9. 일일 운영 체크
 1. 새벽 배치 실패 여부

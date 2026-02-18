@@ -3,7 +3,8 @@
 문서 기반 계획(`docs/`)을 코드로 옮긴 1주차 백엔드 세로슬라이스입니다.
 
 ## 포함 기능
-- FastAPI 공개 API 7개
+- FastAPI 공개 API 8개
+  - `GET /api/v1/ops/metrics/summary` (운영 지표)
   - `GET /api/v1/dashboard/summary`
   - `GET /api/v1/dashboard/map-latest`
   - `GET /api/v1/dashboard/big-matches`
