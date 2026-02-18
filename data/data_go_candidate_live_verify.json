@@ -1,0 +1,19 @@
+{
+  "status_code": 200,
+  "body": {
+    "candidate_id": "cand-live-openapi-1",
+    "name_ko": "심왕섭",
+    "party_name": "국민의힘",
+    "gender": "M",
+    "birth_date": "1959-11-20",
+    "job": "세림조경건설주식회사 대표이사",
+    "career_summary": "(현) 재단법인 환경조경발전재단 이사장 / (전) 계양초등학교 총동창회 제25대회장",
+    "election_history": "로컬이력"
+  },
+  "data_go_context": {
+    "sg_id": "20260603",
+    "sg_typecode": "2",
+    "sd_name": "인천광역시",
+    "sgg_name": "계양구을"
+  }
+}

@@ -206,6 +206,12 @@ class PostgresRepository:
             )
         self.conn.commit()
 
+    def count_review_queue(self) -> int:
+        with self.conn.cursor() as cur:
+            cur.execute("SELECT COUNT(*)::int AS count FROM review_queue")
+            row = cur.fetchone() or {}
+        return int(row.get("count", 0) or 0)
+
     def fetch_dashboard_summary(self, as_of: date | None):
         params = []
         as_of_filter = ""
@@ -464,3 +470,213 @@ class PostgresRepository:
                 (candidate_id,),
             )
             return cur.fetchone()
+
+    def fetch_ops_ingestion_metrics(self, window_hours: int = 24):
+        with self.conn.cursor() as cur:
+            cur.execute(
+                """
+                SELECT
+                    COUNT(*)::int AS total_runs,
+                    COUNT(*) FILTER (WHERE status = 'success')::int AS success_runs,
+                    COUNT(*) FILTER (WHERE status = 'partial_success')::int AS partial_success_runs,
+                    COUNT(*) FILTER (WHERE status = 'failed')::int AS failed_runs,
+                    COALESCE(SUM(processed_count), 0)::int AS total_processed_count,
+                    COALESCE(SUM(error_count), 0)::int AS total_error_count
+                FROM ingestion_runs
+                WHERE started_at >= NOW() - (%s * INTERVAL '1 hour')
+                """,
+                (window_hours,),
+            )
+            row = cur.fetchone() or {}
+
+        processed = row.get("total_processed_count", 0) or 0
+        errors = row.get("total_error_count", 0) or 0
+        denominator = processed + errors
+        fetch_fail_rate = (errors / denominator) if denominator > 0 else 0.0
+
+        return {
+            "total_runs": row.get("total_runs", 0) or 0,
+            "success_runs": row.get("success_runs", 0) or 0,
+            "partial_success_runs": row.get("partial_success_runs", 0) or 0,
+            "failed_runs": row.get("failed_runs", 0) or 0,
+            "total_processed_count": processed,
+            "total_error_count": errors,
+            "fetch_fail_rate": round(fetch_fail_rate, 4),
+        }
+
+    def fetch_ops_review_metrics(self, window_hours: int = 24):
+        with self.conn.cursor() as cur:
+            cur.execute(
+                """
+                SELECT
+                    COUNT(*) FILTER (WHERE status = 'pending')::int AS pending_count,
+                    COUNT(*) FILTER (WHERE status = 'in_progress')::int AS in_progress_count,
+                    COUNT(*) FILTER (WHERE status NOT IN ('pending', 'in_progress'))::int AS resolved_count,
+                    COUNT(*) FILTER (
+                        WHERE status = 'pending'
+                          AND created_at < NOW() - INTERVAL '24 hours'
+                    )::int AS pending_over_24h_count,
+                    COUNT(*) FILTER (
+                        WHERE issue_type = 'mapping_error'
+                          AND created_at >= NOW() - (%s * INTERVAL '1 hour')
+                    )::int AS mapping_error_24h_count
+                FROM review_queue
+                """,
+                (window_hours,),
+            )
+            row = cur.fetchone() or {}
+
+        return {
+            "pending_count": row.get("pending_count", 0) or 0,
+            "in_progress_count": row.get("in_progress_count", 0) or 0,
+            "resolved_count": row.get("resolved_count", 0) or 0,
+            "pending_over_24h_count": row.get("pending_over_24h_count", 0) or 0,
+            "mapping_error_24h_count": row.get("mapping_error_24h_count", 0) or 0,
+        }
+
+    def fetch_ops_failure_distribution(self, window_hours: int = 24):
+        with self.conn.cursor() as cur:
+            cur.execute(
+                """
+                SELECT issue_type, COUNT(*)::int AS count
+                FROM review_queue
+                WHERE created_at >= NOW() - (%s * INTERVAL '1 hour')
+                GROUP BY issue_type
+                ORDER BY count DESC, issue_type
+                """,
+                (window_hours,),
+            )
+            rows = cur.fetchall()
+
+        total = sum(int(row["count"]) for row in rows) if rows else 0
+        out = []
+        for row in rows:
+            count = int(row["count"])
+            ratio = (count / total) if total > 0 else 0.0
+            out.append({"issue_type": row["issue_type"], "count": count, "ratio": round(ratio, 4)})
+        return out
+
+    def fetch_review_queue_items(
+        self,
+        *,
+        status: str | None = None,
+        issue_type: str | None = None,
+        assigned_to: str | None = None,
+        limit: int = 50,
+        offset: int = 0,
+    ):
+        where_clauses = []
+        params: list = []
+        if status:
+            where_clauses.append("status = %s")
+            params.append(status)
+        if issue_type:
+            where_clauses.append("issue_type = %s")
+            params.append(issue_type)
+        if assigned_to:
+            where_clauses.append("assigned_to = %s")
+            params.append(assigned_to)
+
+        where_sql = ""
+        if where_clauses:
+            where_sql = "WHERE " + " AND ".join(where_clauses)
+
+        params.extend([limit, offset])
+        query = f"""
+            SELECT
+                id, entity_type, entity_id, issue_type, status,
+                assigned_to, review_note, created_at, updated_at
+            FROM review_queue
+            {where_sql}
+            ORDER BY created_at DESC, id DESC
+            LIMIT %s OFFSET %s
+        """
+        with self.conn.cursor() as cur:
+            cur.execute(query, params)
+            return cur.fetchall()
+
+    def fetch_review_queue_stats(self, *, window_hours: int = 24):
+        with self.conn.cursor() as cur:
+            cur.execute(
+                """
+                SELECT
+                    COUNT(*)::int AS total_count,
+                    COUNT(*) FILTER (WHERE status = 'pending')::int AS pending_count,
+                    COUNT(*) FILTER (WHERE status = 'in_progress')::int AS in_progress_count,
+                    COUNT(*) FILTER (WHERE status NOT IN ('pending', 'in_progress'))::int AS resolved_count
+                FROM review_queue
+                """
+            )
+            summary = cur.fetchone() or {}
+
+            cur.execute(
+                """
+                SELECT issue_type, COUNT(*)::int AS count
+                FROM review_queue
+                WHERE created_at >= NOW() - (%s * INTERVAL '1 hour')
+                GROUP BY issue_type
+                ORDER BY count DESC, issue_type
+                """,
+                (window_hours,),
+            )
+            issue_rows = cur.fetchall()
+
+            cur.execute(
+                """
+                SELECT
+                    COALESCE(NULLIF(split_part(issue_type, ':', 2), ''), 'unknown') AS error_code,
+                    COUNT(*)::int AS count
+                FROM review_queue
+                WHERE created_at >= NOW() - (%s * INTERVAL '1 hour')
+                GROUP BY error_code
+                ORDER BY count DESC, error_code
+                """,
+                (window_hours,),
+            )
+            error_rows = cur.fetchall()
+
+        return {
+            "total_count": summary.get("total_count", 0) or 0,
+            "pending_count": summary.get("pending_count", 0) or 0,
+            "in_progress_count": summary.get("in_progress_count", 0) or 0,
+            "resolved_count": summary.get("resolved_count", 0) or 0,
+            "issue_type_counts": issue_rows,
+            "error_code_counts": error_rows,
+        }
+
+    def fetch_review_queue_trends(
+        self,
+        *,
+        window_hours: int = 24,
+        bucket_hours: int = 6,
+        issue_type: str | None = None,
+        error_code: str | None = None,
+    ):
+        filters = ["created_at >= NOW() - (%s * INTERVAL '1 hour')"]
+        where_params: list = [window_hours]
+        if issue_type:
+            filters.append("split_part(issue_type, ':', 1) = %s")
+            where_params.append(issue_type)
+        if error_code:
+            filters.append("COALESCE(NULLIF(split_part(issue_type, ':', 2), ''), 'unknown') = %s")
+            where_params.append(error_code)
+
+        where_sql = " AND ".join(filters)
+        bucket_seconds = bucket_hours * 3600
+        params: list = [bucket_seconds, bucket_seconds, *where_params]
+        query = f"""
+            SELECT
+                to_timestamp(
+                    floor(extract(epoch from created_at) / %s) * %s
+                ) AT TIME ZONE 'UTC' AS bucket_start,
+                split_part(issue_type, ':', 1) AS issue_type,
+                COALESCE(NULLIF(split_part(issue_type, ':', 2), ''), 'unknown') AS error_code,
+                COUNT(*)::int AS count
+            FROM review_queue
+            WHERE {where_sql}
+            GROUP BY bucket_start, issue_type, error_code
+            ORDER BY bucket_start DESC, count DESC, issue_type, error_code
+        """
+        with self.conn.cursor() as cur:
+            cur.execute(query, params)
+            return cur.fetchall()

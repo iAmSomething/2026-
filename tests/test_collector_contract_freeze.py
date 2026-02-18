@@ -45,6 +45,32 @@ def test_unmapped_region_is_mapping_error_without_temp_code():
     assert errors[0].error_code == "REGION_OFFICE_NOT_MAPPED"
 
 
+def test_sigungu_mapping_expansion_for_local_office():
+    collector = PollCollector(election_id="20260603")
+    article = _article("서울 강남구청장 여론조사 정원오 44% vs 오세훈 31%")
+    observations, options, errors = collector.extract(article)
+
+    assert not errors
+    assert observations
+    assert observations[0].region_code == "11-680"
+    assert observations[0].office_type == "기초자치단체장"
+    assert observations[0].matchup_id == build_matchup_id("20260603", "기초자치단체장", "11-680")
+    assert len(options) == 2
+
+
+def test_dojisa_variant_mapping():
+    collector = PollCollector(election_id="20260603")
+    article = _article("제주도지사 여론조사 고희범 37% vs 허향진 34%")
+    observations, options, errors = collector.extract(article)
+
+    assert not errors
+    assert observations
+    assert observations[0].region_code == "50-000"
+    assert observations[0].office_type == "광역자치단체장"
+    assert observations[0].matchup_id == build_matchup_id("20260603", "광역자치단체장", "50-000")
+    assert len(options) == 2
+
+
 def test_review_queue_issue_type_must_be_fixed_taxonomy():
     assert "discover_error" in ISSUE_TAXONOMY
     assert "ingestion_error" in ISSUE_TAXONOMY

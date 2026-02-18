@@ -1,0 +1,269 @@
+{
+  "sample": {
+    "target_count": 150,
+    "raw_count": 460,
+    "dedup_count": 297,
+    "analyzed_count": 150,
+    "discover_error_count": 0
+  },
+  "policy_success_comparison": [
+    {
+      "policy": "blocklist_fallback",
+      "total": 142,
+      "extract_success_count": 62,
+      "extract_success_rate": 0.4366
+    },
+    {
+      "policy": "direct_fetch",
+      "total": 7,
+      "extract_success_count": 2,
+      "extract_success_rate": 0.2857
+    },
+    {
+      "policy": "fallback_after_fetch_error",
+      "total": 1,
+      "extract_success_count": 0,
+      "extract_success_rate": 0.0
+    }
+  ],
+  "domain_rows": [
+    {
+      "domain": "news.google.com",
+      "total": 142,
+      "fetch_success_count": 142,
+      "fetch_success_rate": 1.0,
+      "parse_success_count": 142,
+      "parse_success_rate": 1.0,
+      "extract_success_count": 62,
+      "extract_success_rate": 0.4366,
+      "failure_count": 80,
+      "policy_counts": {
+        "blocklist_fallback": 142
+      },
+      "failure_reason_counts": {
+        "NO_TITLE_CANDIDATE_SIGNAL": 8,
+        "NO_NUMERIC_SIGNAL": 70,
+        "POLICY_ONLY_SIGNAL": 2
+      },
+      "source_type_counts": {
+        "google_rss": 142
+      }
+    },
+    {
+      "domain": "www.yna.co.kr",
+      "total": 3,
+      "fetch_success_count": 3,
+      "fetch_success_rate": 1.0,
+      "parse_success_count": 3,
+      "parse_success_rate": 1.0,
+      "extract_success_count": 2,
+      "extract_success_rate": 0.6667,
+      "failure_count": 1,
+      "policy_counts": {
+        "direct_fetch": 3
+      },
+      "failure_reason_counts": {
+        "POLICY_ONLY_SIGNAL": 1
+      },
+      "source_type_counts": {
+        "publisher_rss": 3
+      }
+    },
+    {
+      "domain": "www.newsis.com",
+      "total": 3,
+      "fetch_success_count": 3,
+      "fetch_success_rate": 1.0,
+      "parse_success_count": 3,
+      "parse_success_rate": 1.0,
+      "extract_success_count": 0,
+      "extract_success_rate": 0.0,
+      "failure_count": 3,
+      "policy_counts": {
+        "direct_fetch": 3
+      },
+      "failure_reason_counts": {
+        "NO_TITLE_CANDIDATE_SIGNAL": 3
+      },
+      "source_type_counts": {
+        "publisher_rss": 3
+      }
+    },
+    {
+      "domain": "www.khan.co.kr",
+      "total": 1,
+      "fetch_success_count": 1,
+      "fetch_success_rate": 1.0,
+      "parse_success_count": 1,
+      "parse_success_rate": 1.0,
+      "extract_success_count": 0,
+      "extract_success_rate": 0.0,
+      "failure_count": 1,
+      "policy_counts": {
+        "direct_fetch": 1
+      },
+      "failure_reason_counts": {
+        "POLICY_ONLY_SIGNAL": 1
+      },
+      "source_type_counts": {
+        "publisher_rss": 1
+      }
+    },
+    {
+      "domain": "www.hankyung.com",
+      "total": 1,
+      "fetch_success_count": 1,
+      "fetch_success_rate": 1.0,
+      "parse_success_count": 0,
+      "parse_success_rate": 0.0,
+      "extract_success_count": 0,
+      "extract_success_rate": 0.0,
+      "failure_count": 1,
+      "policy_counts": {
+        "fallback_after_fetch_error": 1
+      },
+      "failure_reason_counts": {
+        "PARSE_EMPTY_OR_SHORT_BODY": 1
+      },
+      "source_type_counts": {
+        "publisher_rss": 1
+      }
+    }
+  ],
+  "failure_top10_domains": [
+    {
+      "domain": "news.google.com",
+      "total": 142,
+      "fetch_success_count": 142,
+      "fetch_success_rate": 1.0,
+      "parse_success_count": 142,
+      "parse_success_rate": 1.0,
+      "extract_success_count": 62,
+      "extract_success_rate": 0.4366,
+      "failure_count": 80,
+      "policy_counts": {
+        "blocklist_fallback": 142
+      },
+      "failure_reason_counts": {
+        "NO_TITLE_CANDIDATE_SIGNAL": 8,
+        "NO_NUMERIC_SIGNAL": 70,
+        "POLICY_ONLY_SIGNAL": 2
+      },
+      "source_type_counts": {
+        "google_rss": 142
+      }
+    },
+    {
+      "domain": "www.newsis.com",
+      "total": 3,
+      "fetch_success_count": 3,
+      "fetch_success_rate": 1.0,
+      "parse_success_count": 3,
+      "parse_success_rate": 1.0,
+      "extract_success_count": 0,
+      "extract_success_rate": 0.0,
+      "failure_count": 3,
+      "policy_counts": {
+        "direct_fetch": 3
+      },
+      "failure_reason_counts": {
+        "NO_TITLE_CANDIDATE_SIGNAL": 3
+      },
+      "source_type_counts": {
+        "publisher_rss": 3
+      }
+    },
+    {
+      "domain": "www.yna.co.kr",
+      "total": 3,
+      "fetch_success_count": 3,
+      "fetch_success_rate": 1.0,
+      "parse_success_count": 3,
+      "parse_success_rate": 1.0,
+      "extract_success_count": 2,
+      "extract_success_rate": 0.6667,
+      "failure_count": 1,
+      "policy_counts": {
+        "direct_fetch": 3
+      },
+      "failure_reason_counts": {
+        "POLICY_ONLY_SIGNAL": 1
+      },
+      "source_type_counts": {
+        "publisher_rss": 3
+      }
+    },
+    {
+      "domain": "www.khan.co.kr",
+      "total": 1,
+      "fetch_success_count": 1,
+      "fetch_success_rate": 1.0,
+      "parse_success_count": 1,
+      "parse_success_rate": 1.0,
+      "extract_success_count": 0,
+      "extract_success_rate": 0.0,
+      "failure_count": 1,
+      "policy_counts": {
+        "direct_fetch": 1
+      },
+      "failure_reason_counts": {
+        "POLICY_ONLY_SIGNAL": 1
+      },
+      "source_type_counts": {
+        "publisher_rss": 1
+      }
+    },
+    {
+      "domain": "www.hankyung.com",
+      "total": 1,
+      "fetch_success_count": 1,
+      "fetch_success_rate": 1.0,
+      "parse_success_count": 0,
+      "parse_success_rate": 0.0,
+      "extract_success_count": 0,
+      "extract_success_rate": 0.0,
+      "failure_count": 1,
+      "policy_counts": {
+        "fallback_after_fetch_error": 1
+      },
+      "failure_reason_counts": {
+        "PARSE_EMPTY_OR_SHORT_BODY": 1
+      },
+      "source_type_counts": {
+        "publisher_rss": 1
+      }
+    }
+  ],
+  "improvement_priority_top5": [
+    {
+      "domain": "news.google.com",
+      "failure_count": 80,
+      "dominant_reason": "NO_NUMERIC_SIGNAL",
+      "suggested_action": "본문 후보/수치 패턴(표기 변형, 구분자) 규칙 보강"
+    },
+    {
+      "domain": "www.newsis.com",
+      "failure_count": 3,
+      "dominant_reason": "NO_TITLE_CANDIDATE_SIGNAL",
+      "suggested_action": "실패 샘플 수집 후 파서/매핑 규칙 점검"
+    },
+    {
+      "domain": "www.yna.co.kr",
+      "failure_count": 1,
+      "dominant_reason": "POLICY_ONLY_SIGNAL",
+      "suggested_action": "정책형 문항 제외 규칙 유지 + 분류 선제 차단"
+    },
+    {
+      "domain": "www.khan.co.kr",
+      "failure_count": 1,
+      "dominant_reason": "POLICY_ONLY_SIGNAL",
+      "suggested_action": "정책형 문항 제외 규칙 유지 + 분류 선제 차단"
+    },
+    {
+      "domain": "www.hankyung.com",
+      "failure_count": 1,
+      "dominant_reason": "PARSE_EMPTY_OR_SHORT_BODY",
+      "suggested_action": "본문 클리너 도메인별 예외 규칙 추가"
+    }
+  ]
+}

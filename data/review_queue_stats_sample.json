@@ -1,0 +1,32 @@
+{
+  "generated_at": "2026-02-18T15:30:00Z",
+  "window_hours": 24,
+  "total_count": 12,
+  "pending_count": 5,
+  "in_progress_count": 3,
+  "resolved_count": 4,
+  "issue_type_counts": [
+    {
+      "issue_type": "ingestion_error",
+      "count": 6
+    },
+    {
+      "issue_type": "mapping_error:region_not_found",
+      "count": 3
+    },
+    {
+      "issue_type": "value_conflict",
+      "count": 3
+    }
+  ],
+  "error_code_counts": [
+    {
+      "error_code": "region_not_found",
+      "count": 3
+    },
+    {
+      "error_code": "unknown",
+      "count": 9
+    }
+  ]
+}

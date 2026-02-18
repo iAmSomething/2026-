@@ -53,8 +53,10 @@
 
 ## 5. 내부 운영 API
 1. 수동 배치 실행: `POST /api/v1/jobs/run-ingest`
-2. 검수 승인: `POST /api/v1/review/{item_id}/approve`
-3. 검수 반려: `POST /api/v1/review/{item_id}/reject`
+2. 운영 지표 요약: `GET /api/v1/ops/metrics/summary`
+3. 검수 큐 목록: `GET /api/v1/review-queue/items`
+4. 검수 큐 통계: `GET /api/v1/review-queue/stats`
+5. 검수 큐 추세: `GET /api/v1/review-queue/trends`
 
 ## 6. 장애 대응
 1. 수집 실패:
@@ -95,6 +97,60 @@
 1. 추출 품질 KPI: 핵심 수치 추출 Precision >= 0.90 (샘플 100건 수동 검수)
 2. 배치 안정성 KPI: 7일 연속 정기 배치 성공
 3. 검수 처리 KPI: `pending` 24시간 초과 건수 최소화
+
+## 8.2 지표 API 확인 절차
+1. `GET /api/v1/ops/metrics/summary?window_hours=24` 호출
+2. 확인 항목:
+- `ingestion.total_runs/success_runs/failed_runs`
+- `ingestion.fetch_fail_rate`
+- `review_queue.pending_over_24h_count`
+- `failure_distribution` 상위 `issue_type`
+
+## 8.3 경고 규칙 (기본값)
+1. `fetch_fail_rate > 0.15` 이면 경고
+2. `mapping_error_24h_count >= 5` 이면 경고
+3. `pending_over_24h_count >= 10` 이면 경고
+
+## 8.4 PM/QA 요약 JSON 포맷
+1. 검수 큐 통계 요약 (`GET /api/v1/review-queue/stats`)
+```json
+{
+  "generated_at": "2026-02-18T15:30:00Z",
+  "window_hours": 24,
+  "total_count": 12,
+  "pending_count": 5,
+  "in_progress_count": 3,
+  "resolved_count": 4,
+  "issue_type_counts": [
+    {"issue_type": "ingestion_error", "count": 6},
+    {"issue_type": "mapping_error:region_not_found", "count": 3}
+  ],
+  "error_code_counts": [
+    {"error_code": "region_not_found", "count": 3},
+    {"error_code": "unknown", "count": 9}
+  ]
+}
+```
+2. 검수 큐 추세 요약 (`GET /api/v1/review-queue/trends`)
+```json
+{
+  "generated_at": "2026-02-18T15:30:00Z",
+  "window_hours": 24,
+  "bucket_hours": 6,
+  "points": [
+    {
+      "bucket_start": "2026-02-18T12:00:00Z",
+      "issue_type": "mapping_error",
+      "error_code": "region_not_found",
+      "count": 2
+    }
+  ]
+}
+```
+3. 필드 해석 규칙
+- `issue_type`은 `review_queue.issue_type`의 대분류(콜론 이전 값)를 사용
+- `error_code`는 `review_queue.issue_type`의 세부코드(콜론 이후 값)이며 없으면 `unknown`
+- `generated_at`은 API 생성 시각(UTC)이고, `bucket_start`도 UTC 기준으로 해석
 
 ## 9. 일일 운영 체크
 1. 새벽 배치 실패 여부

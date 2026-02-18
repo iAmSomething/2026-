@@ -3,7 +3,11 @@
 문서 기반 계획(`docs/`)을 코드로 옮긴 1주차 백엔드 세로슬라이스입니다.
 
 ## 포함 기능
-- FastAPI 공개 API 7개
+- FastAPI 공개 API 11개
+  - `GET /api/v1/ops/metrics/summary` (운영 지표)
+  - `GET /api/v1/review-queue/items`
+  - `GET /api/v1/review-queue/stats`
+  - `GET /api/v1/review-queue/trends`
   - `GET /api/v1/dashboard/summary`
   - `GET /api/v1/dashboard/map-latest`
   - `GET /api/v1/dashboard/big-matches`
@@ -15,6 +19,7 @@
   - `POST /api/v1/jobs/run-ingest` (Bearer 토큰 인증)
 - PostgreSQL 스키마 (`db/schema.sql`)
 - 수동 적재 CLI (`python -m app.jobs.manual_ingest --input data/sample_ingest.json`)
+- 부트스트랩 배치 적재 CLI (`python -m app.jobs.bootstrap_ingest --input <file|dir> --report <json>`)
 - 정규화 로직 (`53~55%` -> min/max/mid)
 - 테스트(정규화, 적재 idempotent, API 계약)
 
@@ -29,6 +34,21 @@ python scripts/init_db.py
 python -m app.jobs.manual_ingest --input data/sample_ingest.json
 uvicorn app.main:app --reload
 ```
+
+## 배치 부트스트랩 실행기
+```bash
+# 단일 파일 실행
+python -m app.jobs.bootstrap_ingest \
+  --input data/bootstrap_ingest_batch_2.json \
+  --report data/bootstrap_ingest_batch_2_report.json
+
+# 디렉토리 실행 (패턴 기본값: *.json)
+python -m app.jobs.bootstrap_ingest \
+  --input data/bootstrap_batches \
+  --pattern "*.json" \
+  --report data/bootstrap_ingest_dir_report.json
+```
+- 요약 리포트 필수 필드: `total`, `success`, `fail`, `review_queue_count`
 
 ## 런타임 주의
 - Python `3.13` 사용 권장 (`3.14`에서는 `pydantic-core` 빌드 실패 가능)
@@ -55,7 +75,7 @@ uvicorn app.main:app --reload
 - 로컬 Phase1 체크: `scripts/qa/check_phase1.sh`
 - DB 포함 체크: `scripts/qa/check_phase1.sh --with-db`
 - API 포함 체크: `scripts/qa/check_phase1.sh --with-api`
-- API 8종 계약 스위트: `scripts/qa/run_api_contract_suite.sh --report data/qa_api_contract_report.json`
+- API 11종 계약 스위트: `scripts/qa/run_api_contract_suite.sh --report data/qa_api_contract_report.json`
 - 스테이징 스모크(로컬 URL 기준): `API_BASE=http://127.0.0.1:8100 WEB_BASE=http://127.0.0.1:3300 INTERNAL_JOB_TOKEN=<token> scripts/qa/smoke_staging.sh`
 - 스테이징 웹 앱(개발 트랙): `apps/staging-web`
 - 스테이징 CI 워크플로: `.github/workflows/staging-smoke.yml`

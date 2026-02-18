@@ -5,6 +5,7 @@ from datetime import datetime, timezone
 from hashlib import sha256
 from html import unescape
 import re
+import time
 from typing import Iterable
 from urllib import request
 from urllib.error import HTTPError, URLError
@@ -33,6 +34,7 @@ class CollectorOutput:
     poll_observations: list[PollObservation] = field(default_factory=list)
     poll_options: list[PollOption] = field(default_factory=list)
     review_queue: list[ReviewQueueItem] = field(default_factory=list)
+    stats: dict[str, int | float] = field(default_factory=dict)
 
     def to_dict(self) -> dict:
         return {
@@ -40,6 +42,7 @@ class CollectorOutput:
             "poll_observations": [row.to_dict() for row in self.poll_observations],
             "poll_options": [row.to_dict() for row in self.poll_options],
             "review_queue": [row.to_dict() for row in self.review_queue],
+            "stats": self.stats,
         }
 
 
@@ -55,6 +58,16 @@ class PollCollector:
     )
     _NAME_VALUE_RE = re.compile(r"([가-힣A-Za-z]{2,20})\s*(\d{1,3}(?:\.\d+)?(?:\s*[~\-]\s*\d{1,3}(?:\.\d+)?)?%대?)")
     _POLLSTER_RE = re.compile(r"\b(KBS|MBC|SBS|한국갤럽|리얼미터|NBS|조원씨앤아이|미디어리서치)\b")
+    _GATE_POLICY_KEYWORDS = (
+        "국정지지율",
+        "국정 안정",
+        "국정안정론",
+        "정당지지도",
+        "대통령 국정",
+        "국정평가",
+    )
+    _GATE_PREFERENCE_KEYWORDS = ("찬성", "반대", "호감도", "비호감", "정책", "개헌")
+    _GATE_ELECTION_OFFICE_HINTS = ("시장", "지사", "교육감", "구청장", "군수", "의회", "단체장", "재보궐")
     _NON_CANDIDATE_TOKENS = {
         "여론조사",
         "응답률",
@@ -65,6 +78,39 @@ class PollCollector:
         "표본오차",
         "지지율",
     }
+    _CANDIDATE_STOPWORDS = {
+        "대통령",
+        "정부",
+        "민주당",
+        "국민의힘",
+        "정당",
+        "국정",
+        "찬성",
+        "반대",
+        "호감",
+        "비호감",
+        "여당",
+        "야당",
+    }
+    _BODY_NOISE_MARKERS = (
+        "무단전재",
+        "재배포",
+        "저작권",
+        "Copyright",
+        "기자 =",
+        "기자=",
+        "광고",
+        "구독",
+        "기사입력",
+        "기사수정",
+    )
+    _LOCAL_OFFICE_HINTS = ("구청장", "군수", "시장")
+    _QUERY_TEMPLATES = (
+        "{election} {region} 여론조사",
+        "{election} {region} {office} 지지율",
+        "{election} {region} 가상대결 조사기관",
+        "{election} {region} 표본 오차범위 응답률",
+    )
 
     def __init__(self, election_id: str = "2026_local", user_agent: str = "ElectionCollector/0.1") -> None:
         self.election_id = election_id
@@ -77,8 +123,10 @@ class PollCollector:
         rss_feeds: Iterable[str] | None = None,
     ) -> CollectorOutput:
         output = CollectorOutput()
-        urls, discover_errors = self.discover(seeds=seeds, rss_feeds=rss_feeds or [])
+        urls, discover_errors, discover_stats = self.discover(seeds=seeds, rss_feeds=rss_feeds or [])
         output.review_queue.extend(discover_errors)
+        output.stats.update(discover_stats)
+        article_signature_seen: set[tuple[str, str, str]] = set()
 
         for url in urls:
             article, fetch_error = self.fetch(url)
@@ -87,6 +135,17 @@ class PollCollector:
                 continue
             if article is None:
                 continue
+
+            title_key = article.title.strip().lower()
+            date_key = (article.published_at or "")[:10]
+            publisher_key = article.publisher.strip().lower()
+            signature = (title_key, date_key, publisher_key)
+            if signature in article_signature_seen:
+                output.stats["article_signature_dedup_dropped"] = int(
+                    output.stats.get("article_signature_dedup_dropped", 0)
+                ) + 1
+                continue
+            article_signature_seen.add(signature)
             output.articles.append(article)
 
             label, confidence = self.classify(article.raw_text)
@@ -108,11 +167,43 @@ class PollCollector:
                 # POLL_MENTION은 검수 큐로만 보내고 자동 추출은 보류한다.
                 continue
 
+            gate_passed, gate_reason = self.pre_extract_gate(article)
+            if not gate_passed:
+                output.review_queue.append(
+                    new_review_queue_item(
+                        entity_type="article",
+                        entity_id=article.id,
+                        issue_type="classify_error",
+                        stage="classify",
+                        error_code=gate_reason or "GATE_FILTERED",
+                        error_message="pre-extract classify gate filtered out article",
+                        source_url=article.url,
+                        payload={
+                            "classification_label": label,
+                            "classification_confidence": confidence,
+                            "title": article.title,
+                        },
+                    )
+                )
+                continue
+
             observations, options, extract_errors = self.extract(article)
             output.poll_observations.extend(observations)
             output.poll_options.extend(options)
             output.review_queue.extend(extract_errors)
 
+        issue_counts: dict[str, int] = {}
+        for item in output.review_queue:
+            issue_counts[item.issue_type] = issue_counts.get(item.issue_type, 0) + 1
+        for key, value in issue_counts.items():
+            output.stats[f"{key}_count"] = value
+        output.stats["article_count"] = len(output.articles)
+        output.stats["poll_observation_count"] = len(output.poll_observations)
+        output.stats["poll_option_count"] = len(output.poll_options)
+        output.stats["review_queue_count"] = len(output.review_queue)
+        output.stats["valid_article_rate"] = (
+            float(len(output.poll_observations)) / float(len(output.articles)) if output.articles else 0.0
+        )
         return output
 
     def discover(
@@ -120,16 +211,19 @@ class PollCollector:
         *,
         seeds: Iterable[str],
         rss_feeds: Iterable[str],
-    ) -> tuple[list[str], list[ReviewQueueItem]]:
+    ) -> tuple[list[str], list[ReviewQueueItem], dict[str, int]]:
         urls: list[str] = []
         errors: list[ReviewQueueItem] = []
         seen: set[str] = set()
+        raw_count = 0
 
         for seed in seeds:
             canonical = self._canonicalize_url(seed)
-            if canonical and canonical not in seen:
-                seen.add(canonical)
-                urls.append(canonical)
+            if canonical:
+                raw_count += 1
+                if canonical not in seen:
+                    seen.add(canonical)
+                    urls.append(canonical)
 
         for rss_url in rss_feeds:
             try:
@@ -147,9 +241,11 @@ class PollCollector:
                         link_text = href or elem.text
                         if link_text:
                             canonical = self._canonicalize_url(link_text.strip())
-                            if canonical and canonical not in seen:
-                                seen.add(canonical)
-                                urls.append(canonical)
+                            if canonical:
+                                raw_count += 1
+                                if canonical not in seen:
+                                    seen.add(canonical)
+                                    urls.append(canonical)
             except Exception as exc:  # pragma: no cover - defensive path for network/rss failures
                 errors.append(
                     new_review_queue_item(
@@ -163,7 +259,16 @@ class PollCollector:
                         payload={},
                     )
                 )
-        return urls, errors
+        stats = {
+            "discover_raw_count": raw_count,
+            "discover_unique_count": len(urls),
+            "discover_dedup_dropped": max(0, raw_count - len(urls)),
+        }
+        return urls, errors, stats
+
+    @classmethod
+    def discovery_query_templates(cls) -> list[str]:
+        return list(cls._QUERY_TEMPLATES)
 
     def fetch(self, url: str) -> tuple[Article | None, ReviewQueueItem | None]:
         try:
@@ -293,54 +398,28 @@ class PollCollector:
         observations.append(observation)
 
         try:
-            extracted_any = False
-            for match in self._MATCHUP_RE.finditer(article.raw_text):
-                a_name, a_value, b_name, b_value = match.groups()
+            extracted_pairs = self.extract_candidate_pairs(article.raw_text, title=article.title, mode="v2")
+            extracted_any = len(extracted_pairs) > 0
+            for pair in extracted_pairs:
                 options.append(
                     self._build_option(
                         observation=observation,
                         option_type="candidate",
-                        option_name=a_name,
-                        value_raw=f"{a_value}%",
-                        evidence_text=match.group(0),
+                        option_name=pair["name"],
+                        value_raw=pair["value_raw"],
+                        evidence_text=pair["evidence_text"],
                     )
                 )
-                options.append(
-                    self._build_option(
-                        observation=observation,
-                        option_type="candidate",
-                        option_name=b_name,
-                        value_raw=f"{b_value}%",
-                        evidence_text=match.group(0),
-                    )
-                )
-                extracted_any = True
 
             if not extracted_any:
-                # Fallback extraction for generic "이름 + 수치" patterns.
-                for match in self._NAME_VALUE_RE.finditer(article.raw_text):
-                    name, value_raw = match.groups()
-                    if name in self._NON_CANDIDATE_TOKENS:
-                        continue
-                    options.append(
-                        self._build_option(
-                            observation=observation,
-                            option_type="candidate",
-                            option_name=name,
-                            value_raw=value_raw,
-                            evidence_text=match.group(0),
-                        )
-                    )
-                    extracted_any = True
-
-            if not extracted_any:
+                reason = self._diagnose_extract_failure(article.raw_text, article.title)
                 errors.append(
                     new_review_queue_item(
                         entity_type="poll_observation",
                         entity_id=observation.id,
                         issue_type="extract_error",
                         stage="extract",
-                        error_code="NO_NUMERIC_SIGNAL",
+                        error_code=reason,
                         error_message="no candidate/value pair extracted",
                         source_url=article.url,
                         payload={"article_id": article.id},
@@ -361,6 +440,94 @@ class PollCollector:
             )
 
         return observations, options, errors
+
+    def extract_candidate_pairs(
+        self,
+        text: str,
+        *,
+        title: str | None = None,
+        mode: str = "v2",
+    ) -> list[dict[str, str]]:
+        if mode == "v1":
+            return self.extract_candidate_pairs_v1(text)
+        return self.extract_candidate_pairs_v2(text=text, title=title)
+
+    def extract_candidate_pairs_v1(self, text: str) -> list[dict[str, str]]:
+        pairs: list[dict[str, str]] = []
+        seen: set[tuple[str, str]] = set()
+
+        for match in self._MATCHUP_RE.finditer(text):
+            a_name, a_value, b_name, b_value = match.groups()
+            for name, value in ((a_name, f"{a_value}%"), (b_name, f"{b_value}%")):
+                key = (name, value)
+                if key in seen:
+                    continue
+                seen.add(key)
+                pairs.append({"name": name, "value_raw": value, "evidence_text": match.group(0)})
+
+        if pairs:
+            return pairs
+
+        # Fallback extraction for generic "이름 + 수치" patterns.
+        for match in self._NAME_VALUE_RE.finditer(text):
+            name, value_raw = match.groups()
+            if name in self._NON_CANDIDATE_TOKENS:
+                continue
+            key = (name, value_raw)
+            if key in seen:
+                continue
+            seen.add(key)
+            pairs.append({"name": name, "value_raw": value_raw, "evidence_text": match.group(0)})
+        return pairs
+
+    def extract_candidate_pairs_v2(self, text: str, title: str | None = None) -> list[dict[str, str]]:
+        cleaned_body = self._clean_body_for_extraction(text)
+        focus_text = self._candidate_value_signals(cleaned_body, title=title)
+
+        pairs: list[dict[str, str]] = []
+        seen: set[tuple[str, str]] = set()
+
+        for source in (focus_text, cleaned_body):
+            if not source:
+                continue
+            for match in self._MATCHUP_RE.finditer(source):
+                a_name, a_value, b_name, b_value = match.groups()
+                for name, value in ((a_name, f"{a_value}%"), (b_name, f"{b_value}%")):
+                    if not self._is_candidate_name(name):
+                        continue
+                    key = (name, value)
+                    if key in seen:
+                        continue
+                    seen.add(key)
+                    pairs.append({"name": name, "value_raw": value, "evidence_text": match.group(0)})
+
+        if pairs:
+            return pairs
+
+        for match in self._NAME_VALUE_RE.finditer(focus_text or cleaned_body):
+            name, value_raw = match.groups()
+            if not self._is_candidate_name(name):
+                continue
+            key = (name, value_raw)
+            if key in seen:
+                continue
+            seen.add(key)
+            pairs.append({"name": name, "value_raw": value_raw, "evidence_text": match.group(0)})
+        return pairs
+
+    def pre_extract_gate(self, article: Article) -> tuple[bool, str | None]:
+        text = f"{article.title}\n{article.raw_text}"
+
+        if self._is_policy_or_qualitative_only(text):
+            return False, "GATE_POLICY_QUALITATIVE_ONLY"
+
+        if not self.extract_candidate_pairs(text, title=article.title, mode="v2"):
+            return False, "GATE_NO_CANDIDATE_NUMERIC_SIGNAL"
+
+        if self._extract_region_office(text) is None:
+            return False, "GATE_REGION_OFFICE_UNMAPPED"
+
+        return True, None
 
     def _build_option(
         self,
@@ -403,12 +570,30 @@ class PollCollector:
             )
         )
 
-    def _http_get_text(self, url: str, timeout: int = 12) -> str:
-        req = request.Request(url, headers={"User-Agent": self.user_agent})
-        with request.urlopen(req, timeout=timeout) as response:
-            raw = response.read()
-            charset = response.headers.get_content_charset() or "utf-8"
-            return raw.decode(charset, errors="replace")
+    def _http_get_text(self, url: str, timeout: int = 12, retries: int = 2) -> str:
+        last_error: Exception | None = None
+        for attempt in range(retries + 1):
+            try:
+                req = request.Request(url, headers={"User-Agent": self.user_agent})
+                with request.urlopen(req, timeout=timeout) as response:
+                    raw = response.read()
+                    charset = response.headers.get_content_charset() or "utf-8"
+                    return raw.decode(charset, errors="replace")
+            except HTTPError as exc:
+                if exc.code >= 500 and attempt < retries:
+                    last_error = exc
+                    time.sleep(0.4 * (attempt + 1))
+                    continue
+                raise
+            except (URLError, TimeoutError) as exc:
+                last_error = exc
+                if attempt < retries:
+                    time.sleep(0.4 * (attempt + 1))
+                    continue
+                raise
+        if last_error is not None:
+            raise last_error
+        raise RuntimeError("unexpected fetch failure")
 
     def _robots_allowed(self, url: str) -> bool:
         parsed = urlparse(url)
@@ -467,6 +652,78 @@ class PollCollector:
         m = self._RESPONSE_RATE_RE.search(text)
         return float(m.group(1)) if m else None
 
+    def _clean_body_for_extraction(self, text: str) -> str:
+        normalized = self._cleanup_space(text)
+        if not normalized:
+            return normalized
+
+        normalized = re.sub(r"https?://\S+", " ", normalized)
+        segments = re.split(r"(?<=[\.\?\!])\s+|(?<=다)\s+", normalized)
+        kept: list[str] = []
+        for seg in segments:
+            part = seg.strip()
+            if not part:
+                continue
+            if any(marker in part for marker in self._BODY_NOISE_MARKERS):
+                continue
+            if len(part) < 7:
+                continue
+            kept.append(part)
+        return self._cleanup_space(" ".join(kept))
+
+    def _candidate_value_signals(self, cleaned_body: str, title: str | None = None) -> str:
+        lines = re.split(r"(?<=[\.\?\!])\s+|(?<=다)\s+", cleaned_body)
+        focus: list[str] = []
+        for line in lines:
+            sentence = line.strip()
+            if not sentence:
+                continue
+            has_percent = bool(self._PERCENT_RE.search(sentence))
+            has_poll = any(k in sentence for k in self._INCLUDE_KEYWORDS)
+            has_office = any(k in sentence for k in self._GATE_ELECTION_OFFICE_HINTS)
+            if has_percent and (has_poll or has_office):
+                focus.append(sentence)
+        if title:
+            focus.append(title)
+        return self._cleanup_space(" ".join(focus))
+
+    def _is_candidate_name(self, name: str) -> bool:
+        clean = name.strip()
+        if len(clean) < 2:
+            return False
+        if clean in self._NON_CANDIDATE_TOKENS:
+            return False
+        if clean in self._CANDIDATE_STOPWORDS:
+            return False
+        if clean.endswith(("정당", "정부", "대통령")):
+            return False
+        return True
+
+    def _diagnose_extract_failure(self, body_text: str, title: str | None = None) -> str:
+        full_text = f"{title or ''}\n{body_text}"
+        if self._is_policy_or_qualitative_only(full_text):
+            return "POLICY_ONLY_SIGNAL"
+        raw_names = [match.group(1) for match in self._NAME_VALUE_RE.finditer(full_text)]
+        if raw_names and not any(self._is_candidate_name(name) for name in raw_names):
+            return "POLICY_ONLY_SIGNAL"
+        if not self._PERCENT_RE.search(full_text):
+            return "NO_NUMERIC_SIGNAL"
+        if not self.extract_candidate_pairs_v1(title or ""):
+            return "NO_TITLE_CANDIDATE_SIGNAL"
+        return "NO_BODY_CANDIDATE_SIGNAL"
+
+    def _is_policy_or_qualitative_only(self, text: str) -> bool:
+        has_policy = any(keyword in text for keyword in self._GATE_POLICY_KEYWORDS)
+        has_preference = any(keyword in text for keyword in self._GATE_PREFERENCE_KEYWORDS)
+        has_election_office_hint = any(keyword in text for keyword in self._GATE_ELECTION_OFFICE_HINTS)
+        has_candidate_numeric = bool(self._MATCHUP_RE.search(text)) or bool(self._NAME_VALUE_RE.search(text))
+
+        if has_policy and not has_election_office_hint:
+            return True
+        if has_preference and not has_candidate_numeric:
+            return True
+        return False
+
     def _extract_pollster(self, text: str) -> str | None:
         m = self._POLLSTER_RE.search(text)
         return m.group(1) if m else None
@@ -480,6 +737,15 @@ class PollCollector:
         if region_code is None:
             return None
 
+        is_sigungu = not region_code.endswith("-000")
+        if is_sigungu:
+            if "재보궐" in text or "보궐" in text:
+                return region_code, "재보궐"
+            if "의회" in text:
+                return region_code, "기초의회"
+            if any(hint in text for hint in self._LOCAL_OFFICE_HINTS):
+                return region_code, "기초자치단체장"
+
         if "교육감" in text:
             return region_code, "교육감"
         if "광역" in text and "의회" in text:
@@ -490,6 +756,14 @@ class PollCollector:
             return region_code, "기초자치단체장"
         if "재보궐" in text or "보궐" in text:
             return region_code, "재보궐"
+        if "단체장" in text:
+            if is_sigungu:
+                return region_code, "기초자치단체장"
+            return region_code, "광역자치단체장"
+        if "시장" in text and not is_sigungu:
+            return region_code, "광역자치단체장"
+        if "지사" in text and not is_sigungu:
+            return region_code, "광역자치단체장"
         return None
 
     def _extract_region_code(self, text: str) -> str | None:

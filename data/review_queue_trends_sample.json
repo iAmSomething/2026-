@@ -1,0 +1,25 @@
+{
+  "generated_at": "2026-02-18T15:30:00Z",
+  "window_hours": 24,
+  "bucket_hours": 6,
+  "points": [
+    {
+      "bucket_start": "2026-02-18T12:00:00Z",
+      "issue_type": "ingestion_error",
+      "error_code": "unknown",
+      "count": 2
+    },
+    {
+      "bucket_start": "2026-02-18T12:00:00Z",
+      "issue_type": "mapping_error",
+      "error_code": "region_not_found",
+      "count": 1
+    },
+    {
+      "bucket_start": "2026-02-18T06:00:00Z",
+      "issue_type": "value_conflict",
+      "error_code": "unknown",
+      "count": 1
+    }
+  ]
+}

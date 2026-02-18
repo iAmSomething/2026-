@@ -3,7 +3,7 @@ from datetime import date
 import pytest
 from fastapi.testclient import TestClient
 
-from app.api.dependencies import get_repository
+from app.api.dependencies import get_candidate_data_go_service, get_repository
 from app.config import get_settings
 from app.main import app
 
@@ -109,6 +109,117 @@ class FakeApiRepo:
             "election_history": "지방선거 출마",
         }
 
+    def fetch_ops_ingestion_metrics(self, window_hours=24):  # noqa: ARG002
+        return {
+            "total_runs": 12,
+            "success_runs": 10,
+            "partial_success_runs": 1,
+            "failed_runs": 1,
+            "total_processed_count": 500,
+            "total_error_count": 30,
+            "fetch_fail_rate": 0.0566,
+        }
+
+    def fetch_ops_review_metrics(self, window_hours=24):  # noqa: ARG002
+        return {
+            "pending_count": 4,
+            "in_progress_count": 2,
+            "resolved_count": 11,
+            "pending_over_24h_count": 1,
+            "mapping_error_24h_count": 2,
+        }
+
+    def fetch_ops_failure_distribution(self, window_hours=24):  # noqa: ARG002
+        return [
+            {"issue_type": "mapping_error", "count": 2, "ratio": 0.5},
+            {"issue_type": "value_conflict", "count": 2, "ratio": 0.5},
+        ]
+
+    def fetch_review_queue_items(  # noqa: ARG002
+        self,
+        *,
+        status=None,
+        issue_type=None,
+        assigned_to=None,
+        limit=50,
+        offset=0,
+    ):
+        rows = [
+            {
+                "id": 101,
+                "entity_type": "ingest_record",
+                "entity_id": "obs-1",
+                "issue_type": "ingestion_error",
+                "status": "pending",
+                "assigned_to": "qa.user",
+                "review_note": "invalid region code",
+                "created_at": "2026-02-18T14:00:00+00:00",
+                "updated_at": "2026-02-18T14:10:00+00:00",
+            },
+            {
+                "id": 100,
+                "entity_type": "ingest_record",
+                "entity_id": "obs-0",
+                "issue_type": "mapping_error:region_not_found",
+                "status": "in_progress",
+                "assigned_to": None,
+                "review_note": "manual check required",
+                "created_at": "2026-02-18T13:00:00+00:00",
+                "updated_at": "2026-02-18T13:05:00+00:00",
+            },
+        ]
+        if status:
+            rows = [r for r in rows if r["status"] == status]
+        if issue_type:
+            rows = [r for r in rows if r["issue_type"] == issue_type]
+        if assigned_to:
+            rows = [r for r in rows if r["assigned_to"] == assigned_to]
+        return rows[offset : offset + limit]
+
+    def fetch_review_queue_stats(self, *, window_hours=24):  # noqa: ARG002
+        return {
+            "total_count": 7,
+            "pending_count": 3,
+            "in_progress_count": 2,
+            "resolved_count": 2,
+            "issue_type_counts": [
+                {"issue_type": "ingestion_error", "count": 3},
+                {"issue_type": "mapping_error:region_not_found", "count": 2},
+            ],
+            "error_code_counts": [
+                {"error_code": "region_not_found", "count": 2},
+                {"error_code": "unknown", "count": 5},
+            ],
+        }
+
+    def fetch_review_queue_trends(  # noqa: ARG002
+        self,
+        *,
+        window_hours=24,
+        bucket_hours=6,
+        issue_type=None,
+        error_code=None,
+    ):
+        rows = [
+            {
+                "bucket_start": "2026-02-18T12:00:00+00:00",
+                "issue_type": "ingestion_error",
+                "error_code": "unknown",
+                "count": 2,
+            },
+            {
+                "bucket_start": "2026-02-18T12:00:00+00:00",
+                "issue_type": "mapping_error",
+                "error_code": "region_not_found",
+                "count": 1,
+            },
+        ]
+        if issue_type:
+            rows = [r for r in rows if r["issue_type"] == issue_type]
+        if error_code:
+            rows = [r for r in rows if r["error_code"] == error_code]
+        return rows
+
     def create_ingestion_run(self, run_type, extractor_version, llm_model):
         self._run_id += 1
         return self._run_id
@@ -142,8 +253,23 @@ def override_repo():
     yield FakeApiRepo()
 
 
+class FakeCandidateDataGoService:
+    def __init__(self, merged_fields: dict | None = None):
+        self.merged_fields = merged_fields or {}
+
+    def enrich_candidate(self, candidate: dict):
+        out = dict(candidate)
+        out.update(self.merged_fields)
+        return out
+
+
+def override_candidate_data_go_service():
+    return FakeCandidateDataGoService()
+
+
 def test_api_contract_fields():
     app.dependency_overrides[get_repository] = override_repo
+    app.dependency_overrides[get_candidate_data_go_service] = override_candidate_data_go_service
     client = TestClient(app)
 
     summary = client.get("/api/v1/dashboard/summary")
@@ -178,6 +304,42 @@ def test_api_contract_fields():
     assert candidate.status_code == 200
     assert candidate.json()["candidate_id"] == "cand-jwo"
 
+    ops = client.get("/api/v1/ops/metrics/summary")
+    assert ops.status_code == 200
+    ops_body = ops.json()
+    assert ops_body["window_hours"] == 24
+    assert "ingestion" in ops_body
+    assert "review_queue" in ops_body
+    assert isinstance(ops_body["warnings"], list)
+    assert len(ops_body["warnings"]) >= 2
+
+    review_items = client.get(
+        "/api/v1/review-queue/items",
+        params={"status": "pending", "limit": 10, "offset": 0},
+    )
+    assert review_items.status_code == 200
+    items_body = review_items.json()
+    assert len(items_body) == 1
+    assert items_body[0]["issue_type"] == "ingestion_error"
+
+    review_stats = client.get("/api/v1/review-queue/stats", params={"window_hours": 48})
+    assert review_stats.status_code == 200
+    stats_body = review_stats.json()
+    assert stats_body["window_hours"] == 48
+    assert stats_body["total_count"] == 7
+    assert stats_body["issue_type_counts"][0]["issue_type"] == "ingestion_error"
+    assert stats_body["error_code_counts"][0]["error_code"] == "region_not_found"
+
+    review_trends = client.get(
+        "/api/v1/review-queue/trends",
+        params={"window_hours": 24, "bucket_hours": 6, "error_code": "region_not_found"},
+    )
+    assert review_trends.status_code == 200
+    trends_body = review_trends.json()
+    assert trends_body["bucket_hours"] == 6
+    assert len(trends_body["points"]) == 1
+    assert trends_body["points"][0]["error_code"] == "region_not_found"
+
     app.dependency_overrides.clear()
 
 
@@ -190,6 +352,7 @@ def test_run_ingest_requires_bearer_token(monkeypatch: pytest.MonkeyPatch):
     get_settings.cache_clear()
 
     app.dependency_overrides[get_repository] = override_repo
+    app.dependency_overrides[get_candidate_data_go_service] = override_candidate_data_go_service
     client = TestClient(app)
 
     payload = {
@@ -239,3 +402,23 @@ def test_run_ingest_requires_bearer_token(monkeypatch: pytest.MonkeyPatch):
 
     app.dependency_overrides.clear()
     get_settings.cache_clear()
+
+
+def test_candidate_endpoint_merges_data_go_fields():
+    app.dependency_overrides[get_repository] = override_repo
+    app.dependency_overrides[get_candidate_data_go_service] = lambda: FakeCandidateDataGoService(
+        {
+            "party_name": "공공데이터정당",
+            "job": "공공데이터직업",
+        }
+    )
+    client = TestClient(app)
+
+    res = client.get("/api/v1/candidates/cand-jwo")
+    assert res.status_code == 200
+    body = res.json()
+    assert body["candidate_id"] == "cand-jwo"
+    assert body["party_name"] == "공공데이터정당"
+    assert body["job"] == "공공데이터직업"
+
+    app.dependency_overrides.clear()

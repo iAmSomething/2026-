@@ -22,16 +22,16 @@ jobs:
         run: |
           set -euo pipefail
           git fetch origin "${{ github.base_ref }}" --depth=1
-          FILES=$(git diff --name-only --diff-filter=ACMR "origin/${{ github.base_ref }}"...HEAD | grep -E '^(UIUX_reports|Collector_reports|develop_report)/.*_report\.md$' || true)
+          FILES=$(git diff --name-only --diff-filter=ACMR "origin/${{ github.base_ref }}"...HEAD | grep -E '^(UIUX_reports|Collector_reports|develop_report|QA_reports)/.*_report\.md$' || true)
 
           {
-            echo "body<<'EOT'"
+            echo "body<<EOT"
             echo "## Report Files in this PR"
             if [ -z "$FILES" ]; then
               echo "- (none)"
             else
               while IFS= read -r f; do
-                [ -n "$f" ] && echo "- \\`$f\\`"
+                [ -n "$f" ] && printf -- "- %s\n" "$f"
               done <<< "$FILES"
             fi
             echo "EOT"
