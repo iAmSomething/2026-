@@ -43,6 +43,7 @@ uvicorn app.main:app --reload
 - 로컬 Phase1 체크: `scripts/qa/check_phase1.sh`
 - DB 포함 체크: `scripts/qa/check_phase1.sh --with-db`
 - API 포함 체크: `scripts/qa/check_phase1.sh --with-api`
+- API 8종 계약 스위트: `scripts/qa/run_api_contract_suite.sh --report data/qa_api_contract_report.json`
 - 스테이징 스모크(로컬 URL 기준): `API_BASE=http://127.0.0.1:8100 WEB_BASE=http://127.0.0.1:3300 INTERNAL_JOB_TOKEN=<token> scripts/qa/smoke_staging.sh`
 - 스테이징 웹 앱(개발 트랙): `apps/staging-web`
 - 스테이징 CI 워크플로: `.github/workflows/staging-smoke.yml`

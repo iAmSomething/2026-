@@ -1,0 +1,31 @@
+name: QA API Contract Suite
+
+on:
+  workflow_dispatch:
+
+jobs:
+  qa-api-contract-suite:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python 3.13
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+
+      - name: Create venv and install deps
+        run: |
+          python -m venv .venv
+          .venv/bin/pip install -r requirements.txt
+
+      - name: Run API contract suite
+        run: |
+          scripts/qa/run_api_contract_suite.sh --report data/qa_api_contract_report.json
+
+      - name: Upload API QA report
+        uses: actions/upload-artifact@v4
+        with:
+          name: qa-api-contract-report
+          path: data/qa_api_contract_report.json

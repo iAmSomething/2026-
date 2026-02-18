@@ -1,0 +1,583 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
+cd "$ROOT_DIR"
+
+REPORT_PATH="data/qa_api_contract_report.json"
+
+usage() {
+  cat <<USAGE
+Usage: $0 [--report <path>]
+
+Runs API 8-endpoint contract suite with success/failure/empty/auth-failure cases.
+Writes JSON report (default: data/qa_api_contract_report.json).
+USAGE
+}
+
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    --report)
+      REPORT_PATH="${2:-}"
+      shift 2
+      ;;
+    -h|--help)
+      usage
+      exit 0
+      ;;
+    *)
+      echo "Unknown argument: $1"
+      usage
+      exit 1
+      ;;
+  esac
+done
+
+PYTHON_BIN=".venv/bin/python"
+if [[ ! -x "$PYTHON_BIN" ]]; then
+  echo "[FAIL] .venv python not found: $PYTHON_BIN"
+  exit 1
+fi
+
+"$PYTHON_BIN" - "$REPORT_PATH" <<'PY'
+from __future__ import annotations
+
+import json
+import os
+import platform
+import sys
+import traceback
+from datetime import date, datetime, timezone
+from pathlib import Path
+
+from fastapi.testclient import TestClient
+
+from app.api.dependencies import get_repository
+from app.config import get_settings
+from app.main import app
+
+
+class FakeRepo:
+    def __init__(self, mode: str = "success"):
+        self.mode = mode
+        self._run_id = 0
+
+    def _maybe_fail(self):
+        if self.mode == "failure":
+            raise RuntimeError("forced repository error")
+
+    def fetch_dashboard_summary(self, as_of):
+        self._maybe_fail()
+        if self.mode == "empty":
+            return []
+        return [
+            {
+                "option_type": "party_support",
+                "option_name": "더불어민주당",
+                "value_mid": 42.0,
+                "pollster": "KBS",
+                "survey_end_date": date(2026, 2, 18),
+                "verified": True,
+            },
+            {
+                "option_type": "presidential_approval",
+                "option_name": "국정안정론",
+                "value_mid": 54.0,
+                "pollster": "KBS",
+                "survey_end_date": date(2026, 2, 18),
+                "verified": True,
+            },
+        ]
+
+    def fetch_dashboard_map_latest(self, as_of, limit=100):
+        self._maybe_fail()
+        if self.mode == "empty":
+            return []
+        return [
+            {
+                "region_code": "11-000",
+                "office_type": "광역자치단체장",
+                "title": "서울시장 가상대결",
+                "value_mid": 44.0,
+                "survey_end_date": date(2026, 2, 18),
+                "option_name": "정원오",
+            }
+        ]
+
+    def fetch_dashboard_big_matches(self, as_of, limit=3):
+        self._maybe_fail()
+        if self.mode == "empty":
+            return []
+        return [
+            {
+                "matchup_id": "20260603|광역자치단체장|11-000",
+                "title": "서울시장 가상대결",
+                "survey_end_date": date(2026, 2, 18),
+                "value_mid": 44.0,
+                "spread": 2.0,
+            }
+        ]
+
+    def search_regions(self, query, limit=20):
+        self._maybe_fail()
+        if self.mode == "empty":
+            return []
+        return [
+            {
+                "region_code": "11-000",
+                "sido_name": "서울특별시",
+                "sigungu_name": "전체",
+                "admin_level": "sido",
+            }
+        ]
+
+    def fetch_region_elections(self, region_code):
+        self._maybe_fail()
+        if self.mode == "empty":
+            return []
+        return [
+            {
+                "matchup_id": "20260603|광역자치단체장|11-000",
+                "region_code": region_code,
+                "office_type": "광역자치단체장",
+                "title": "서울시장 가상대결",
+                "is_active": True,
+            }
+        ]
+
+    def get_matchup(self, matchup_id):
+        self._maybe_fail()
+        if matchup_id == "missing":
+            return None
+        if self.mode == "empty":
+            return None
+        return {
+            "matchup_id": matchup_id,
+            "region_code": "11-000",
+            "office_type": "광역자치단체장",
+            "title": "서울시장 가상대결",
+            "pollster": "KBS",
+            "survey_end_date": date(2026, 2, 18),
+            "margin_of_error": 3.1,
+            "source_grade": "B",
+            "verified": True,
+            "options": [
+                {"option_name": "정원오", "value_mid": 44.0, "value_raw": "44%"},
+                {"option_name": "오세훈", "value_mid": 42.0, "value_raw": "42%"},
+            ],
+        }
+
+    def get_candidate(self, candidate_id):
+        self._maybe_fail()
+        if candidate_id == "missing":
+            return None
+        if self.mode == "empty":
+            return None
+        return {
+            "candidate_id": candidate_id,
+            "name_ko": "정원오",
+            "party_name": "더불어민주당",
+            "gender": "M",
+            "birth_date": date(1968, 8, 12),
+            "job": "구청장",
+            "career_summary": "성동구청장",
+            "election_history": "지방선거 출마",
+        }
+
+    def create_ingestion_run(self, run_type, extractor_version, llm_model):
+        self._run_id += 1
+        return self._run_id
+
+    def finish_ingestion_run(self, run_id, status, processed_count, error_count):
+        return None
+
+    def upsert_region(self, region):
+        return None
+
+    def upsert_matchup(self, matchup):
+        return None
+
+    def upsert_candidate(self, candidate):
+        return None
+
+    def upsert_article(self, article):
+        return 1
+
+    def upsert_poll_observation(self, observation, article_id, ingestion_run_id):
+        return 1
+
+    def upsert_poll_option(self, observation_id, option):
+        return None
+
+    def insert_review_queue(self, entity_type, entity_id, issue_type, review_note):
+        return None
+
+
+def override_repo(repo: FakeRepo):
+    def _dep():
+        yield repo
+
+    return _dep
+
+
+def make_client(repo: FakeRepo, raise_server_exceptions: bool = True) -> TestClient:
+    app.dependency_overrides[get_repository] = override_repo(repo)
+    return TestClient(app, raise_server_exceptions=raise_server_exceptions)
+
+
+def assert_keys(obj: dict, keys: list[str]):
+    for key in keys:
+        assert key in obj, f"missing key: {key}"
+
+
+def main() -> int:
+    report_path = Path(sys.argv[1])
+    report_path.parent.mkdir(parents=True, exist_ok=True)
+
+    # Internal auth endpoint depends on settings values.
+    os.environ.setdefault("SUPABASE_URL", "https://example.supabase.co")
+    os.environ.setdefault("SUPABASE_SERVICE_ROLE_KEY", "test-service-role")
+    os.environ.setdefault("DATA_GO_KR_KEY", "test-data-go-key")
+    os.environ.setdefault("DATABASE_URL", "postgresql://localhost/test")
+    os.environ.setdefault("INTERNAL_JOB_TOKEN", "dev-internal-token")
+    get_settings.cache_clear()
+
+    payload = {
+        "run_type": "manual",
+        "extractor_version": "manual-v1",
+        "records": [
+            {
+                "article": {"url": "https://example.com/1", "title": "sample", "publisher": "pub"},
+                "region": {
+                    "region_code": "11-000",
+                    "sido_name": "서울특별시",
+                    "sigungu_name": "전체",
+                    "admin_level": "sido",
+                },
+                "observation": {
+                    "observation_key": "obs-1",
+                    "survey_name": "survey",
+                    "pollster": "MBC",
+                    "region_code": "11-000",
+                    "office_type": "광역자치단체장",
+                    "matchup_id": "20260603|광역자치단체장|11-000",
+                },
+                "options": [
+                    {"option_type": "presidential_approval", "option_name": "국정안정론", "value_raw": "53~55%"}
+                ],
+            }
+        ],
+    }
+
+    cases: list[dict] = []
+
+    def run_case(name: str, category: str, endpoint: str, fn):
+        started = datetime.now(timezone.utc)
+        status = "pass"
+        error = None
+        details = None
+        try:
+            details = fn()
+        except Exception as exc:  # noqa: BLE001
+            status = "fail"
+            tb = traceback.format_exc(limit=3)
+            error = f"{type(exc).__name__}: {exc}"
+            details = tb
+        finally:
+            app.dependency_overrides.clear()
+
+        cases.append(
+            {
+                "name": name,
+                "category": category,
+                "endpoint": endpoint,
+                "status": status,
+                "error": error,
+                "details": details,
+                "executed_at": started.isoformat(),
+            }
+        )
+
+    # success cases
+    run_case(
+        "summary_success",
+        "success",
+        "GET /api/v1/dashboard/summary",
+        lambda: (
+            lambda r: (
+                assert_keys(r.json(), ["party_support", "presidential_approval"]),
+                r.status_code == 200 or (_ for _ in ()).throw(AssertionError(f"status={r.status_code}")),
+            )
+        )(make_client(FakeRepo("success")).get("/api/v1/dashboard/summary")),
+    )
+
+    run_case(
+        "map_latest_success",
+        "success",
+        "GET /api/v1/dashboard/map-latest",
+        lambda: (
+            lambda r: (
+                r.status_code == 200 or (_ for _ in ()).throw(AssertionError(f"status={r.status_code}")),
+                len(r.json().get("items", [])) >= 1 or (_ for _ in ()).throw(AssertionError("items empty")),
+            )
+        )(make_client(FakeRepo("success")).get("/api/v1/dashboard/map-latest")),
+    )
+
+    run_case(
+        "big_matches_success",
+        "success",
+        "GET /api/v1/dashboard/big-matches",
+        lambda: (
+            lambda r: (
+                r.status_code == 200 or (_ for _ in ()).throw(AssertionError(f"status={r.status_code}")),
+                len(r.json().get("items", [])) >= 1 or (_ for _ in ()).throw(AssertionError("items empty")),
+            )
+        )(make_client(FakeRepo("success")).get("/api/v1/dashboard/big-matches")),
+    )
+
+    run_case(
+        "regions_search_success",
+        "success",
+        "GET /api/v1/regions/search",
+        lambda: (
+            lambda r: (
+                r.status_code == 200 or (_ for _ in ()).throw(AssertionError(f"status={r.status_code}")),
+                isinstance(r.json(), list) or (_ for _ in ()).throw(AssertionError("not list")),
+                len(r.json()) >= 1 or (_ for _ in ()).throw(AssertionError("empty")),
+            )
+        )(make_client(FakeRepo("success")).get("/api/v1/regions/search", params={"q": "서울"})),
+    )
+
+    run_case(
+        "region_elections_success",
+        "success",
+        "GET /api/v1/regions/{region_code}/elections",
+        lambda: (
+            lambda r: (
+                r.status_code == 200 or (_ for _ in ()).throw(AssertionError(f"status={r.status_code}")),
+                isinstance(r.json(), list) or (_ for _ in ()).throw(AssertionError("not list")),
+                len(r.json()) >= 1 or (_ for _ in ()).throw(AssertionError("empty")),
+            )
+        )(make_client(FakeRepo("success")).get("/api/v1/regions/11-000/elections")),
+    )
+
+    run_case(
+        "matchup_success",
+        "success",
+        "GET /api/v1/matchups/{matchup_id}",
+        lambda: (
+            lambda r: (
+                r.status_code == 200 or (_ for _ in ()).throw(AssertionError(f"status={r.status_code}")),
+                assert_keys(r.json(), ["matchup_id", "options"]),
+            )
+        )(make_client(FakeRepo("success")).get("/api/v1/matchups/20260603|광역자치단체장|11-000")),
+    )
+
+    run_case(
+        "candidate_success",
+        "success",
+        "GET /api/v1/candidates/{candidate_id}",
+        lambda: (
+            lambda r: (
+                r.status_code == 200 or (_ for _ in ()).throw(AssertionError(f"status={r.status_code}")),
+                assert_keys(r.json(), ["candidate_id", "name_ko", "party_name"]),
+            )
+        )(make_client(FakeRepo("success")).get("/api/v1/candidates/cand-jwo")),
+    )
+
+    run_case(
+        "run_ingest_success",
+        "success",
+        "POST /api/v1/jobs/run-ingest",
+        lambda: (
+            lambda r: (
+                r.status_code == 200 or (_ for _ in ()).throw(AssertionError(f"status={r.status_code}")),
+                r.json().get("status") == "success"
+                or (_ for _ in ()).throw(AssertionError(f"status_field={r.json().get('status')}")),
+            )
+        )(
+            make_client(FakeRepo("success")).post(
+                "/api/v1/jobs/run-ingest",
+                json=payload,
+                headers={"Authorization": "Bearer dev-internal-token"},
+            )
+        ),
+    )
+
+    # empty-data cases
+    run_case(
+        "summary_empty",
+        "empty",
+        "GET /api/v1/dashboard/summary",
+        lambda: (
+            lambda r: (
+                r.status_code == 200 or (_ for _ in ()).throw(AssertionError(f"status={r.status_code}")),
+                r.json().get("party_support") == [] or (_ for _ in ()).throw(AssertionError("party_support not empty")),
+                r.json().get("presidential_approval") == []
+                or (_ for _ in ()).throw(AssertionError("presidential_approval not empty")),
+            )
+        )(make_client(FakeRepo("empty")).get("/api/v1/dashboard/summary")),
+    )
+
+    run_case(
+        "regions_search_empty",
+        "empty",
+        "GET /api/v1/regions/search",
+        lambda: (
+            lambda r: (
+                r.status_code == 200 or (_ for _ in ()).throw(AssertionError(f"status={r.status_code}")),
+                r.json() == [] or (_ for _ in ()).throw(AssertionError("expected []")),
+            )
+        )(make_client(FakeRepo("empty")).get("/api/v1/regions/search", params={"q": "서울"})),
+    )
+
+    run_case(
+        "map_latest_empty",
+        "empty",
+        "GET /api/v1/dashboard/map-latest",
+        lambda: (
+            lambda r: (
+                r.status_code == 200 or (_ for _ in ()).throw(AssertionError(f"status={r.status_code}")),
+                r.json().get("items") == [] or (_ for _ in ()).throw(AssertionError("expected empty items")),
+            )
+        )(make_client(FakeRepo("empty")).get("/api/v1/dashboard/map-latest")),
+    )
+
+    run_case(
+        "big_matches_empty",
+        "empty",
+        "GET /api/v1/dashboard/big-matches",
+        lambda: (
+            lambda r: (
+                r.status_code == 200 or (_ for _ in ()).throw(AssertionError(f"status={r.status_code}")),
+                r.json().get("items") == [] or (_ for _ in ()).throw(AssertionError("expected empty items")),
+            )
+        )(make_client(FakeRepo("empty")).get("/api/v1/dashboard/big-matches")),
+    )
+
+    run_case(
+        "region_elections_empty",
+        "empty",
+        "GET /api/v1/regions/{region_code}/elections",
+        lambda: (
+            lambda r: (
+                r.status_code == 200 or (_ for _ in ()).throw(AssertionError(f"status={r.status_code}")),
+                r.json() == [] or (_ for _ in ()).throw(AssertionError("expected []")),
+            )
+        )(make_client(FakeRepo("empty")).get("/api/v1/regions/11-000/elections")),
+    )
+
+    # auth-failure cases
+    run_case(
+        "run_ingest_auth_missing",
+        "auth_failure",
+        "POST /api/v1/jobs/run-ingest",
+        lambda: (
+            lambda r: (
+                r.status_code == 401 or (_ for _ in ()).throw(AssertionError(f"status={r.status_code}")),
+            )
+        )(make_client(FakeRepo("success")).post("/api/v1/jobs/run-ingest", json=payload)),
+    )
+
+    run_case(
+        "run_ingest_auth_invalid",
+        "auth_failure",
+        "POST /api/v1/jobs/run-ingest",
+        lambda: (
+            lambda r: (
+                r.status_code == 403 or (_ for _ in ()).throw(AssertionError(f"status={r.status_code}")),
+            )
+        )(
+            make_client(FakeRepo("success")).post(
+                "/api/v1/jobs/run-ingest",
+                json=payload,
+                headers={"Authorization": "Bearer wrong-token"},
+            )
+        ),
+    )
+
+    # failure cases
+    run_case(
+        "summary_internal_error_500",
+        "failure",
+        "GET /api/v1/dashboard/summary",
+        lambda: (
+            lambda r: (
+                r.status_code == 500 or (_ for _ in ()).throw(AssertionError(f"status={r.status_code}")),
+            )
+        )(make_client(FakeRepo("failure"), raise_server_exceptions=False).get("/api/v1/dashboard/summary")),
+    )
+
+    run_case(
+        "candidate_not_found_404",
+        "failure",
+        "GET /api/v1/candidates/{candidate_id}",
+        lambda: (
+            lambda r: (
+                r.status_code == 404 or (_ for _ in ()).throw(AssertionError(f"status={r.status_code}")),
+            )
+        )(make_client(FakeRepo("success")).get("/api/v1/candidates/missing")),
+    )
+
+    run_case(
+        "matchup_not_found_404",
+        "failure",
+        "GET /api/v1/matchups/{matchup_id}",
+        lambda: (
+            lambda r: (
+                r.status_code == 404 or (_ for _ in ()).throw(AssertionError(f"status={r.status_code}")),
+            )
+        )(make_client(FakeRepo("success")).get("/api/v1/matchups/missing")),
+    )
+
+    run_case(
+        "run_ingest_invalid_payload_422",
+        "failure",
+        "POST /api/v1/jobs/run-ingest",
+        lambda: (
+            lambda r: (
+                r.status_code == 422 or (_ for _ in ()).throw(AssertionError(f"status={r.status_code}")),
+            )
+        )(
+            make_client(FakeRepo("success")).post(
+                "/api/v1/jobs/run-ingest",
+                json={"run_type": "manual", "extractor_version": "manual-v1"},
+                headers={"Authorization": "Bearer dev-internal-token"},
+            )
+        ),
+    )
+
+    total = len(cases)
+    passed = sum(1 for c in cases if c["status"] == "pass")
+    failed = total - passed
+
+    by_category: dict[str, dict[str, int]] = {}
+    for case in cases:
+        cat = case["category"]
+        bucket = by_category.setdefault(cat, {"total": 0, "pass": 0, "fail": 0})
+        bucket["total"] += 1
+        bucket["pass" if case["status"] == "pass" else "fail"] += 1
+
+    report = {
+        "suite": "qa_api_contract_suite",
+        "generated_at": datetime.now(timezone.utc).isoformat(),
+        "python": platform.python_version(),
+        "summary": {
+            "total": total,
+            "pass": passed,
+            "fail": failed,
+            "pass_rate": round((passed / total) * 100, 2) if total else 0.0,
+        },
+        "by_category": by_category,
+        "cases": cases,
+    }
+
+    report_path.write_text(json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8")
+    print(f"report written: {report_path}")
+    print(f"summary: total={total}, pass={passed}, fail={failed}")
+    return 1 if failed else 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
+PY
