@@ -7,7 +7,7 @@ import os
 import sys
 from datetime import datetime, timezone
 from pathlib import Path
-from urllib.parse import urlparse
+from urllib.parse import urlparse, urlunparse
 
 import psycopg
 from fastapi.testclient import TestClient
@@ -71,26 +71,75 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--target", choices=["local", "remote"], default="remote")
     parser.add_argument("--input", default="data/sample_ingest.json")
     parser.add_argument("--report", default=None)
+    parser.add_argument(
+        "--remote-isolated-db",
+        action=argparse.BooleanOptionalAction,
+        default=True,
+        help="Use temporary isolated DB for remote target (default: true)",
+    )
     return parser.parse_args()
+
+
+def _db_name_from_dsn(dsn: str) -> str:
+    parsed = urlparse(dsn)
+    return parsed.path.lstrip("/") or "postgres"
+
+
+def _dsn_with_db_name(dsn: str, db_name: str) -> str:
+    parsed = urlparse(dsn)
+    return urlunparse(parsed._replace(path="/" + db_name))
+
+
+def create_isolated_remote_db(remote_dsn: str) -> tuple[str, str]:
+    admin_dsn = _dsn_with_db_name(remote_dsn, "postgres")
+    db_name = f"qa_equiv_{datetime.now(timezone.utc).strftime('%Y%m%d%H%M%S')}"
+    with psycopg.connect(admin_dsn, autocommit=True) as conn:
+        with conn.cursor() as cur:
+            cur.execute(f'CREATE DATABASE "{db_name}"')
+    return _dsn_with_db_name(remote_dsn, db_name), db_name
+
+
+def drop_isolated_remote_db(remote_dsn: str, db_name: str) -> None:
+    admin_dsn = _dsn_with_db_name(remote_dsn, "postgres")
+    with psycopg.connect(admin_dsn, autocommit=True) as conn:
+        with conn.cursor() as cur:
+            cur.execute(
+                """
+                SELECT pg_terminate_backend(pid)
+                FROM pg_stat_activity
+                WHERE datname = %s
+                  AND pid <> pg_backend_pid()
+                """,
+                (db_name,),
+            )
+            cur.execute(f'DROP DATABASE IF EXISTS "{db_name}"')
 
 
 def main() -> int:
     args = parse_args()
     db_url = resolve_database_url(args.target)
+    isolated_db_name: str | None = None
+    working_db_url = db_url
+    if args.target == "remote" and args.remote_isolated_db:
+        working_db_url, isolated_db_name = create_isolated_remote_db(db_url)
+
     ensure_runtime_env(db_url)
 
     report_path = args.report or f"data/qa_{args.target}_db_report.json"
     report: dict = {
         "target": args.target,
         "started_at": now_utc(),
-        "database_url": redact_dsn(db_url),
+        "database_url": redact_dsn(working_db_url),
         "input": args.input,
         "status": "running",
         "stages": [],
     }
+    if isolated_db_name:
+        report["isolated_db"] = isolated_db_name
 
     stage = "init"
     try:
+        ensure_runtime_env(working_db_url)
         stage = "schema_apply"
         run_schema(Path(ROOT / "db" / "schema.sql"))
         report["stages"].append({"name": stage, "status": "ok"})
@@ -101,19 +150,19 @@ def main() -> int:
         report["stages"].append({"name": stage, "status": "ok", "records": len(payload.records)})
 
         stage = "ingest_first_run"
-        with psycopg.connect(db_url, row_factory=psycopg.rows.dict_row) as conn:
+        with psycopg.connect(working_db_url, row_factory=psycopg.rows.dict_row) as conn:
             repo = PostgresRepository(conn)
             first = ingest_payload(payload, repo)
         report["stages"].append({"name": stage, "status": "ok", "result": first.__dict__})
 
         stage = "ingest_second_run"
-        with psycopg.connect(db_url, row_factory=psycopg.rows.dict_row) as conn:
+        with psycopg.connect(working_db_url, row_factory=psycopg.rows.dict_row) as conn:
             repo = PostgresRepository(conn)
             second = ingest_payload(payload, repo)
         report["stages"].append({"name": stage, "status": "ok", "result": second.__dict__})
 
         stage = "db_checks"
-        with psycopg.connect(db_url) as conn:
+        with psycopg.connect(working_db_url) as conn:
             with conn.cursor() as cur:
                 cur.execute("SELECT count(*), count(DISTINCT url) FROM articles")
                 a_total, a_dist = cur.fetchone()
@@ -195,6 +244,9 @@ def main() -> int:
 
         report["status"] = "success"
         report["finished_at"] = now_utc()
+        if isolated_db_name:
+            drop_isolated_remote_db(db_url, isolated_db_name)
+            report["isolated_db_cleanup"] = "dropped"
         Path(report_path).parent.mkdir(parents=True, exist_ok=True)
         Path(report_path).write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
         print(json.dumps({"status": "success", "report": report_path}, ensure_ascii=False))
@@ -206,6 +258,12 @@ def main() -> int:
         report["failure_type"] = classify_failure(stage, exc)
         report["error"] = str(exc)
         report["finished_at"] = now_utc()
+        if isolated_db_name:
+            try:
+                drop_isolated_remote_db(db_url, isolated_db_name)
+                report["isolated_db_cleanup"] = "dropped"
+            except Exception as cleanup_exc:  # noqa: BLE001
+                report["isolated_db_cleanup"] = f"failed: {cleanup_exc}"
         Path(report_path).parent.mkdir(parents=True, exist_ok=True)
         Path(report_path).write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
         print(json.dumps({"status": "failed", "report": report_path, "stage": stage, "error": str(exc)}))

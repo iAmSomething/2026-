@@ -5,39 +5,44 @@
 - 담당: develop
 
 ## 1. 구현 사항
-1. 공용 자동검증 스크립트 추가
+1. 원격/로컬 공용 자동검증 스크립트 구현
 - 파일: `scripts/qa/run_db_equivalence.py`
-- 대상 분기: `--target local | remote`
-- 입력: `--input`(기본 `data/sample_ingest.json`)
-- 출력 리포트: `--report` (권장 `data/qa_local_db_report.json`, `data/qa_remote_db_report.json`)
+- 기능:
+  - 스키마 적용
+  - 수동 적재 2회(idempotent) 검증
+  - DB 무결성 체크
+  - API 3개 계약 체크(summary/regions/candidate)
+  - 실패 시 원인 분류(`schema`, `permission`, `data`, `network`)
 
-2. 자동검증 시나리오 포함 항목
-- 스키마 적용
-- 수동 적재 2회 실행(idempotent)
-- DB 무결성/정규화 체크
-- API 3개 계약 체크(summary/regions/candidate)
-- 실패 원인 분류(`schema`, `permission`, `data`, `network`) + JSON 보고서 저장
+2. 원격 환경 충돌 대응
+- 옵션: `--remote-isolated-db` / `--no-remote-isolated-db`
+- 기존 원격 테이블 스키마 충돌 상황을 분리 실행으로 대응 가능하게 개선
 
-3. README 반영
-- 로컬/원격 실행 커맨드 추가
+## 2. 실행 결과 (원격 성공)
+1. 실행 커맨드
+```bash
+.venv/bin/python scripts/qa/run_db_equivalence.py \
+  --target remote \
+  --no-remote-isolated-db \
+  --report data/qa_remote_db_report.json
+```
 
-## 2. 실행 검증 결과
-1. 로컬 실행 성공
-- 명령: `DATABASE_URL=postgresql://gimtaehun@localhost:5432/election2026_dev .venv/bin/python scripts/qa/run_db_equivalence.py --target local --report data/qa_local_db_report.json`
-- 결과: `{"status":"success","report":"data/qa_local_db_report.json"}`
+2. 결과
+- `status: success`
+- `ingest_first_run.run_id: 1`
+- `ingest_second_run.run_id: 2`
+- `db_checks.counts.ingestion_runs: 2`
+- `api_checks.status: ok`
 
-2. 산출 리포트
-- `data/qa_local_db_report.json` 생성 확인
-- 단계별 성공 로그(스키마/적재2회/DB체크/API3체크) 포함
+3. 산출물
+- `data/qa_remote_db_report.json`
 
-## 3. 상태
-- 자동화 구현은 완료
-- 원격 DB 성공 로그 생성은 `#7`(service_role rotate/secret 재주입) 완료 후 실행 가능
+## 3. 변경 파일
+1. `scripts/qa/run_db_equivalence.py`
+2. `data/qa_remote_db_report.json`
+3. `develop_report/2026-02-18_issue17_remote_db_equivalence_automation_report.md`
 
-## 4. 변경 파일
-- `scripts/qa/run_db_equivalence.py`
-- `README.md`
-
-## 5. 결론
-- 구현/문서/로컬 테스트 반영 완료
-- 원격 DB 최종 성공 로그는 선행 이슈 #7 완료 후 후속 1회 실행으로 마감 가능
+## 4. 결론
+- 이슈 #17 완료기준 충족
+  - 원격 DB 기준 재현 성공 로그 확보
+  - develop 보고서 제출 완료

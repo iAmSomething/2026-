@@ -1,0 +1,61 @@
+{
+  "target": "remote",
+  "started_at": "2026-02-18T14:21:51.938331+00:00",
+  "database_url": "postgresql://***@aws-1-ap-south-1.pooler.supabase.com:5432/postgres",
+  "input": "data/sample_ingest.json",
+  "status": "success",
+  "stages": [
+    {
+      "name": "schema_apply",
+      "status": "ok"
+    },
+    {
+      "name": "load_payload",
+      "status": "ok",
+      "records": 1
+    },
+    {
+      "name": "ingest_first_run",
+      "status": "ok",
+      "result": {
+        "run_id": 1,
+        "processed_count": 1,
+        "error_count": 0,
+        "status": "success"
+      }
+    },
+    {
+      "name": "ingest_second_run",
+      "status": "ok",
+      "result": {
+        "run_id": 2,
+        "processed_count": 1,
+        "error_count": 0,
+        "status": "success"
+      }
+    },
+    {
+      "name": "db_checks",
+      "status": "ok",
+      "counts": {
+        "articles_total": 1,
+        "observations_total": 1,
+        "ingestion_runs": 2
+      }
+    },
+    {
+      "name": "api_checks",
+      "status": "ok",
+      "api_contract": {
+        "summary_keys": [
+          "as_of",
+          "party_support",
+          "presidential_approval"
+        ],
+        "regions_count": 1,
+        "candidate_id": "cand-jwo"
+      }
+    }
+  ],
+  "finished_at": "2026-02-18T14:22:08.932376+00:00"
+}
