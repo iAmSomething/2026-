@@ -89,6 +89,13 @@ class MatchupOut(BaseModel):
     options: list[MatchupOptionOut]
 
 
+class JobRunOut(BaseModel):
+    run_id: int
+    processed_count: int
+    error_count: int
+    status: str
+
+
 class ArticleInput(BaseModel):
     url: str
     title: str

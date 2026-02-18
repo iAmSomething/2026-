@@ -2,19 +2,22 @@ from datetime import date
 
 from fastapi import APIRouter, Depends, HTTPException, Query
 
-from app.api.dependencies import get_repository
+from app.api.dependencies import get_repository, require_internal_job_token
 from app.models.schemas import (
     BigMatchPoint,
     CandidateOut,
     DashboardBigMatchesOut,
     DashboardMapLatestOut,
     DashboardSummaryOut,
+    IngestPayload,
+    JobRunOut,
     MapLatestPoint,
     MatchupOut,
     RegionElectionOut,
     RegionOut,
     SummaryPoint,
 )
+from app.services.ingest_service import ingest_payload
 
 router = APIRouter(prefix="/api/v1", tags=["v1"])
 
@@ -98,3 +101,18 @@ def get_candidate(candidate_id: str, repo=Depends(get_repository)):
     if not candidate:
         raise HTTPException(status_code=404, detail="candidate not found")
     return CandidateOut(**candidate)
+
+
+@router.post("/jobs/run-ingest", response_model=JobRunOut)
+def run_ingest_job(
+    payload: IngestPayload,
+    _=Depends(require_internal_job_token),
+    repo=Depends(get_repository),
+):
+    result = ingest_payload(payload, repo)
+    return JobRunOut(
+        run_id=result.run_id,
+        processed_count=result.processed_count,
+        error_count=result.error_count,
+        status=result.status,
+    )

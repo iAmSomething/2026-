@@ -1,12 +1,17 @@
 from datetime import date
 
+import pytest
 from fastapi.testclient import TestClient
 
 from app.api.dependencies import get_repository
+from app.config import get_settings
 from app.main import app
 
 
 class FakeApiRepo:
+    def __init__(self):
+        self._run_id = 0
+
     def fetch_dashboard_summary(self, as_of):
         return [
             {
@@ -104,6 +109,34 @@ class FakeApiRepo:
             "election_history": "지방선거 출마",
         }
 
+    def create_ingestion_run(self, run_type, extractor_version, llm_model):
+        self._run_id += 1
+        return self._run_id
+
+    def finish_ingestion_run(self, run_id, status, processed_count, error_count):
+        return None
+
+    def upsert_region(self, region):
+        return None
+
+    def upsert_matchup(self, matchup):
+        return None
+
+    def upsert_candidate(self, candidate):
+        return None
+
+    def upsert_article(self, article):
+        return 1
+
+    def upsert_poll_observation(self, observation, article_id, ingestion_run_id):
+        return 1
+
+    def upsert_poll_option(self, observation_id, option):
+        return None
+
+    def insert_review_queue(self, entity_type, entity_id, issue_type, review_note):
+        return None
+
 
 def override_repo():
     yield FakeApiRepo()
@@ -146,3 +179,63 @@ def test_api_contract_fields():
     assert candidate.json()["candidate_id"] == "cand-jwo"
 
     app.dependency_overrides.clear()
+
+
+def test_run_ingest_requires_bearer_token(monkeypatch: pytest.MonkeyPatch):
+    monkeypatch.setenv("SUPABASE_URL", "https://example.supabase.co")
+    monkeypatch.setenv("SUPABASE_SERVICE_ROLE_KEY", "test-service-role")
+    monkeypatch.setenv("DATA_GO_KR_KEY", "test-data-go-key")
+    monkeypatch.setenv("DATABASE_URL", "postgresql://localhost/test")
+    monkeypatch.setenv("INTERNAL_JOB_TOKEN", "dev-internal-token")
+    get_settings.cache_clear()
+
+    app.dependency_overrides[get_repository] = override_repo
+    client = TestClient(app)
+
+    payload = {
+        "run_type": "manual",
+        "extractor_version": "manual-v1",
+        "records": [
+            {
+                "article": {"url": "https://example.com/1", "title": "sample", "publisher": "pub"},
+                "region": {
+                    "region_code": "11-000",
+                    "sido_name": "서울특별시",
+                    "sigungu_name": "전체",
+                    "admin_level": "sido",
+                },
+                "observation": {
+                    "observation_key": "obs-1",
+                    "survey_name": "survey",
+                    "pollster": "MBC",
+                    "region_code": "11-000",
+                    "office_type": "광역자치단체장",
+                    "matchup_id": "20260603|광역자치단체장|11-000",
+                },
+                "options": [
+                    {"option_type": "presidential_approval", "option_name": "국정안정론", "value_raw": "53~55%"}
+                ],
+            }
+        ],
+    }
+
+    missing = client.post("/api/v1/jobs/run-ingest", json=payload)
+    assert missing.status_code == 401
+
+    invalid = client.post(
+        "/api/v1/jobs/run-ingest",
+        json=payload,
+        headers={"Authorization": "Bearer wrong-token"},
+    )
+    assert invalid.status_code == 403
+
+    ok = client.post(
+        "/api/v1/jobs/run-ingest",
+        json=payload,
+        headers={"Authorization": "Bearer dev-internal-token"},
+    )
+    assert ok.status_code == 200
+    assert ok.json()["status"] == "success"
+
+    app.dependency_overrides.clear()
+    get_settings.cache_clear()

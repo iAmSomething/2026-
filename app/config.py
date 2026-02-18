@@ -8,6 +8,7 @@ class Settings(BaseSettings):
     supabase_service_role_key: str
     data_go_kr_key: str
     database_url: str
+    internal_job_token: str | None = None
     app_env: str = "dev"
 
     model_config = SettingsConfigDict(env_file=".env", env_file_encoding="utf-8")
