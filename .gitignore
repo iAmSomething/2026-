@@ -3,3 +3,7 @@ key.txt
 .env.*
 .DS_Store
 supabase_info.txt
+.venv/
+.venv*/
+__pycache__/
+.pytest_cache/
