@@ -29,8 +29,8 @@
 - `Staging Smoke` 실패: [run 22144074304](https://github.com/iAmSomething/2026-/actions/runs/22144074304)
 
 2. 수정 후 성공 실행
-- `Staging Smoke` 성공: [run 22145013143](https://github.com/iAmSomething/2026-/actions/runs/22145013143)
-- 보조 성공 실행: [run 22144960876](https://github.com/iAmSomething/2026-/actions/runs/22144960876)
+- `Staging Smoke` 성공: [run 22145184703](https://github.com/iAmSomething/2026-/actions/runs/22145184703)
+- 보조 성공 실행: [run 22145013143](https://github.com/iAmSomething/2026-/actions/runs/22145013143)
 
 ## 4) 완료기준 대비
 1. `Staging Smoke` 1회 이상 green

@@ -37,6 +37,10 @@
 - 실행: 더미 유효 형식 env 주입 후 실행
 - 결과: 필수 항목 통과 및 `[PASS] Required secrets preflight passed`
 
+3. 워크플로 적용 검증
+- `Phase1 QA` 성공: [run 22145184714](https://github.com/iAmSomething/2026-/actions/runs/22145184714)
+- `Staging Smoke` 성공: [run 22145184703](https://github.com/iAmSomething/2026-/actions/runs/22145184703)
+
 ## 4) 완료기준 대비
 1. 최소 2개 워크플로 적용
 - 충족 (3개 적용)
