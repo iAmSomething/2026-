@@ -64,3 +64,36 @@
   - API total/pass/fail
   - Staging manual/auto 결과 및 링크
   - Gate decision
+
+## 7. QA 보고서 Flaky 섹션 표준
+- 모든 QA 보고서는 아래 `Flaky` 섹션을 포함한다.
+- 필수 항목:
+  1. `flake_count` (이번 실행에서 flaky 의심 건수)
+  2. `suspect_cases` (run_id / failed_step / recovery_link)
+  3. `retry_applied_count` (자동 재시도 적용 건수)
+  4. `escalated_real_fail_count` (재시도 후 실제 결함으로 승격된 건수)
+
+템플릿:
+```md
+## Flaky
+- flake_count:
+- suspect_cases:
+  - run_id:
+  - failed_step:
+  - recovery_link:
+- retry_applied_count:
+- escalated_real_fail_count:
+```
+
+## 8. 재시도 vs Fail-fast 기준
+1. 재시도(1회) 허용
+- `flake/infra`: 네트워크/레지스트리/외부 서비스 일시 장애
+- `flake/timing`: readiness race, timeout 경계성 실패
+
+2. 즉시 Fail-fast
+- 계약/스키마 불일치(`contract`, `schema`)
+- 인증/시크릿 누락(`auth`, `secret`)
+- DB 부트스트랩 불가(`db_unreachable`)
+
+3. 승격 규칙
+- 동일 head SHA에서 같은 실패가 2회 연속 재현되면 flaky 해제 후 실제 결함으로 승격한다.
