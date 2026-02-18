@@ -84,3 +84,9 @@
 1. robots 정책 위반 요청 로그 여부
 2. 기사 원문 저장 모드가 최소 스팬 기본값으로 유지되는지 확인
 3. 외부 공개 시 출처 URL/근거 표기가 누락되지 않았는지 확인
+
+## 11. 키 회전 운영 (D0)
+1. `service_role` 키가 파일/로그/메신저에 노출되면 즉시 비상 회전
+2. Supabase Dashboard > Project Settings > API에서 `service_role` rotate
+3. 기존 키 폐기 확인 후 새 키만 Secret Manager에 저장
+4. `.env`, `supabase_info.txt`, 실행 로그에 구키/신키 출력 금지

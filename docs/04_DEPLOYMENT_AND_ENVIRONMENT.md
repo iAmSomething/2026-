@@ -29,9 +29,10 @@
 ## 3. 개발 환경 원칙 (가상환경 필수)
 1. 로컬 Python 패키지는 프로젝트 가상환경(`.venv`)에서만 설치/실행
 2. 시스템 Python 전역 설치 금지
-3. 실행 예시:
+3. Python `3.13` 고정 권장 (`3.14`는 `pydantic-core` 빌드 이슈 가능)
+4. 실행 예시:
 ```bash
-python3 -m venv .venv
+python3.13 -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
 ```
@@ -41,6 +42,10 @@ pip install -r requirements.txt
 2. `key.txt` 절대 커밋 금지 (`.gitignore` 반영)
 3. 운영에서는 플랫폼 Secret으로 주입
 4. `.env` 파일도 커밋 금지
+5. `service_role` 키 노출 이력 발생 시 즉시 rotate:
+- Supabase Dashboard > Project Settings > API > `service_role` rotate
+- 기존 키 폐기 후 새 키만 플랫폼 Secret에 저장
+- 로컬 `supabase_info.txt`는 참고용으로만 보관하고 코드/로그 출력 금지
 
 ## 5. Data.go.kr API 활용 설계
 ### 필수
