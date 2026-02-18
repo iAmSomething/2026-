@@ -25,7 +25,7 @@ jobs:
           FILES=$(git diff --name-only --diff-filter=ACMR "origin/${{ github.base_ref }}"...HEAD | grep -E '^(UIUX_reports|Collector_reports|develop_report|QA_reports)/.*_report\.md$' || true)
 
           {
-            echo "body<<'EOT'"
+            echo "body<<EOT"
             echo "## Report Files in this PR"
             if [ -z "$FILES" ]; then
               echo "- (none)"
