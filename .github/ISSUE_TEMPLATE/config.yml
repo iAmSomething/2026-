@@ -1,0 +1,5 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Planning Source of Truth
+    url: https://github.com/iAmSomething/2026-/tree/main/docs
+    about: 계약/필드/범위 기준은 docs/ 문서를 확인하세요.

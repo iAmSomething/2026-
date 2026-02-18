@@ -1,0 +1,51 @@
+name: Report Summary Comment
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+permissions:
+  pull-requests: write
+  contents: read
+
+jobs:
+  comment-report-summary:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Build report summary
+        id: summary
+        run: |
+          set -euo pipefail
+          git fetch origin "${{ github.base_ref }}" --depth=1
+          FILES=$(git diff --name-only --diff-filter=ACMR "origin/${{ github.base_ref }}"...HEAD | grep -E '^(UIUX_reports|Collector_reports|develop_report)/.*_report\.md$' || true)
+
+          {
+            echo "body<<'EOT'"
+            echo "## Report Files in this PR"
+            if [ -z "$FILES" ]; then
+              echo "- (none)"
+            else
+              while IFS= read -r f; do
+                [ -n "$f" ] && echo "- \\`$f\\`"
+              done <<< "$FILES"
+            fi
+            echo "EOT"
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Comment on PR
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const body = `${{ steps.summary.outputs.body }}`;
+            const issue_number = context.payload.pull_request.number;
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number,
+              body
+            });

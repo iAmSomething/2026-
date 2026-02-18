@@ -1,0 +1,47 @@
+name: Report File Lint
+
+on:
+  pull_request:
+    paths:
+      - 'UIUX_reports/**'
+      - 'Collector_reports/**'
+      - 'develop_report/**'
+
+jobs:
+  lint-report-files:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Validate report filenames and headers
+        run: |
+          set -euo pipefail
+          git fetch origin "${{ github.base_ref }}" --depth=1
+
+          FILES=$(git diff --name-only --diff-filter=ACMR "origin/${{ github.base_ref }}"...HEAD | grep -E '^(UIUX_reports|Collector_reports|develop_report)/' || true)
+
+          if [ -z "$FILES" ]; then
+            echo "No report files changed."
+            exit 0
+          fi
+
+          EXIT_CODE=0
+          while IFS= read -r f; do
+            [ -f "$f" ] || continue
+            base=$(basename "$f")
+            if ! [[ "$base" =~ ^[0-9]{4}-[0-9]{2}-[0-9]{2}_.+_report\.md$ ]]; then
+              echo "::error file=$f::Invalid report filename format. Use YYYY-MM-DD_<topic>_report.md"
+              EXIT_CODE=1
+            fi
+
+            first_line=$(head -n 1 "$f" | tr -d '\r')
+            if ! [[ "$first_line" =~ ^\#\  ]]; then
+              echo "::error file=$f::First line must be a markdown title starting with '# '."
+              EXIT_CODE=1
+            fi
+          done <<< "$FILES"
+
+          exit $EXIT_CODE
