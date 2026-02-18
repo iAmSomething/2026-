@@ -1,0 +1,96 @@
+name: Staging Smoke
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - "app/**"
+      - "apps/staging-web/**"
+      - "db/**"
+      - "scripts/qa/smoke_staging.sh"
+      - ".github/workflows/staging-smoke.yml"
+
+jobs:
+  staging-smoke:
+    runs-on: ubuntu-latest
+    env:
+      SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+      SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+      DATA_GO_KR_KEY: ${{ secrets.DATA_GO_KR_KEY }}
+      DATABASE_URL: ${{ secrets.DATABASE_URL }}
+      INTERNAL_JOB_TOKEN: ${{ secrets.INTERNAL_JOB_TOKEN }}
+      API_BASE: http://127.0.0.1:8100
+      WEB_BASE: http://127.0.0.1:3300
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python 3.13
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+
+      - name: Setup Node 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+          cache-dependency-path: apps/staging-web/package-lock.json
+
+      - name: Install Python dependencies
+        run: |
+          python -m venv .venv
+          .venv/bin/pip install -r requirements.txt
+
+      - name: Install Web dependencies
+        run: |
+          npm --prefix apps/staging-web ci
+
+      - name: Apply schema and seed sample payload
+        run: |
+          .venv/bin/python scripts/init_db.py
+          .venv/bin/python -m app.jobs.manual_ingest --input data/sample_ingest.json
+
+      - name: Start API server
+        run: |
+          nohup .venv/bin/uvicorn app.main:app --host 127.0.0.1 --port 8100 >/tmp/staging-api.log 2>&1 &
+          for _ in $(seq 1 40); do
+            if curl -fsS http://127.0.0.1:8100/health >/dev/null 2>&1; then
+              exit 0
+            fi
+            sleep 1
+          done
+          echo "::error::API server failed to start"
+          exit 1
+
+      - name: Build and start web server
+        run: |
+          API_BASE_URL="$API_BASE" NEXT_PUBLIC_API_BASE_URL="$API_BASE" npm --prefix apps/staging-web run build
+          nohup env API_BASE_URL="$API_BASE" NEXT_PUBLIC_API_BASE_URL="$API_BASE" PORT=3300 npm --prefix apps/staging-web run start >/tmp/staging-web.log 2>&1 &
+          for _ in $(seq 1 40); do
+            if curl -fsS http://127.0.0.1:3300 >/dev/null 2>&1; then
+              exit 0
+            fi
+            sleep 1
+          done
+          echo "::error::Web server failed to start"
+          exit 1
+
+      - name: Run staging smoke checks
+        run: |
+          cat /tmp/staging-api.log /tmp/staging-web.log > /tmp/staging-combined.log || true
+          scripts/qa/smoke_staging.sh --api-base "$API_BASE" --web-base "$WEB_BASE" --log-file /tmp/staging-combined.log
+
+      - name: Upload staging artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: staging-smoke-${{ github.run_id }}
+          path: |
+            /tmp/staging-api.log
+            /tmp/staging-web.log
+            /tmp/staging-combined.log
+            /tmp/staging_web_home.html
+            /tmp/staging_ingest_result.json

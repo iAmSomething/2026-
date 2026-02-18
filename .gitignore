@@ -7,3 +7,5 @@ supabase_info.txt
 .venv*/
 __pycache__/
 .pytest_cache/
+node_modules/
+.next/

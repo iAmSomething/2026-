@@ -52,6 +52,21 @@ pip install -r requirements.txt
 1. `CommonCodeService`
 2. `PofelcddInfoInqireService`
 
+### CommonCodeService 동기화 스크립트
+1. 스크립트: `scripts/sync_common_codes.py`
+2. 권장 환경변수:
+- `DATA_GO_KR_KEY`
+- `COMMON_CODE_REGION_URL`
+- `COMMON_CODE_PARTY_URL`
+- `COMMON_CODE_ELECTION_URL`
+3. 실행 예시:
+```bash
+PYTHONPATH=. .venv/bin/python scripts/sync_common_codes.py \
+  --region-url "$COMMON_CODE_REGION_URL" \
+  --party-url "$COMMON_CODE_PARTY_URL" \
+  --election-url "$COMMON_CODE_ELECTION_URL"
+```
+
 ### 선택
 1. `WinnerInfoInqireService2`
 2. `VoteXmntckInfoInqireService2`
@@ -71,3 +86,47 @@ pip install -r requirements.txt
 3. 롤백:
 - API 컨테이너 이전 버전 롤백
 - DB는 롤백 SQL 또는 스냅샷 복구 기준 운영
+
+## 8. 스테이징 실행 경로 (Issue #26 기준)
+1. 목적:
+- FastAPI + Next.js + Supabase(Postgres) 최소 E2E 검증
+2. 기본 URL/포트:
+- API: `http://127.0.0.1:8100`
+- Web: `http://127.0.0.1:3300`
+3. 필수 환경변수 계약:
+- `SUPABASE_URL`
+- `SUPABASE_SERVICE_ROLE_KEY`
+- `DATA_GO_KR_KEY`
+- `DATABASE_URL`
+- `INTERNAL_JOB_TOKEN`
+4. CI 파이프라인:
+- Workflow: `.github/workflows/staging-smoke.yml`
+- Web app path: `apps/staging-web`
+- 흐름: schema 적용 -> 샘플 적재 -> API/Web 기동 -> 스모크 검증
+
+## 9. 스모크 테스트 기준
+1. 스크립트: `scripts/qa/smoke_staging.sh`
+2. 검증 항목:
+- `GET /health`
+- `POST /api/v1/jobs/run-ingest` (Bearer 토큰)
+- `GET /api/v1/dashboard/summary`
+- `GET /api/v1/regions/search`
+- `GET /api/v1/candidates/{candidate_id}`
+- `GET /` (Next.js 홈)
+3. 실행 예시:
+```bash
+API_BASE=http://127.0.0.1:8100 \
+WEB_BASE=http://127.0.0.1:3300 \
+INTERNAL_JOB_TOKEN=replace-me \
+scripts/qa/smoke_staging.sh --api-base "$API_BASE" --web-base "$WEB_BASE"
+```
+
+## 10. Secret 주입/로그 마스킹 정책 (스테이징)
+1. Secret은 GitHub Actions Secrets로만 주입한다.
+2. 값 출력 금지:
+- `SUPABASE_SERVICE_ROLE_KEY`
+- `INTERNAL_JOB_TOKEN`
+- `DATABASE_URL` 원문 비밀번호
+3. 로그 검증:
+- 스모크 스크립트에서 로그 파일을 대상으로 `sb_secret_` 등 민감 패턴 스캔
+- 탐지 시 실패 처리
