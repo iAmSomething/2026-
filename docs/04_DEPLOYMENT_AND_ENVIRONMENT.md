@@ -99,7 +99,10 @@ PYTHONPATH=. .venv/bin/python scripts/sync_common_codes.py \
 - `DATA_GO_KR_KEY`
 - `DATABASE_URL`
 - `INTERNAL_JOB_TOKEN`
-4. CI 파이프라인:
+4. CI 부트스트랩 전략:
+- `DATABASE_URL` secret가 비어 있으면 workflow service postgres(`postgresql://postgres:postgres@127.0.0.1:5432/app`)로 자동 fallback
+- secret preflight는 fallback 반영 후 실행되어 DB URL 누락 원인을 즉시 표시
+5. CI 파이프라인:
 - Workflow: `.github/workflows/staging-smoke.yml`
 - Web app path: `apps/staging-web`
 - 흐름: schema 적용 -> 샘플 적재 -> API/Web 기동 -> 스모크 검증
@@ -130,3 +133,19 @@ scripts/qa/smoke_staging.sh --api-base "$API_BASE" --web-base "$WEB_BASE"
 3. 로그 검증:
 - 스모크 스크립트에서 로그 파일을 대상으로 `sb_secret_` 등 민감 패턴 스캔
 - 탐지 시 실패 처리
+
+## 11. CI Secret Preflight
+1. 스크립트: `scripts/qa/preflight_required_secrets.sh`
+2. 적용 워크플로:
+- `.github/workflows/staging-smoke.yml`
+- `.github/workflows/phase1-qa.yml`
+- `.github/workflows/ingest-schedule.yml`
+3. 필수 GitHub Repository Secrets:
+- `SUPABASE_URL`
+- `SUPABASE_SERVICE_ROLE_KEY`
+- `DATA_GO_KR_KEY`
+- `DATABASE_URL`
+- `INTERNAL_JOB_TOKEN`
+4. 동작:
+- 누락 secret 발견 시 fail-fast
+- 형식 오류(`SUPABASE_URL`, `DATABASE_URL`, `INTERNAL_JOB_TOKEN`)에 대해 즉시 가이드 출력
