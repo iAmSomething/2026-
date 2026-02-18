@@ -19,6 +19,11 @@
 1. 뉴스 검색 API/RSS 기반 `여론조사` 관련 기사
 2. 선거명/지역명/직책명을 결합한 키워드 쿼리
 
+### 2.1-A 준법/요청 정책
+1. robots.txt 허용 경로만 수집(RFC 9309 기준)
+2. 사이트별 요청 빈도 제한(rate limit) 적용
+3. 금지/차단 응답은 즉시 스킵하고 사유 로깅
+
 ### 2.2 수집 메타 필드
 - `url`, `title`, `publisher`, `published_at`, `snippet`, `collected_at`, `raw_hash`
 
@@ -53,6 +58,7 @@
 
 ### 4.3 근거 저장
 - `evidence_text`, `evidence_start`, `evidence_end`, `source_url`
+- 기본값: 원문 전체가 아닌 최소 스팬 저장(저작권 리스크 완화)
 
 ## 5. 검증 게이트
 1. 공식 데이터 또는 높은 신뢰 출처와 조사 단위 비교
@@ -64,6 +70,7 @@
 2. 파싱 실패: 원문 스냅샷 보존 후 재처리 큐
 3. 코드 매핑 실패: `mapping_error` 상태로 검수 큐 이동
 4. 중복 적재 시도: idempotency key로 upsert
+5. robots/약관 위반 가능 URL: 영구 제외 목록 등록
 
 ## 7. 배치 주기
 - 기본: 2시간 간격

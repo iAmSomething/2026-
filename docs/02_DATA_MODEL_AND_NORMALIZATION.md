@@ -12,14 +12,14 @@
 
 ## 1.2 `article_poll_mentions`
 - 목적: 기사 내 조사 단위(문항/매치업) 추출 결과 저장
-- 주요 컬럼: `id`, `article_id`, `label`, `confidence`, `evidence_text`, `evidence_start`, `evidence_end`
+- 주요 컬럼: `id`, `article_id`, `label`, `confidence`, `evidence_text`, `evidence_start`, `evidence_end`, `extractor_type`, `extractor_version`
 
 ## 1.3 `poll_observations`
 - 목적: 조사 메타 정보 저장
 - 주요 컬럼:
 - `id`, `survey_name`, `pollster`, `survey_start_date`, `survey_end_date`
 - `sample_size`, `response_rate`, `margin_of_error`
-- `region_code`, `office_type`, `matchup_id`, `verified`, `source_grade`
+- `region_code`, `office_type`, `matchup_id`, `verified`, `source_grade`, `ingestion_run_id`
 
 ## 1.4 `poll_options`
 - 목적: 조사 선택지(후보/문항값) 저장
@@ -47,7 +47,7 @@
 
 ## 1.10 `ingestion_runs`
 - 목적: 배치 실행 이력
-- 주요 컬럼: `id`, `run_type`, `started_at`, `ended_at`, `status`, `processed_count`, `error_count`
+- 주요 컬럼: `id`, `run_type`, `started_at`, `ended_at`, `status`, `processed_count`, `error_count`, `extractor_version`, `llm_model`
 
 ## 2. 정규화 규칙
 1. 단일값(`38%`): `value_min=value_max=value_mid=38`
@@ -56,6 +56,7 @@
 4. 결측(`언급 없음`): `is_missing=true`, 수치 컬럼 null
 5. 단위: `%`를 `0~100` float로 저장
 6. 원문 보존: `value_raw`에 기사 원문 표현 저장
+7. 오차범위(`±x%`)가 명시되면 `margin_of_error` 저장, 없으면 null
 
 ## 3. 식별자/코드 매핑 규칙
 1. `election_id`: 선거 회차 ID
