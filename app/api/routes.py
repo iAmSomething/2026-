@@ -2,7 +2,7 @@ from datetime import date
 
 from fastapi import APIRouter, Depends, HTTPException, Query
 
-from app.api.dependencies import get_repository, require_internal_job_token
+from app.api.dependencies import get_candidate_data_go_service, get_repository, require_internal_job_token
 from app.models.schemas import (
     BigMatchPoint,
     CandidateOut,
@@ -96,11 +96,16 @@ def get_matchup(matchup_id: str, repo=Depends(get_repository)):
 
 
 @router.get("/candidates/{candidate_id}", response_model=CandidateOut)
-def get_candidate(candidate_id: str, repo=Depends(get_repository)):
+def get_candidate(
+    candidate_id: str,
+    repo=Depends(get_repository),
+    data_go_service=Depends(get_candidate_data_go_service),
+):
     candidate = repo.get_candidate(candidate_id)
     if not candidate:
         raise HTTPException(status_code=404, detail="candidate not found")
-    return CandidateOut(**candidate)
+    enriched = data_go_service.enrich_candidate(dict(candidate))
+    return CandidateOut(**enriched)
 
 
 @router.post("/jobs/run-ingest", response_model=JobRunOut)

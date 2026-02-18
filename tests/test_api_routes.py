@@ -3,7 +3,7 @@ from datetime import date
 import pytest
 from fastapi.testclient import TestClient
 
-from app.api.dependencies import get_repository
+from app.api.dependencies import get_candidate_data_go_service, get_repository
 from app.config import get_settings
 from app.main import app
 
@@ -142,8 +142,23 @@ def override_repo():
     yield FakeApiRepo()
 
 
+class FakeCandidateDataGoService:
+    def __init__(self, merged_fields: dict | None = None):
+        self.merged_fields = merged_fields or {}
+
+    def enrich_candidate(self, candidate: dict):
+        out = dict(candidate)
+        out.update(self.merged_fields)
+        return out
+
+
+def override_candidate_data_go_service():
+    return FakeCandidateDataGoService()
+
+
 def test_api_contract_fields():
     app.dependency_overrides[get_repository] = override_repo
+    app.dependency_overrides[get_candidate_data_go_service] = override_candidate_data_go_service
     client = TestClient(app)
 
     summary = client.get("/api/v1/dashboard/summary")
@@ -190,6 +205,7 @@ def test_run_ingest_requires_bearer_token(monkeypatch: pytest.MonkeyPatch):
     get_settings.cache_clear()
 
     app.dependency_overrides[get_repository] = override_repo
+    app.dependency_overrides[get_candidate_data_go_service] = override_candidate_data_go_service
     client = TestClient(app)
 
     payload = {
@@ -239,3 +255,23 @@ def test_run_ingest_requires_bearer_token(monkeypatch: pytest.MonkeyPatch):
 
     app.dependency_overrides.clear()
     get_settings.cache_clear()
+
+
+def test_candidate_endpoint_merges_data_go_fields():
+    app.dependency_overrides[get_repository] = override_repo
+    app.dependency_overrides[get_candidate_data_go_service] = lambda: FakeCandidateDataGoService(
+        {
+            "party_name": "공공데이터정당",
+            "job": "공공데이터직업",
+        }
+    )
+    client = TestClient(app)
+
+    res = client.get("/api/v1/candidates/cand-jwo")
+    assert res.status_code == 200
+    body = res.json()
+    assert body["candidate_id"] == "cand-jwo"
+    assert body["party_name"] == "공공데이터정당"
+    assert body["job"] == "공공데이터직업"
+
+    app.dependency_overrides.clear()
