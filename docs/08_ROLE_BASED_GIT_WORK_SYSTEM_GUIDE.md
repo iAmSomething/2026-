@@ -1,0 +1,142 @@
+# 역할별 Git 업무분담 시스템 설명서
+
+- 문서 버전: v0.1
+- 최종 수정일: 2026-02-18
+- 작성자: 기획자(Codex)
+
+## 1. 목적
+- UIUX/Collector/Develop 3개 담당자가 병렬로 작업해도 충돌 없이 진행하도록 GitHub 중심 운영 규칙을 고정한다.
+- 보고서 파일, Issue, PR, 리뷰, 피드백 루프를 한 흐름으로 연결한다.
+
+## 2. 현재 상태 요약 (보고서 반영)
+1. UIUX
+- v0.2 문서 원문 반영 완료
+- `/api/v1` + `snake_case` 계약 반영 완료
+- 미구현 API는 mock fixture 준비 완료
+- UI 구현 착수는 현재 보류 상태
+
+2. Collector
+- 계약 동결(Freeze) 완료
+- `region_code`/`office_type` 표준화 완료
+- `review_queue` taxonomy 고정 완료
+- `.venv` 단일 환경으로 마이그레이션 완료
+
+3. Develop
+- API 3개 구현 및 테스트 통과 보고
+- Python 3.13 + `.venv` 표준 반영
+- 남은 4개 API 구현 및 Supabase 키 rotate가 후속 과제
+
+## 3. 단일 기준 (Single Source of Truth)
+1. 기획/계약 문서
+- `docs/02_DATA_MODEL_AND_NORMALIZATION.md`
+- `docs/03_UI_UX_SPEC.md`
+- `docs/04_DEPLOYMENT_AND_ENVIRONMENT.md`
+- `docs/06_COLLECTOR_CONTRACTS.md`
+
+2. 작업/상태 관리
+- GitHub Issues + Labels + Milestone
+- GitHub Actions(PR 규칙 자동검증)
+
+3. 보고서 디렉터리 (경로 고정)
+- `UIUX_reports/`
+- `Collector_reports/`
+- `develop_report/`
+
+## 4. GitHub CLI 운영 절차 (공통)
+
+## 4.1 초기 1회 설정
+```bash
+bash scripts/pm/bootstrap_github_cli.sh iAmSomething/2026-
+```
+
+## 4.2 작업 생성
+```bash
+bash scripts/pm/new_task.sh iAmSomething/2026- uiux "작업명" iAmSomething p1
+bash scripts/pm/new_task.sh iAmSomething/2026- collector "작업명" iAmSomething p1
+bash scripts/pm/new_task.sh iAmSomething/2026- develop "작업명" iAmSomething p1
+```
+
+## 4.3 보고서 연결
+```bash
+bash scripts/pm/link_report_to_issue.sh iAmSomething/2026- <issue_no> <보고서_경로> "요약 메모"
+```
+
+## 4.4 브랜치 규칙
+- 브랜치명: `codex/<role>/<issue-number>-<slug>`
+- 예시: `codex/uiux/1-mvp-home-contract`, `codex/collector/3-code-mapping`, `codex/develop/2-api-4-endpoints`
+
+## 4.5 커밋 규칙
+1. 문서 변경과 코드 변경은 분리 커밋
+2. 보안 파일(`key.txt`, `supabase_info.txt`, `.env*`)은 커밋 금지
+3. 한 PR은 하나의 Issue를 닫는 범위로 유지
+
+## 5. PR/리뷰 규칙 (Actions 자동검증)
+1. PR 본문에 `Report-Path: <path>` 필수
+2. `Report-Path` 파일은 PR 변경 파일에 반드시 포함
+3. 보고서 파일명 형식:
+- `YYYY-MM-DD_<topic>_report.md`
+4. 보고서 첫 줄은 `# ` 제목 필수
+5. Actions:
+- `report-governance.yml`
+- `report-file-lint.yml`
+- `report-summary-comment.yml`
+
+## 6. 담당자별 실행 지침
+
+## 6.1 UIUX 담당자
+1. 입력 기준
+- `docs/03_UI_UX_SPEC.md`
+- `UIUX_reports/ALIGNMENT_PATCH_UIUX_v0.2.md`
+2. 산출물
+- 화면/상태/API-필드 매핑 문서
+- 필요 시 fixture JSON 업데이트
+- 보고서: `UIUX_reports/YYYY-MM-DD_<topic>_report.md`
+3. 완료 체크
+- `/api/v1` 경로만 사용
+- 서버 계약 필드는 `snake_case`만 사용
+- mock과 real API 경계를 문서에 명시
+
+## 6.2 Collector 담당자
+1. 입력 기준
+- `docs/06_COLLECTOR_CONTRACTS.md`
+- `docs/02_DATA_MODEL_AND_NORMALIZATION.md`
+2. 산출물
+- 수집/추출/정규화/계약 변환 코드
+- precision 검증 리포트
+- 보고서: `Collector_reports/YYYY-MM-DD_<topic>_report.md`
+3. 완료 체크
+- `region_code`는 CommonCodeService 체계 준수
+- `office_type` 표준값 준수
+- `review_queue` taxonomy enum 준수
+
+## 6.3 Develop 담당자
+1. 입력 기준
+- `docs/02_DATA_MODEL_AND_NORMALIZATION.md`
+- `docs/03_UI_UX_SPEC.md`
+- `docs/04_DEPLOYMENT_AND_ENVIRONMENT.md`
+2. 산출물
+- API/DB/CLI 구현
+- 테스트 로그
+- 보고서: `develop_report/YYYY-MM-DD_<topic>_report.md`
+3. 완료 체크
+- Python 3.13 + `.venv` 기준
+- API 응답 필드가 UI 계약과 일치
+- 키/시크릿은 환경변수/Secret만 사용
+
+## 7. 피드백 루프 (일일)
+1. 각 담당자는 Issue comment로 진행상황 3줄 업데이트
+2. 차단 이슈는 `status/blocked` 라벨로 전환
+3. 해결 후 `status/in-review` -> PR -> `status/done`
+4. 최종 판단/변경사항은 `docs/`에 반영 후 close
+
+## 8. 현재 운영상 주의사항
+1. Collector 보고서 경로는 `Collector_reports/`로 고정
+2. UIUX 보고서는 `UIUX_reports/` 기준으로 유지
+3. 자동검증은 지정된 3개 보고서 폴더만 인정
+
+## 9. 빠른 체크리스트
+1. 내 작업 Issue가 있는가
+2. 내 브랜치가 규칙에 맞는가
+3. 보고서 파일명이 규칙에 맞는가
+4. PR 본문에 `Report-Path:`를 썼는가
+5. 문서 계약과 필드명이 일치하는가

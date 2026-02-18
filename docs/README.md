@@ -12,6 +12,8 @@
 5. `04_DEPLOYMENT_AND_ENVIRONMENT.md`
 6. `05_RUNBOOK_AND_OPERATIONS.md`
 7. `06_COLLECTOR_CONTRACTS.md`
+8. `07_GITHUB_CLI_COLLAB_WORKFLOW.md`
+9. `08_ROLE_BASED_GIT_WORK_SYSTEM_GUIDE.md`
 
 ## 추천 읽기 순서
 1. `00_PROJECT_OVERVIEW.md` (목표/범위/결정사항)
@@ -20,7 +22,9 @@
 4. `03_UI_UX_SPEC.md` (화면 요구사항과 데이터 매핑)
 5. `04_DEPLOYMENT_AND_ENVIRONMENT.md` (서버/DB/보안/배포)
 6. `05_RUNBOOK_AND_OPERATIONS.md` (실행 절차/장애 대응)
-7. `06_COLLECTOR_CONTRACTS.md` (수집기 최소 계약)
+7. `06_COLLECTOR_CONTRACTS.md` (수집기 계약/변환 규칙)
+8. `07_GITHUB_CLI_COLLAB_WORKFLOW.md` (CLI 운영 절차)
+9. `08_ROLE_BASED_GIT_WORK_SYSTEM_GUIDE.md` (역할별 실행 가이드)
 
 ## 변경 이력 규칙
 - 각 문서 상단 `문서 버전`, `최종 수정일`, `수정자`를 유지합니다.
