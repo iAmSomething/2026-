@@ -54,9 +54,10 @@
 ## 5. 내부 운영 API
 1. 수동 배치 실행: `POST /api/v1/jobs/run-ingest`
 2. 운영 지표 요약: `GET /api/v1/ops/metrics/summary`
-3. 검수 큐 목록: `GET /api/v1/review-queue/items`
-4. 검수 큐 통계: `GET /api/v1/review-queue/stats`
-5. 검수 큐 추세: `GET /api/v1/review-queue/trends`
+3. 커버리지 지표 요약: `GET /api/v1/ops/coverage/summary`
+4. 검수 큐 목록: `GET /api/v1/review-queue/items`
+5. 검수 큐 통계: `GET /api/v1/review-queue/stats`
+6. 검수 큐 추세: `GET /api/v1/review-queue/trends`
 
 ## 6. 장애 대응
 1. 수집 실패:
@@ -105,6 +106,12 @@
 - `ingestion.fetch_fail_rate`
 - `review_queue.pending_over_24h_count`
 - `failure_distribution` 상위 `issue_type`
+3. `GET /api/v1/ops/coverage/summary` 호출
+4. 확인 항목:
+- `regions_covered`
+- `sido_covered`
+- `observations_total`
+- `latest_survey_end_date`
 
 ## 8.3 경고 규칙 (기본값)
 1. `fetch_fail_rate > 0.15` 이면 경고
