@@ -105,6 +105,8 @@ class MatchupOut(BaseModel):
     date_resolution: str | None = None
     date_inference_mode: str | None = None
     date_inference_confidence: float | None = None
+    nesdc_enriched: bool = False
+    needs_manual_review: bool = False
     poll_fingerprint: str | None = None
     source_channel: Literal["article", "nesdc"] | None = None
     source_channels: list[Literal["article", "nesdc"]] | None = None
