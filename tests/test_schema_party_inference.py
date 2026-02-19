@@ -8,6 +8,9 @@ def test_schema_contains_party_inference_columns() -> None:
     assert "party_inference_confidence FLOAT NULL" in sql
     assert "needs_manual_review BOOLEAN NOT NULL DEFAULT FALSE" in sql
     assert "ALTER TABLE candidates" in sql
-    assert "ADD COLUMN IF NOT EXISTS needs_manual_review BOOLEAN NOT NULL DEFAULT FALSE" in sql
+    assert "ADD COLUMN IF NOT EXISTS source_channel TEXT NULL" in sql
+    assert "ADD COLUMN IF NOT EXISTS source_channels TEXT[] NULL" in sql
+    assert "candidates_party_inference_source_check" in sql
     assert "ALTER TABLE poll_options" in sql
     assert "ADD COLUMN IF NOT EXISTS party_inferred BOOLEAN NOT NULL DEFAULT FALSE" in sql
+    assert "poll_options_party_inference_source_check" in sql

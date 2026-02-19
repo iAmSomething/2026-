@@ -29,7 +29,7 @@ class _RecordingConn:
         return self._cursor
 
 
-def test_dashboard_summary_query_filters_regional_scope():
+def test_dashboard_summary_query_partitions_by_audience_scope():
     conn = _RecordingConn(rows=[])
     repo = PostgresRepository(conn)
 
@@ -37,18 +37,18 @@ def test_dashboard_summary_query_filters_regional_scope():
 
     assert len(conn._cursor.executed) == 1
     query, params = conn._cursor.executed[0]
-    scope_filter = "o.audience_scope = 'national'"
-    assert query.count(scope_filter) >= 2
+    assert "GROUP BY po.option_type, o.audience_scope" in query
+    assert "l.audience_scope IS NOT DISTINCT FROM o.audience_scope" in query
     assert params == [date(2026, 2, 19)]
 
 
-def test_dashboard_summary_query_filters_scope_without_as_of():
+def test_dashboard_summary_query_no_hardcoded_national_filter_without_as_of():
     conn = _RecordingConn(rows=[])
     repo = PostgresRepository(conn)
 
     repo.fetch_dashboard_summary(as_of=None)
 
     query, params = conn._cursor.executed[0]
-    assert "o.audience_scope = 'national'" in query
-    assert "o.audience_scope IS NULL" not in query
+    assert "o.audience_scope = 'national'" not in query
+    assert "IS NOT DISTINCT FROM o.audience_scope" in query
     assert params == []

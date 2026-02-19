@@ -77,6 +77,12 @@ class FakeRepo:
                 "value_mid": 42.0,
                 "pollster": "KBS",
                 "survey_end_date": date(2026, 2, 18),
+                "audience_scope": "national",
+                "audience_region_code": None,
+                "observation_updated_at": "2026-02-18T03:00:00+00:00",
+                "article_published_at": "2026-02-18T01:00:00+00:00",
+                "source_channel": "nesdc",
+                "source_channels": ["article", "nesdc"],
                 "verified": True,
             },
             {
@@ -85,6 +91,12 @@ class FakeRepo:
                 "value_mid": 54.0,
                 "pollster": "KBS",
                 "survey_end_date": date(2026, 2, 18),
+                "audience_scope": "national",
+                "audience_region_code": None,
+                "observation_updated_at": "2026-02-18T03:30:00+00:00",
+                "article_published_at": "2026-02-18T03:00:00+00:00",
+                "source_channel": "article",
+                "source_channels": ["article"],
                 "verified": True,
             },
         ]
@@ -101,6 +113,12 @@ class FakeRepo:
                 "value_mid": 44.0,
                 "survey_end_date": date(2026, 2, 18),
                 "option_name": "정원오",
+                "audience_scope": "regional",
+                "audience_region_code": "11-000",
+                "observation_updated_at": "2026-02-18T03:00:00+00:00",
+                "article_published_at": "2026-02-18T01:00:00+00:00",
+                "source_channel": "nesdc",
+                "source_channels": ["article", "nesdc"],
             }
         ]
 
@@ -160,6 +178,13 @@ class FakeRepo:
             "survey_end_date": date(2026, 2, 18),
             "margin_of_error": 3.1,
             "source_grade": "B",
+            "audience_scope": "regional",
+            "audience_region_code": "11-000",
+            "observation_updated_at": "2026-02-18T03:00:00+00:00",
+            "article_published_at": "2026-02-18T01:00:00+00:00",
+            "official_release_at": None,
+            "source_channel": "article",
+            "source_channels": ["article", "nesdc"],
             "verified": True,
             "options": [
                 {
@@ -197,6 +222,11 @@ class FakeRepo:
             "party_inference_source": "name_rule",
             "party_inference_confidence": 0.91,
             "needs_manual_review": False,
+            "source_channel": "nesdc",
+            "source_channels": ["article", "nesdc"],
+            "observation_updated_at": "2026-02-18T04:00:00+00:00",
+            "article_published_at": "2026-02-18T02:00:00+00:00",
+            "official_release_at": None,
             "gender": "M",
             "birth_date": date(1968, 8, 12),
             "job": "구청장",
@@ -458,8 +488,24 @@ def main() -> int:
         "GET /api/v1/dashboard/summary",
         lambda: (
             lambda r: (
-                assert_keys(r.json(), ["party_support", "presidential_approval"]),
+                assert_keys(r.json(), ["party_support", "presidential_approval", "scope_breakdown"]),
                 r.status_code == 200 or (_ for _ in ()).throw(AssertionError(f"status={r.status_code}")),
+                len(r.json().get("party_support", [])) >= 1
+                or (_ for _ in ()).throw(AssertionError("party_support empty")),
+                assert_keys(
+                    r.json()["party_support"][0],
+                    [
+                        "audience_scope",
+                        "audience_region_code",
+                        "source_channel",
+                        "source_channels",
+                        "source_priority",
+                        "freshness_hours",
+                        "official_release_at",
+                        "article_published_at",
+                        "is_official_confirmed",
+                    ],
+                ),
             )
         )(make_client(FakeRepo("success")).get("/api/v1/dashboard/summary")),
     )
@@ -472,6 +518,10 @@ def main() -> int:
             lambda r: (
                 r.status_code == 200 or (_ for _ in ()).throw(AssertionError(f"status={r.status_code}")),
                 len(r.json().get("items", [])) >= 1 or (_ for _ in ()).throw(AssertionError("items empty")),
+                assert_keys(
+                    r.json()["items"][0],
+                    ["audience_scope", "audience_region_code", "source_channel", "source_channels"],
+                ),
             )
         )(make_client(FakeRepo("success")).get("/api/v1/dashboard/map-latest")),
     )
@@ -525,6 +575,20 @@ def main() -> int:
                 len(r.json().get("options", [])) >= 1
                 or (_ for _ in ()).throw(AssertionError("options empty")),
                 assert_keys(
+                    r.json(),
+                    [
+                        "audience_scope",
+                        "audience_region_code",
+                        "source_channel",
+                        "source_channels",
+                        "source_priority",
+                        "freshness_hours",
+                        "official_release_at",
+                        "article_published_at",
+                        "is_official_confirmed",
+                    ],
+                ),
+                assert_keys(
                     r.json()["options"][0],
                     [
                         "party_inferred",
@@ -554,6 +618,13 @@ def main() -> int:
                         "party_inference_source",
                         "party_inference_confidence",
                         "needs_manual_review",
+                        "source_channel",
+                        "source_channels",
+                        "source_priority",
+                        "freshness_hours",
+                        "official_release_at",
+                        "article_published_at",
+                        "is_official_confirmed",
                     ],
                 ),
                 isinstance(r.json().get("party_inferred"), bool)

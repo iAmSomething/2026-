@@ -122,6 +122,7 @@ def get_dashboard_summary(
             pollster=row["pollster"],
             survey_end_date=row["survey_end_date"],
             audience_scope=row.get("audience_scope"),
+            audience_region_code=row.get("audience_region_code"),
             source_priority=source_meta["source_priority"],
             official_release_at=source_meta["official_release_at"],
             article_published_at=source_meta["article_published_at"],
@@ -163,6 +164,7 @@ def get_dashboard_map_latest(
                 survey_end_date=row.get("survey_end_date"),
                 option_name=row.get("option_name"),
                 audience_scope=row.get("audience_scope"),
+                audience_region_code=row.get("audience_region_code"),
                 source_priority=source_meta["source_priority"],
                 official_release_at=source_meta["official_release_at"],
                 article_published_at=source_meta["article_published_at"],
@@ -230,7 +232,11 @@ def get_candidate(
     if not candidate:
         raise HTTPException(status_code=404, detail="candidate not found")
     enriched = data_go_service.enrich_candidate(dict(candidate))
-    return CandidateOut(**enriched)
+    source_meta = _derive_source_meta(enriched)
+    payload = dict(enriched)
+    payload.update(source_meta)
+    payload["source_channels"] = payload.get("source_channels") or []
+    return CandidateOut(**payload)
 
 
 @router.get("/ops/metrics/summary", response_model=OpsMetricsSummaryOut)

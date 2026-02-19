@@ -16,9 +16,16 @@ class CandidateOut(BaseModel):
     name_ko: str
     party_name: str | None = None
     party_inferred: bool = False
-    party_inference_source: str | None = None
+    party_inference_source: Literal["name_rule", "article_context", "manual"] | None = None
     party_inference_confidence: float | None = None
     needs_manual_review: bool = False
+    source_channel: Literal["article", "nesdc"] | None = None
+    source_channels: list[Literal["article", "nesdc"]] = Field(default_factory=list)
+    source_priority: Literal["official", "article", "mixed"] = "article"
+    official_release_at: datetime | None = None
+    article_published_at: datetime | None = None
+    freshness_hours: float | None = None
+    is_official_confirmed: bool = False
     gender: str | None = None
     birth_date: date | None = None
     job: str | None = None
@@ -32,6 +39,7 @@ class SummaryPoint(BaseModel):
     pollster: str | None = None
     survey_end_date: date | None = None
     audience_scope: Literal["national", "regional", "local"] | None = None
+    audience_region_code: str | None = None
     source_priority: Literal["official", "article", "mixed"] = "article"
     official_release_at: datetime | None = None
     article_published_at: datetime | None = None
@@ -64,6 +72,7 @@ class MapLatestPoint(BaseModel):
     survey_end_date: date | None = None
     option_name: str | None = None
     audience_scope: Literal["national", "regional", "local"] | None = None
+    audience_region_code: str | None = None
     source_priority: Literal["official", "article", "mixed"] = "article"
     official_release_at: datetime | None = None
     article_published_at: datetime | None = None
@@ -109,7 +118,7 @@ class MatchupOptionOut(BaseModel):
     value_mid: float | None = None
     value_raw: str | None = None
     party_inferred: bool = False
-    party_inference_source: str | None = None
+    party_inference_source: Literal["name_rule", "article_context", "manual"] | None = None
     party_inference_confidence: float | None = None
     needs_manual_review: bool = False
 
@@ -280,9 +289,13 @@ class CandidateInput(BaseModel):
     name_ko: str
     party_name: str | None = None
     party_inferred: bool = False
-    party_inference_source: str | None = None
+    party_inference_source: Literal["name_rule", "article_context", "manual"] | None = None
     party_inference_confidence: float | None = None
     needs_manual_review: bool = False
+    source_channel: Literal["article", "nesdc"] = "article"
+    source_channels: list[Literal["article", "nesdc"]] | None = None
+    official_release_at: datetime | None = None
+    article_published_at: datetime | None = None
     gender: str | None = None
     birth_date: date | None = None
     job: str | None = None
@@ -317,6 +330,7 @@ class PollObservationInput(BaseModel):
     poll_fingerprint: str | None = None
     source_channel: Literal["article", "nesdc"] = "article"
     source_channels: list[Literal["article", "nesdc"]] | None = None
+    official_release_at: datetime | None = None
     verified: bool = False
     source_grade: str = "C"
 
@@ -330,7 +344,7 @@ class PollOptionInput(BaseModel):
     value_mid: float | None = None
     is_missing: bool = False
     party_inferred: bool = False
-    party_inference_source: str | None = None
+    party_inference_source: Literal["name_rule", "article_context", "manual"] | None = None
     party_inference_confidence: float | None = None
     needs_manual_review: bool = False
 

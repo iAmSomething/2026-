@@ -21,6 +21,7 @@ class FakeApiRepo:
                 "pollster": "KBS",
                 "survey_end_date": date(2026, 2, 18),
                 "audience_scope": "national",
+                "audience_region_code": None,
                 "observation_updated_at": "2026-02-18T03:00:00+00:00",
                 "article_published_at": "2026-02-18T01:00:00+00:00",
                 "source_channel": "nesdc",
@@ -34,6 +35,7 @@ class FakeApiRepo:
                 "pollster": "KBS",
                 "survey_end_date": date(2026, 2, 18),
                 "audience_scope": "regional",
+                "audience_region_code": "11-000",
                 "observation_updated_at": "2026-02-18T02:00:00+00:00",
                 "article_published_at": "2026-02-18T01:30:00+00:00",
                 "source_channel": "article",
@@ -47,6 +49,7 @@ class FakeApiRepo:
                 "pollster": "KBS",
                 "survey_end_date": date(2026, 2, 18),
                 "audience_scope": "national",
+                "audience_region_code": None,
                 "observation_updated_at": "2026-02-18T03:30:00+00:00",
                 "article_published_at": "2026-02-18T03:00:00+00:00",
                 "source_channel": "article",
@@ -60,6 +63,7 @@ class FakeApiRepo:
                 "pollster": "KBS",
                 "survey_end_date": date(2026, 2, 18),
                 "audience_scope": "local",
+                "audience_region_code": "11-110",
                 "observation_updated_at": "2026-02-18T04:00:00+00:00",
                 "article_published_at": "2026-02-18T03:30:00+00:00",
                 "source_channel": "article",
@@ -88,6 +92,7 @@ class FakeApiRepo:
                 "survey_end_date": date(2026, 2, 18),
                 "option_name": "정원오",
                 "audience_scope": "regional",
+                "audience_region_code": "11-000",
                 "observation_updated_at": "2026-02-18T03:00:00+00:00",
                 "article_published_at": "2026-02-18T01:00:00+00:00",
                 "source_channel": "nesdc",
@@ -186,6 +191,11 @@ class FakeApiRepo:
             "party_inference_source": "name_rule",
             "party_inference_confidence": 0.91,
             "needs_manual_review": False,
+            "source_channel": "nesdc",
+            "source_channels": ["article", "nesdc"],
+            "observation_updated_at": "2026-02-18T04:00:00+00:00",
+            "article_published_at": "2026-02-18T02:00:00+00:00",
+            "official_release_at": None,
             "gender": "M",
             "birth_date": date(1968, 8, 12),
             "job": "구청장",
@@ -379,6 +389,7 @@ def test_api_contract_fields():
     assert "source_channels" in body["party_support"][0]
     assert body["party_support"][0]["source_channels"] == ["article", "nesdc"]
     assert body["party_support"][0]["audience_scope"] == "national"
+    assert "audience_region_code" in body["party_support"][0]
     assert all(x["audience_scope"] == "national" for x in body["party_support"] + body["presidential_approval"])
     assert [x["option_name"] for x in body["party_support"]] == ["더불어민주당"]
     assert [x["option_name"] for x in body["presidential_approval"]] == ["국정안정론"]
@@ -398,6 +409,7 @@ def test_api_contract_fields():
     assert map_latest.json()["items"][0]["region_code"] == "11-000"
     assert map_latest.json()["items"][0]["source_channels"] == ["article", "nesdc"]
     assert map_latest.json()["items"][0]["audience_scope"] == "regional"
+    assert map_latest.json()["items"][0]["audience_region_code"] == "11-000"
     assert map_latest.json()["scope_breakdown"] == {"national": 0, "regional": 1, "local": 0, "unknown": 0}
     assert map_latest.json()["items"][0]["source_priority"] == "mixed"
     assert map_latest.json()["items"][0]["is_official_confirmed"] is True
@@ -449,6 +461,13 @@ def test_api_contract_fields():
     assert candidate.json()["needs_manual_review"] is False
     assert isinstance(candidate.json()["party_inferred"], bool)
     assert isinstance(candidate.json()["needs_manual_review"], bool)
+    assert candidate.json()["source_priority"] == "mixed"
+    assert candidate.json()["is_official_confirmed"] is True
+    assert isinstance(candidate.json()["freshness_hours"], float)
+    assert candidate.json()["source_channel"] == "nesdc"
+    assert candidate.json()["source_channels"] == ["article", "nesdc"]
+    assert candidate.json()["article_published_at"] is not None
+    assert candidate.json()["official_release_at"] is not None
 
     ops = client.get("/api/v1/ops/metrics/summary")
     assert ops.status_code == 200
@@ -651,5 +670,10 @@ def test_candidate_endpoint_merges_data_go_fields():
     assert "party_inference_source" in body
     assert "party_inference_confidence" in body
     assert "needs_manual_review" in body
+    assert "source_priority" in body
+    assert "freshness_hours" in body
+    assert "official_release_at" in body
+    assert "article_published_at" in body
+    assert "is_official_confirmed" in body
 
     app.dependency_overrides.clear()

@@ -15,7 +15,10 @@ CREATE TABLE IF NOT EXISTS candidates (
     party_inferred BOOLEAN NOT NULL DEFAULT FALSE,
     party_inference_source TEXT NULL,
     party_inference_confidence FLOAT NULL,
-    needs_manual_review BOOLEAN NOT NULL DEFAULT FALSE,
+    source_channel TEXT NULL,
+    source_channels TEXT[] NULL,
+    official_release_at TIMESTAMPTZ NULL,
+    article_published_at TIMESTAMPTZ NULL,
     gender TEXT NULL,
     birth_date DATE NULL,
     job TEXT NULL,
@@ -28,7 +31,60 @@ ALTER TABLE candidates
     ADD COLUMN IF NOT EXISTS party_inferred BOOLEAN NOT NULL DEFAULT FALSE,
     ADD COLUMN IF NOT EXISTS party_inference_source TEXT NULL,
     ADD COLUMN IF NOT EXISTS party_inference_confidence FLOAT NULL,
-    ADD COLUMN IF NOT EXISTS needs_manual_review BOOLEAN NOT NULL DEFAULT FALSE;
+    ADD COLUMN IF NOT EXISTS source_channel TEXT NULL,
+    ADD COLUMN IF NOT EXISTS source_channels TEXT[] NULL,
+    ADD COLUMN IF NOT EXISTS official_release_at TIMESTAMPTZ NULL,
+    ADD COLUMN IF NOT EXISTS article_published_at TIMESTAMPTZ NULL;
+
+UPDATE candidates
+SET source_channels = ARRAY[source_channel]
+WHERE source_channels IS NULL
+  AND source_channel IS NOT NULL;
+
+DO $$
+BEGIN
+    IF NOT EXISTS (
+        SELECT 1
+        FROM pg_constraint
+        WHERE conname = 'candidates_source_channel_check'
+    ) THEN
+        ALTER TABLE candidates
+            ADD CONSTRAINT candidates_source_channel_check
+            CHECK (source_channel IN ('article', 'nesdc'));
+    END IF;
+END;
+$$;
+
+DO $$
+BEGIN
+    IF NOT EXISTS (
+        SELECT 1
+        FROM pg_constraint
+        WHERE conname = 'candidates_source_channels_check'
+    ) THEN
+        ALTER TABLE candidates
+            ADD CONSTRAINT candidates_source_channels_check
+            CHECK (source_channels IS NULL OR source_channels <@ ARRAY['article', 'nesdc']::text[]);
+    END IF;
+END;
+$$;
+
+DO $$
+BEGIN
+    IF NOT EXISTS (
+        SELECT 1
+        FROM pg_constraint
+        WHERE conname = 'candidates_party_inference_source_check'
+    ) THEN
+        ALTER TABLE candidates
+            ADD CONSTRAINT candidates_party_inference_source_check
+            CHECK (
+                party_inference_source IS NULL
+                OR party_inference_source IN ('name_rule', 'article_context', 'manual')
+            );
+    END IF;
+END;
+$$;
 
 CREATE TABLE IF NOT EXISTS candidate_profiles (
     id BIGSERIAL PRIMARY KEY,
@@ -97,6 +153,7 @@ CREATE TABLE IF NOT EXISTS poll_observations (
     date_resolution TEXT NULL,
     date_inference_mode TEXT NULL,
     date_inference_confidence FLOAT NULL,
+    official_release_at TIMESTAMPTZ NULL,
     poll_fingerprint TEXT NULL,
     source_channel TEXT NULL,
     source_channels TEXT[] NULL,
@@ -120,6 +177,7 @@ ALTER TABLE poll_observations
     ADD COLUMN IF NOT EXISTS date_resolution TEXT NULL,
     ADD COLUMN IF NOT EXISTS date_inference_mode TEXT NULL,
     ADD COLUMN IF NOT EXISTS date_inference_confidence FLOAT NULL,
+    ADD COLUMN IF NOT EXISTS official_release_at TIMESTAMPTZ NULL,
     ADD COLUMN IF NOT EXISTS poll_fingerprint TEXT NULL,
     ADD COLUMN IF NOT EXISTS source_channel TEXT NULL,
     ADD COLUMN IF NOT EXISTS source_channels TEXT[] NULL;
@@ -207,6 +265,23 @@ ALTER TABLE poll_options
     ADD COLUMN IF NOT EXISTS party_inference_confidence FLOAT NULL,
     ADD COLUMN IF NOT EXISTS needs_manual_review BOOLEAN NOT NULL DEFAULT FALSE;
 
+DO $$
+BEGIN
+    IF NOT EXISTS (
+        SELECT 1
+        FROM pg_constraint
+        WHERE conname = 'poll_options_party_inference_source_check'
+    ) THEN
+        ALTER TABLE poll_options
+            ADD CONSTRAINT poll_options_party_inference_source_check
+            CHECK (
+                party_inference_source IS NULL
+                OR party_inference_source IN ('name_rule', 'article_context', 'manual')
+            );
+    END IF;
+END;
+$$;
+
 CREATE TABLE IF NOT EXISTS review_queue (
     id BIGSERIAL PRIMARY KEY,
     entity_type TEXT NOT NULL,
@@ -225,6 +300,7 @@ CREATE INDEX IF NOT EXISTS idx_poll_observations_matchup ON poll_observations (m
 CREATE INDEX IF NOT EXISTS idx_poll_observations_scope_date ON poll_observations (audience_scope, survey_end_date DESC);
 CREATE INDEX IF NOT EXISTS idx_poll_observations_fingerprint ON poll_observations (poll_fingerprint);
 CREATE INDEX IF NOT EXISTS idx_poll_observations_source_channels ON poll_observations USING GIN (source_channels);
+CREATE INDEX IF NOT EXISTS idx_candidates_source_channels ON candidates USING GIN (source_channels);
 CREATE INDEX IF NOT EXISTS idx_poll_options_type ON poll_options (option_type);
 CREATE INDEX IF NOT EXISTS idx_review_queue_status ON review_queue (status, created_at DESC);
 CREATE INDEX IF NOT EXISTS idx_matchups_region_active ON matchups (region_code, is_active);
