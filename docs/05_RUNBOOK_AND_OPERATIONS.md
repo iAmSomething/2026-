@@ -112,6 +112,8 @@
 - `sido_covered`
 - `observations_total`
 - `latest_survey_end_date`
+5. 해석 기준:
+- `ops/coverage/summary` 값은 기본적으로 누적 집계(cumulative)이며, 기간 필터 없이 전체 커버리지 상태를 표시한다.
 
 ## 8.3 경고 규칙 (기본값)
 1. `fetch_fail_rate > 0.15` 이면 경고
@@ -193,3 +195,9 @@ bash scripts/qa/verify_supabase_service_role_rotation.sh
 - 신키 상태코드 `200` 필수
 - 구키 제공 시 상태코드 `200`이면 실패(폐기 미완료)
 4. 결과 파일(`REPORT_FILE`)을 이슈 코멘트에 `Report-Path`로 연결
+
+## 12. 실행 산출물 관리 정책
+1. 입력 데이터 JSON(`data/bootstrap_ingest_coverage_v1.json` 등)은 재현성 보장을 위해 Git 추적 유지
+2. 실행 산출물 JSON(`*_apply_report.json`, `*_issue*.json`)은 기본적으로 Git 비추적
+3. PM 주기 리포트(`reports/pm/*`)는 로컬/CI 임시 산출물로 취급하고 Git 추적 금지
+4. 실행 증빙은 Actions artifact 또는 이슈 코멘트 링크로 공유
