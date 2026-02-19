@@ -89,7 +89,11 @@ class MatchupOut(BaseModel):
     office_type: str
     title: str
     pollster: str | None = None
+    survey_start_date: date | None = None
     survey_end_date: date | None = None
+    confidence_level: float | None = None
+    sample_size: int | None = None
+    response_rate: float | None = None
     margin_of_error: float | None = None
     source_grade: str | None = None
     audience_scope: Literal["national", "regional", "local"] | None = None
@@ -246,6 +250,7 @@ class PollObservationInput(BaseModel):
     pollster: str
     survey_start_date: date | None = None
     survey_end_date: date | None = None
+    confidence_level: float | None = None
     sample_size: int | None = None
     response_rate: float | None = None
     margin_of_error: float | None = None

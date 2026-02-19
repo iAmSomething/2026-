@@ -63,6 +63,7 @@ CREATE TABLE IF NOT EXISTS poll_observations (
     pollster TEXT NOT NULL,
     survey_start_date DATE NULL,
     survey_end_date DATE NULL,
+    confidence_level FLOAT NULL,
     sample_size INT NULL,
     response_rate FLOAT NULL,
     margin_of_error FLOAT NULL,
@@ -89,6 +90,7 @@ CREATE TABLE IF NOT EXISTS poll_observations (
 );
 
 ALTER TABLE poll_observations
+    ADD COLUMN IF NOT EXISTS confidence_level FLOAT NULL,
     ADD COLUMN IF NOT EXISTS sponsor TEXT NULL,
     ADD COLUMN IF NOT EXISTS method TEXT NULL,
     ADD COLUMN IF NOT EXISTS audience_scope TEXT NULL,

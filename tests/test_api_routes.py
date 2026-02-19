@@ -93,7 +93,11 @@ class FakeApiRepo:
             "office_type": "광역자치단체장",
             "title": "서울시장 가상대결",
             "pollster": "KBS",
+            "survey_start_date": date(2026, 2, 15),
             "survey_end_date": date(2026, 2, 18),
+            "confidence_level": 95.0,
+            "sample_size": 1000,
+            "response_rate": 12.3,
             "margin_of_error": 3.1,
             "source_grade": "B",
             "audience_scope": "regional",
@@ -332,7 +336,11 @@ def test_api_contract_fields():
     matchup = client.get("/api/v1/matchups/20260603|광역자치단체장|11-000")
     assert matchup.status_code == 200
     assert matchup.json()["options"][0]["option_name"] == "정원오"
+    assert matchup.json()["survey_start_date"] == "2026-02-15"
     assert matchup.json()["audience_scope"] == "regional"
+    assert matchup.json()["confidence_level"] == 95.0
+    assert matchup.json()["sample_size"] == 1000
+    assert matchup.json()["response_rate"] == 12.3
     assert matchup.json()["legal_required_count"] == 7
     assert matchup.json()["source_channel"] == "article"
     assert matchup.json()["source_channels"] == ["article", "nesdc"]

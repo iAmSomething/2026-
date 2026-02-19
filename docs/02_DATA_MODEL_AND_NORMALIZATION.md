@@ -18,7 +18,7 @@
 - 목적: 조사 메타 정보 저장
 - 주요 컬럼:
 - `id`, `survey_name`, `pollster`, `survey_start_date`, `survey_end_date`
-- `sample_size`, `response_rate`, `margin_of_error`
+- `confidence_level`, `sample_size`, `response_rate`, `margin_of_error`
 - `sponsor`, `method`
 - `region_code`, `office_type`, `matchup_id`, `verified`, `source_grade`, `ingestion_run_id`
 - `audience_scope`(`national|regional|local`), `audience_region_code`, `sampling_population_text`
@@ -111,3 +111,8 @@
 2. 신규 `source_channels`는 채널 집합(`article`, `nesdc`)을 누적 저장한다.
 3. 병합 후 `source_channel`은 기존 규칙(`nesdc` 존재 시 `nesdc`)으로 유지하고, 상세 provenance는 `source_channels`로 조회한다.
 4. 기존 레거시 데이터는 마이그레이션 시 `source_channels = [source_channel]`로 백필한다.
+
+## 9. 법정메타 null/결측 정책
+1. 수집기에서 값이 없거나 추론 불가인 경우 `survey_start_date`, `survey_end_date`, `confidence_level`, `margin_of_error`, `response_rate`, `sample_size`는 `null` 저장한다.
+2. `audience_scope`, `audience_region_code`도 불명확하면 `null` 저장한다.
+3. API는 DB 값을 그대로 노출하며, 결측은 `null`로 유지한다.

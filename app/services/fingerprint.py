@@ -86,6 +86,7 @@ def merge_observation_by_priority(existing: dict, incoming: dict) -> dict:
         "sponsor",
         "survey_start_date",
         "survey_end_date",
+        "confidence_level",
         "sample_size",
         "response_rate",
         "margin_of_error",

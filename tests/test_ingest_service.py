@@ -64,6 +64,7 @@ PAYLOAD = {
                 "observation_key": "obs-1",
                 "survey_name": "survey",
                 "pollster": "MBC",
+                "confidence_level": 95.0,
                 "sponsor": "서울일보",
                 "method": "전화면접",
                 "region_code": "11-000",
@@ -100,6 +101,7 @@ def test_idempotent_ingest_no_duplicate_records():
     assert repo.observations["obs-1"]["legal_filled_count"] == 6
     assert len(repo.observations["obs-1"]["poll_fingerprint"]) == 64
     assert repo.observations["obs-1"]["source_channels"] == ["article"]
+    assert repo.observations["obs-1"]["confidence_level"] == 95.0
 
 
 def test_ingest_error_pushes_review_queue():
