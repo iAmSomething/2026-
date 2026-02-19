@@ -82,6 +82,8 @@
 - `article.published_at` 결측 시 `article.collected_at` 기반 추정값 허용
 - `date_inference_mode='estimated_timestamp'` 저장, review_queue 라우팅
 3. 불확실 추론(`date_inference_confidence < 0.8`)은 정책과 무관하게 review_queue 라우팅
+4. 옵션 정당 추론에서 `party_inferred=true`이면서 `party_inference_confidence < 0.8`이면
+- `review_queue.issue_type='party_inference_low_confidence'`로 라우팅
 
 ## 6.1 재시도 운영 규칙
 1. 내부 배치 호출 실패(네트워크/5xx/partial_success) 시 최대 2회 재시도

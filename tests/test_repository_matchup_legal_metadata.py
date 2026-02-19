@@ -53,7 +53,16 @@ class _Cursor:
         return None
 
     def fetchall(self):
-        return [{"option_name": "정원오", "value_mid": 44.0, "value_raw": "44%"}]
+        return [
+            {
+                "option_name": "정원오",
+                "value_mid": 44.0,
+                "value_raw": "44%",
+                "party_inferred": True,
+                "party_inference_source": "name_rule",
+                "party_inference_confidence": 0.84,
+            }
+        ]
 
 
 class _Conn:
@@ -78,3 +87,6 @@ def test_get_matchup_returns_legal_metadata_fields():
     assert out["date_inference_confidence"] == 0.92
     assert out["nesdc_enriched"] is True
     assert out["needs_manual_review"] is True
+    assert out["options"][0]["party_inferred"] is True
+    assert out["options"][0]["party_inference_source"] == "name_rule"
+    assert out["options"][0]["party_inference_confidence"] == 0.84

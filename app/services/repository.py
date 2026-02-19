@@ -278,17 +278,22 @@ class PostgresRepository:
     def upsert_poll_option(self, observation_id: int, option: dict) -> None:
         payload = dict(option)
         payload["observation_id"] = observation_id
+        payload.setdefault("party_inferred", False)
+        payload.setdefault("party_inference_source", None)
+        payload.setdefault("party_inference_confidence", None)
 
         with self.conn.cursor() as cur:
             cur.execute(
                 """
                 INSERT INTO poll_options (
                     observation_id, option_type, option_name,
-                    value_raw, value_min, value_max, value_mid, is_missing
+                    value_raw, value_min, value_max, value_mid, is_missing,
+                    party_inferred, party_inference_source, party_inference_confidence
                 )
                 VALUES (
                     %(observation_id)s, %(option_type)s, %(option_name)s,
-                    %(value_raw)s, %(value_min)s, %(value_max)s, %(value_mid)s, %(is_missing)s
+                    %(value_raw)s, %(value_min)s, %(value_max)s, %(value_mid)s, %(is_missing)s,
+                    %(party_inferred)s, %(party_inference_source)s, %(party_inference_confidence)s
                 )
                 ON CONFLICT (observation_id, option_type, option_name) DO UPDATE
                 SET value_raw=EXCLUDED.value_raw,
@@ -296,6 +301,9 @@ class PostgresRepository:
                     value_max=EXCLUDED.value_max,
                     value_mid=EXCLUDED.value_mid,
                     is_missing=EXCLUDED.is_missing,
+                    party_inferred=EXCLUDED.party_inferred,
+                    party_inference_source=EXCLUDED.party_inference_source,
+                    party_inference_confidence=EXCLUDED.party_inference_confidence,
                     updated_at=NOW()
                 """,
                 payload,
@@ -597,7 +605,13 @@ class PostgresRepository:
 
             cur.execute(
                 """
-                SELECT option_name, value_mid, value_raw
+                SELECT
+                    option_name,
+                    value_mid,
+                    value_raw,
+                    party_inferred,
+                    party_inference_source,
+                    party_inference_confidence
                 FROM poll_options
                 WHERE observation_id = %s
                 ORDER BY value_mid DESC NULLS LAST, option_name

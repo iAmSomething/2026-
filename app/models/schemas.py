@@ -81,6 +81,9 @@ class MatchupOptionOut(BaseModel):
     option_name: str
     value_mid: float | None = None
     value_raw: str | None = None
+    party_inferred: bool = False
+    party_inference_source: str | None = None
+    party_inference_confidence: float | None = None
 
 
 class MatchupOut(BaseModel):
@@ -289,6 +292,9 @@ class PollOptionInput(BaseModel):
     value_max: float | None = None
     value_mid: float | None = None
     is_missing: bool = False
+    party_inferred: bool = False
+    party_inference_source: str | None = None
+    party_inference_confidence: float | None = None
 
 
 class IngestRecordInput(BaseModel):

@@ -116,8 +116,22 @@ class FakeApiRepo:
             "source_channels": ["article", "nesdc"],
             "verified": True,
             "options": [
-                {"option_name": "정원오", "value_mid": 44.0, "value_raw": "44%"},
-                {"option_name": "오세훈", "value_mid": 42.0, "value_raw": "42%"},
+                {
+                    "option_name": "정원오",
+                    "value_mid": 44.0,
+                    "value_raw": "44%",
+                    "party_inferred": True,
+                    "party_inference_source": "name_rule",
+                    "party_inference_confidence": 0.86,
+                },
+                {
+                    "option_name": "오세훈",
+                    "value_mid": 42.0,
+                    "value_raw": "42%",
+                    "party_inferred": False,
+                    "party_inference_source": None,
+                    "party_inference_confidence": None,
+                },
             ],
         }
 
@@ -354,6 +368,9 @@ def test_api_contract_fields():
     assert matchup.json()["needs_manual_review"] is True
     assert matchup.json()["source_channel"] == "article"
     assert matchup.json()["source_channels"] == ["article", "nesdc"]
+    assert matchup.json()["options"][0]["party_inferred"] is True
+    assert matchup.json()["options"][0]["party_inference_source"] == "name_rule"
+    assert matchup.json()["options"][0]["party_inference_confidence"] == 0.86
 
     candidate = client.get("/api/v1/candidates/cand-jwo")
     assert candidate.status_code == 200
