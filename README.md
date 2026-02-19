@@ -54,6 +54,11 @@ python -m app.jobs.bootstrap_ingest \
   --input data/bootstrap_batches \
   --pattern "*.json" \
   --report data/bootstrap_ingest_dir_report.json
+
+# 커버리지 v2 배치 실행
+python -m app.jobs.bootstrap_ingest \
+  --input data/bootstrap_ingest_coverage_v2.json \
+  --report data/bootstrap_ingest_coverage_v2_apply_report.json
 ```
 - 요약 리포트 필수 필드: `total`, `success`, `fail`, `review_queue_count`
 

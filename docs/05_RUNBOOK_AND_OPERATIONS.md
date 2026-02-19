@@ -208,3 +208,22 @@ bash scripts/qa/verify_supabase_service_role_rotation.sh
 2. 실행 산출물 JSON(`*_apply_report.json`, `*_issue*.json`)은 기본적으로 Git 비추적
 3. PM 주기 리포트(`reports/pm/*`)는 로컬/CI 임시 산출물로 취급하고 Git 추적 금지
 4. 실행 증빙은 Actions artifact 또는 이슈 코멘트 링크로 공유
+
+## 13. 커버리지 배치 v2 적용 절차
+1. 적용 입력:
+- `data/bootstrap_ingest_coverage_v2.json`
+2. 적용 실행(동일 입력 2회 적용):
+```bash
+python -m app.jobs.bootstrap_ingest --input data/bootstrap_ingest_coverage_v2.json --report data/bootstrap_ingest_coverage_v2_apply_report.json
+python -m app.jobs.bootstrap_ingest --input data/bootstrap_ingest_coverage_v2.json --report data/bootstrap_ingest_coverage_v2_apply_report.json
+```
+3. 전후 비교 산출:
+- `data/bootstrap_ingest_coverage_v2_before_after.json`
+- 확인 항목:
+  - `delta_v1_to_v2.regions_covered`
+  - `delta_v1_to_v2.sido_covered`
+  - `delta_v1_to_v2.observations_total`
+4. idempotent 판정:
+- `idempotent_check.delta.regions_covered == 0`
+- `idempotent_check.delta.sido_covered == 0`
+- `idempotent_check.delta.observations_total == 0`
