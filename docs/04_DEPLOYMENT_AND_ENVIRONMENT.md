@@ -169,3 +169,4 @@ scripts/qa/smoke_staging.sh --api-base "$API_BASE" --web-base "$WEB_BASE"
 5. 실행 결과:
 - Preview URL 추출 후 `issue_number`에 코멘트 자동 작성
 - 접근 검증(`curl`) 로그와 배포 로그를 artifact로 업로드
+- Vercel Preview Protection이 켜진 경우 `401`을 `auth_gated` 접근으로 기록한다.

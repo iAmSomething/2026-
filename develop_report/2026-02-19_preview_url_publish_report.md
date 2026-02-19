@@ -22,7 +22,7 @@
 3. 자동화 동작
 - 웹 빌드 성공 후 `vercel deploy` 실행
 - 배포 로그에서 Preview URL 추출
-- `curl` 접근 확인 수행
+- `curl` 접근 확인 수행(공개 접근 `2xx/3xx` 또는 auth-gated `401`)
 - 액션 artifact 업로드:
   - `/tmp/vercel-preview-deploy.log`
   - `/tmp/vercel-preview-home.html`
@@ -39,18 +39,25 @@
 2. 결과
 - build 성공
 
-## 4. 현재 상태
-- CI 파이프라인 준비 완료
-- 실제 외부 Preview URL 발급은 아래 Secret 값 주입 후 `workflow_dispatch` 실행 시 완료
+## 4. 실행 결과 (완료)
+1. 최종 성공 실행
+- Action Run: `https://github.com/iAmSomething/2026-/actions/runs/22176343247`
+- 결과: `success`
+- root_dir: `apps/staging-web`
+2. 발급 URL
+- preview_url: `https://2026-deploy-epnimvys2-st939823s-projects.vercel.app`
+3. 접근 검증
+- access_mode: `auth_gated`
+- status_code: `401`
+- 증빙 코멘트: `https://github.com/iAmSomething/2026-/issues/92#issuecomment-3925761666`
 
-## 5. 오너 입력 필요(의사결정)
-1. `VERCEL_SCOPE` 실제 값 확정 (`<team_slug>` 대체)
-2. `VERCEL_PROJECT_NAME` 실제 값 확정 (`<project_name>` 대체)
-3. 기본 root_dir 확정 권고:
-- 현재 main 기준 빌드 가능한 경로는 `apps/staging-web`
-- `apps/web`는 `package.json` 부재로 현재 배포 불가
+## 5. 장애/개선 이력
+1. 초기 실패 원인
+- Vercel project rootDirectory 설정과 workflow `working-directory`가 중복되어 경로가 `apps/staging-web/apps/staging-web`로 깨짐
+2. 개선
+- Deploy step을 저장소 루트 실행으로 수정
+- 접근 검증을 `401(auth-gated)` 허용 형태로 보완
 
-## 6. 후속 액션(DEVELOP)
-1. Secret 주입 확인
-2. `Vercel Preview` 워크플로 실행 (`root_dir=apps/staging-web`, `issue_number=92`)
-3. 발급 URL/접근 검증 로그를 이슈 #92 코멘트 및 본 보고서에 최종 반영
+## 6. 결론
+1. Issue #92의 Preview URL 발급 및 이슈 고정 코멘트까지 완료
+2. 접근 검증 로그/액션 런 증빙 확보 완료
