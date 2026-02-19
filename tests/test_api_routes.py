@@ -109,6 +109,8 @@ class FakeApiRepo:
             "date_resolution": "exact",
             "date_inference_mode": "relative_published_at",
             "date_inference_confidence": 0.92,
+            "nesdc_enriched": True,
+            "needs_manual_review": True,
             "poll_fingerprint": "f" * 64,
             "source_channel": "article",
             "source_channels": ["article", "nesdc"],
@@ -348,6 +350,8 @@ def test_api_contract_fields():
     assert matchup.json()["legal_required_count"] == 7
     assert matchup.json()["date_inference_mode"] == "relative_published_at"
     assert matchup.json()["date_inference_confidence"] == 0.92
+    assert matchup.json()["nesdc_enriched"] is True
+    assert matchup.json()["needs_manual_review"] is True
     assert matchup.json()["source_channel"] == "article"
     assert matchup.json()["source_channels"] == ["article", "nesdc"]
 

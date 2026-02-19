@@ -63,7 +63,7 @@
 | 빅매치 카드 | `GET /api/v1/dashboard/big-matches` | `matchups`, `poll_observations` | `matchup_id`, `title`, `survey_end_date`, `value_mid`, `source_channel`, `source_channels` |
 | 지역 검색 | `GET /api/v1/regions/search` | `regions` | `region_code`, `sido_name`, `sigungu_name` |
 | 지역별 선거 탭 | `GET /api/v1/regions/{region_code}/elections` | `matchups` | `region_code`, `office_type`, `is_active` |
-| 매치업 상세 | `GET /api/v1/matchups/{matchup_id}` | `poll_observations`, `poll_options` | `matchup_id`, `pollster`, `survey_start_date`, `survey_end_date`, `confidence_level`, `sample_size`, `response_rate`, `margin_of_error`, `date_inference_mode`, `date_inference_confidence`, `value_mid`, `source_grade`, `audience_scope`, `audience_region_code`, `legal_completeness_score`, `legal_filled_count`, `legal_required_count`, `source_channel`, `source_channels`, `poll_fingerprint` |
+| 매치업 상세 | `GET /api/v1/matchups/{matchup_id}` | `poll_observations`, `poll_options`, `review_queue` | `matchup_id`, `pollster`, `survey_start_date`, `survey_end_date`, `confidence_level`, `sample_size`, `response_rate`, `margin_of_error`, `date_inference_mode`, `date_inference_confidence`, `nesdc_enriched`, `needs_manual_review`, `value_mid`, `source_grade`, `audience_scope`, `audience_region_code`, `legal_completeness_score`, `legal_filled_count`, `legal_required_count`, `source_channel`, `source_channels`, `poll_fingerprint` |
 | 후보자 상세 | `GET /api/v1/candidates/{candidate_id}` | `candidates`, `candidate_profiles` | `candidate_id`, `name_ko`, `party_name`, `career_summary` |
 
 ## 5. API-UI 필드명 일치 규칙
@@ -75,3 +75,5 @@
 6. 매치업 상세는 조사 스코프(`audience_scope`)와 법정 completeness(`legal_*`)를 함께 노출
 7. 대시보드 계열 API의 `source_channels`는 null 대신 빈 배열(`[]`)을 기본값으로 노출
 8. 매치업 상세의 법정메타 결측값은 `null`로 유지한다(숫자/날짜 모두 동일)
+9. 매치업 상세의 `nesdc_enriched`는 `source_channels`에 `nesdc`가 포함되면 `true`다.
+10. 매치업 상세의 `needs_manual_review`는 연결된 `review_queue`가 `pending` 또는 `in_progress`이면 `true`다.

@@ -548,6 +548,7 @@ class PostgresRepository:
                     o.region_code,
                     o.office_type,
                     COALESCE(m.title, o.matchup_id) AS title,
+                    o.observation_key,
                     o.pollster,
                     o.survey_start_date,
                     o.survey_end_date,
@@ -565,6 +566,18 @@ class PostgresRepository:
                     o.date_resolution,
                     o.date_inference_mode,
                     o.date_inference_confidence,
+                    CASE
+                        WHEN o.source_channel = 'nesdc' THEN TRUE
+                        WHEN COALESCE('nesdc' = ANY(o.source_channels), FALSE) THEN TRUE
+                        ELSE FALSE
+                    END AS nesdc_enriched,
+                    EXISTS (
+                        SELECT 1
+                        FROM review_queue rq
+                        WHERE rq.entity_type IN ('poll_observation', 'ingest_record')
+                          AND rq.entity_id = o.observation_key
+                          AND rq.status IN ('pending', 'in_progress')
+                    ) AS needs_manual_review,
                     o.poll_fingerprint,
                     o.source_channel,
                     o.source_channels,
@@ -615,6 +628,8 @@ class PostgresRepository:
             "date_resolution": row["date_resolution"],
             "date_inference_mode": row["date_inference_mode"],
             "date_inference_confidence": row["date_inference_confidence"],
+            "nesdc_enriched": row["nesdc_enriched"],
+            "needs_manual_review": row["needs_manual_review"],
             "poll_fingerprint": row["poll_fingerprint"],
             "source_channel": row["source_channel"],
             "source_channels": row["source_channels"],

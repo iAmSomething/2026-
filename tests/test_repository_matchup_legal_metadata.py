@@ -42,6 +42,8 @@ class _Cursor:
                 "date_resolution": "exact",
                 "date_inference_mode": "relative_published_at",
                 "date_inference_confidence": 0.92,
+                "nesdc_enriched": True,
+                "needs_manual_review": True,
                 "poll_fingerprint": "f" * 64,
                 "source_channel": "article",
                 "source_channels": ["article", "nesdc"],
@@ -74,3 +76,5 @@ def test_get_matchup_returns_legal_metadata_fields():
     assert out["audience_scope"] == "regional"
     assert out["date_inference_mode"] == "relative_published_at"
     assert out["date_inference_confidence"] == 0.92
+    assert out["nesdc_enriched"] is True
+    assert out["needs_manual_review"] is True
