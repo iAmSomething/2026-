@@ -18,6 +18,8 @@
   "legal_filled_count": 6,
   "legal_required_count": 7,
   "date_resolution": "exact",
+  "date_inference_mode": "relative_published_at",
+  "date_inference_confidence": 0.92,
   "poll_fingerprint": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
   "source_channel": "article",
   "source_channels": ["article", "nesdc"],

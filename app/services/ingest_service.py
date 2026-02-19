@@ -37,6 +37,8 @@ def ingest_payload(payload: IngestPayload, repo) -> IngestResult:
     run_id = repo.create_ingestion_run(payload.run_type, payload.extractor_version, payload.llm_model)
     processed_count = 0
     error_count = 0
+    date_inference_failed_count = 0
+    date_inference_estimated_count = 0
 
     for record in payload.records:
         try:
@@ -61,6 +63,19 @@ def ingest_payload(payload: IngestPayload, repo) -> IngestResult:
             observation_payload = record.observation.model_dump()
             if not observation_payload.get("poll_fingerprint"):
                 observation_payload["poll_fingerprint"] = build_poll_fingerprint(observation_payload)
+
+            inference_mode = observation_payload.get("date_inference_mode")
+            inference_confidence = observation_payload.get("date_inference_confidence")
+            inference_uncertain = False
+            if inference_mode == "estimated_timestamp":
+                date_inference_estimated_count += 1
+                inference_uncertain = True
+            if inference_mode in {"strict_fail_blocked", "failed"}:
+                date_inference_failed_count += 1
+                inference_uncertain = True
+            if inference_confidence is not None and float(inference_confidence) < 0.8:
+                inference_uncertain = True
+
             observation_id = repo.upsert_poll_observation(
                 observation_payload,
                 article_id=article_id,
@@ -69,6 +84,20 @@ def ingest_payload(payload: IngestPayload, repo) -> IngestResult:
 
             for option in record.options:
                 repo.upsert_poll_option(observation_id, _normalize_option(option))
+
+            if inference_uncertain:
+                try:
+                    repo.insert_review_queue(
+                        entity_type="poll_observation",
+                        entity_id=record.observation.observation_key,
+                        issue_type="extract_error",
+                        review_note=(
+                            "date inference uncertainty: "
+                            f"mode={inference_mode}, confidence={inference_confidence}"
+                        ),
+                    )
+                except Exception:  # noqa: BLE001
+                    pass
 
             processed_count += 1
         except Exception as exc:  # noqa: BLE001
@@ -92,4 +121,11 @@ def ingest_payload(payload: IngestPayload, repo) -> IngestResult:
 
     status = "success" if error_count == 0 else "partial_success"
     repo.finish_ingestion_run(run_id, status, processed_count, error_count)
+    update_counters = getattr(repo, "update_ingestion_policy_counters", None)
+    if callable(update_counters):
+        update_counters(
+            run_id,
+            date_inference_failed_count=date_inference_failed_count,
+            date_inference_estimated_count=date_inference_estimated_count,
+        )
     return IngestResult(run_id=run_id, processed_count=processed_count, error_count=error_count, status=status)

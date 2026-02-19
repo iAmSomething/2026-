@@ -1,9 +1,10 @@
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from datetime import datetime, timezone
+from datetime import date, datetime, timedelta, timezone
 from hashlib import sha256
 from html import unescape
+import os
 import re
 import time
 from typing import Iterable
@@ -111,10 +112,30 @@ class PollCollector:
         "{election} {region} 가상대결 조사기관",
         "{election} {region} 표본 오차범위 응답률",
     )
+    _DATE_POLICY_DEFAULT = "strict_fail"
+    _DATE_POLICY_ALLOW_ESTIMATED = "allow_estimated_timestamp"
+    _RELATIVE_DATE_PATTERNS = (
+        (re.compile(r"어제"), -1, "relative_day", 0.95),
+        (re.compile(r"그제"), -2, "relative_day", 0.92),
+        (re.compile(r"오늘"), 0, "relative_day", 0.90),
+        (re.compile(r"지난\s*주"), -7, "relative_week", 0.60),
+        (re.compile(r"최근"), 0, "relative_recent", 0.45),
+    )
 
-    def __init__(self, election_id: str = "2026_local", user_agent: str = "ElectionCollector/0.1") -> None:
+    def __init__(
+        self,
+        election_id: str = "2026_local",
+        user_agent: str = "ElectionCollector/0.1",
+        relative_date_policy: str | None = None,
+    ) -> None:
         self.election_id = election_id
         self.user_agent = user_agent
+        configured_policy = (
+            (relative_date_policy or os.getenv("RELATIVE_DATE_POLICY", self._DATE_POLICY_DEFAULT)).strip().lower()
+        )
+        if configured_policy not in {self._DATE_POLICY_DEFAULT, self._DATE_POLICY_ALLOW_ESTIMATED}:
+            configured_policy = self._DATE_POLICY_DEFAULT
+        self.relative_date_policy = configured_policy
 
     def run(
         self,
@@ -375,6 +396,13 @@ class PollCollector:
         region_code, office_type = region_mapping
         matchup_id = build_matchup_id(self.election_id, office_type, region_code)
         pollster = self._extract_pollster(article.raw_text)
+        (
+            survey_end_date,
+            date_resolution,
+            date_inference_mode,
+            date_inference_confidence,
+            date_inference_error,
+        ) = self._resolve_survey_date_inference(article)
 
         observation = PollObservation(
             id=stable_id("obs", article.id, matchup_id, pollster or "unknown"),
@@ -382,7 +410,7 @@ class PollCollector:
             survey_name=article.title,
             pollster=pollster or "미상조사기관",
             survey_start_date=None,
-            survey_end_date=self._coerce_date(article.published_at),
+            survey_end_date=survey_end_date,
             sample_size=sample_size,
             response_rate=response_rate,
             margin_of_error=margin_of_error,
@@ -398,8 +426,13 @@ class PollCollector:
             source_url=article.url,
             source_channel="article",
             source_channels=["article"],
+            date_resolution=date_resolution,
+            date_inference_mode=date_inference_mode,
+            date_inference_confidence=date_inference_confidence,
         )
         observations.append(observation)
+        if date_inference_error is not None:
+            errors.append(date_inference_error)
 
         try:
             extracted_pairs = self.extract_candidate_pairs(article.raw_text, title=article.title, mode="v2")
@@ -786,3 +819,88 @@ class PollCollector:
             return dt.astimezone(timezone.utc).date().isoformat()
         except ValueError:
             return None
+
+    def _parse_date(self, iso_date_time: str | None) -> date | None:
+        coerced = self._coerce_date(iso_date_time)
+        if not coerced:
+            return None
+        try:
+            return date.fromisoformat(coerced)
+        except ValueError:
+            return None
+
+    def _find_relative_date_signal(self, text: str) -> tuple[int, str, float] | None:
+        for pattern, offset_days, resolution, confidence in self._RELATIVE_DATE_PATTERNS:
+            if pattern.search(text):
+                return offset_days, resolution, confidence
+        return None
+
+    def _resolve_survey_date_inference(
+        self,
+        article: Article,
+    ) -> tuple[str | None, str | None, str | None, float | None, ReviewQueueItem | None]:
+        full_text = f"{article.title}\n{article.raw_text}"
+        relative_signal = self._find_relative_date_signal(full_text)
+        published_date = self._parse_date(article.published_at)
+        collected_date = self._parse_date(article.collected_at)
+
+        if relative_signal is None:
+            if published_date is None:
+                return None, "missing", "published_at_missing", 0.0, None
+            return published_date.isoformat(), "exact", "published_at_exact", 1.0, None
+
+        offset_days, resolution, confidence = relative_signal
+        if published_date is not None:
+            inferred = published_date + timedelta(days=offset_days)
+            uncertainty = None
+            if confidence < 0.8:
+                uncertainty = new_review_queue_item(
+                    entity_type="article",
+                    entity_id=article.id,
+                    issue_type="extract_error",
+                    stage="extract",
+                    error_code="RELATIVE_DATE_UNCERTAIN",
+                    error_message=f"relative date inferred with low confidence={confidence:.2f}",
+                    source_url=article.url,
+                    payload={
+                        "date_inference_mode": "relative_published_at",
+                        "date_inference_confidence": confidence,
+                        "relative_date_policy": self.relative_date_policy,
+                    },
+                )
+            return inferred.isoformat(), resolution, "relative_published_at", confidence, uncertainty
+
+        if self.relative_date_policy == self._DATE_POLICY_ALLOW_ESTIMATED and collected_date is not None:
+            inferred = collected_date + timedelta(days=offset_days)
+            estimated_confidence = max(0.35, round(confidence - 0.25, 2))
+            estimated_notice = new_review_queue_item(
+                entity_type="article",
+                entity_id=article.id,
+                issue_type="extract_error",
+                stage="extract",
+                error_code="RELATIVE_DATE_ESTIMATED",
+                error_message="published_at missing, used collected_at fallback for relative date inference",
+                source_url=article.url,
+                payload={
+                    "date_inference_mode": "estimated_timestamp",
+                    "date_inference_confidence": estimated_confidence,
+                    "relative_date_policy": self.relative_date_policy,
+                },
+            )
+            return inferred.isoformat(), "estimated", "estimated_timestamp", estimated_confidence, estimated_notice
+
+        strict_fail_notice = new_review_queue_item(
+            entity_type="article",
+            entity_id=article.id,
+            issue_type="extract_error",
+            stage="extract",
+            error_code="RELATIVE_DATE_STRICT_FAIL",
+            error_message="published_at missing and relative date inference blocked by strict policy",
+            source_url=article.url,
+            payload={
+                "date_inference_mode": "strict_fail_blocked",
+                "date_inference_confidence": 0.0,
+                "relative_date_policy": self.relative_date_policy,
+            },
+        )
+        return None, "failed", "strict_fail_blocked", 0.0, strict_fail_notice

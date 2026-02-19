@@ -34,6 +34,12 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--rss-file", help="Path to file with RSS URLs (one per line)")
     parser.add_argument("--election-id", default="2026_local", help="Election id used for matchup_id")
     parser.add_argument("--output", help="Write output JSON to this file")
+    parser.add_argument(
+        "--relative-date-policy",
+        default=None,
+        choices=["strict_fail", "allow_estimated_timestamp"],
+        help="Relative date inference policy when article.published_at is missing",
+    )
     parser.add_argument("--print-contracts", action="store_true", help="Print input/error contract schemas")
     parser.add_argument("--print-query-templates", action="store_true", help="Print discovery query templates")
     return parser
@@ -44,7 +50,7 @@ def main() -> None:
     seeds = [*args.seed, *_load_lines(args.seed_file)]
     rss_feeds = [*args.rss, *_load_lines(args.rss_file)]
 
-    collector = PollCollector(election_id=args.election_id)
+    collector = PollCollector(election_id=args.election_id, relative_date_policy=args.relative_date_policy)
     result = collector.run(seeds=seeds, rss_feeds=rss_feeds)
     payload: dict[str, Any] = result.to_dict()
 

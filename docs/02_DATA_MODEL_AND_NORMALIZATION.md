@@ -23,6 +23,7 @@
 - `region_code`, `office_type`, `matchup_id`, `verified`, `source_grade`, `ingestion_run_id`
 - `audience_scope`(`national|regional|local`), `audience_region_code`, `sampling_population_text`
 - `legal_completeness_score`, `legal_filled_count`, `legal_required_count`, `date_resolution`
+- `date_inference_mode`, `date_inference_confidence`
 - `poll_fingerprint`, `source_channel`(`article|nesdc`), `source_channels`(다중 provenance)
 
 ## 1.4 `poll_options`
@@ -116,3 +117,4 @@
 1. 수집기에서 값이 없거나 추론 불가인 경우 `survey_start_date`, `survey_end_date`, `confidence_level`, `margin_of_error`, `response_rate`, `sample_size`는 `null` 저장한다.
 2. `audience_scope`, `audience_region_code`도 불명확하면 `null` 저장한다.
 3. API는 DB 값을 그대로 노출하며, 결측은 `null`로 유지한다.
+4. 상대시점 추론 결과는 `date_inference_mode`, `date_inference_confidence`에 저장한다.

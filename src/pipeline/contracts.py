@@ -87,6 +87,8 @@ POLL_OBSERVATION_SCHEMA: dict[str, Any] = {
         "legal_filled_count": {"type": ["integer", "null"]},
         "legal_required_count": {"type": ["integer", "null"]},
         "date_resolution": {"type": ["string", "null"]},
+        "date_inference_mode": {"type": ["string", "null"]},
+        "date_inference_confidence": {"type": ["number", "null"]},
         "poll_fingerprint": {"type": ["string", "null"]},
         "source_channel": {"type": ["string", "null"], "enum": ["article", "nesdc", None]},
         "source_channels": {
@@ -217,6 +219,8 @@ class PollObservation:
     legal_filled_count: int | None = None
     legal_required_count: int | None = None
     date_resolution: str | None = None
+    date_inference_mode: str | None = None
+    date_inference_confidence: float | None = None
     poll_fingerprint: str | None = None
     source_channel: str | None = None
     source_channels: list[str] | None = None

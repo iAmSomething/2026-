@@ -167,6 +167,65 @@ class CollectorExtractTest(unittest.TestCase):
         self.assertEqual(errors[0].issue_type, "extract_error")
         self.assertEqual(errors[0].error_code, "POLICY_ONLY_SIGNAL")
 
+    def test_relative_date_strict_fail_routes_to_review_queue(self) -> None:
+        collector = PollCollector(relative_date_policy="strict_fail")
+        article = Article(
+            id=stable_id("art", "https://example.com/relative-strict"),
+            url="https://example.com/relative-strict",
+            title="서울시장 조사",
+            publisher="테스트",
+            published_at=None,
+            snippet="어제 조사",
+            collected_at="2026-02-19T00:00:00+00:00",
+            raw_hash="h5",
+            raw_text="어제 발표된 서울시장 여론조사에서 정원오 44% vs 오세훈 31%",
+        )
+        observations, options, errors = collector.extract(article)
+        self.assertEqual(len(observations), 1)
+        self.assertEqual(len(options), 2)
+        self.assertEqual(observations[0].survey_end_date, None)
+        self.assertEqual(observations[0].date_inference_mode, "strict_fail_blocked")
+        self.assertTrue(any(err.error_code == "RELATIVE_DATE_STRICT_FAIL" for err in errors))
+
+    def test_relative_date_allow_estimated_policy_uses_collected_at(self) -> None:
+        collector = PollCollector(relative_date_policy="allow_estimated_timestamp")
+        article = Article(
+            id=stable_id("art", "https://example.com/relative-estimated"),
+            url="https://example.com/relative-estimated",
+            title="서울시장 조사",
+            publisher="테스트",
+            published_at=None,
+            snippet="어제 조사",
+            collected_at="2026-02-19T00:00:00+00:00",
+            raw_hash="h6",
+            raw_text="어제 발표된 서울시장 여론조사에서 정원오 44% vs 오세훈 31%",
+        )
+        observations, _, errors = collector.extract(article)
+        self.assertEqual(len(observations), 1)
+        self.assertEqual(observations[0].survey_end_date, "2026-02-18")
+        self.assertEqual(observations[0].date_inference_mode, "estimated_timestamp")
+        self.assertTrue(any(err.error_code == "RELATIVE_DATE_ESTIMATED" for err in errors))
+
+    def test_relative_date_low_confidence_routes_uncertain_review(self) -> None:
+        collector = PollCollector(relative_date_policy="strict_fail")
+        article = Article(
+            id=stable_id("art", "https://example.com/relative-uncertain"),
+            url="https://example.com/relative-uncertain",
+            title="서울시장 조사",
+            publisher="테스트",
+            published_at="2026-02-18T00:00:00+09:00",
+            snippet="지난주 조사",
+            collected_at="2026-02-19T00:00:00+00:00",
+            raw_hash="h7",
+            raw_text="지난주 서울시장 여론조사에서 정원오 44% vs 오세훈 31%",
+        )
+        observations, _, errors = collector.extract(article)
+        self.assertEqual(len(observations), 1)
+        self.assertEqual(observations[0].survey_end_date, "2026-02-10")
+        self.assertEqual(observations[0].date_inference_mode, "relative_published_at")
+        self.assertLess(float(observations[0].date_inference_confidence or 0), 0.8)
+        self.assertTrue(any(err.error_code == "RELATIVE_DATE_UNCERTAIN" for err in errors))
+
 
 if __name__ == "__main__":
     unittest.main()
