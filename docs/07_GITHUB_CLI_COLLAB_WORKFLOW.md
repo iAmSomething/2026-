@@ -63,7 +63,7 @@ bash scripts/pm/report_scan.sh --date 2026-02-18
 - 안내문구 안의 텍스트: `status/done 전에 [QA PASS] 필요`
 - 백틱 예시 텍스트: `` `[QA PASS]` ``
 
-## 6-1) 작업영역 락 규칙
+## 6-2) 작업영역 락 규칙
 1. 상세 규칙은 `docs/10_WORKSPACE_LOCK_POLICY.md`를 기준으로 적용
 2. 공용 잠금 경로(`docs/**`, `.github/**`, `scripts/pm/**`, `README.md`) 수정은 PM 승인 코멘트 필수
 3. 역할별 이슈 템플릿의 Workspace Lock Checklist 체크 후 작업 시작
@@ -101,3 +101,52 @@ GitHub Actions:
    - `closed + status/done + [QA PASS] 미기재` 이슈를 `status/in-qa`로 복귀(재오픈)
    - `status/blocked` 이슈 일일 자동 리마인드 코멘트
    - QA FAIL 보고서 기반 후속 버그 이슈 자동 생성(중복 방지 `auto_key`, 최대 생성 건수 제한)
+
+## 9) 운영 듀얼레인 모드 (오프라인 자동 + 온라인 수동)
+모드 정책:
+1. 오프라인 레인
+   - `PM_CYCLE_MODE=apply`
+   - `PM_CYCLE_MAX_CREATE=4` (기본)
+   - 목적: 주기 실행에서 QA gate 복구/blocked 리마인드/QA FAIL 후속 이슈 자동 반영
+2. 온라인 레인
+   - `PM_CYCLE_MODE=dry-run`
+   - `PM_CYCLE_MAX_CREATE=0` (기본)
+   - 목적: 자동 상태 변경 없이 사람이 보고서 확인 후 수동 관제
+
+즉시 실행 명령 세트:
+```bash
+# 오프라인 자동 모드 전환
+bash scripts/pm/set_pm_cycle_mode.sh --repo iAmSomething/2026- --lane offline
+
+# 온라인 수동 모드 전환
+bash scripts/pm/set_pm_cycle_mode.sh --repo iAmSomething/2026- --lane online
+
+# 온라인 모드 + PM 이슈 자동 코멘트 대상 지정
+bash scripts/pm/set_pm_cycle_mode.sh --repo iAmSomething/2026- --lane online --comment-issue 19
+
+# 온라인 모드에서 코멘트 대상 해제
+bash scripts/pm/set_pm_cycle_mode.sh --repo iAmSomething/2026- --lane online --clear-comment-issue
+
+# 현재 변수 상태 점검
+gh variable list --repo iAmSomething/2026- | rg 'PM_CYCLE_'
+```
+
+온라인 세션 시작 수동 점검 체크리스트:
+1. `gh run list --workflow pm-cycle-dry-run.yml --limit 5`로 최근 주기 실행 성공/실패 확인
+2. `gh issue list --repo iAmSomething/2026- --state open --limit 50`로 open backlog/blocked 현황 확인
+3. `bash scripts/pm/pm_cycle_dry_run.sh --repo iAmSomething/2026- --mode dry-run`으로 최신 요약 보고서 생성
+4. 보고서(`reports/pm/pm_cycle_dry_run_*.md`)의 `Gate Checks`, `Applied Actions`, `Secret Health`를 우선 확인
+5. 상태 변경이 필요하면 근거를 이슈 코멘트로 남긴 뒤 수동 `apply` 1회 실행 여부를 결정
+
+자동화 상태 변경 허용/금지 규칙:
+1. 허용 조건
+   - 레인이 `offline`
+   - 스케줄/수동 실행 모두 `PM_CYCLE_MODE=apply`
+   - 적용 전 `PM_CYCLE_MAX_CREATE`가 운영 한도 내(`0~4` 권장)
+2. 금지 조건
+   - 레인이 `online`인데 주기 실행으로 `apply`가 반영되는 설정
+   - 근거 코멘트 없이 반복적인 수동 `apply` 실행
+   - `status/done` 전환 이슈에 `[QA PASS]` 없는 상태를 사람이 무시하고 종료 처리
+3. 재발 방지
+   - 세션 시작 시 반드시 레인 변수 확인 후 작업 시작
+   - 세션 종료 시 레인을 `online`으로 되돌려 자동 반영을 차단
