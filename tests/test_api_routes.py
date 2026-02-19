@@ -650,6 +650,32 @@ def test_run_ingest_requires_bearer_token(monkeypatch: pytest.MonkeyPatch):
     get_settings.cache_clear()
 
 
+def test_cors_allows_public_web_origin():
+    client = TestClient(app)
+    res = client.options(
+        "/health",
+        headers={
+            "Origin": "https://2026-deploy.vercel.app",
+            "Access-Control-Request-Method": "GET",
+        },
+    )
+    assert res.status_code == 200
+    assert res.headers.get("access-control-allow-origin") == "https://2026-deploy.vercel.app"
+
+
+def test_cors_rejects_unknown_origin():
+    client = TestClient(app)
+    res = client.options(
+        "/health",
+        headers={
+            "Origin": "https://malicious.example.com",
+            "Access-Control-Request-Method": "GET",
+        },
+    )
+    assert res.status_code == 400
+    assert res.headers.get("access-control-allow-origin") is None
+
+
 def test_candidate_endpoint_merges_data_go_fields():
     app.dependency_overrides[get_repository] = override_repo
     app.dependency_overrides[get_candidate_data_go_service] = lambda: FakeCandidateDataGoService(

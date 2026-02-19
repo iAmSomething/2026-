@@ -28,6 +28,7 @@ jobs:
       VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
       VERCEL_SCOPE: ${{ secrets.VERCEL_SCOPE }}
       VERCEL_PROJECT_NAME: ${{ secrets.VERCEL_PROJECT_NAME }}
+      WEB_API_BASE_URL: https://2026-api.up.railway.app
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -68,6 +69,9 @@ jobs:
       - name: Build web app
         run: npm run build
         working-directory: ${{ inputs.root_dir }}
+        env:
+          API_BASE_URL: ${{ env.WEB_API_BASE_URL }}
+          NEXT_PUBLIC_API_BASE_URL: ${{ env.WEB_API_BASE_URL }}
 
       - name: Deploy preview to Vercel
         id: deploy
@@ -81,6 +85,10 @@ jobs:
             --token "$VERCEL_TOKEN" \
             --scope "$VERCEL_SCOPE" \
             --name "$VERCEL_PROJECT_NAME" \
+            --build-env API_BASE_URL="$WEB_API_BASE_URL" \
+            --build-env NEXT_PUBLIC_API_BASE_URL="$WEB_API_BASE_URL" \
+            --env API_BASE_URL="$WEB_API_BASE_URL" \
+            --env NEXT_PUBLIC_API_BASE_URL="$WEB_API_BASE_URL" \
             2>&1 | tee "$DEPLOY_LOG"
 
           PREVIEW_URL=$(grep -Eo 'https://[^ ]+' "$DEPLOY_LOG" | grep 'vercel.app' | tail -n 1)
@@ -98,18 +106,11 @@ jobs:
           status_code=""
           for _ in $(seq 1 10); do
             status_code=$(curl -sS -o /tmp/vercel-preview-home.html -w "%{http_code}" "$PREVIEW_URL" || true)
-            if [ "$status_code" = "200" ] || [ "$status_code" = "301" ] || [ "$status_code" = "302" ] || [ "$status_code" = "307" ] || [ "$status_code" = "308" ] || [ "$status_code" = "401" ]; then
+            if [ "$status_code" = "200" ] || [ "$status_code" = "301" ] || [ "$status_code" = "302" ] || [ "$status_code" = "307" ] || [ "$status_code" = "308" ]; then
               break
             fi
             sleep 3
           done
-
-          if [ "$status_code" = "401" ]; then
-            echo "verified=true" >> "$GITHUB_OUTPUT"
-            echo "access_mode=auth_gated" >> "$GITHUB_OUTPUT"
-            echo "status_code=$status_code" >> "$GITHUB_OUTPUT"
-            exit 0
-          fi
 
           if [ "$status_code" = "200" ] || [ "$status_code" = "301" ] || [ "$status_code" = "302" ] || [ "$status_code" = "307" ] || [ "$status_code" = "308" ]; then
             echo "verified=true" >> "$GITHUB_OUTPUT"
