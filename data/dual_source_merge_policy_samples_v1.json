@@ -1,0 +1,81 @@
+{
+  "summary": {
+    "as_of": "2026-02-19",
+    "party_support": [
+      {
+        "option_name": "더불어민주당",
+        "value_mid": 42.0,
+        "pollster": "KBS",
+        "survey_end_date": "2026-02-18",
+        "audience_scope": "national",
+        "source_priority": "mixed",
+        "official_release_at": "2026-02-18T03:00:00Z",
+        "article_published_at": "2026-02-18T01:00:00Z",
+        "freshness_hours": 30.5,
+        "is_official_confirmed": true,
+        "source_channel": "nesdc",
+        "source_channels": ["article", "nesdc"],
+        "verified": true
+      }
+    ],
+    "presidential_approval": [
+      {
+        "option_name": "국정안정론",
+        "value_mid": 54.0,
+        "pollster": "KBS",
+        "survey_end_date": "2026-02-18",
+        "audience_scope": "national",
+        "source_priority": "article",
+        "official_release_at": null,
+        "article_published_at": "2026-02-18T03:00:00Z",
+        "freshness_hours": 28.5,
+        "is_official_confirmed": false,
+        "source_channel": "article",
+        "source_channels": ["article"],
+        "verified": true
+      }
+    ],
+    "scope_breakdown": {
+      "national": 2,
+      "regional": 1,
+      "local": 1,
+      "unknown": 0
+    }
+  },
+  "map_latest": {
+    "as_of": "2026-02-19",
+    "items": [
+      {
+        "region_code": "11-000",
+        "office_type": "광역자치단체장",
+        "title": "서울시장 가상대결",
+        "value_mid": 44.0,
+        "survey_end_date": "2026-02-18",
+        "option_name": "정원오",
+        "audience_scope": "regional",
+        "source_priority": "mixed",
+        "official_release_at": "2026-02-18T03:00:00Z",
+        "article_published_at": "2026-02-18T01:00:00Z",
+        "freshness_hours": 30.5,
+        "is_official_confirmed": true,
+        "source_channel": "nesdc",
+        "source_channels": ["article", "nesdc"]
+      }
+    ],
+    "scope_breakdown": {
+      "national": 0,
+      "regional": 1,
+      "local": 0,
+      "unknown": 0
+    }
+  },
+  "matchup": {
+    "matchup_id": "20260603|광역자치단체장|11-000",
+    "source_priority": "mixed",
+    "official_release_at": "2026-02-18T03:00:00Z",
+    "article_published_at": "2026-02-18T01:00:00Z",
+    "freshness_hours": 30.5,
+    "is_official_confirmed": true,
+    "source_channels": ["article", "nesdc"]
+  }
+}

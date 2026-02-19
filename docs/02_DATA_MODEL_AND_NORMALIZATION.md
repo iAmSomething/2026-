@@ -113,6 +113,12 @@
 2. 신규 `source_channels`는 채널 집합(`article`, `nesdc`)을 누적 저장한다.
 3. 병합 후 `source_channel`은 기존 규칙(`nesdc` 존재 시 `nesdc`)으로 유지하고, 상세 provenance는 `source_channels`로 조회한다.
 4. 기존 레거시 데이터는 마이그레이션 시 `source_channels = [source_channel]`로 백필한다.
+5. API 파생 필드:
+- `source_priority`: `official|article|mixed`
+- `is_official_confirmed`: `source_channels`에 `nesdc` 포함 시 `true`
+- `official_release_at`: 공식소스 포함 시 관측치 최신 갱신시각 기준
+- `article_published_at`: 연결 기사의 `published_at`
+- `freshness_hours`: `official_release_at` 우선, 없으면 `article_published_at` 기준 현재시각과의 시간차
 
 ## 9. 법정메타 null/결측 정책
 1. 수집기에서 값이 없거나 추론 불가인 경우 `survey_start_date`, `survey_end_date`, `confidence_level`, `margin_of_error`, `response_rate`, `sample_size`는 `null` 저장한다.

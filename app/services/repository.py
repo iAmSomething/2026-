@@ -353,11 +353,14 @@ class PostgresRepository:
                 o.pollster,
                 o.survey_end_date,
                 o.audience_scope,
+                o.updated_at AS observation_updated_at,
+                a.published_at AS article_published_at,
                 o.source_channel,
                 COALESCE(o.source_channels, CASE WHEN o.source_channel IS NULL THEN ARRAY[]::text[] ELSE ARRAY[o.source_channel] END) AS source_channels,
                 o.verified
             FROM poll_options po
             JOIN poll_observations o ON o.id = po.observation_id
+            LEFT JOIN articles a ON a.id = o.article_id
             JOIN latest l ON l.option_type = po.option_type AND l.max_date = o.survey_end_date
             WHERE po.option_type IN ('party_support', 'presidential_approval')
               {scope_filter}
@@ -388,6 +391,8 @@ class PostgresRepository:
                     po.value_mid,
                     o.survey_end_date,
                     o.audience_scope,
+                    o.updated_at AS observation_updated_at,
+                    a.published_at AS article_published_at,
                     o.source_channel,
                     COALESCE(
                         o.source_channels,
@@ -402,6 +407,7 @@ class PostgresRepository:
                     ) AS rn
                 FROM poll_observations o
                 JOIN poll_options po ON po.observation_id = o.id
+                LEFT JOIN articles a ON a.id = o.article_id
                 WHERE o.verified = TRUE
                   AND po.option_type = 'candidate_matchup'
                   AND po.value_mid IS NOT NULL
@@ -415,6 +421,8 @@ class PostgresRepository:
                 r.survey_end_date,
                 r.option_name,
                 r.audience_scope,
+                r.observation_updated_at,
+                r.article_published_at,
                 r.source_channel,
                 r.source_channels
             FROM ranked r
@@ -579,6 +587,8 @@ class PostgresRepository:
                     o.date_resolution,
                     o.date_inference_mode,
                     o.date_inference_confidence,
+                    o.updated_at AS observation_updated_at,
+                    a.published_at AS article_published_at,
                     CASE
                         WHEN o.source_channel = 'nesdc' THEN TRUE
                         WHEN COALESCE('nesdc' = ANY(o.source_channels), FALSE) THEN TRUE
@@ -598,6 +608,7 @@ class PostgresRepository:
                     o.id AS observation_id
                 FROM poll_observations o
                 LEFT JOIN matchups m ON m.matchup_id = o.matchup_id
+                LEFT JOIN articles a ON a.id = o.article_id
                 WHERE o.matchup_id = %s
                 ORDER BY o.survey_end_date DESC NULLS LAST, o.id DESC
                 LIMIT 1
@@ -647,6 +658,8 @@ class PostgresRepository:
             "date_resolution": row["date_resolution"],
             "date_inference_mode": row["date_inference_mode"],
             "date_inference_confidence": row["date_inference_confidence"],
+            "observation_updated_at": row["observation_updated_at"],
+            "article_published_at": row["article_published_at"],
             "nesdc_enriched": row["nesdc_enriched"],
             "needs_manual_review": row["needs_manual_review"],
             "poll_fingerprint": row["poll_fingerprint"],
