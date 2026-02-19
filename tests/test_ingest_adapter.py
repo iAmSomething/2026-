@@ -30,6 +30,7 @@ def test_collector_output_converts_to_ingest_payload():
     obs[0].legal_required_count = 7
     obs[0].date_resolution = "exact"
     obs[0].source_channel = "article"
+    obs[0].source_channels = ["article"]
     output.poll_observations.extend(obs)
     output.poll_options.extend(opts)
     output.review_queue.extend(errs)
@@ -43,3 +44,4 @@ def test_collector_output_converts_to_ingest_payload():
     assert parsed.records[0].observation.audience_scope == "regional"
     assert parsed.records[0].observation.legal_required_count == 7
     assert parsed.records[0].observation.source_channel == "article"
+    assert parsed.records[0].observation.source_channels == ["article"]

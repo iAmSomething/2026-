@@ -99,6 +99,7 @@ def collector_output_to_ingest_payload(
                     "date_resolution": getattr(observation, "date_resolution", None),
                     "poll_fingerprint": getattr(observation, "poll_fingerprint", None),
                     "source_channel": getattr(observation, "source_channel", "article"),
+                    "source_channels": getattr(observation, "source_channels", None),
                     "verified": observation.verified,
                     "source_grade": observation.source_grade or "C",
                 },

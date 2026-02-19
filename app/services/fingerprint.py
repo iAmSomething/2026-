@@ -45,6 +45,24 @@ def build_poll_fingerprint(observation: dict) -> str:
     return sha256(base.encode("utf-8")).hexdigest()
 
 
+def _normalize_channels(value) -> set[str]:
+    if value is None:
+        return set()
+    if isinstance(value, str):
+        text = value.strip().lower()
+        return {text} if text in SOURCE_PRIORITY else set()
+
+    out: set[str] = set()
+    if isinstance(value, (list, tuple, set)):
+        for item in value:
+            if item is None:
+                continue
+            text = str(item).strip().lower()
+            if text in SOURCE_PRIORITY:
+                out.add(text)
+    return out
+
+
 def merge_observation_by_priority(existing: dict, incoming: dict) -> dict:
     existing_source = (existing.get("source_channel") or "article").lower()
     incoming_source = (incoming.get("source_channel") or "article").lower()
@@ -90,7 +108,14 @@ def merge_observation_by_priority(existing: dict, incoming: dict) -> dict:
         secondary = existing_value if incoming_wins else incoming_value
         merged[field] = primary if primary not in (None, "") else secondary
 
-    merged["source_channel"] = "nesdc" if "nesdc" in (existing_source, incoming_source) else "article"
+    channels = _normalize_channels(existing.get("source_channels"))
+    channels.update(_normalize_channels(incoming.get("source_channels")))
+    channels.update(_normalize_channels(existing_source))
+    channels.update(_normalize_channels(incoming_source))
+    ordered_channels = [channel for channel in ("article", "nesdc") if channel in channels]
+
+    merged["source_channel"] = "nesdc" if "nesdc" in ordered_channels else "article"
+    merged["source_channels"] = ordered_channels or None
     merged["poll_fingerprint"] = incoming.get("poll_fingerprint") or existing.get("poll_fingerprint")
     merged["observation_key"] = existing.get("observation_key") or incoming.get("observation_key")
     merged["verified"] = bool(existing.get("verified")) or bool(incoming.get("verified"))
@@ -108,4 +133,3 @@ def merge_observation_by_priority(existing: dict, incoming: dict) -> dict:
         merged["article_id"] = existing.get("article_id") or incoming.get("article_id")
 
     return merged
-

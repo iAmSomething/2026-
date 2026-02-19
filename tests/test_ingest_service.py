@@ -76,6 +76,7 @@ PAYLOAD = {
                 "legal_filled_count": 6,
                 "legal_required_count": 7,
                 "date_resolution": "exact",
+                "source_channels": ["article"],
             },
             "options": [
                 {"option_type": "presidential_approval", "option_name": "국정안정론", "value_raw": "53~55%"}
@@ -98,6 +99,7 @@ def test_idempotent_ingest_no_duplicate_records():
     assert repo.observations["obs-1"]["audience_scope"] == "national"
     assert repo.observations["obs-1"]["legal_filled_count"] == 6
     assert len(repo.observations["obs-1"]["poll_fingerprint"]) == 64
+    assert repo.observations["obs-1"]["source_channels"] == ["article"]
 
 
 def test_ingest_error_pushes_review_queue():

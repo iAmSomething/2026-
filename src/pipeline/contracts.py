@@ -89,6 +89,10 @@ POLL_OBSERVATION_SCHEMA: dict[str, Any] = {
         "date_resolution": {"type": ["string", "null"]},
         "poll_fingerprint": {"type": ["string", "null"]},
         "source_channel": {"type": ["string", "null"], "enum": ["article", "nesdc", None]},
+        "source_channels": {
+            "type": ["array", "null"],
+            "items": {"type": "string", "enum": ["article", "nesdc"]},
+        },
         "verified": {"type": "boolean"},
         "source_grade": {"type": ["string", "null"]},
         "ingestion_run_id": {"type": ["string", "null"]},
@@ -215,6 +219,7 @@ class PollObservation:
     date_resolution: str | None = None
     poll_fingerprint: str | None = None
     source_channel: str | None = None
+    source_channels: list[str] | None = None
 
     def to_dict(self) -> dict[str, Any]:
         return asdict(self)

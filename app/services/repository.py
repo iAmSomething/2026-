@@ -114,7 +114,7 @@ class PostgresRepository:
                     margin_of_error, method, region_code, office_type, matchup_id,
                     audience_scope, audience_region_code, sampling_population_text,
                     legal_completeness_score, legal_filled_count, legal_required_count,
-                    date_resolution, poll_fingerprint, source_channel,
+                    date_resolution, poll_fingerprint, source_channel, source_channels,
                     verified, source_grade, ingestion_run_id
                 FROM poll_observations
                 WHERE poll_fingerprint = %s
@@ -138,6 +138,8 @@ class PostgresRepository:
         payload.setdefault("date_resolution", None)
         payload.setdefault("poll_fingerprint", None)
         payload.setdefault("source_channel", "article")
+        if payload.get("source_channels") in (None, []):
+            payload["source_channels"] = [payload["source_channel"]]
         payload.setdefault("sponsor", None)
         payload.setdefault("method", None)
         return payload
@@ -161,7 +163,7 @@ class PostgresRepository:
                     office_type, matchup_id, audience_scope, audience_region_code,
                     sampling_population_text, legal_completeness_score,
                     legal_filled_count, legal_required_count, date_resolution,
-                    poll_fingerprint, source_channel,
+                    poll_fingerprint, source_channel, source_channels,
                     verified, source_grade,
                     ingestion_run_id
                 )
@@ -172,7 +174,7 @@ class PostgresRepository:
                     %(office_type)s, %(matchup_id)s, %(audience_scope)s, %(audience_region_code)s,
                     %(sampling_population_text)s, %(legal_completeness_score)s,
                     %(legal_filled_count)s, %(legal_required_count)s, %(date_resolution)s,
-                    %(poll_fingerprint)s, %(source_channel)s,
+                    %(poll_fingerprint)s, %(source_channel)s, %(source_channels)s,
                     %(verified)s, %(source_grade)s,
                     %(ingestion_run_id)s
                 )
@@ -202,6 +204,15 @@ class PostgresRepository:
                         WHEN poll_observations.source_channel = 'nesdc' OR EXCLUDED.source_channel = 'nesdc'
                             THEN 'nesdc'
                         ELSE EXCLUDED.source_channel
+                    END,
+                    source_channels=CASE
+                        WHEN poll_observations.source_channels IS NULL THEN EXCLUDED.source_channels
+                        WHEN EXCLUDED.source_channels IS NULL THEN poll_observations.source_channels
+                        ELSE ARRAY(
+                            SELECT DISTINCT unnest(
+                                poll_observations.source_channels || EXCLUDED.source_channels
+                            )
+                        )
                     END,
                     verified=EXCLUDED.verified,
                     source_grade=EXCLUDED.source_grade,
@@ -497,6 +508,7 @@ class PostgresRepository:
                     o.date_resolution,
                     o.poll_fingerprint,
                     o.source_channel,
+                    o.source_channels,
                     o.verified,
                     o.id AS observation_id
                 FROM poll_observations o
@@ -540,6 +552,7 @@ class PostgresRepository:
             "date_resolution": row["date_resolution"],
             "poll_fingerprint": row["poll_fingerprint"],
             "source_channel": row["source_channel"],
+            "source_channels": row["source_channels"],
             "verified": row["verified"],
             "options": options,
         }

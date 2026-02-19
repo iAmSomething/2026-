@@ -23,7 +23,7 @@
 - `region_code`, `office_type`, `matchup_id`, `verified`, `source_grade`, `ingestion_run_id`
 - `audience_scope`(`national|regional|local`), `audience_region_code`, `sampling_population_text`
 - `legal_completeness_score`, `legal_filled_count`, `legal_required_count`, `date_resolution`
-- `poll_fingerprint`, `source_channel`(`article|nesdc`)
+- `poll_fingerprint`, `source_channel`(`article|nesdc`), `source_channels`(다중 provenance)
 
 ## 1.4 `poll_options`
 - 목적: 조사 선택지(후보/문항값) 저장
@@ -105,3 +105,9 @@
 2. 입력 정규화 후 `sha256`으로 `poll_fingerprint` 생성해 저장한다.
 3. 동일 fingerprint 다중 소스 병합 시 메타 필드는 `nesdc` 우선, 문맥(기사 제목 기반 `survey_name`)은 `article` 보강 우선으로 적용한다.
 4. 동일 fingerprint에서 핵심 식별 필드 충돌 시 `review_queue.issue_type='DUPLICATE_CONFLICT'`로 분기한다.
+
+## 8. provenance 다중 출처 규칙
+1. 하위호환을 위해 `source_channel` 단일값은 유지한다.
+2. 신규 `source_channels`는 채널 집합(`article`, `nesdc`)을 누적 저장한다.
+3. 병합 후 `source_channel`은 기존 규칙(`nesdc` 존재 시 `nesdc`)으로 유지하고, 상세 provenance는 `source_channels`로 조회한다.
+4. 기존 레거시 데이터는 마이그레이션 시 `source_channels = [source_channel]`로 백필한다.

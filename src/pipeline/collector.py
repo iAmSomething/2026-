@@ -397,6 +397,7 @@ class PollCollector:
             evidence_text=article.raw_text[:280],
             source_url=article.url,
             source_channel="article",
+            source_channels=["article"],
         )
         observations.append(observation)
 
