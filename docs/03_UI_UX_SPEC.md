@@ -58,9 +58,9 @@
 
 | 화면 기능 | 사용 API | 핵심 테이블 | 필수 필드 |
 |---|---|---|---|
-| 최신 정당/대통령 요약 | `GET /api/v1/dashboard/summary` | `poll_observations`, `poll_options` | `pollster`, `survey_end_date`, `option_name`, `value_mid`, `verified`, `audience_scope`(national only) |
-| 지도 Hover 최신값 | `GET /api/v1/dashboard/map-latest` | `regions`, `matchups`, `poll_options` | `region_code`, `office_type`, `title`, `value_mid` |
-| 빅매치 카드 | `GET /api/v1/dashboard/big-matches` | `matchups`, `poll_observations` | `matchup_id`, `title`, `survey_end_date`, `value_mid` |
+| 최신 정당/대통령 요약 | `GET /api/v1/dashboard/summary` | `poll_observations`, `poll_options` | `pollster`, `survey_end_date`, `option_name`, `value_mid`, `verified`, `audience_scope`(national only), `source_channel`, `source_channels` |
+| 지도 Hover 최신값 | `GET /api/v1/dashboard/map-latest` | `regions`, `matchups`, `poll_options` | `region_code`, `office_type`, `title`, `value_mid`, `source_channel`, `source_channels` |
+| 빅매치 카드 | `GET /api/v1/dashboard/big-matches` | `matchups`, `poll_observations` | `matchup_id`, `title`, `survey_end_date`, `value_mid`, `source_channel`, `source_channels` |
 | 지역 검색 | `GET /api/v1/regions/search` | `regions` | `region_code`, `sido_name`, `sigungu_name` |
 | 지역별 선거 탭 | `GET /api/v1/regions/{region_code}/elections` | `matchups` | `region_code`, `office_type`, `is_active` |
 | 매치업 상세 | `GET /api/v1/matchups/{matchup_id}` | `poll_observations`, `poll_options` | `matchup_id`, `pollster`, `margin_of_error`, `value_mid`, `source_grade`, `audience_scope`, `legal_completeness_score`, `legal_filled_count`, `legal_required_count`, `source_channel`, `source_channels`, `poll_fingerprint` |
@@ -73,3 +73,4 @@
 4. 지역 선택의 기준 키는 `region_code` 단일 사용
 5. 대시보드 요약 카드는 `audience_scope='national'`로 스코프 분리된 데이터만 사용
 6. 매치업 상세는 조사 스코프(`audience_scope`)와 법정 completeness(`legal_*`)를 함께 노출
+7. 대시보드 계열 API의 `source_channels`는 null 대신 빈 배열(`[]`)을 기본값으로 노출

@@ -20,6 +20,8 @@ class FakeApiRepo:
                 "value_mid": 42.0,
                 "pollster": "KBS",
                 "survey_end_date": date(2026, 2, 18),
+                "source_channel": "nesdc",
+                "source_channels": ["article", "nesdc"],
                 "verified": True,
             },
             {
@@ -28,6 +30,8 @@ class FakeApiRepo:
                 "value_mid": 54.0,
                 "pollster": "KBS",
                 "survey_end_date": date(2026, 2, 18),
+                "source_channel": "article",
+                "source_channels": ["article"],
                 "verified": True,
             },
         ]
@@ -51,6 +55,8 @@ class FakeApiRepo:
                 "value_mid": 44.0,
                 "survey_end_date": date(2026, 2, 18),
                 "option_name": "정원오",
+                "source_channel": "nesdc",
+                "source_channels": ["article", "nesdc"],
             }
         ]
 
@@ -62,6 +68,8 @@ class FakeApiRepo:
                 "survey_end_date": date(2026, 2, 18),
                 "value_mid": 44.0,
                 "spread": 2.0,
+                "source_channel": "nesdc",
+                "source_channels": ["article", "nesdc"],
             }
         ]
 
@@ -300,6 +308,8 @@ def test_api_contract_fields():
     assert "presidential_approval" in body
     assert "option_name" in body["party_support"][0]
     assert "value_mid" in body["party_support"][0]
+    assert "source_channels" in body["party_support"][0]
+    assert body["party_support"][0]["source_channels"] == ["article", "nesdc"]
 
     regions = client.get("/api/v1/regions/search", params={"q": "서울"})
     assert regions.status_code == 200
@@ -308,10 +318,12 @@ def test_api_contract_fields():
     map_latest = client.get("/api/v1/dashboard/map-latest")
     assert map_latest.status_code == 200
     assert map_latest.json()["items"][0]["region_code"] == "11-000"
+    assert map_latest.json()["items"][0]["source_channels"] == ["article", "nesdc"]
 
     big_matches = client.get("/api/v1/dashboard/big-matches")
     assert big_matches.status_code == 200
     assert big_matches.json()["items"][0]["matchup_id"] == "20260603|광역자치단체장|11-000"
+    assert big_matches.json()["items"][0]["source_channels"] == ["article", "nesdc"]
 
     region_elections = client.get("/api/v1/regions/11-000/elections")
     assert region_elections.status_code == 200

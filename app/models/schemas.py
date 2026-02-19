@@ -27,6 +27,8 @@ class SummaryPoint(BaseModel):
     value_mid: float | None = None
     pollster: str | None = None
     survey_end_date: date | None = None
+    source_channel: Literal["article", "nesdc"] | None = None
+    source_channels: list[Literal["article", "nesdc"]] = Field(default_factory=list)
     verified: bool
 
 
@@ -43,6 +45,8 @@ class MapLatestPoint(BaseModel):
     value_mid: float | None = None
     survey_end_date: date | None = None
     option_name: str | None = None
+    source_channel: Literal["article", "nesdc"] | None = None
+    source_channels: list[Literal["article", "nesdc"]] = Field(default_factory=list)
 
 
 class DashboardMapLatestOut(BaseModel):
@@ -56,6 +60,8 @@ class BigMatchPoint(BaseModel):
     survey_end_date: date | None = None
     value_mid: float | None = None
     spread: float | None = None
+    source_channel: Literal["article", "nesdc"] | None = None
+    source_channels: list[Literal["article", "nesdc"]] = Field(default_factory=list)
 
 
 class DashboardBigMatchesOut(BaseModel):
