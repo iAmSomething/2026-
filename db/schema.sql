@@ -182,10 +182,18 @@ CREATE TABLE IF NOT EXISTS poll_options (
     value_max FLOAT NULL,
     value_mid FLOAT NULL,
     is_missing BOOLEAN NOT NULL DEFAULT FALSE,
+    party_inferred BOOLEAN NOT NULL DEFAULT FALSE,
+    party_inference_source TEXT NULL,
+    party_inference_confidence FLOAT NULL,
     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     UNIQUE (observation_id, option_type, option_name)
 );
+
+ALTER TABLE poll_options
+    ADD COLUMN IF NOT EXISTS party_inferred BOOLEAN NOT NULL DEFAULT FALSE,
+    ADD COLUMN IF NOT EXISTS party_inference_source TEXT NULL,
+    ADD COLUMN IF NOT EXISTS party_inference_confidence FLOAT NULL;
 
 CREATE TABLE IF NOT EXISTS review_queue (
     id BIGSERIAL PRIMARY KEY,

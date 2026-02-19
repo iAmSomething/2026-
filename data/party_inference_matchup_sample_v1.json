@@ -1,0 +1,50 @@
+{
+  "matchup_id": "20260603|광역자치단체장|11-000",
+  "region_code": "11-000",
+  "office_type": "광역자치단체장",
+  "title": "서울시장 가상대결",
+  "pollster": "KBS",
+  "survey_start_date": "2026-02-15",
+  "survey_end_date": "2026-02-18",
+  "confidence_level": 95.0,
+  "sample_size": 1000,
+  "response_rate": 12.3,
+  "margin_of_error": 3.1,
+  "source_grade": "B",
+  "audience_scope": "regional",
+  "audience_region_code": "11-000",
+  "sampling_population_text": "서울시 거주 만 18세 이상",
+  "legal_completeness_score": 0.86,
+  "legal_filled_count": 6,
+  "legal_required_count": 7,
+  "date_resolution": "exact",
+  "date_inference_mode": "relative_published_at",
+  "date_inference_confidence": 0.92,
+  "nesdc_enriched": true,
+  "needs_manual_review": false,
+  "poll_fingerprint": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+  "source_channel": "article",
+  "source_channels": [
+    "article",
+    "nesdc"
+  ],
+  "verified": true,
+  "options": [
+    {
+      "option_name": "정원오",
+      "value_mid": 44.0,
+      "value_raw": "44%",
+      "party_inferred": true,
+      "party_inference_source": "name_rule",
+      "party_inference_confidence": 0.86
+    },
+    {
+      "option_name": "오세훈",
+      "value_mid": 42.0,
+      "value_raw": "42%",
+      "party_inferred": false,
+      "party_inference_source": null,
+      "party_inference_confidence": null
+    }
+  ]
+}

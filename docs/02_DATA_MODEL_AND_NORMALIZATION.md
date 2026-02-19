@@ -28,7 +28,7 @@
 
 ## 1.4 `poll_options`
 - 목적: 조사 선택지(후보/문항값) 저장
-- 주요 컬럼: `id`, `observation_id`, `option_type`, `option_name`, `value_raw`, `value_min`, `value_max`, `value_mid`, `is_missing`
+- 주요 컬럼: `id`, `observation_id`, `option_type`, `option_name`, `value_raw`, `value_min`, `value_max`, `value_mid`, `is_missing`, `party_inferred`, `party_inference_source`, `party_inference_confidence`
 
 ## 1.5 `regions`
 - 목적: 시도/시군구 코드 사전
@@ -118,3 +118,8 @@
 2. `audience_scope`, `audience_region_code`도 불명확하면 `null` 저장한다.
 3. API는 DB 값을 그대로 노출하며, 결측은 `null`로 유지한다.
 4. 상대시점 추론 결과는 `date_inference_mode`, `date_inference_confidence`에 저장한다.
+
+## 10. 정당 추정 메타 정책
+1. 옵션 단위 정당 추론 결과는 `party_inferred`, `party_inference_source`, `party_inference_confidence`로 저장한다.
+2. `party_inferred=false`면 `party_inference_source`, `party_inference_confidence`는 `null` 허용이다.
+3. `party_inference_confidence < 0.8`이면 `review_queue.issue_type='party_inference_low_confidence'`로 검수 큐에 적재한다.

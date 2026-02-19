@@ -39,7 +39,17 @@ class FakeRepo:
         return 1
 
     def upsert_poll_option(self, observation_id, option):
-        self.options.add((observation_id, option["option_type"], option["option_name"], option["value_mid"]))
+        self.options.add(
+            (
+                observation_id,
+                option["option_type"],
+                option["option_name"],
+                option["value_mid"],
+                option.get("party_inferred"),
+                option.get("party_inference_source"),
+                option.get("party_inference_confidence"),
+            )
+        )
 
     def insert_review_queue(self, entity_type, entity_id, issue_type, review_note):
         self.review.append((entity_type, entity_id, issue_type, review_note))
@@ -155,3 +165,17 @@ def test_uncertain_date_inference_routes_review_and_updates_run_counters():
     assert result.status == "success"
     assert any(row[2] == "extract_error" for row in repo.review)
     assert repo.policy_counters[-1] == (result.run_id, 0, 1)
+
+
+def test_low_party_inference_confidence_routes_review_queue():
+    repo = FakeRepo()
+    payload_data = deepcopy(PAYLOAD)
+    payload_data["records"][0]["options"][0]["party_inferred"] = True
+    payload_data["records"][0]["options"][0]["party_inference_source"] = "name_rule"
+    payload_data["records"][0]["options"][0]["party_inference_confidence"] = 0.55
+    payload = IngestPayload.model_validate(payload_data)
+
+    result = ingest_payload(payload, repo)
+
+    assert result.status == "success"
+    assert any(row[2] == "party_inference_low_confidence" for row in repo.review)

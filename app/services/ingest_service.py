@@ -5,6 +5,8 @@ from app.services.errors import DuplicateConflictError
 from app.services.fingerprint import build_poll_fingerprint
 from app.services.normalization import normalize_percentage
 
+PARTY_INFERENCE_REVIEW_THRESHOLD = 0.8
+
 
 @dataclass
 class IngestResult:
@@ -82,8 +84,22 @@ def ingest_payload(payload: IngestPayload, repo) -> IngestResult:
                 ingestion_run_id=run_id,
             )
 
+            party_inference_low_confidence: list[tuple[str, float]] = []
             for option in record.options:
-                repo.upsert_poll_option(observation_id, _normalize_option(option))
+                normalized_option = _normalize_option(option)
+                repo.upsert_poll_option(observation_id, normalized_option)
+
+                confidence = normalized_option.get("party_inference_confidence")
+                if not normalized_option.get("party_inferred") or confidence is None:
+                    continue
+                try:
+                    confidence_value = float(confidence)
+                except (TypeError, ValueError):
+                    continue
+                if confidence_value < PARTY_INFERENCE_REVIEW_THRESHOLD:
+                    party_inference_low_confidence.append(
+                        (normalized_option.get("option_name", "unknown"), confidence_value)
+                    )
 
             if inference_uncertain:
                 try:
@@ -95,6 +111,17 @@ def ingest_payload(payload: IngestPayload, repo) -> IngestResult:
                             "date inference uncertainty: "
                             f"mode={inference_mode}, confidence={inference_confidence}"
                         ),
+                    )
+                except Exception:  # noqa: BLE001
+                    pass
+            if party_inference_low_confidence:
+                detail = ", ".join(f"{name}:{confidence:.2f}" for name, confidence in party_inference_low_confidence)
+                try:
+                    repo.insert_review_queue(
+                        entity_type="poll_observation",
+                        entity_id=record.observation.observation_key,
+                        issue_type="party_inference_low_confidence",
+                        review_note=f"party inference confidence below {PARTY_INFERENCE_REVIEW_THRESHOLD}: {detail}",
                     )
                 except Exception:  # noqa: BLE001
                     pass
