@@ -10,7 +10,7 @@ usage() {
   cat <<USAGE
 Usage: $0 [--report <path>]
 
-Runs API 11-endpoint contract suite with success/failure/empty/auth-failure cases.
+Runs API 12-endpoint contract suite with success/failure/empty/auth-failure cases.
 Writes JSON report (default: data/qa_api_contract_report.json).
 USAGE
 }
@@ -227,6 +227,22 @@ class FakeRepo:
         if assigned_to:
             rows = [r for r in rows if r["assigned_to"] == assigned_to]
         return rows[offset : offset + limit]
+
+    def fetch_ops_coverage_summary(self):
+        self._maybe_fail()
+        if self.mode == "empty":
+            return {
+                "regions_covered": 0,
+                "sido_covered": 0,
+                "observations_total": 0,
+                "latest_survey_end_date": None,
+            }
+        return {
+            "regions_covered": 11,
+            "sido_covered": 6,
+            "observations_total": 100,
+            "latest_survey_end_date": date(2026, 2, 19),
+        }
 
     def fetch_review_queue_stats(self, *, window_hours=24):  # noqa: ARG002
         self._maybe_fail()
@@ -505,6 +521,21 @@ def main() -> int:
     )
 
     run_case(
+        "ops_coverage_summary_success",
+        "success",
+        "GET /api/v1/ops/coverage/summary",
+        lambda: (
+            lambda r: (
+                r.status_code == 200 or (_ for _ in ()).throw(AssertionError(f"status={r.status_code}")),
+                assert_keys(
+                    r.json(),
+                    ["regions_covered", "sido_covered", "observations_total", "latest_survey_end_date"],
+                ),
+            )
+        )(make_client(FakeRepo("success")).get("/api/v1/ops/coverage/summary")),
+    )
+
+    run_case(
         "review_queue_stats_success",
         "success",
         "GET /api/v1/review-queue/stats",
@@ -625,6 +656,20 @@ def main() -> int:
                 r.json() == [] or (_ for _ in ()).throw(AssertionError("expected []")),
             )
         )(make_client(FakeRepo("empty")).get("/api/v1/review-queue/items")),
+    )
+
+    run_case(
+        "ops_coverage_summary_empty",
+        "empty",
+        "GET /api/v1/ops/coverage/summary",
+        lambda: (
+            lambda r: (
+                r.status_code == 200 or (_ for _ in ()).throw(AssertionError(f"status={r.status_code}")),
+                r.json().get("regions_covered") == 0
+                or (_ for _ in ()).throw(AssertionError("expected regions_covered=0")),
+                r.json().get("sido_covered") == 0 or (_ for _ in ()).throw(AssertionError("expected sido_covered=0")),
+            )
+        )(make_client(FakeRepo("empty")).get("/api/v1/ops/coverage/summary")),
     )
 
     run_case(

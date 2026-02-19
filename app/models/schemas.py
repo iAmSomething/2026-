@@ -137,6 +137,14 @@ class OpsMetricsSummaryOut(BaseModel):
     warnings: list[OpsWarningRuleOut]
 
 
+class OpsCoverageSummaryOut(BaseModel):
+    generated_at: datetime
+    regions_covered: int
+    sido_covered: int
+    observations_total: int
+    latest_survey_end_date: date | None = None
+
+
 class ReviewQueueItemOut(BaseModel):
     id: int
     entity_type: str
