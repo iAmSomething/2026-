@@ -108,12 +108,19 @@
 - `failure_distribution` 상위 `issue_type`
 3. `GET /api/v1/ops/coverage/summary` 호출
 4. 확인 항목:
+- `state` (`ready|partial|empty`)
+- `warning_message`
+- `regions_total`
 - `regions_covered`
 - `sido_covered`
 - `observations_total`
 - `latest_survey_end_date`
 5. 해석 기준:
 - `ops/coverage/summary` 값은 기본적으로 누적 집계(cumulative)이며, 기간 필터 없이 전체 커버리지 상태를 표시한다.
+6. 상태 규칙:
+- `empty`: `observations_total == 0`
+- `partial`: 데이터는 있으나 `regions_covered < regions_total` 또는 `regions_total` 기준 미확보
+- `ready`: `regions_total > 0` 이고 `regions_covered >= regions_total`
 
 ## 8.3 경고 규칙 (기본값)
 1. `fetch_fail_rate > 0.15` 이면 경고

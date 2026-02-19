@@ -1,0 +1,44 @@
+{
+  "captured_at": "2026-02-19T04:10:26.538063+00:00",
+  "samples": {
+    "ready": {
+      "status_code": 200,
+      "response": {
+        "generated_at": "2026-02-19T04:10:26.530347Z",
+        "state": "ready",
+        "warning_message": null,
+        "regions_total": 11,
+        "regions_covered": 11,
+        "sido_covered": 6,
+        "observations_total": 102,
+        "latest_survey_end_date": "2026-02-18"
+      }
+    },
+    "partial": {
+      "status_code": 200,
+      "response": {
+        "generated_at": "2026-02-19T04:10:26.535063Z",
+        "state": "partial",
+        "warning_message": "Coverage partial: 6/11 regions covered.",
+        "regions_total": 11,
+        "regions_covered": 6,
+        "sido_covered": 6,
+        "observations_total": 40,
+        "latest_survey_end_date": "2026-02-18"
+      }
+    },
+    "empty": {
+      "status_code": 200,
+      "response": {
+        "generated_at": "2026-02-19T04:10:26.537376Z",
+        "state": "empty",
+        "warning_message": "No observations ingested yet.",
+        "regions_total": 11,
+        "regions_covered": 0,
+        "sido_covered": 0,
+        "observations_total": 0,
+        "latest_survey_end_date": null
+      }
+    }
+  }
+}

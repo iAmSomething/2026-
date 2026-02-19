@@ -230,14 +230,30 @@ class FakeRepo:
 
     def fetch_ops_coverage_summary(self):
         self._maybe_fail()
+        if self.mode == "partial":
+            return {
+                "state": "partial",
+                "warning_message": "Coverage partial: 6/11 regions covered.",
+                "regions_total": 11,
+                "regions_covered": 6,
+                "sido_covered": 6,
+                "observations_total": 40,
+                "latest_survey_end_date": date(2026, 2, 18),
+            }
         if self.mode == "empty":
             return {
+                "state": "empty",
+                "warning_message": "No observations ingested yet.",
+                "regions_total": 11,
                 "regions_covered": 0,
                 "sido_covered": 0,
                 "observations_total": 0,
                 "latest_survey_end_date": None,
             }
         return {
+            "state": "ready",
+            "warning_message": None,
+            "regions_total": 11,
             "regions_covered": 11,
             "sido_covered": 6,
             "observations_total": 100,
@@ -529,10 +545,35 @@ def main() -> int:
                 r.status_code == 200 or (_ for _ in ()).throw(AssertionError(f"status={r.status_code}")),
                 assert_keys(
                     r.json(),
-                    ["regions_covered", "sido_covered", "observations_total", "latest_survey_end_date"],
+                    [
+                        "state",
+                        "warning_message",
+                        "regions_total",
+                        "regions_covered",
+                        "sido_covered",
+                        "observations_total",
+                        "latest_survey_end_date",
+                    ],
                 ),
+                r.json().get("state") == "ready"
+                or (_ for _ in ()).throw(AssertionError(f"unexpected state={r.json().get('state')}")),
             )
         )(make_client(FakeRepo("success")).get("/api/v1/ops/coverage/summary")),
+    )
+
+    run_case(
+        "ops_coverage_summary_partial",
+        "partial",
+        "GET /api/v1/ops/coverage/summary",
+        lambda: (
+            lambda r: (
+                r.status_code == 200 or (_ for _ in ()).throw(AssertionError(f"status={r.status_code}")),
+                r.json().get("state") == "partial"
+                or (_ for _ in ()).throw(AssertionError(f"unexpected state={r.json().get('state')}")),
+                isinstance(r.json().get("warning_message"), str)
+                or (_ for _ in ()).throw(AssertionError("warning_message should be string")),
+            )
+        )(make_client(FakeRepo("partial")).get("/api/v1/ops/coverage/summary")),
     )
 
     run_case(
@@ -665,6 +706,8 @@ def main() -> int:
         lambda: (
             lambda r: (
                 r.status_code == 200 or (_ for _ in ()).throw(AssertionError(f"status={r.status_code}")),
+                r.json().get("state") == "empty"
+                or (_ for _ in ()).throw(AssertionError(f"unexpected state={r.json().get('state')}")),
                 r.json().get("regions_covered") == 0
                 or (_ for _ in ()).throw(AssertionError("expected regions_covered=0")),
                 r.json().get("sido_covered") == 0 or (_ for _ in ()).throw(AssertionError("expected sido_covered=0")),
