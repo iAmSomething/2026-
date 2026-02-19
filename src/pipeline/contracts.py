@@ -78,6 +78,13 @@ POLL_OBSERVATION_SCHEMA: dict[str, Any] = {
         "region_code": {"type": "string"},
         "office_type": {"type": "string", "enum": list(OFFICE_TYPE_STANDARD)},
         "matchup_id": {"type": "string"},
+        "audience_scope": {"type": ["string", "null"], "enum": ["national", "regional", "local", None]},
+        "audience_region_code": {"type": ["string", "null"]},
+        "sampling_population_text": {"type": ["string", "null"]},
+        "legal_completeness_score": {"type": ["number", "null"]},
+        "legal_filled_count": {"type": ["integer", "null"]},
+        "legal_required_count": {"type": ["integer", "null"]},
+        "date_resolution": {"type": ["string", "null"]},
         "verified": {"type": "boolean"},
         "source_grade": {"type": ["string", "null"]},
         "ingestion_run_id": {"type": ["string", "null"]},
@@ -193,6 +200,13 @@ class PollObservation:
     ingestion_run_id: str | None
     evidence_text: str | None
     source_url: str
+    audience_scope: str | None = None
+    audience_region_code: str | None = None
+    sampling_population_text: str | None = None
+    legal_completeness_score: float | None = None
+    legal_filled_count: int | None = None
+    legal_required_count: int | None = None
+    date_resolution: str | None = None
 
     def to_dict(self) -> dict[str, Any]:
         return asdict(self)

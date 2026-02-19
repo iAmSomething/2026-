@@ -22,6 +22,13 @@ def test_collector_output_converts_to_ingest_payload():
     )
     output.articles.append(article)
     obs, opts, errs = collector.extract(article)
+    obs[0].audience_scope = "regional"
+    obs[0].audience_region_code = "11-000"
+    obs[0].sampling_population_text = "서울 성인"
+    obs[0].legal_completeness_score = 0.71
+    obs[0].legal_filled_count = 5
+    obs[0].legal_required_count = 7
+    obs[0].date_resolution = "exact"
     output.poll_observations.extend(obs)
     output.poll_options.extend(opts)
     output.review_queue.extend(errs)
@@ -32,3 +39,5 @@ def test_collector_output_converts_to_ingest_payload():
     assert parsed.records[0].observation.office_type == "광역자치단체장"
     assert parsed.records[0].region is not None
     assert parsed.records[0].region.region_code == "11-000"
+    assert parsed.records[0].observation.audience_scope == "regional"
+    assert parsed.records[0].observation.legal_required_count == 7

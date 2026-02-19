@@ -88,6 +88,13 @@ class FakeApiRepo:
             "survey_end_date": date(2026, 2, 18),
             "margin_of_error": 3.1,
             "source_grade": "B",
+            "audience_scope": "regional",
+            "audience_region_code": "11-000",
+            "sampling_population_text": "서울시 거주 만 18세 이상",
+            "legal_completeness_score": 0.86,
+            "legal_filled_count": 6,
+            "legal_required_count": 7,
+            "date_resolution": "exact",
             "verified": True,
             "options": [
                 {"option_name": "정원오", "value_mid": 44.0, "value_raw": "44%"},
@@ -310,6 +317,8 @@ def test_api_contract_fields():
     matchup = client.get("/api/v1/matchups/20260603|광역자치단체장|11-000")
     assert matchup.status_code == 200
     assert matchup.json()["options"][0]["option_name"] == "정원오"
+    assert matchup.json()["audience_scope"] == "regional"
+    assert matchup.json()["legal_required_count"] == 7
 
     candidate = client.get("/api/v1/candidates/cand-jwo")
     assert candidate.status_code == 200
