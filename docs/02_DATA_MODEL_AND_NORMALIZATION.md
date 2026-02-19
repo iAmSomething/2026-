@@ -19,9 +19,11 @@
 - 주요 컬럼:
 - `id`, `survey_name`, `pollster`, `survey_start_date`, `survey_end_date`
 - `sample_size`, `response_rate`, `margin_of_error`
+- `sponsor`, `method`
 - `region_code`, `office_type`, `matchup_id`, `verified`, `source_grade`, `ingestion_run_id`
 - `audience_scope`(`national|regional|local`), `audience_region_code`, `sampling_population_text`
 - `legal_completeness_score`, `legal_filled_count`, `legal_required_count`, `date_resolution`
+- `poll_fingerprint`, `source_channel`(`article|nesdc`)
 
 ## 1.4 `poll_options`
 - 목적: 조사 선택지(후보/문항값) 저장
@@ -97,3 +99,9 @@
 1. `GET /api/v1/dashboard/summary`는 `audience_scope='national'` 데이터만 집계한다.
 2. 레거시 데이터 호환을 위해 `audience_scope IS NULL`도 임시 포함한다.
 3. `audience_scope='regional'|'local'` 관측치는 요약 집계에서 제외한다.
+
+## 7. 중복제어(fingerprint) 규칙
+1. fingerprint 기본 입력: `pollster`, `sponsor`, `survey_start_date`, `survey_end_date`, `region_code(or region_text)`, `sample_size`, `method`
+2. 입력 정규화 후 `sha256`으로 `poll_fingerprint` 생성해 저장한다.
+3. 동일 fingerprint 다중 소스 병합 시 메타 필드는 `nesdc` 우선, 문맥(기사 제목 기반 `survey_name`)은 `article` 보강 우선으로 적용한다.
+4. 동일 fingerprint에서 핵심 식별 필드 충돌 시 `review_queue.issue_type='DUPLICATE_CONFLICT'`로 분기한다.

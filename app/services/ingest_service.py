@@ -1,6 +1,8 @@
 from dataclasses import dataclass
 
 from app.models.schemas import IngestPayload, PollOptionInput
+from app.services.errors import DuplicateConflictError
+from app.services.fingerprint import build_poll_fingerprint
 from app.services.normalization import normalize_percentage
 
 
@@ -56,8 +58,11 @@ def ingest_payload(payload: IngestPayload, repo) -> IngestResult:
                 repo.upsert_candidate(candidate.model_dump())
 
             article_id = repo.upsert_article(record.article.model_dump())
+            observation_payload = record.observation.model_dump()
+            if not observation_payload.get("poll_fingerprint"):
+                observation_payload["poll_fingerprint"] = build_poll_fingerprint(observation_payload)
             observation_id = repo.upsert_poll_observation(
-                record.observation.model_dump(),
+                observation_payload,
                 article_id=article_id,
                 ingestion_run_id=run_id,
             )
@@ -71,11 +76,14 @@ def ingest_payload(payload: IngestPayload, repo) -> IngestResult:
             rollback = getattr(repo, "rollback", None)
             if callable(rollback):
                 rollback()
+            issue_type = "ingestion_error"
+            if isinstance(exc, DuplicateConflictError):
+                issue_type = "DUPLICATE_CONFLICT"
             try:
                 repo.insert_review_queue(
                     entity_type="ingest_record",
                     entity_id=record.observation.observation_key,
-                    issue_type="ingestion_error",
+                    issue_type=issue_type,
                     review_note=str(exc),
                 )
             except Exception:  # noqa: BLE001

@@ -1,0 +1,27 @@
+{
+  "scenario": "article_nesdc_mixed_ingest_v1",
+  "generated_at": "2026-02-19T05:40:00Z",
+  "inputs": {
+    "source_channels": ["article", "nesdc"],
+    "reingest_rounds": 2,
+    "fingerprint_basis": [
+      "pollster",
+      "sponsor",
+      "survey_start_date",
+      "survey_end_date",
+      "region_code_or_region_text",
+      "sample_size",
+      "method"
+    ]
+  },
+  "results": {
+    "observation_count_after_first_ingest": 1,
+    "observation_count_after_second_ingest": 1,
+    "duplicate_increase": 0,
+    "duplicate_conflict_review_queue_count": 1,
+    "policy": {
+      "metadata_priority": "nesdc",
+      "context_priority": "article"
+    }
+  }
+}

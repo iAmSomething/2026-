@@ -1,5 +1,8 @@
 from datetime import date
 
+from app.services.errors import DuplicateConflictError
+from app.services.fingerprint import merge_observation_by_priority
+
 
 class PostgresRepository:
     def __init__(self, conn):
@@ -101,7 +104,28 @@ class PostgresRepository:
         self.conn.commit()
         return article_id
 
-    def upsert_poll_observation(self, observation: dict, article_id: int, ingestion_run_id: int) -> int:
+    def _find_observation_by_fingerprint(self, poll_fingerprint: str) -> dict | None:
+        with self.conn.cursor() as cur:
+            cur.execute(
+                """
+                SELECT
+                    id, observation_key, article_id, survey_name, pollster, sponsor,
+                    survey_start_date, survey_end_date, sample_size, response_rate,
+                    margin_of_error, method, region_code, office_type, matchup_id,
+                    audience_scope, audience_region_code, sampling_population_text,
+                    legal_completeness_score, legal_filled_count, legal_required_count,
+                    date_resolution, poll_fingerprint, source_channel,
+                    verified, source_grade, ingestion_run_id
+                FROM poll_observations
+                WHERE poll_fingerprint = %s
+                ORDER BY id DESC
+                LIMIT 1
+                """,
+                (poll_fingerprint,),
+            )
+            return cur.fetchone()
+
+    def _prepare_observation_payload(self, observation: dict, article_id: int, ingestion_run_id: int) -> dict:
         payload = dict(observation)
         payload["article_id"] = article_id
         payload["ingestion_run_id"] = ingestion_run_id
@@ -112,6 +136,20 @@ class PostgresRepository:
         payload.setdefault("legal_filled_count", None)
         payload.setdefault("legal_required_count", None)
         payload.setdefault("date_resolution", None)
+        payload.setdefault("poll_fingerprint", None)
+        payload.setdefault("source_channel", "article")
+        payload.setdefault("sponsor", None)
+        payload.setdefault("method", None)
+        return payload
+
+    def upsert_poll_observation(self, observation: dict, article_id: int, ingestion_run_id: int) -> int:
+        payload = self._prepare_observation_payload(observation, article_id, ingestion_run_id)
+        if payload["poll_fingerprint"]:
+            existing = self._find_observation_by_fingerprint(payload["poll_fingerprint"])
+            if existing:
+                payload = merge_observation_by_priority(existing=existing, incoming=payload)
+                if not payload.get("observation_key"):
+                    raise DuplicateConflictError("DUPLICATE_CONFLICT missing observation_key after merge")
 
         with self.conn.cursor() as cur:
             cur.execute(
@@ -119,20 +157,22 @@ class PostgresRepository:
                 INSERT INTO poll_observations (
                     observation_key, article_id, survey_name, pollster,
                     survey_start_date, survey_end_date, sample_size,
-                    response_rate, margin_of_error, region_code,
+                    response_rate, margin_of_error, sponsor, method, region_code,
                     office_type, matchup_id, audience_scope, audience_region_code,
                     sampling_population_text, legal_completeness_score,
                     legal_filled_count, legal_required_count, date_resolution,
+                    poll_fingerprint, source_channel,
                     verified, source_grade,
                     ingestion_run_id
                 )
                 VALUES (
                     %(observation_key)s, %(article_id)s, %(survey_name)s, %(pollster)s,
                     %(survey_start_date)s, %(survey_end_date)s, %(sample_size)s,
-                    %(response_rate)s, %(margin_of_error)s, %(region_code)s,
+                    %(response_rate)s, %(margin_of_error)s, %(sponsor)s, %(method)s, %(region_code)s,
                     %(office_type)s, %(matchup_id)s, %(audience_scope)s, %(audience_region_code)s,
                     %(sampling_population_text)s, %(legal_completeness_score)s,
                     %(legal_filled_count)s, %(legal_required_count)s, %(date_resolution)s,
+                    %(poll_fingerprint)s, %(source_channel)s,
                     %(verified)s, %(source_grade)s,
                     %(ingestion_run_id)s
                 )
@@ -145,6 +185,8 @@ class PostgresRepository:
                     sample_size=EXCLUDED.sample_size,
                     response_rate=EXCLUDED.response_rate,
                     margin_of_error=EXCLUDED.margin_of_error,
+                    sponsor=EXCLUDED.sponsor,
+                    method=EXCLUDED.method,
                     region_code=EXCLUDED.region_code,
                     office_type=EXCLUDED.office_type,
                     matchup_id=EXCLUDED.matchup_id,
@@ -155,6 +197,12 @@ class PostgresRepository:
                     legal_filled_count=EXCLUDED.legal_filled_count,
                     legal_required_count=EXCLUDED.legal_required_count,
                     date_resolution=EXCLUDED.date_resolution,
+                    poll_fingerprint=COALESCE(poll_observations.poll_fingerprint, EXCLUDED.poll_fingerprint),
+                    source_channel=CASE
+                        WHEN poll_observations.source_channel = 'nesdc' OR EXCLUDED.source_channel = 'nesdc'
+                            THEN 'nesdc'
+                        ELSE EXCLUDED.source_channel
+                    END,
                     verified=EXCLUDED.verified,
                     source_grade=EXCLUDED.source_grade,
                     ingestion_run_id=EXCLUDED.ingestion_run_id,
@@ -447,6 +495,8 @@ class PostgresRepository:
                     o.legal_filled_count,
                     o.legal_required_count,
                     o.date_resolution,
+                    o.poll_fingerprint,
+                    o.source_channel,
                     o.verified,
                     o.id AS observation_id
                 FROM poll_observations o
@@ -488,6 +538,8 @@ class PostgresRepository:
             "legal_filled_count": row["legal_filled_count"],
             "legal_required_count": row["legal_required_count"],
             "date_resolution": row["date_resolution"],
+            "poll_fingerprint": row["poll_fingerprint"],
+            "source_channel": row["source_channel"],
             "verified": row["verified"],
             "options": options,
         }

@@ -93,6 +93,8 @@ class MatchupOut(BaseModel):
     legal_filled_count: int | None = None
     legal_required_count: int | None = None
     date_resolution: str | None = None
+    poll_fingerprint: str | None = None
+    source_channel: Literal["article", "nesdc"] | None = None
     verified: bool
     options: list[MatchupOptionOut]
 
@@ -240,6 +242,8 @@ class PollObservationInput(BaseModel):
     sample_size: int | None = None
     response_rate: float | None = None
     margin_of_error: float | None = None
+    sponsor: str | None = None
+    method: str | None = None
     region_code: str
     office_type: str
     matchup_id: str
@@ -250,6 +254,8 @@ class PollObservationInput(BaseModel):
     legal_filled_count: int | None = None
     legal_required_count: int | None = None
     date_resolution: str | None = None
+    poll_fingerprint: str | None = None
+    source_channel: Literal["article", "nesdc"] = "article"
     verified: bool = False
     source_grade: str = "C"
 
