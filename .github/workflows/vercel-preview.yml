@@ -73,10 +73,11 @@ jobs:
 
       - name: Deploy preview to Vercel
         id: deploy
-        working-directory: ${{ inputs.root_dir }}
         run: |
           set -o pipefail
           DEPLOY_LOG=/tmp/vercel-preview-deploy.log
+          # Deploy from repository root to avoid rootDirectory double-appending
+          # when the Vercel project itself already has rootDirectory configured.
           npx vercel@latest deploy \
             --yes \
             --token "$VERCEL_TOKEN" \
@@ -96,8 +97,31 @@ jobs:
         id: verify
         run: |
           PREVIEW_URL="${{ steps.deploy.outputs.preview_url }}"
-          curl -fsSL "$PREVIEW_URL" -o /tmp/vercel-preview-home.html
-          echo "verified=true" >> "$GITHUB_OUTPUT"
+          status_code=""
+          for _ in $(seq 1 10); do
+            status_code=$(curl -sS -o /tmp/vercel-preview-home.html -w "%{http_code}" "$PREVIEW_URL" || true)
+            if [ "$status_code" = "200" ] || [ "$status_code" = "301" ] || [ "$status_code" = "302" ] || [ "$status_code" = "307" ] || [ "$status_code" = "308" ] || [ "$status_code" = "401" ]; then
+              break
+            fi
+            sleep 3
+          done
+
+          if [ "$status_code" = "401" ]; then
+            echo "verified=true" >> "$GITHUB_OUTPUT"
+            echo "access_mode=auth_gated" >> "$GITHUB_OUTPUT"
+            echo "status_code=$status_code" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          if [ "$status_code" = "200" ] || [ "$status_code" = "301" ] || [ "$status_code" = "302" ] || [ "$status_code" = "307" ] || [ "$status_code" = "308" ]; then
+            echo "verified=true" >> "$GITHUB_OUTPUT"
+            echo "access_mode=public" >> "$GITHUB_OUTPUT"
+            echo "status_code=$status_code" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          echo "::error::Preview URL accessibility check failed (status_code=${status_code:-none})"
+          exit 1
 
       - name: Comment preview URL to issue
         if: ${{ success() && env.ISSUE_NUMBER != '' }}
@@ -108,6 +132,8 @@ jobs:
             const previewUrl = "${{ steps.deploy.outputs.preview_url }}";
             const rootDir = process.env.ROOT_DIR;
             const runUrl = `${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
+            const accessMode = "${{ steps.verify.outputs.access_mode }}";
+            const statusCode = "${{ steps.verify.outputs.status_code }}";
             await github.rest.issues.createComment({
               owner: context.repo.owner,
               repo: context.repo.repo,
@@ -118,8 +144,10 @@ jobs:
                 `- root_dir: ${rootDir}`,
                 `- preview_url: ${previewUrl}`,
                 `- action_run: ${runUrl}`,
+                `- access_mode: ${accessMode}`,
+                `- status_code: ${statusCode}`,
                 "",
-                "Access verification: curl success"
+                "Access verification: curl status check"
               ].join("\n")
             });
 
