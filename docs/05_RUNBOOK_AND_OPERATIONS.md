@@ -243,3 +243,27 @@ python -m app.jobs.bootstrap_ingest --input data/bootstrap_ingest_coverage_v2.js
 - `idempotent_check.delta.regions_covered == 0`
 - `idempotent_check.delta.sido_covered == 0`
 - `idempotent_check.delta.observations_total == 0`
+
+## 14. 웹 RC 체크리스트 (Issue #123)
+1. 준비 변수:
+```bash
+WEB_URL="https://2026-deploy.vercel.app"
+API_BASE="<공개 API Base URL>"
+```
+2. URL 접근(200) 확인:
+```bash
+curl -sS -o /tmp/web_rc_home.html -w "%{http_code}\n" "$WEB_URL"
+```
+3. 홈 렌더 핵심 문자열 확인:
+```bash
+rg -n "Election 2026 Staging|API Base|summary fetch failed" /tmp/web_rc_home.html
+```
+4. API 3개 연동 확인(200 기대):
+```bash
+curl -sS -o /tmp/web_rc_summary.json -w "%{http_code}\n" "$API_BASE/api/v1/dashboard/summary"
+curl -sS -o /tmp/web_rc_regions.json -w "%{http_code}\n" "$API_BASE/api/v1/regions/search?query=%EC%84%9C%EC%9A%B8"
+curl -sS -o /tmp/web_rc_candidate.json -w "%{http_code}\n" "$API_BASE/api/v1/candidates/cand-jwo"
+```
+5. fallback/오류 표시 확인:
+- `summary fetch failed`가 보이면 web이 정상적으로 오류 fallback을 렌더링한 상태다.
+- 스테이징/공개 환경에서는 `API_BASE`를 `127.0.0.1`이 아닌 실제 API URL로 지정해야 연동 성공 상태를 확인할 수 있다.

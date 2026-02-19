@@ -10,11 +10,9 @@ on:
         type: choice
         options:
           - apps/staging-web
-          - apps/web
       issue_number:
         description: "Issue number to post preview URL"
         required: true
-        default: "92"
         type: string
 
 permissions:
