@@ -310,7 +310,15 @@ class PostgresRepository:
                   {as_of_filter}
                 GROUP BY po.option_type
             )
-            SELECT po.option_type, po.option_name, po.value_mid, o.pollster, o.survey_end_date, o.verified
+            SELECT
+                po.option_type,
+                po.option_name,
+                po.value_mid,
+                o.pollster,
+                o.survey_end_date,
+                o.source_channel,
+                COALESCE(o.source_channels, CASE WHEN o.source_channel IS NULL THEN ARRAY[]::text[] ELSE ARRAY[o.source_channel] END) AS source_channels,
+                o.verified
             FROM poll_options po
             JOIN poll_observations o ON o.id = po.observation_id
             JOIN latest l ON l.option_type = po.option_type AND l.max_date = o.survey_end_date
@@ -342,6 +350,11 @@ class PostgresRepository:
                     po.option_name,
                     po.value_mid,
                     o.survey_end_date,
+                    o.source_channel,
+                    COALESCE(
+                        o.source_channels,
+                        CASE WHEN o.source_channel IS NULL THEN ARRAY[]::text[] ELSE ARRAY[o.source_channel] END
+                    ) AS source_channels,
                     ROW_NUMBER() OVER (
                         PARTITION BY o.region_code, o.office_type
                         ORDER BY o.survey_end_date DESC NULLS LAST,
@@ -362,7 +375,9 @@ class PostgresRepository:
                 COALESCE(m.title, r.matchup_id) AS title,
                 r.value_mid,
                 r.survey_end_date,
-                r.option_name
+                r.option_name,
+                r.source_channel,
+                r.source_channels
             FROM ranked r
             LEFT JOIN matchups m ON m.matchup_id = r.matchup_id
             WHERE r.rn = 1
@@ -388,6 +403,11 @@ class PostgresRepository:
                     o.id,
                     o.matchup_id,
                     o.survey_end_date,
+                    o.source_channel,
+                    COALESCE(
+                        o.source_channels,
+                        CASE WHEN o.source_channel IS NULL THEN ARRAY[]::text[] ELSE ARRAY[o.source_channel] END
+                    ) AS source_channels,
                     ROW_NUMBER() OVER (
                         PARTITION BY o.matchup_id
                         ORDER BY o.survey_end_date DESC NULLS LAST, o.id DESC
@@ -398,6 +418,7 @@ class PostgresRepository:
             ),
             ranked_options AS (
                 SELECT
+                    lo.id AS observation_id,
                     lo.matchup_id,
                     lo.survey_end_date,
                     po.value_mid,
@@ -413,21 +434,25 @@ class PostgresRepository:
             ),
             scored AS (
                 SELECT
+                    observation_id,
                     matchup_id,
                     survey_end_date,
                     MAX(value_mid) FILTER (WHERE option_rank = 1) AS value_mid,
                     MAX(value_mid) FILTER (WHERE option_rank = 1)
                       - MAX(value_mid) FILTER (WHERE option_rank = 2) AS spread
                 FROM ranked_options
-                GROUP BY matchup_id, survey_end_date
+                GROUP BY observation_id, matchup_id, survey_end_date
             )
             SELECT
                 s.matchup_id,
                 COALESCE(m.title, s.matchup_id) AS title,
                 s.survey_end_date,
                 s.value_mid,
-                s.spread
+                s.spread,
+                lo.source_channel,
+                lo.source_channels
             FROM scored s
+            JOIN latest_obs lo ON lo.id = s.observation_id
             LEFT JOIN matchups m ON m.matchup_id = s.matchup_id
             ORDER BY s.spread ASC NULLS LAST, s.survey_end_date DESC NULLS LAST, s.matchup_id
             LIMIT %s

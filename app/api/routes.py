@@ -49,6 +49,8 @@ def get_dashboard_summary(
             value_mid=row["value_mid"],
             pollster=row["pollster"],
             survey_end_date=row["survey_end_date"],
+            source_channel=row.get("source_channel"),
+            source_channels=row.get("source_channels") or [],
             verified=row["verified"],
         )
         if row["option_type"] == "party_support":
