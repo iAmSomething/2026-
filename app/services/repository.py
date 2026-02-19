@@ -333,7 +333,7 @@ class PostgresRepository:
         if as_of is not None:
             as_of_filter = "AND o.survey_end_date <= %s"
             params.append(as_of)
-        scope_filter = "AND (o.audience_scope = 'national' OR o.audience_scope IS NULL)"
+        scope_filter = "AND o.audience_scope = 'national'"
 
         query = f"""
             WITH latest AS (
@@ -352,6 +352,7 @@ class PostgresRepository:
                 po.value_mid,
                 o.pollster,
                 o.survey_end_date,
+                o.audience_scope,
                 o.source_channel,
                 COALESCE(o.source_channels, CASE WHEN o.source_channel IS NULL THEN ARRAY[]::text[] ELSE ARRAY[o.source_channel] END) AS source_channels,
                 o.verified
@@ -386,6 +387,7 @@ class PostgresRepository:
                     po.option_name,
                     po.value_mid,
                     o.survey_end_date,
+                    o.audience_scope,
                     o.source_channel,
                     COALESCE(
                         o.source_channels,
@@ -412,6 +414,7 @@ class PostgresRepository:
                 r.value_mid,
                 r.survey_end_date,
                 r.option_name,
+                r.audience_scope,
                 r.source_channel,
                 r.source_channels
             FROM ranked r
@@ -439,6 +442,7 @@ class PostgresRepository:
                     o.id,
                     o.matchup_id,
                     o.survey_end_date,
+                    o.audience_scope,
                     o.source_channel,
                     COALESCE(
                         o.source_channels,
@@ -485,6 +489,7 @@ class PostgresRepository:
                 s.survey_end_date,
                 s.value_mid,
                 s.spread,
+                lo.audience_scope,
                 lo.source_channel,
                 lo.source_channels
             FROM scored s

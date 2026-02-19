@@ -37,7 +37,7 @@ def test_dashboard_summary_query_filters_regional_scope():
 
     assert len(conn._cursor.executed) == 1
     query, params = conn._cursor.executed[0]
-    scope_filter = "(o.audience_scope = 'national' OR o.audience_scope IS NULL)"
+    scope_filter = "o.audience_scope = 'national'"
     assert query.count(scope_filter) >= 2
     assert params == [date(2026, 2, 19)]
 
@@ -49,5 +49,6 @@ def test_dashboard_summary_query_filters_scope_without_as_of():
     repo.fetch_dashboard_summary(as_of=None)
 
     query, params = conn._cursor.executed[0]
-    assert "(o.audience_scope = 'national' OR o.audience_scope IS NULL)" in query
+    assert "o.audience_scope = 'national'" in query
+    assert "o.audience_scope IS NULL" not in query
     assert params == []

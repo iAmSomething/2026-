@@ -98,8 +98,9 @@
 
 ## 6. 스코프 분리 집계 규칙
 1. `GET /api/v1/dashboard/summary`는 `audience_scope='national'` 데이터만 집계한다.
-2. 레거시 데이터 호환을 위해 `audience_scope IS NULL`도 임시 포함한다.
-3. `audience_scope='regional'|'local'` 관측치는 요약 집계에서 제외한다.
+2. `audience_scope IS NULL` 관측치는 summary 집계에서 제외한다.
+3. `audience_scope='regional'|'local'` 관측치는 summary 집계에서 제외한다.
+4. `GET /api/v1/dashboard/summary`, `GET /api/v1/dashboard/map-latest`, `GET /api/v1/dashboard/big-matches`는 `scope_breakdown`을 함께 노출한다.
 
 ## 7. 중복제어(fingerprint) 규칙
 1. fingerprint 기본 입력: `pollster`, `sponsor`, `survey_start_date`, `survey_end_date`, `region_code(or region_text)`, `sample_size`, `method`
