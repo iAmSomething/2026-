@@ -14,7 +14,16 @@ upsert_label() {
   fi
 }
 
-echo "[1/3] labels setup for $REPO"
+upsert_variable() {
+  local name="$1" value="$2"
+  if gh variable set "$name" --repo "$REPO" --body "$value" >/dev/null 2>&1; then
+    echo "upserted variable: $name=$value"
+  else
+    echo "skip variable setup: $name (missing repo variable permission)"
+  fi
+}
+
+echo "[1/4] labels setup for $REPO"
 upsert_label "role/uiux" "1d76db" "UIUX owner"
 upsert_label "role/collector" "5319e7" "Collector owner"
 upsert_label "role/develop" "0e8a16" "Develop owner"
@@ -34,7 +43,7 @@ upsert_label "type/task" "a2eeef" "Task"
 upsert_label "type/bug" "d73a4a" "Bug"
 upsert_label "type/chore" "cfd3d7" "Chore"
 
-echo "[2/3] milestone setup"
+echo "[2/4] milestone setup"
 if gh api "repos/$REPO/milestones" --jq '.[].title' | grep -Fx "Sprint-Week1-MVP" >/dev/null 2>&1; then
   echo "milestone exists: Sprint-Week1-MVP"
 else
@@ -42,7 +51,7 @@ else
   echo "created milestone: Sprint-Week1-MVP"
 fi
 
-echo "[3/3] project setup (optional, requires read:project/project scopes)"
+echo "[3/4] project setup (optional, requires read:project/project scopes)"
 if gh project list --owner "$OWNER" >/dev/null 2>&1; then
   if gh project list --owner "$OWNER" | grep -F "Election 2026 Delivery" >/dev/null 2>&1; then
     echo "project exists: Election 2026 Delivery"
@@ -54,5 +63,9 @@ else
   echo "skip project setup: missing project scopes"
   echo "run: gh auth refresh -s read:project -s project"
 fi
+
+echo "[4/4] PM cycle default variables"
+upsert_variable "PM_CYCLE_MODE" "dry-run"
+upsert_variable "PM_CYCLE_MAX_CREATE" "4"
 
 echo "bootstrap complete"
