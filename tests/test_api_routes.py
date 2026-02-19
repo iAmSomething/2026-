@@ -135,6 +135,14 @@ class FakeApiRepo:
             {"issue_type": "value_conflict", "count": 2, "ratio": 0.5},
         ]
 
+    def fetch_ops_coverage_summary(self):
+        return {
+            "regions_covered": 11,
+            "sido_covered": 6,
+            "observations_total": 100,
+            "latest_survey_end_date": date(2026, 2, 19),
+        }
+
     def fetch_review_queue_items(  # noqa: ARG002
         self,
         *,
@@ -312,6 +320,14 @@ def test_api_contract_fields():
     assert "review_queue" in ops_body
     assert isinstance(ops_body["warnings"], list)
     assert len(ops_body["warnings"]) >= 2
+
+    coverage = client.get("/api/v1/ops/coverage/summary")
+    assert coverage.status_code == 200
+    coverage_body = coverage.json()
+    assert coverage_body["regions_covered"] == 11
+    assert coverage_body["sido_covered"] == 6
+    assert coverage_body["observations_total"] == 100
+    assert coverage_body["latest_survey_end_date"] == "2026-02-19"
 
     review_items = client.get(
         "/api/v1/review-queue/items",

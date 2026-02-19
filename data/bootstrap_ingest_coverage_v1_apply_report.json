@@ -1,0 +1,915 @@
+{
+  "started_at": "2026-02-19T00:47:27.930306+00:00",
+  "finished_at": "2026-02-19T00:54:41.807837+00:00",
+  "input_path": "data/bootstrap_ingest_coverage_v1.json",
+  "payload_count": 1,
+  "run_count": 100,
+  "total": 100,
+  "success": 100,
+  "fail": 0,
+  "review_queue_count": 0,
+  "review_queue_total_before": 1,
+  "review_queue_total_after": 1,
+  "runs": [
+    {
+      "index": 1,
+      "run_id": 48,
+      "status": "success",
+      "processed_count": 1,
+      "error_count": 0,
+      "observation_key": "obs_489ff68fb2dafbc0",
+      "region_code": "41-110"
+    },
+    {
+      "index": 2,
+      "run_id": 49,
+      "status": "success",
+      "processed_count": 1,
+      "error_count": 0,
+      "observation_key": "obs_084117f3d6b181e2",
+      "region_code": "11-000"
+    },
+    {
+      "index": 3,
+      "run_id": 50,
+      "status": "success",
+      "processed_count": 1,
+      "error_count": 0,
+      "observation_key": "obs_7525ce175a11ee59",
+      "region_code": "41-130"
+    },
+    {
+      "index": 4,
+      "run_id": 51,
+      "status": "success",
+      "processed_count": 1,
+      "error_count": 0,
+      "observation_key": "obs_512c6cae551864f4",
+      "region_code": "26-000"
+    },
+    {
+      "index": 5,
+      "run_id": 52,
+      "status": "success",
+      "processed_count": 1,
+      "error_count": 0,
+      "observation_key": "obs_2e41bd6b1ec8b80a",
+      "region_code": "41-190"
+    },
+    {
+      "index": 6,
+      "run_id": 53,
+      "status": "success",
+      "processed_count": 1,
+      "error_count": 0,
+      "observation_key": "obs_fb4c3cc57459282e",
+      "region_code": "27-000"
+    },
+    {
+      "index": 7,
+      "run_id": 54,
+      "status": "success",
+      "processed_count": 1,
+      "error_count": 0,
+      "observation_key": "obs_78dbdd7a3e2d2651",
+      "region_code": "41-280"
+    },
+    {
+      "index": 8,
+      "run_id": 55,
+      "status": "success",
+      "processed_count": 1,
+      "error_count": 0,
+      "observation_key": "obs_8dc5d149038ab97c",
+      "region_code": "28-000"
+    },
+    {
+      "index": 9,
+      "run_id": 56,
+      "status": "success",
+      "processed_count": 1,
+      "error_count": 0,
+      "observation_key": "obs_37357a49d3df78dc",
+      "region_code": "41-390"
+    },
+    {
+      "index": 10,
+      "run_id": 57,
+      "status": "success",
+      "processed_count": 1,
+      "error_count": 0,
+      "observation_key": "obs_572bfc78b5bbbde8",
+      "region_code": "41-000"
+    },
+    {
+      "index": 11,
+      "run_id": 58,
+      "status": "success",
+      "processed_count": 1,
+      "error_count": 0,
+      "observation_key": "obs_f9afaba79646b472",
+      "region_code": "50-000"
+    },
+    {
+      "index": 12,
+      "run_id": 59,
+      "status": "success",
+      "processed_count": 1,
+      "error_count": 0,
+      "observation_key": "obs_44aa4b0a9fb6f66b",
+      "region_code": "41-390"
+    },
+    {
+      "index": 13,
+      "run_id": 60,
+      "status": "success",
+      "processed_count": 1,
+      "error_count": 0,
+      "observation_key": "obs_ed8ee9abbaa590b1",
+      "region_code": "11-000"
+    },
+    {
+      "index": 14,
+      "run_id": 61,
+      "status": "success",
+      "processed_count": 1,
+      "error_count": 0,
+      "observation_key": "obs_11efcf275fca1d5c",
+      "region_code": "41-110"
+    },
+    {
+      "index": 15,
+      "run_id": 62,
+      "status": "success",
+      "processed_count": 1,
+      "error_count": 0,
+      "observation_key": "obs_ab61646857088d53",
+      "region_code": "26-000"
+    },
+    {
+      "index": 16,
+      "run_id": 63,
+      "status": "success",
+      "processed_count": 1,
+      "error_count": 0,
+      "observation_key": "obs_75fb77026153cb0a",
+      "region_code": "41-280"
+    },
+    {
+      "index": 17,
+      "run_id": 64,
+      "status": "success",
+      "processed_count": 1,
+      "error_count": 0,
+      "observation_key": "obs_24053e4b0d75f7b5",
+      "region_code": "28-000"
+    },
+    {
+      "index": 18,
+      "run_id": 65,
+      "status": "success",
+      "processed_count": 1,
+      "error_count": 0,
+      "observation_key": "obs_00f8c97460aa0e42",
+      "region_code": "41-130"
+    },
+    {
+      "index": 19,
+      "run_id": 66,
+      "status": "success",
+      "processed_count": 1,
+      "error_count": 0,
+      "observation_key": "obs_9585f48c0bf87e0e",
+      "region_code": "41-000"
+    },
+    {
+      "index": 20,
+      "run_id": 67,
+      "status": "success",
+      "processed_count": 1,
+      "error_count": 0,
+      "observation_key": "obs_0d20d8304a4b6428",
+      "region_code": "50-000"
+    },
+    {
+      "index": 21,
+      "run_id": 68,
+      "status": "success",
+      "processed_count": 1,
+      "error_count": 0,
+      "observation_key": "obs_96a994d5bb391ed1",
+      "region_code": "41-280"
+    },
+    {
+      "index": 22,
+      "run_id": 69,
+      "status": "success",
+      "processed_count": 1,
+      "error_count": 0,
+      "observation_key": "obs_d65c06ae87814c64",
+      "region_code": "41-390"
+    },
+    {
+      "index": 23,
+      "run_id": 70,
+      "status": "success",
+      "processed_count": 1,
+      "error_count": 0,
+      "observation_key": "obs_2be4f894e2820634",
+      "region_code": "11-000"
+    },
+    {
+      "index": 24,
+      "run_id": 71,
+      "status": "success",
+      "processed_count": 1,
+      "error_count": 0,
+      "observation_key": "obs_e70c8061fd7b937f",
+      "region_code": "26-000"
+    },
+    {
+      "index": 25,
+      "run_id": 72,
+      "status": "success",
+      "processed_count": 1,
+      "error_count": 0,
+      "observation_key": "obs_214da106a69e014b",
+      "region_code": "28-000"
+    },
+    {
+      "index": 26,
+      "run_id": 73,
+      "status": "success",
+      "processed_count": 1,
+      "error_count": 0,
+      "observation_key": "obs_33d4b6ec61f229c7",
+      "region_code": "41-000"
+    },
+    {
+      "index": 27,
+      "run_id": 74,
+      "status": "success",
+      "processed_count": 1,
+      "error_count": 0,
+      "observation_key": "obs_55381756f14e673e",
+      "region_code": "50-000"
+    },
+    {
+      "index": 28,
+      "run_id": 75,
+      "status": "success",
+      "processed_count": 1,
+      "error_count": 0,
+      "observation_key": "obs_30a6d98465877ef2",
+      "region_code": "41-280"
+    },
+    {
+      "index": 29,
+      "run_id": 76,
+      "status": "success",
+      "processed_count": 1,
+      "error_count": 0,
+      "observation_key": "obs_4f004e588297ba1d",
+      "region_code": "41-390"
+    },
+    {
+      "index": 30,
+      "run_id": 77,
+      "status": "success",
+      "processed_count": 1,
+      "error_count": 0,
+      "observation_key": "obs_d20835f6e41986c0",
+      "region_code": "11-000"
+    },
+    {
+      "index": 31,
+      "run_id": 78,
+      "status": "success",
+      "processed_count": 1,
+      "error_count": 0,
+      "observation_key": "obs_8d974b28e13eaff2",
+      "region_code": "26-000"
+    },
+    {
+      "index": 32,
+      "run_id": 79,
+      "status": "success",
+      "processed_count": 1,
+      "error_count": 0,
+      "observation_key": "obs_8889543caadbfb18",
+      "region_code": "28-000"
+    },
+    {
+      "index": 33,
+      "run_id": 80,
+      "status": "success",
+      "processed_count": 1,
+      "error_count": 0,
+      "observation_key": "obs_757f762d0397b36d",
+      "region_code": "41-000"
+    },
+    {
+      "index": 34,
+      "run_id": 81,
+      "status": "success",
+      "processed_count": 1,
+      "error_count": 0,
+      "observation_key": "obs_541c96dec10d8f9e",
+      "region_code": "50-000"
+    },
+    {
+      "index": 35,
+      "run_id": 82,
+      "status": "success",
+      "processed_count": 1,
+      "error_count": 0,
+      "observation_key": "obs_2f4102e1290904ee",
+      "region_code": "41-280"
+    },
+    {
+      "index": 36,
+      "run_id": 83,
+      "status": "success",
+      "processed_count": 1,
+      "error_count": 0,
+      "observation_key": "obs_6c765f3218312aeb",
+      "region_code": "11-000"
+    },
+    {
+      "index": 37,
+      "run_id": 84,
+      "status": "success",
+      "processed_count": 1,
+      "error_count": 0,
+      "observation_key": "obs_e8ea290250c27fa5",
+      "region_code": "26-000"
+    },
+    {
+      "index": 38,
+      "run_id": 85,
+      "status": "success",
+      "processed_count": 1,
+      "error_count": 0,
+      "observation_key": "obs_08fcc15a29219726",
+      "region_code": "28-000"
+    },
+    {
+      "index": 39,
+      "run_id": 86,
+      "status": "success",
+      "processed_count": 1,
+      "error_count": 0,
+      "observation_key": "obs_dc1f8906c283545b",
+      "region_code": "41-000"
+    },
+    {
+      "index": 40,
+      "run_id": 87,
+      "status": "success",
+      "processed_count": 1,
+      "error_count": 0,
+      "observation_key": "obs_51207b9d2aacd400",
+      "region_code": "50-000"
+    },
+    {
+      "index": 41,
+      "run_id": 88,
+      "status": "success",
+      "processed_count": 1,
+      "error_count": 0,
+      "observation_key": "obs_5545453934a453ff",
+      "region_code": "41-280"
+    },
+    {
+      "index": 42,
+      "run_id": 89,
+      "status": "success",
+      "processed_count": 1,
+      "error_count": 0,
+      "observation_key": "obs_638dbcbfefc18288",
+      "region_code": "11-000"
+    },
+    {
+      "index": 43,
+      "run_id": 90,
+      "status": "success",
+      "processed_count": 1,
+      "error_count": 0,
+      "observation_key": "obs_253df91e7790360f",
+      "region_code": "26-000"
+    },
+    {
+      "index": 44,
+      "run_id": 91,
+      "status": "success",
+      "processed_count": 1,
+      "error_count": 0,
+      "observation_key": "obs_616cf24e362a2104",
+      "region_code": "41-000"
+    },
+    {
+      "index": 45,
+      "run_id": 92,
+      "status": "success",
+      "processed_count": 1,
+      "error_count": 0,
+      "observation_key": "obs_99d716a1fc94f6a5",
+      "region_code": "50-000"
+    },
+    {
+      "index": 46,
+      "run_id": 93,
+      "status": "success",
+      "processed_count": 1,
+      "error_count": 0,
+      "observation_key": "obs_cf034d2965ed189d",
+      "region_code": "28-000"
+    },
+    {
+      "index": 47,
+      "run_id": 94,
+      "status": "success",
+      "processed_count": 1,
+      "error_count": 0,
+      "observation_key": "obs_38dca8907e86d613",
+      "region_code": "41-280"
+    },
+    {
+      "index": 48,
+      "run_id": 95,
+      "status": "success",
+      "processed_count": 1,
+      "error_count": 0,
+      "observation_key": "obs_2a9565575c17d15b",
+      "region_code": "11-000"
+    },
+    {
+      "index": 49,
+      "run_id": 96,
+      "status": "success",
+      "processed_count": 1,
+      "error_count": 0,
+      "observation_key": "obs_e2e1c953b4060cf9",
+      "region_code": "26-000"
+    },
+    {
+      "index": 50,
+      "run_id": 97,
+      "status": "success",
+      "processed_count": 1,
+      "error_count": 0,
+      "observation_key": "obs_43f2ad8f16d1a69c",
+      "region_code": "41-000"
+    },
+    {
+      "index": 51,
+      "run_id": 98,
+      "status": "success",
+      "processed_count": 1,
+      "error_count": 0,
+      "observation_key": "obs_131b1a4acd6e6543",
+      "region_code": "50-000"
+    },
+    {
+      "index": 52,
+      "run_id": 99,
+      "status": "success",
+      "processed_count": 1,
+      "error_count": 0,
+      "observation_key": "obs_0c019582990a1985",
+      "region_code": "28-000"
+    },
+    {
+      "index": 53,
+      "run_id": 100,
+      "status": "success",
+      "processed_count": 1,
+      "error_count": 0,
+      "observation_key": "obs_5f6f89e5c07a222f",
+      "region_code": "41-280"
+    },
+    {
+      "index": 54,
+      "run_id": 101,
+      "status": "success",
+      "processed_count": 1,
+      "error_count": 0,
+      "observation_key": "obs_471728ddcc103e37",
+      "region_code": "11-000"
+    },
+    {
+      "index": 55,
+      "run_id": 102,
+      "status": "success",
+      "processed_count": 1,
+      "error_count": 0,
+      "observation_key": "obs_2f4df448e8890b6b",
+      "region_code": "26-000"
+    },
+    {
+      "index": 56,
+      "run_id": 103,
+      "status": "success",
+      "processed_count": 1,
+      "error_count": 0,
+      "observation_key": "obs_949662ca5a513e40",
+      "region_code": "41-000"
+    },
+    {
+      "index": 57,
+      "run_id": 104,
+      "status": "success",
+      "processed_count": 1,
+      "error_count": 0,
+      "observation_key": "obs_91c05254947b17d4",
+      "region_code": "28-000"
+    },
+    {
+      "index": 58,
+      "run_id": 105,
+      "status": "success",
+      "processed_count": 1,
+      "error_count": 0,
+      "observation_key": "obs_0085e591834dc46d",
+      "region_code": "50-000"
+    },
+    {
+      "index": 59,
+      "run_id": 106,
+      "status": "success",
+      "processed_count": 1,
+      "error_count": 0,
+      "observation_key": "obs_373dc42f51b4309e",
+      "region_code": "11-000"
+    },
+    {
+      "index": 60,
+      "run_id": 107,
+      "status": "success",
+      "processed_count": 1,
+      "error_count": 0,
+      "observation_key": "obs_3c0900cc6187507a",
+      "region_code": "26-000"
+    },
+    {
+      "index": 61,
+      "run_id": 108,
+      "status": "success",
+      "processed_count": 1,
+      "error_count": 0,
+      "observation_key": "obs_23816a8c10c16523",
+      "region_code": "41-000"
+    },
+    {
+      "index": 62,
+      "run_id": 109,
+      "status": "success",
+      "processed_count": 1,
+      "error_count": 0,
+      "observation_key": "obs_fb00ead80ff7e5be",
+      "region_code": "50-000"
+    },
+    {
+      "index": 63,
+      "run_id": 110,
+      "status": "success",
+      "processed_count": 1,
+      "error_count": 0,
+      "observation_key": "obs_ab7aaca0331f72f2",
+      "region_code": "28-000"
+    },
+    {
+      "index": 64,
+      "run_id": 111,
+      "status": "success",
+      "processed_count": 1,
+      "error_count": 0,
+      "observation_key": "obs_b1666590cb5029bd",
+      "region_code": "11-000"
+    },
+    {
+      "index": 65,
+      "run_id": 112,
+      "status": "success",
+      "processed_count": 1,
+      "error_count": 0,
+      "observation_key": "obs_15fdb932b2718d16",
+      "region_code": "26-000"
+    },
+    {
+      "index": 66,
+      "run_id": 113,
+      "status": "success",
+      "processed_count": 1,
+      "error_count": 0,
+      "observation_key": "obs_25fd9f3be87328ae",
+      "region_code": "41-000"
+    },
+    {
+      "index": 67,
+      "run_id": 114,
+      "status": "success",
+      "processed_count": 1,
+      "error_count": 0,
+      "observation_key": "obs_94c4529b2bd966f1",
+      "region_code": "50-000"
+    },
+    {
+      "index": 68,
+      "run_id": 115,
+      "status": "success",
+      "processed_count": 1,
+      "error_count": 0,
+      "observation_key": "obs_72afb9faa04e8ea7",
+      "region_code": "28-000"
+    },
+    {
+      "index": 69,
+      "run_id": 116,
+      "status": "success",
+      "processed_count": 1,
+      "error_count": 0,
+      "observation_key": "obs_508eb20951df710c",
+      "region_code": "11-000"
+    },
+    {
+      "index": 70,
+      "run_id": 117,
+      "status": "success",
+      "processed_count": 1,
+      "error_count": 0,
+      "observation_key": "obs_88d134e0faefa01e",
+      "region_code": "26-000"
+    },
+    {
+      "index": 71,
+      "run_id": 118,
+      "status": "success",
+      "processed_count": 1,
+      "error_count": 0,
+      "observation_key": "obs_ee3deb04ff6f2061",
+      "region_code": "41-000"
+    },
+    {
+      "index": 72,
+      "run_id": 119,
+      "status": "success",
+      "processed_count": 1,
+      "error_count": 0,
+      "observation_key": "obs_d665019db527a0c8",
+      "region_code": "50-000"
+    },
+    {
+      "index": 73,
+      "run_id": 120,
+      "status": "success",
+      "processed_count": 1,
+      "error_count": 0,
+      "observation_key": "obs_800a3b3cc0643bea",
+      "region_code": "28-000"
+    },
+    {
+      "index": 74,
+      "run_id": 121,
+      "status": "success",
+      "processed_count": 1,
+      "error_count": 0,
+      "observation_key": "obs_4d95797227c0d339",
+      "region_code": "11-000"
+    },
+    {
+      "index": 75,
+      "run_id": 122,
+      "status": "success",
+      "processed_count": 1,
+      "error_count": 0,
+      "observation_key": "obs_69a778b553461013",
+      "region_code": "26-000"
+    },
+    {
+      "index": 76,
+      "run_id": 123,
+      "status": "success",
+      "processed_count": 1,
+      "error_count": 0,
+      "observation_key": "obs_25aff2b707f5844a",
+      "region_code": "41-000"
+    },
+    {
+      "index": 77,
+      "run_id": 124,
+      "status": "success",
+      "processed_count": 1,
+      "error_count": 0,
+      "observation_key": "obs_42a3ef2a3e0d4756",
+      "region_code": "50-000"
+    },
+    {
+      "index": 78,
+      "run_id": 125,
+      "status": "success",
+      "processed_count": 1,
+      "error_count": 0,
+      "observation_key": "obs_3ed0244846d0a488",
+      "region_code": "28-000"
+    },
+    {
+      "index": 79,
+      "run_id": 126,
+      "status": "success",
+      "processed_count": 1,
+      "error_count": 0,
+      "observation_key": "obs_894cc0ebaaf68ec1",
+      "region_code": "11-000"
+    },
+    {
+      "index": 80,
+      "run_id": 127,
+      "status": "success",
+      "processed_count": 1,
+      "error_count": 0,
+      "observation_key": "obs_d44584a7cacf46e7",
+      "region_code": "26-000"
+    },
+    {
+      "index": 81,
+      "run_id": 128,
+      "status": "success",
+      "processed_count": 1,
+      "error_count": 0,
+      "observation_key": "obs_84b98f9b6b716b5c",
+      "region_code": "41-000"
+    },
+    {
+      "index": 82,
+      "run_id": 129,
+      "status": "success",
+      "processed_count": 1,
+      "error_count": 0,
+      "observation_key": "obs_3cd3dd5d4f766572",
+      "region_code": "50-000"
+    },
+    {
+      "index": 83,
+      "run_id": 130,
+      "status": "success",
+      "processed_count": 1,
+      "error_count": 0,
+      "observation_key": "obs_d6cd7f4f92e39d11",
+      "region_code": "28-000"
+    },
+    {
+      "index": 84,
+      "run_id": 131,
+      "status": "success",
+      "processed_count": 1,
+      "error_count": 0,
+      "observation_key": "obs_ecb91e64e16bc2ee",
+      "region_code": "11-000"
+    },
+    {
+      "index": 85,
+      "run_id": 132,
+      "status": "success",
+      "processed_count": 1,
+      "error_count": 0,
+      "observation_key": "obs_4a7424fb8d017eed",
+      "region_code": "26-000"
+    },
+    {
+      "index": 86,
+      "run_id": 133,
+      "status": "success",
+      "processed_count": 1,
+      "error_count": 0,
+      "observation_key": "obs_652ef10a00a94ad6",
+      "region_code": "41-000"
+    },
+    {
+      "index": 87,
+      "run_id": 134,
+      "status": "success",
+      "processed_count": 1,
+      "error_count": 0,
+      "observation_key": "obs_5854a015eb722f49",
+      "region_code": "50-000"
+    },
+    {
+      "index": 88,
+      "run_id": 135,
+      "status": "success",
+      "processed_count": 1,
+      "error_count": 0,
+      "observation_key": "obs_0d19c4861801b48f",
+      "region_code": "28-000"
+    },
+    {
+      "index": 89,
+      "run_id": 136,
+      "status": "success",
+      "processed_count": 1,
+      "error_count": 0,
+      "observation_key": "obs_0e5bcf68b01ac1b4",
+      "region_code": "11-000"
+    },
+    {
+      "index": 90,
+      "run_id": 137,
+      "status": "success",
+      "processed_count": 1,
+      "error_count": 0,
+      "observation_key": "obs_136de9264b100d7f",
+      "region_code": "26-000"
+    },
+    {
+      "index": 91,
+      "run_id": 138,
+      "status": "success",
+      "processed_count": 1,
+      "error_count": 0,
+      "observation_key": "obs_f56bdb97c2215722",
+      "region_code": "41-000"
+    },
+    {
+      "index": 92,
+      "run_id": 139,
+      "status": "success",
+      "processed_count": 1,
+      "error_count": 0,
+      "observation_key": "obs_40aaaac4155c6f76",
+      "region_code": "50-000"
+    },
+    {
+      "index": 93,
+      "run_id": 140,
+      "status": "success",
+      "processed_count": 1,
+      "error_count": 0,
+      "observation_key": "obs_f33f37cb750e1abe",
+      "region_code": "28-000"
+    },
+    {
+      "index": 94,
+      "run_id": 141,
+      "status": "success",
+      "processed_count": 1,
+      "error_count": 0,
+      "observation_key": "obs_a94587b49c72c567",
+      "region_code": "11-000"
+    },
+    {
+      "index": 95,
+      "run_id": 142,
+      "status": "success",
+      "processed_count": 1,
+      "error_count": 0,
+      "observation_key": "obs_5272bca4b344e5dc",
+      "region_code": "26-000"
+    },
+    {
+      "index": 96,
+      "run_id": 143,
+      "status": "success",
+      "processed_count": 1,
+      "error_count": 0,
+      "observation_key": "obs_aa4ec1423868a46a",
+      "region_code": "41-000"
+    },
+    {
+      "index": 97,
+      "run_id": 144,
+      "status": "success",
+      "processed_count": 1,
+      "error_count": 0,
+      "observation_key": "obs_5de2c6b32d9ea07b",
+      "region_code": "50-000"
+    },
+    {
+      "index": 98,
+      "run_id": 145,
+      "status": "success",
+      "processed_count": 1,
+      "error_count": 0,
+      "observation_key": "obs_948a01845b00d246",
+      "region_code": "28-000"
+    },
+    {
+      "index": 99,
+      "run_id": 146,
+      "status": "success",
+      "processed_count": 1,
+      "error_count": 0,
+      "observation_key": "obs_47d6164ffddda22d",
+      "region_code": "11-000"
+    },
+    {
+      "index": 100,
+      "run_id": 147,
+      "status": "success",
+      "processed_count": 1,
+      "error_count": 0,
+      "observation_key": "obs_e365232bec721817",
+      "region_code": "26-000"
+    }
+  ]
+}

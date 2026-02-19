@@ -14,6 +14,7 @@ from app.models.schemas import (
     MapLatestPoint,
     MatchupOut,
     OpsFailureDistributionOut,
+    OpsCoverageSummaryOut,
     OpsIngestionMetricsOut,
     OpsMetricsSummaryOut,
     OpsReviewMetricsOut,
@@ -159,6 +160,18 @@ def get_ops_metrics_summary(
         review_queue=OpsReviewMetricsOut(**review),
         failure_distribution=[OpsFailureDistributionOut(**x) for x in failure_distribution],
         warnings=[OpsWarningRuleOut(**x) for x in warnings],
+    )
+
+
+@router.get("/ops/coverage/summary", response_model=OpsCoverageSummaryOut)
+def get_ops_coverage_summary(repo=Depends(get_repository)):
+    summary = repo.fetch_ops_coverage_summary()
+    return OpsCoverageSummaryOut(
+        generated_at=datetime.now(timezone.utc),
+        regions_covered=summary["regions_covered"],
+        sido_covered=summary["sido_covered"],
+        observations_total=summary["observations_total"],
+        latest_survey_end_date=summary["latest_survey_end_date"],
     )
 
 

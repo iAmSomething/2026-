@@ -3,7 +3,8 @@
 문서 기반 계획(`docs/`)을 코드로 옮긴 1주차 백엔드 세로슬라이스입니다.
 
 ## 포함 기능
-- FastAPI 공개 API 11개
+- FastAPI 공개 API 12개
+  - `GET /api/v1/ops/coverage/summary` (커버리지 지표)
   - `GET /api/v1/ops/metrics/summary` (운영 지표)
   - `GET /api/v1/review-queue/items`
   - `GET /api/v1/review-queue/stats`
@@ -75,7 +76,7 @@ python -m app.jobs.bootstrap_ingest \
 - 로컬 Phase1 체크: `scripts/qa/check_phase1.sh`
 - DB 포함 체크: `scripts/qa/check_phase1.sh --with-db`
 - API 포함 체크: `scripts/qa/check_phase1.sh --with-api`
-- API 11종 계약 스위트: `scripts/qa/run_api_contract_suite.sh --report data/qa_api_contract_report.json`
+- API 12종 계약 스위트: `scripts/qa/run_api_contract_suite.sh --report data/qa_api_contract_report.json`
 - 스테이징 스모크(로컬 URL 기준): `API_BASE=http://127.0.0.1:8100 WEB_BASE=http://127.0.0.1:3300 INTERNAL_JOB_TOKEN=<token> scripts/qa/smoke_staging.sh`
 - 스테이징 웹 앱(개발 트랙): `apps/staging-web`
 - 스테이징 CI 워크플로: `.github/workflows/staging-smoke.yml`

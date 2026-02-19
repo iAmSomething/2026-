@@ -556,6 +556,28 @@ class PostgresRepository:
             out.append({"issue_type": row["issue_type"], "count": count, "ratio": round(ratio, 4)})
         return out
 
+    def fetch_ops_coverage_summary(self):
+        with self.conn.cursor() as cur:
+            cur.execute(
+                """
+                SELECT
+                    COUNT(DISTINCT o.region_code)::int AS regions_covered,
+                    COUNT(DISTINCT r.sido_name)::int AS sido_covered,
+                    COUNT(*)::int AS observations_total,
+                    MAX(o.survey_end_date)::date AS latest_survey_end_date
+                FROM poll_observations o
+                LEFT JOIN regions r ON r.region_code = o.region_code
+                """
+            )
+            row = cur.fetchone() or {}
+
+        return {
+            "regions_covered": row.get("regions_covered", 0) or 0,
+            "sido_covered": row.get("sido_covered", 0) or 0,
+            "observations_total": row.get("observations_total", 0) or 0,
+            "latest_survey_end_date": row.get("latest_survey_end_date"),
+        }
+
     def fetch_review_queue_items(
         self,
         *,
