@@ -152,3 +152,20 @@ scripts/qa/smoke_staging.sh --api-base "$API_BASE" --web-base "$WEB_BASE"
 4. 동작:
 - 누락 secret 발견 시 fail-fast
 - 형식 오류(`SUPABASE_URL`, `DATABASE_URL`, `INTERNAL_JOB_TOKEN`)에 대해 즉시 가이드 출력
+
+## 12. Vercel Preview CI (Issue #92)
+1. Workflow:
+- `.github/workflows/vercel-preview.yml` (`workflow_dispatch`)
+2. 배포 원칙:
+- 배포 타깃은 `Vercel`
+- 토큰은 GitHub Repository Secret으로만 주입
+3. 필수 Secrets:
+- `VERCEL_TOKEN`
+- `VERCEL_SCOPE` (team slug)
+- `VERCEL_PROJECT_NAME`
+4. Dispatch 입력:
+- `root_dir`: `apps/staging-web` 또는 `apps/web`
+- `issue_number`: URL 코멘트를 남길 이슈 번호(기본 `92`)
+5. 실행 결과:
+- Preview URL 추출 후 `issue_number`에 코멘트 자동 작성
+- 접근 검증(`curl`) 로그와 배포 로그를 artifact로 업로드
