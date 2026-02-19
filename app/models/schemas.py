@@ -27,15 +27,24 @@ class SummaryPoint(BaseModel):
     value_mid: float | None = None
     pollster: str | None = None
     survey_end_date: date | None = None
+    audience_scope: Literal["national", "regional", "local"] | None = None
     source_channel: Literal["article", "nesdc"] | None = None
     source_channels: list[Literal["article", "nesdc"]] = Field(default_factory=list)
     verified: bool
+
+
+class ScopeBreakdownOut(BaseModel):
+    national: int = 0
+    regional: int = 0
+    local: int = 0
+    unknown: int = 0
 
 
 class DashboardSummaryOut(BaseModel):
     as_of: date | None = None
     party_support: list[SummaryPoint]
     presidential_approval: list[SummaryPoint]
+    scope_breakdown: ScopeBreakdownOut = Field(default_factory=ScopeBreakdownOut)
 
 
 class MapLatestPoint(BaseModel):
@@ -45,6 +54,7 @@ class MapLatestPoint(BaseModel):
     value_mid: float | None = None
     survey_end_date: date | None = None
     option_name: str | None = None
+    audience_scope: Literal["national", "regional", "local"] | None = None
     source_channel: Literal["article", "nesdc"] | None = None
     source_channels: list[Literal["article", "nesdc"]] = Field(default_factory=list)
 
@@ -52,6 +62,7 @@ class MapLatestPoint(BaseModel):
 class DashboardMapLatestOut(BaseModel):
     as_of: date | None = None
     items: list[MapLatestPoint]
+    scope_breakdown: ScopeBreakdownOut = Field(default_factory=ScopeBreakdownOut)
 
 
 class BigMatchPoint(BaseModel):
@@ -60,6 +71,7 @@ class BigMatchPoint(BaseModel):
     survey_end_date: date | None = None
     value_mid: float | None = None
     spread: float | None = None
+    audience_scope: Literal["national", "regional", "local"] | None = None
     source_channel: Literal["article", "nesdc"] | None = None
     source_channels: list[Literal["article", "nesdc"]] = Field(default_factory=list)
 
@@ -67,6 +79,7 @@ class BigMatchPoint(BaseModel):
 class DashboardBigMatchesOut(BaseModel):
     as_of: date | None = None
     items: list[BigMatchPoint]
+    scope_breakdown: ScopeBreakdownOut = Field(default_factory=ScopeBreakdownOut)
 
 
 class RegionElectionOut(BaseModel):

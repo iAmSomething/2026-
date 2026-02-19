@@ -18,6 +18,7 @@ from app.models.schemas import (
     OpsIngestionMetricsOut,
     OpsMetricsSummaryOut,
     OpsReviewMetricsOut,
+    ScopeBreakdownOut,
     OpsWarningRuleOut,
     ReviewQueueItemOut,
     ReviewQueueStatsOut,
@@ -34,6 +35,17 @@ from app.services.ingest_service import ingest_payload
 router = APIRouter(prefix="/api/v1", tags=["v1"])
 
 
+def _build_scope_breakdown(rows: list[dict]) -> dict[str, int]:
+    counts = {"national": 0, "regional": 0, "local": 0, "unknown": 0}
+    for row in rows:
+        scope = row.get("audience_scope")
+        if scope in {"national", "regional", "local"}:
+            counts[scope] += 1
+        else:
+            counts["unknown"] += 1
+    return counts
+
+
 @router.get("/dashboard/summary", response_model=DashboardSummaryOut)
 def get_dashboard_summary(
     as_of: date | None = Query(default=None),
@@ -44,11 +56,14 @@ def get_dashboard_summary(
     presidential_approval = []
 
     for row in rows:
+        if row.get("audience_scope") != "national":
+            continue
         point = SummaryPoint(
             option_name=row["option_name"],
             value_mid=row["value_mid"],
             pollster=row["pollster"],
             survey_end_date=row["survey_end_date"],
+            audience_scope=row.get("audience_scope"),
             source_channel=row.get("source_channel"),
             source_channels=row.get("source_channels") or [],
             verified=row["verified"],
@@ -62,6 +77,7 @@ def get_dashboard_summary(
         as_of=as_of,
         party_support=party_support,
         presidential_approval=presidential_approval,
+        scope_breakdown=ScopeBreakdownOut(**_build_scope_breakdown(rows)),
     )
 
 
@@ -72,7 +88,11 @@ def get_dashboard_map_latest(
     repo=Depends(get_repository),
 ):
     rows = repo.fetch_dashboard_map_latest(as_of=as_of, limit=limit)
-    return DashboardMapLatestOut(as_of=as_of, items=[MapLatestPoint(**row) for row in rows])
+    return DashboardMapLatestOut(
+        as_of=as_of,
+        items=[MapLatestPoint(**row) for row in rows],
+        scope_breakdown=ScopeBreakdownOut(**_build_scope_breakdown(rows)),
+    )
 
 
 @router.get("/dashboard/big-matches", response_model=DashboardBigMatchesOut)
@@ -82,7 +102,11 @@ def get_dashboard_big_matches(
     repo=Depends(get_repository),
 ):
     rows = repo.fetch_dashboard_big_matches(as_of=as_of, limit=limit)
-    return DashboardBigMatchesOut(as_of=as_of, items=[BigMatchPoint(**row) for row in rows])
+    return DashboardBigMatchesOut(
+        as_of=as_of,
+        items=[BigMatchPoint(**row) for row in rows],
+        scope_breakdown=ScopeBreakdownOut(**_build_scope_breakdown(rows)),
+    )
 
 
 @router.get("/regions/search", response_model=list[RegionOut])

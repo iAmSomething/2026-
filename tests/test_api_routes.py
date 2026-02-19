@@ -20,8 +20,20 @@ class FakeApiRepo:
                 "value_mid": 42.0,
                 "pollster": "KBS",
                 "survey_end_date": date(2026, 2, 18),
+                "audience_scope": "national",
                 "source_channel": "nesdc",
                 "source_channels": ["article", "nesdc"],
+                "verified": True,
+            },
+            {
+                "option_type": "party_support",
+                "option_name": "지역정당A",
+                "value_mid": 22.0,
+                "pollster": "KBS",
+                "survey_end_date": date(2026, 2, 18),
+                "audience_scope": "regional",
+                "source_channel": "article",
+                "source_channels": ["article"],
                 "verified": True,
             },
             {
@@ -30,6 +42,18 @@ class FakeApiRepo:
                 "value_mid": 54.0,
                 "pollster": "KBS",
                 "survey_end_date": date(2026, 2, 18),
+                "audience_scope": "national",
+                "source_channel": "article",
+                "source_channels": ["article"],
+                "verified": True,
+            },
+            {
+                "option_type": "presidential_approval",
+                "option_name": "지역이슈안정론",
+                "value_mid": 33.0,
+                "pollster": "KBS",
+                "survey_end_date": date(2026, 2, 18),
+                "audience_scope": "local",
                 "source_channel": "article",
                 "source_channels": ["article"],
                 "verified": True,
@@ -55,6 +79,7 @@ class FakeApiRepo:
                 "value_mid": 44.0,
                 "survey_end_date": date(2026, 2, 18),
                 "option_name": "정원오",
+                "audience_scope": "regional",
                 "source_channel": "nesdc",
                 "source_channels": ["article", "nesdc"],
             }
@@ -68,6 +93,7 @@ class FakeApiRepo:
                 "survey_end_date": date(2026, 2, 18),
                 "value_mid": 44.0,
                 "spread": 2.0,
+                "audience_scope": "regional",
                 "source_channel": "nesdc",
                 "source_channels": ["article", "nesdc"],
             }
@@ -334,6 +360,11 @@ def test_api_contract_fields():
     assert "value_mid" in body["party_support"][0]
     assert "source_channels" in body["party_support"][0]
     assert body["party_support"][0]["source_channels"] == ["article", "nesdc"]
+    assert body["party_support"][0]["audience_scope"] == "national"
+    assert all(x["audience_scope"] == "national" for x in body["party_support"] + body["presidential_approval"])
+    assert [x["option_name"] for x in body["party_support"]] == ["더불어민주당"]
+    assert [x["option_name"] for x in body["presidential_approval"]] == ["국정안정론"]
+    assert body["scope_breakdown"] == {"national": 2, "regional": 1, "local": 1, "unknown": 0}
 
     regions = client.get("/api/v1/regions/search", params={"q": "서울"})
     assert regions.status_code == 200
@@ -343,11 +374,15 @@ def test_api_contract_fields():
     assert map_latest.status_code == 200
     assert map_latest.json()["items"][0]["region_code"] == "11-000"
     assert map_latest.json()["items"][0]["source_channels"] == ["article", "nesdc"]
+    assert map_latest.json()["items"][0]["audience_scope"] == "regional"
+    assert map_latest.json()["scope_breakdown"] == {"national": 0, "regional": 1, "local": 0, "unknown": 0}
 
     big_matches = client.get("/api/v1/dashboard/big-matches")
     assert big_matches.status_code == 200
     assert big_matches.json()["items"][0]["matchup_id"] == "20260603|광역자치단체장|11-000"
     assert big_matches.json()["items"][0]["source_channels"] == ["article", "nesdc"]
+    assert big_matches.json()["items"][0]["audience_scope"] == "regional"
+    assert big_matches.json()["scope_breakdown"] == {"national": 0, "regional": 1, "local": 0, "unknown": 0}
 
     region_elections = client.get("/api/v1/regions/11-000/elections")
     assert region_elections.status_code == 200

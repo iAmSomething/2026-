@@ -187,6 +187,7 @@
 2. 검수 큐 24시간 초과 항목 여부
 3. 빅매치 계산 결과 이상치 여부
 4. 지도 데이터 누락 지역 여부
+5. `dashboard/summary`의 `scope_breakdown.regional/local/unknown`가 0인지 확인(전국 오염 방지)
 
 ## 10. 준법 체크
 1. robots 정책 위반 요청 로그 여부
