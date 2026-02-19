@@ -76,6 +76,8 @@ PYTHONPATH=. .venv/bin/python scripts/sync_common_codes.py \
 1. 프론트는 공개 API만 접근
 2. 내부 운영 API는 별도 토큰/권한으로 분리
 3. 관리자 승인 API는 서버-서버 통신만 허용
+4. API CORS 허용 오리진:
+- `https://2026-deploy.vercel.app` (운영 고정)
 
 ## 7. 배포 전략
 1. `main` 기준 자동 배포
@@ -169,7 +171,7 @@ scripts/qa/smoke_staging.sh --api-base "$API_BASE" --web-base "$WEB_BASE"
 5. 실행 결과:
 - Preview URL 추출 후 `issue_number`에 코멘트 자동 작성
 - 접근 검증(`curl`) 로그와 배포 로그를 artifact로 업로드
-- Vercel Preview Protection이 켜진 경우 `401`을 `auth_gated` 접근으로 기록한다.
+- Preview 접근정책은 `public` 고정이며 `401`이면 실패 처리한다.
 
 ## 13. 웹 확인용 RC 고정값 (Issue #123)
 1. 공개 확인 URL(Production):
@@ -180,14 +182,15 @@ scripts/qa/smoke_staging.sh --api-base "$API_BASE" --web-base "$WEB_BASE"
 - 타깃: `Vercel`
 - 프로젝트 루트: `apps/staging-web`
 - 배포 입력값은 GitHub Secrets(`VERCEL_TOKEN`, `VERCEL_SCOPE`, `VERCEL_PROJECT_NAME`)으로만 주입
+- Preview/Production 공통 API base 고정값: `https://2026-api.up.railway.app`
 4. 웹 API endpoint 환경변수 계약:
 - 코드 기준: `apps/staging-web/app/page.js`
-- 해석 우선순위: `API_BASE_URL` -> `NEXT_PUBLIC_API_BASE_URL` -> `http://127.0.0.1:8100`
+- 해석 우선순위: `API_BASE_URL` -> `NEXT_PUBLIC_API_BASE_URL` -> `https://2026-api.up.railway.app`
 - 개발(local) 권장:
   - `API_BASE_URL=http://127.0.0.1:8100`
   - `NEXT_PUBLIC_API_BASE_URL=http://127.0.0.1:8100`
 - 스테이징/공개 확인 권장:
-  - `NEXT_PUBLIC_API_BASE_URL=<공개 API Base URL>`
+  - `NEXT_PUBLIC_API_BASE_URL=https://2026-api.up.railway.app`
   - 필요 시 `API_BASE_URL`도 동일 값으로 주입
 5. fallback 동작:
-- 스테이징/공개 환경에서 API Base env가 비어 있으면 `127.0.0.1` fallback이 렌더링되어 연동 실패(`summary fetch failed`)가 표시될 수 있다.
+- 스테이징/공개 환경에서 API Base env가 비어 있어도 Railway 공개 URL을 fallback으로 사용한다.
