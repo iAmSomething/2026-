@@ -117,6 +117,17 @@ is_qa_fail_report() {
   return 1
 }
 
+has_qa_pass_comment() {
+  local issue_no="$1"
+  local issue_json
+  issue_json="$(gh issue view "$issue_no" --repo "$REPO" --json comments 2>/dev/null || true)"
+  [[ -n "$issue_json" ]] || return 1
+  if printf "%s" "$issue_json" | python3 scripts/pm/qapass_detection.py --mode issue-json >/dev/null 2>&1; then
+    return 0
+  fi
+  return 1
+}
+
 gh auth status >/dev/null 2>&1
 
 ALL_ISSUES_JSON="$(gh issue list --repo "$REPO" --state all --limit "$LIMIT" --json number,title,state,labels,updatedAt,url)"
@@ -143,8 +154,7 @@ READY_OPEN="$(echo "$OPEN_ISSUES_JSON" | jq '[.[] | select(([.labels[].name] | i
 MISSING_QA_PASS=()
 while IFS= read -r issue_no; do
   [[ -z "$issue_no" ]] && continue
-  ISSUE_COMMENTS="$(gh issue view "$issue_no" --repo "$REPO" --json comments --jq '.comments[].body' || true)"
-  if ! printf "%s" "$ISSUE_COMMENTS" | grep -q '\[QA PASS\]'; then
+  if ! has_qa_pass_comment "$issue_no"; then
     MISSING_QA_PASS+=("$issue_no")
   fi
 done < <(echo "$ALL_ISSUES_JSON" | jq -r '.[] | select(.state=="CLOSED" and ([.labels[].name] | index("status/done"))) | .number')

@@ -52,6 +52,17 @@ bash scripts/pm/report_scan.sh --date 2026-02-18
 2. `status/done` 전환 전 필수 조건: QA PASS 코멘트
 3. QA FAIL/WARN이면 원인 진단 기준으로 담당자 재할당 후 `status/in-progress`로 복귀
 
+## 6-1) QA PASS 코멘트 표준 포맷
+1. 자동 판정은 줄 시작 토큰 `\[QA PASS\]`만 유효로 본다.
+2. 허용 예시:
+```text
+[QA PASS]
+- 회귀 테스트 통과
+```
+3. 비허용 예시(오탐 방지):
+- 안내문구 안의 텍스트: `status/done 전에 [QA PASS] 필요`
+- 백틱 예시 텍스트: `` `[QA PASS]` ``
+
 ## 6-1) 작업영역 락 규칙
 1. 상세 규칙은 `docs/10_WORKSPACE_LOCK_POLICY.md`를 기준으로 적용
 2. 공용 잠금 경로(`docs/**`, `.github/**`, `scripts/pm/**`, `README.md`) 수정은 PM 승인 코멘트 필수
