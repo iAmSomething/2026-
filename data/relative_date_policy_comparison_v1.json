@@ -1,0 +1,26 @@
+{
+  "scenario": "relative_date_policy_comparison_v1",
+  "generated_at": "2026-02-19T08:10:00Z",
+  "policies": {
+    "strict_fail": {
+      "article_published_at_missing": {
+        "survey_end_date": null,
+        "date_inference_mode": "strict_fail_blocked",
+        "date_inference_confidence": 0.0,
+        "review_queue_error_code": "RELATIVE_DATE_STRICT_FAIL"
+      }
+    },
+    "allow_estimated_timestamp": {
+      "article_published_at_missing": {
+        "survey_end_date": "2026-02-18",
+        "date_inference_mode": "estimated_timestamp",
+        "date_inference_confidence": 0.35,
+        "review_queue_error_code": "RELATIVE_DATE_ESTIMATED"
+      }
+    }
+  },
+  "ingestion_run_counters": {
+    "date_inference_failed_count": 1,
+    "date_inference_estimated_count": 1
+  }
+}

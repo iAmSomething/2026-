@@ -97,6 +97,8 @@ def collector_output_to_ingest_payload(
                     "legal_filled_count": getattr(observation, "legal_filled_count", None),
                     "legal_required_count": getattr(observation, "legal_required_count", None),
                     "date_resolution": getattr(observation, "date_resolution", None),
+                    "date_inference_mode": getattr(observation, "date_inference_mode", None),
+                    "date_inference_confidence": getattr(observation, "date_inference_confidence", None),
                     "poll_fingerprint": getattr(observation, "poll_fingerprint", None),
                     "source_channel": getattr(observation, "source_channel", "article"),
                     "source_channels": getattr(observation, "source_channels", None),

@@ -103,6 +103,8 @@ class MatchupOut(BaseModel):
     legal_filled_count: int | None = None
     legal_required_count: int | None = None
     date_resolution: str | None = None
+    date_inference_mode: str | None = None
+    date_inference_confidence: float | None = None
     poll_fingerprint: str | None = None
     source_channel: Literal["article", "nesdc"] | None = None
     source_channels: list[Literal["article", "nesdc"]] | None = None
@@ -124,6 +126,8 @@ class OpsIngestionMetricsOut(BaseModel):
     failed_runs: int
     total_processed_count: int
     total_error_count: int
+    date_inference_failed_count: int = 0
+    date_inference_estimated_count: int = 0
     fetch_fail_rate: float
 
 
@@ -266,6 +270,8 @@ class PollObservationInput(BaseModel):
     legal_filled_count: int | None = None
     legal_required_count: int | None = None
     date_resolution: str | None = None
+    date_inference_mode: str | None = None
+    date_inference_confidence: float | None = None
     poll_fingerprint: str | None = None
     source_channel: Literal["article", "nesdc"] = "article"
     source_channels: list[Literal["article", "nesdc"]] | None = None

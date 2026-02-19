@@ -107,6 +107,8 @@ class FakeApiRepo:
             "legal_filled_count": 6,
             "legal_required_count": 7,
             "date_resolution": "exact",
+            "date_inference_mode": "relative_published_at",
+            "date_inference_confidence": 0.92,
             "poll_fingerprint": "f" * 64,
             "source_channel": "article",
             "source_channels": ["article", "nesdc"],
@@ -139,6 +141,8 @@ class FakeApiRepo:
             "failed_runs": 1,
             "total_processed_count": 500,
             "total_error_count": 30,
+            "date_inference_failed_count": 2,
+            "date_inference_estimated_count": 5,
             "fetch_fail_rate": 0.0566,
         }
 
@@ -342,6 +346,8 @@ def test_api_contract_fields():
     assert matchup.json()["sample_size"] == 1000
     assert matchup.json()["response_rate"] == 12.3
     assert matchup.json()["legal_required_count"] == 7
+    assert matchup.json()["date_inference_mode"] == "relative_published_at"
+    assert matchup.json()["date_inference_confidence"] == 0.92
     assert matchup.json()["source_channel"] == "article"
     assert matchup.json()["source_channels"] == ["article", "nesdc"]
 

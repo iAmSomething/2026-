@@ -37,6 +37,25 @@ class PostgresRepository:
             )
         self.conn.commit()
 
+    def update_ingestion_policy_counters(
+        self,
+        run_id: int,
+        *,
+        date_inference_failed_count: int = 0,
+        date_inference_estimated_count: int = 0,
+    ) -> None:
+        with self.conn.cursor() as cur:
+            cur.execute(
+                """
+                UPDATE ingestion_runs
+                SET date_inference_failed_count=%s,
+                    date_inference_estimated_count=%s
+                WHERE id=%s
+                """,
+                (date_inference_failed_count, date_inference_estimated_count, run_id),
+            )
+        self.conn.commit()
+
     def upsert_region(self, region: dict) -> None:
         with self.conn.cursor() as cur:
             cur.execute(
@@ -114,7 +133,8 @@ class PostgresRepository:
                     margin_of_error, method, region_code, office_type, matchup_id,
                     audience_scope, audience_region_code, sampling_population_text,
                     legal_completeness_score, legal_filled_count, legal_required_count,
-                    date_resolution, poll_fingerprint, source_channel, source_channels,
+                    date_resolution, date_inference_mode, date_inference_confidence,
+                    poll_fingerprint, source_channel, source_channels,
                     verified, source_grade, ingestion_run_id
                 FROM poll_observations
                 WHERE poll_fingerprint = %s
@@ -137,6 +157,8 @@ class PostgresRepository:
         payload.setdefault("legal_filled_count", None)
         payload.setdefault("legal_required_count", None)
         payload.setdefault("date_resolution", None)
+        payload.setdefault("date_inference_mode", None)
+        payload.setdefault("date_inference_confidence", None)
         payload.setdefault("poll_fingerprint", None)
         payload.setdefault("source_channel", "article")
         if payload.get("source_channels") in (None, []):
@@ -164,6 +186,7 @@ class PostgresRepository:
                     office_type, matchup_id, audience_scope, audience_region_code,
                     sampling_population_text, legal_completeness_score,
                     legal_filled_count, legal_required_count, date_resolution,
+                    date_inference_mode, date_inference_confidence,
                     poll_fingerprint, source_channel, source_channels,
                     verified, source_grade,
                     ingestion_run_id
@@ -175,6 +198,7 @@ class PostgresRepository:
                     %(office_type)s, %(matchup_id)s, %(audience_scope)s, %(audience_region_code)s,
                     %(sampling_population_text)s, %(legal_completeness_score)s,
                     %(legal_filled_count)s, %(legal_required_count)s, %(date_resolution)s,
+                    %(date_inference_mode)s, %(date_inference_confidence)s,
                     %(poll_fingerprint)s, %(source_channel)s, %(source_channels)s,
                     %(verified)s, %(source_grade)s,
                     %(ingestion_run_id)s
@@ -201,6 +225,8 @@ class PostgresRepository:
                     legal_filled_count=EXCLUDED.legal_filled_count,
                     legal_required_count=EXCLUDED.legal_required_count,
                     date_resolution=EXCLUDED.date_resolution,
+                    date_inference_mode=EXCLUDED.date_inference_mode,
+                    date_inference_confidence=EXCLUDED.date_inference_confidence,
                     poll_fingerprint=COALESCE(poll_observations.poll_fingerprint, EXCLUDED.poll_fingerprint),
                     source_channel=CASE
                         WHEN poll_observations.source_channel = 'nesdc' OR EXCLUDED.source_channel = 'nesdc'
@@ -537,6 +563,8 @@ class PostgresRepository:
                     o.legal_filled_count,
                     o.legal_required_count,
                     o.date_resolution,
+                    o.date_inference_mode,
+                    o.date_inference_confidence,
                     o.poll_fingerprint,
                     o.source_channel,
                     o.source_channels,
@@ -585,6 +613,8 @@ class PostgresRepository:
             "legal_filled_count": row["legal_filled_count"],
             "legal_required_count": row["legal_required_count"],
             "date_resolution": row["date_resolution"],
+            "date_inference_mode": row["date_inference_mode"],
+            "date_inference_confidence": row["date_inference_confidence"],
             "poll_fingerprint": row["poll_fingerprint"],
             "source_channel": row["source_channel"],
             "source_channels": row["source_channels"],
@@ -618,7 +648,9 @@ class PostgresRepository:
                     COUNT(*) FILTER (WHERE status = 'partial_success')::int AS partial_success_runs,
                     COUNT(*) FILTER (WHERE status = 'failed')::int AS failed_runs,
                     COALESCE(SUM(processed_count), 0)::int AS total_processed_count,
-                    COALESCE(SUM(error_count), 0)::int AS total_error_count
+                    COALESCE(SUM(error_count), 0)::int AS total_error_count,
+                    COALESCE(SUM(date_inference_failed_count), 0)::int AS date_inference_failed_count,
+                    COALESCE(SUM(date_inference_estimated_count), 0)::int AS date_inference_estimated_count
                 FROM ingestion_runs
                 WHERE started_at >= NOW() - (%s * INTERVAL '1 hour')
                 """,
@@ -638,6 +670,8 @@ class PostgresRepository:
             "failed_runs": row.get("failed_runs", 0) or 0,
             "total_processed_count": processed,
             "total_error_count": errors,
+            "date_inference_failed_count": row.get("date_inference_failed_count", 0) or 0,
+            "date_inference_estimated_count": row.get("date_inference_estimated_count", 0) or 0,
             "fetch_fail_rate": round(fetch_fail_rate, 4),
         }
 

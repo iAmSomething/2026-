@@ -40,6 +40,8 @@ class _Cursor:
                 "legal_filled_count": 6,
                 "legal_required_count": 7,
                 "date_resolution": "exact",
+                "date_inference_mode": "relative_published_at",
+                "date_inference_confidence": 0.92,
                 "poll_fingerprint": "f" * 64,
                 "source_channel": "article",
                 "source_channels": ["article", "nesdc"],
@@ -70,4 +72,5 @@ def test_get_matchup_returns_legal_metadata_fields():
     assert out["sample_size"] == 1000
     assert out["response_rate"] == 12.3
     assert out["audience_scope"] == "regional"
-
+    assert out["date_inference_mode"] == "relative_published_at"
+    assert out["date_inference_confidence"] == 0.92

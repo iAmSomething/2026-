@@ -1,7 +1,7 @@
 # 운영 런북 및 체크리스트
 
 - 문서 버전: v0.2
-- 최종 수정일: 2026-02-18
+- 최종 수정일: 2026-02-19
 - 수정자: Codex
 
 ## 1. 운영 목표
@@ -30,6 +30,8 @@
 - `DATA_GO_KR_KEY`
 - `DATABASE_URL`
 - `INTERNAL_JOB_TOKEN`
+5. 상대시점 정책 플래그:
+- `RELATIVE_DATE_POLICY` (`strict_fail` 기본, `allow_estimated_timestamp` 선택)
 
 ## 3. 수동/자동 경계
 ### 자동 처리
@@ -73,6 +75,14 @@
 - 헬스체크
 - 직전 배포 버전 롤백
 
+## 6.2 상대시점 변환 운영 규칙
+1. 기본 정책 `strict_fail`:
+- 기사에 상대시점(예: 어제/지난주)이 있고 `article.published_at`가 없으면 `survey_end_date`를 비워두고 review_queue 라우팅
+2. 선택 정책 `allow_estimated_timestamp`:
+- `article.published_at` 결측 시 `article.collected_at` 기반 추정값 허용
+- `date_inference_mode='estimated_timestamp'` 저장, review_queue 라우팅
+3. 불확실 추론(`date_inference_confidence < 0.8`)은 정책과 무관하게 review_queue 라우팅
+
 ## 6.1 재시도 운영 규칙
 1. 내부 배치 호출 실패(네트워크/5xx/partial_success) 시 최대 2회 재시도
 2. 재시도 간 backoff: 1초, 2초
@@ -104,6 +114,8 @@
 2. 확인 항목:
 - `ingestion.total_runs/success_runs/failed_runs`
 - `ingestion.fetch_fail_rate`
+- `ingestion.date_inference_failed_count`
+- `ingestion.date_inference_estimated_count`
 - `review_queue.pending_over_24h_count`
 - `failure_distribution` 상위 `issue_type`
 3. `GET /api/v1/ops/coverage/summary` 호출

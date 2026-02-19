@@ -29,6 +29,8 @@ def test_collector_output_converts_to_ingest_payload():
     obs[0].legal_filled_count = 5
     obs[0].legal_required_count = 7
     obs[0].date_resolution = "exact"
+    obs[0].date_inference_mode = "relative_published_at"
+    obs[0].date_inference_confidence = 0.92
     obs[0].source_channel = "article"
     obs[0].source_channels = ["article"]
     output.poll_observations.extend(obs)
@@ -45,3 +47,4 @@ def test_collector_output_converts_to_ingest_payload():
     assert parsed.records[0].observation.legal_required_count == 7
     assert parsed.records[0].observation.source_channel == "article"
     assert parsed.records[0].observation.source_channels == ["article"]
+    assert parsed.records[0].observation.date_inference_mode == "relative_published_at"

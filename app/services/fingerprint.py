@@ -100,6 +100,8 @@ def merge_observation_by_priority(existing: dict, incoming: dict) -> dict:
         "legal_filled_count",
         "legal_required_count",
         "date_resolution",
+        "date_inference_mode",
+        "date_inference_confidence",
         "method",
     )
     for field in meta_fields:

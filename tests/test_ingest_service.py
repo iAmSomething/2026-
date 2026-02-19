@@ -12,6 +12,7 @@ class FakeRepo:
         self.observations = {}
         self.options = set()
         self.review = []
+        self.policy_counters = []
 
     def create_ingestion_run(self, run_type, extractor_version, llm_model):
         self.run_id += 1
@@ -42,6 +43,15 @@ class FakeRepo:
 
     def insert_review_queue(self, entity_type, entity_id, issue_type, review_note):
         self.review.append((entity_type, entity_id, issue_type, review_note))
+
+    def update_ingestion_policy_counters(
+        self,
+        run_id,
+        *,
+        date_inference_failed_count=0,
+        date_inference_estimated_count=0,
+    ):
+        self.policy_counters.append((run_id, date_inference_failed_count, date_inference_estimated_count))
 
 
 PAYLOAD = {
@@ -131,3 +141,17 @@ def test_duplicate_conflict_routes_to_specific_review_issue_type():
     assert result.error_count == 1
     assert len(repo.review) == 1
     assert repo.review[0][2] == "DUPLICATE_CONFLICT"
+
+
+def test_uncertain_date_inference_routes_review_and_updates_run_counters():
+    repo = FakeRepo()
+    payload_data = deepcopy(PAYLOAD)
+    payload_data["records"][0]["observation"]["date_inference_mode"] = "estimated_timestamp"
+    payload_data["records"][0]["observation"]["date_inference_confidence"] = 0.55
+    payload = IngestPayload.model_validate(payload_data)
+
+    result = ingest_payload(payload, repo)
+
+    assert result.status == "success"
+    assert any(row[2] == "extract_error" for row in repo.review)
+    assert repo.policy_counters[-1] == (result.run_id, 0, 1)

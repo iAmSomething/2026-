@@ -1,7 +1,7 @@
 # 배포 및 개발 환경 명세
 
 - 문서 버전: v0.2
-- 최종 수정일: 2026-02-18
+- 최종 수정일: 2026-02-19
 - 수정자: Codex
 
 ## 1. 최종 배포 아키텍처
@@ -99,6 +99,8 @@ PYTHONPATH=. .venv/bin/python scripts/sync_common_codes.py \
 - `DATA_GO_KR_KEY`
 - `DATABASE_URL`
 - `INTERNAL_JOB_TOKEN`
+4. 선택 환경변수:
+- `RELATIVE_DATE_POLICY` (`strict_fail` 기본, `allow_estimated_timestamp` 선택)
 4. CI 부트스트랩 전략:
 - `DATABASE_URL` secret가 비어 있으면 workflow service postgres(`postgresql://postgres:postgres@127.0.0.1:5432/app`)로 자동 fallback
 - secret preflight는 fallback 반영 후 실행되어 DB URL 누락 원인을 즉시 표시

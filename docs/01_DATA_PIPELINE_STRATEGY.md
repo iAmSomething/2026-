@@ -1,7 +1,7 @@
 # 데이터 파이프라인 전략
 
 - 문서 버전: v0.2
-- 최종 수정일: 2026-02-18
+- 최종 수정일: 2026-02-19
 - 수정자: Codex
 
 ## 1. End-to-End 흐름
@@ -71,6 +71,13 @@
 3. 코드 매핑 실패: `mapping_error` 상태로 검수 큐 이동
 4. 중복 적재 시도: idempotency key로 upsert
 5. robots/약관 위반 가능 URL: 영구 제외 목록 등록
+
+## 6.1 상대시점 변환 정책
+1. 기본 정책 `strict_fail`:
+- 상대시점 문구(예: 어제/지난주) + `article.published_at` 결측이면 변환 실패(`date_inference_mode=strict_fail_blocked`)로 기록하고 검수 큐 라우팅
+2. 선택 정책 `allow_estimated_timestamp`:
+- `article.collected_at`를 fallback 기준시각으로 사용해 추정 변환(`date_inference_mode=estimated_timestamp`)
+3. 저신뢰 추론(`date_inference_confidence < 0.8`)은 정책과 무관하게 검수 큐 라우팅
 
 ## 7. 배치 주기
 - 기본: 2시간 간격

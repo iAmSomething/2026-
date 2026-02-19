@@ -51,9 +51,15 @@ CREATE TABLE IF NOT EXISTS ingestion_runs (
     llm_model TEXT NULL,
     processed_count INT NOT NULL DEFAULT 0,
     error_count INT NOT NULL DEFAULT 0,
+    date_inference_failed_count INT NOT NULL DEFAULT 0,
+    date_inference_estimated_count INT NOT NULL DEFAULT 0,
     started_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     ended_at TIMESTAMPTZ NULL
 );
+
+ALTER TABLE ingestion_runs
+    ADD COLUMN IF NOT EXISTS date_inference_failed_count INT NOT NULL DEFAULT 0,
+    ADD COLUMN IF NOT EXISTS date_inference_estimated_count INT NOT NULL DEFAULT 0;
 
 CREATE TABLE IF NOT EXISTS poll_observations (
     id BIGSERIAL PRIMARY KEY,
@@ -79,6 +85,8 @@ CREATE TABLE IF NOT EXISTS poll_observations (
     legal_filled_count INT NULL,
     legal_required_count INT NULL,
     date_resolution TEXT NULL,
+    date_inference_mode TEXT NULL,
+    date_inference_confidence FLOAT NULL,
     poll_fingerprint TEXT NULL,
     source_channel TEXT NULL,
     source_channels TEXT[] NULL,
@@ -100,6 +108,8 @@ ALTER TABLE poll_observations
     ADD COLUMN IF NOT EXISTS legal_filled_count INT NULL,
     ADD COLUMN IF NOT EXISTS legal_required_count INT NULL,
     ADD COLUMN IF NOT EXISTS date_resolution TEXT NULL,
+    ADD COLUMN IF NOT EXISTS date_inference_mode TEXT NULL,
+    ADD COLUMN IF NOT EXISTS date_inference_confidence FLOAT NULL,
     ADD COLUMN IF NOT EXISTS poll_fingerprint TEXT NULL,
     ADD COLUMN IF NOT EXISTS source_channel TEXT NULL,
     ADD COLUMN IF NOT EXISTS source_channels TEXT[] NULL;
