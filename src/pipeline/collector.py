@@ -386,6 +386,8 @@ class PollCollector:
             sample_size=sample_size,
             response_rate=response_rate,
             margin_of_error=margin_of_error,
+            sponsor=None,
+            method=None,
             region_code=region_code,
             office_type=office_type,
             matchup_id=matchup_id,
@@ -394,6 +396,7 @@ class PollCollector:
             ingestion_run_id=None,
             evidence_text=article.raw_text[:280],
             source_url=article.url,
+            source_channel="article",
         )
         observations.append(observation)
 

@@ -75,6 +75,8 @@ POLL_OBSERVATION_SCHEMA: dict[str, Any] = {
         "sample_size": {"type": ["integer", "null"]},
         "response_rate": {"type": ["number", "null"]},
         "margin_of_error": {"type": ["number", "null"]},
+        "sponsor": {"type": ["string", "null"]},
+        "method": {"type": ["string", "null"]},
         "region_code": {"type": "string"},
         "office_type": {"type": "string", "enum": list(OFFICE_TYPE_STANDARD)},
         "matchup_id": {"type": "string"},
@@ -85,6 +87,8 @@ POLL_OBSERVATION_SCHEMA: dict[str, Any] = {
         "legal_filled_count": {"type": ["integer", "null"]},
         "legal_required_count": {"type": ["integer", "null"]},
         "date_resolution": {"type": ["string", "null"]},
+        "poll_fingerprint": {"type": ["string", "null"]},
+        "source_channel": {"type": ["string", "null"], "enum": ["article", "nesdc", None]},
         "verified": {"type": "boolean"},
         "source_grade": {"type": ["string", "null"]},
         "ingestion_run_id": {"type": ["string", "null"]},
@@ -192,6 +196,8 @@ class PollObservation:
     sample_size: int | None
     response_rate: float | None
     margin_of_error: float | None
+    sponsor: str | None
+    method: str | None
     region_code: str
     office_type: str
     matchup_id: str
@@ -207,6 +213,8 @@ class PollObservation:
     legal_filled_count: int | None = None
     legal_required_count: int | None = None
     date_resolution: str | None = None
+    poll_fingerprint: str | None = None
+    source_channel: str | None = None
 
     def to_dict(self) -> dict[str, Any]:
         return asdict(self)

@@ -1,6 +1,7 @@
 from copy import deepcopy
 
 from app.models.schemas import IngestPayload
+from app.services.errors import DuplicateConflictError
 from app.services.ingest_service import ingest_payload
 
 
@@ -63,6 +64,8 @@ PAYLOAD = {
                 "observation_key": "obs-1",
                 "survey_name": "survey",
                 "pollster": "MBC",
+                "sponsor": "서울일보",
+                "method": "전화면접",
                 "region_code": "11-000",
                 "office_type": "광역자치단체장",
                 "matchup_id": "20260603|광역자치단체장|11-000",
@@ -94,6 +97,7 @@ def test_idempotent_ingest_no_duplicate_records():
     assert len(repo.options) == 1
     assert repo.observations["obs-1"]["audience_scope"] == "national"
     assert repo.observations["obs-1"]["legal_filled_count"] == 6
+    assert len(repo.observations["obs-1"]["poll_fingerprint"]) == 64
 
 
 def test_ingest_error_pushes_review_queue():
@@ -109,3 +113,17 @@ def test_ingest_error_pushes_review_queue():
     assert result.error_count == 1
     assert len(repo.review) == 1
     assert repo.review[0][2] == "ingestion_error"
+
+
+def test_duplicate_conflict_routes_to_specific_review_issue_type():
+    class ConflictRepo(FakeRepo):
+        def upsert_poll_observation(self, observation, article_id, ingestion_run_id):  # noqa: ARG002
+            raise DuplicateConflictError("DUPLICATE_CONFLICT core fields mismatch: sample_size")
+
+    repo = ConflictRepo()
+    payload = IngestPayload.model_validate(deepcopy(PAYLOAD))
+    result = ingest_payload(payload, repo)
+
+    assert result.error_count == 1
+    assert len(repo.review) == 1
+    assert repo.review[0][2] == "DUPLICATE_CONFLICT"

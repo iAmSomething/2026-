@@ -63,7 +63,7 @@
 | 빅매치 카드 | `GET /api/v1/dashboard/big-matches` | `matchups`, `poll_observations` | `matchup_id`, `title`, `survey_end_date`, `value_mid` |
 | 지역 검색 | `GET /api/v1/regions/search` | `regions` | `region_code`, `sido_name`, `sigungu_name` |
 | 지역별 선거 탭 | `GET /api/v1/regions/{region_code}/elections` | `matchups` | `region_code`, `office_type`, `is_active` |
-| 매치업 상세 | `GET /api/v1/matchups/{matchup_id}` | `poll_observations`, `poll_options` | `matchup_id`, `pollster`, `margin_of_error`, `value_mid`, `source_grade`, `audience_scope`, `legal_completeness_score`, `legal_filled_count`, `legal_required_count` |
+| 매치업 상세 | `GET /api/v1/matchups/{matchup_id}` | `poll_observations`, `poll_options` | `matchup_id`, `pollster`, `margin_of_error`, `value_mid`, `source_grade`, `audience_scope`, `legal_completeness_score`, `legal_filled_count`, `legal_required_count`, `source_channel`, `poll_fingerprint` |
 | 후보자 상세 | `GET /api/v1/candidates/{candidate_id}` | `candidates`, `candidate_profiles` | `candidate_id`, `name_ko`, `party_name`, `career_summary` |
 
 ## 5. API-UI 필드명 일치 규칙
