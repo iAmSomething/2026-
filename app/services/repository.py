@@ -110,7 +110,7 @@ class PostgresRepository:
                 """
                 SELECT
                     id, observation_key, article_id, survey_name, pollster, sponsor,
-                    survey_start_date, survey_end_date, sample_size, response_rate,
+                    survey_start_date, survey_end_date, confidence_level, sample_size, response_rate,
                     margin_of_error, method, region_code, office_type, matchup_id,
                     audience_scope, audience_region_code, sampling_population_text,
                     legal_completeness_score, legal_filled_count, legal_required_count,
@@ -132,6 +132,7 @@ class PostgresRepository:
         payload.setdefault("audience_scope", None)
         payload.setdefault("audience_region_code", None)
         payload.setdefault("sampling_population_text", None)
+        payload.setdefault("confidence_level", None)
         payload.setdefault("legal_completeness_score", None)
         payload.setdefault("legal_filled_count", None)
         payload.setdefault("legal_required_count", None)
@@ -158,7 +159,7 @@ class PostgresRepository:
                 """
                 INSERT INTO poll_observations (
                     observation_key, article_id, survey_name, pollster,
-                    survey_start_date, survey_end_date, sample_size,
+                    survey_start_date, survey_end_date, confidence_level, sample_size,
                     response_rate, margin_of_error, sponsor, method, region_code,
                     office_type, matchup_id, audience_scope, audience_region_code,
                     sampling_population_text, legal_completeness_score,
@@ -169,7 +170,7 @@ class PostgresRepository:
                 )
                 VALUES (
                     %(observation_key)s, %(article_id)s, %(survey_name)s, %(pollster)s,
-                    %(survey_start_date)s, %(survey_end_date)s, %(sample_size)s,
+                    %(survey_start_date)s, %(survey_end_date)s, %(confidence_level)s, %(sample_size)s,
                     %(response_rate)s, %(margin_of_error)s, %(sponsor)s, %(method)s, %(region_code)s,
                     %(office_type)s, %(matchup_id)s, %(audience_scope)s, %(audience_region_code)s,
                     %(sampling_population_text)s, %(legal_completeness_score)s,
@@ -184,6 +185,7 @@ class PostgresRepository:
                     pollster=EXCLUDED.pollster,
                     survey_start_date=EXCLUDED.survey_start_date,
                     survey_end_date=EXCLUDED.survey_end_date,
+                    confidence_level=EXCLUDED.confidence_level,
                     sample_size=EXCLUDED.sample_size,
                     response_rate=EXCLUDED.response_rate,
                     margin_of_error=EXCLUDED.margin_of_error,
@@ -521,7 +523,11 @@ class PostgresRepository:
                     o.office_type,
                     COALESCE(m.title, o.matchup_id) AS title,
                     o.pollster,
+                    o.survey_start_date,
                     o.survey_end_date,
+                    o.confidence_level,
+                    o.sample_size,
+                    o.response_rate,
                     o.margin_of_error,
                     o.source_grade,
                     o.audience_scope,
@@ -565,7 +571,11 @@ class PostgresRepository:
             "office_type": row["office_type"],
             "title": row["title"],
             "pollster": row["pollster"],
+            "survey_start_date": row["survey_start_date"],
             "survey_end_date": row["survey_end_date"],
+            "confidence_level": row["confidence_level"],
+            "sample_size": row["sample_size"],
+            "response_rate": row["response_rate"],
             "margin_of_error": row["margin_of_error"],
             "source_grade": row["source_grade"],
             "audience_scope": row["audience_scope"],

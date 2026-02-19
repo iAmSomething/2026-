@@ -33,6 +33,7 @@ def test_merge_prefers_nesdc_metadata_and_keeps_article_context():
         "sponsor": None,
         "survey_start_date": "2026-02-10",
         "survey_end_date": "2026-02-12",
+        "confidence_level": None,
         "sample_size": 1000,
         "response_rate": None,
         "margin_of_error": 3.1,
@@ -55,6 +56,7 @@ def test_merge_prefers_nesdc_metadata_and_keeps_article_context():
         "sponsor": "중앙선거여론조사심의위",
         "survey_start_date": "2026-02-10",
         "survey_end_date": "2026-02-12",
+        "confidence_level": 95.0,
         "sample_size": 1000,
         "response_rate": 11.2,
         "margin_of_error": 3.1,
@@ -75,6 +77,7 @@ def test_merge_prefers_nesdc_metadata_and_keeps_article_context():
     assert merged["source_channel"] == "nesdc"
     assert merged["source_channels"] == ["article", "nesdc"]
     assert merged["pollster"] == "KBS"
+    assert merged["confidence_level"] == 95.0
     assert merged["method"] == "전화면접"
     assert merged["survey_name"] == "기사 제목 기반 조사"
     assert merged["article_id"] == 101
