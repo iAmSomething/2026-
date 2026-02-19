@@ -168,6 +168,9 @@ def get_ops_coverage_summary(repo=Depends(get_repository)):
     summary = repo.fetch_ops_coverage_summary()
     return OpsCoverageSummaryOut(
         generated_at=datetime.now(timezone.utc),
+        state=summary["state"],
+        warning_message=summary["warning_message"],
+        regions_total=summary["regions_total"],
         regions_covered=summary["regions_covered"],
         sido_covered=summary["sido_covered"],
         observations_total=summary["observations_total"],

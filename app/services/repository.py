@@ -560,6 +560,14 @@ class PostgresRepository:
         with self.conn.cursor() as cur:
             cur.execute(
                 """
+                SELECT COUNT(*)::int AS regions_total
+                FROM regions
+                """
+            )
+            total_row = cur.fetchone() or {}
+
+            cur.execute(
+                """
                 SELECT
                     COUNT(DISTINCT o.region_code)::int AS regions_covered,
                     COUNT(DISTINCT r.sido_name)::int AS sido_covered,
@@ -571,10 +579,30 @@ class PostgresRepository:
             )
             row = cur.fetchone() or {}
 
+        regions_total = total_row.get("regions_total", 0) or 0
+        regions_covered = row.get("regions_covered", 0) or 0
+        observations_total = row.get("observations_total", 0) or 0
+
+        if observations_total == 0:
+            state = "empty"
+            warning_message = "No observations ingested yet."
+        elif regions_total == 0:
+            state = "partial"
+            warning_message = "regions_total baseline unavailable."
+        elif regions_covered < regions_total:
+            state = "partial"
+            warning_message = f"Coverage partial: {regions_covered}/{regions_total} regions covered."
+        else:
+            state = "ready"
+            warning_message = None
+
         return {
-            "regions_covered": row.get("regions_covered", 0) or 0,
+            "state": state,
+            "warning_message": warning_message,
+            "regions_total": regions_total,
+            "regions_covered": regions_covered,
             "sido_covered": row.get("sido_covered", 0) or 0,
-            "observations_total": row.get("observations_total", 0) or 0,
+            "observations_total": observations_total,
             "latest_survey_end_date": row.get("latest_survey_end_date"),
         }
 

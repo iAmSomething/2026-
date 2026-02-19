@@ -139,6 +139,9 @@ class OpsMetricsSummaryOut(BaseModel):
 
 class OpsCoverageSummaryOut(BaseModel):
     generated_at: datetime
+    state: str
+    warning_message: str | None = None
+    regions_total: int
     regions_covered: int
     sido_covered: int
     observations_total: int

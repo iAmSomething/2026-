@@ -137,6 +137,9 @@ class FakeApiRepo:
 
     def fetch_ops_coverage_summary(self):
         return {
+            "state": "ready",
+            "warning_message": None,
+            "regions_total": 11,
             "regions_covered": 11,
             "sido_covered": 6,
             "observations_total": 100,
@@ -324,6 +327,9 @@ def test_api_contract_fields():
     coverage = client.get("/api/v1/ops/coverage/summary")
     assert coverage.status_code == 200
     coverage_body = coverage.json()
+    assert coverage_body["state"] == "ready"
+    assert coverage_body["warning_message"] is None
+    assert coverage_body["regions_total"] == 11
     assert coverage_body["regions_covered"] == 11
     assert coverage_body["sido_covered"] == 6
     assert coverage_body["observations_total"] == 100
@@ -355,6 +361,76 @@ def test_api_contract_fields():
     assert trends_body["bucket_hours"] == 6
     assert len(trends_body["points"]) == 1
     assert trends_body["points"][0]["error_code"] == "region_not_found"
+
+    app.dependency_overrides.clear()
+
+
+@pytest.mark.parametrize(
+    ("summary", "expected_state", "expected_warning"),
+    [
+        (
+            {
+                "state": "ready",
+                "warning_message": None,
+                "regions_total": 11,
+                "regions_covered": 11,
+                "sido_covered": 6,
+                "observations_total": 100,
+                "latest_survey_end_date": date(2026, 2, 19),
+            },
+            "ready",
+            None,
+        ),
+        (
+            {
+                "state": "partial",
+                "warning_message": "Coverage partial: 6/11 regions covered.",
+                "regions_total": 11,
+                "regions_covered": 6,
+                "sido_covered": 6,
+                "observations_total": 40,
+                "latest_survey_end_date": date(2026, 2, 18),
+            },
+            "partial",
+            "Coverage partial: 6/11 regions covered.",
+        ),
+        (
+            {
+                "state": "empty",
+                "warning_message": "No observations ingested yet.",
+                "regions_total": 11,
+                "regions_covered": 0,
+                "sido_covered": 0,
+                "observations_total": 0,
+                "latest_survey_end_date": None,
+            },
+            "empty",
+            "No observations ingested yet.",
+        ),
+    ],
+)
+def test_ops_coverage_summary_state_contract(summary, expected_state, expected_warning):
+    class CoverageRepo(FakeApiRepo):
+        def fetch_ops_coverage_summary(self):
+            return summary
+
+    def override_coverage_repo():
+        yield CoverageRepo()
+
+    app.dependency_overrides[get_repository] = override_coverage_repo
+    app.dependency_overrides[get_candidate_data_go_service] = override_candidate_data_go_service
+    client = TestClient(app)
+
+    res = client.get("/api/v1/ops/coverage/summary")
+    assert res.status_code == 200
+    body = res.json()
+    assert body["state"] == expected_state
+    assert body["warning_message"] == expected_warning
+    assert "regions_total" in body
+    assert "regions_covered" in body
+    assert "sido_covered" in body
+    assert "observations_total" in body
+    assert "latest_survey_end_date" in body
 
     app.dependency_overrides.clear()
 
