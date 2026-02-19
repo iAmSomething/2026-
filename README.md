@@ -4,7 +4,7 @@
 
 ## 포함 기능
 - FastAPI 공개 API 12개
-  - `GET /api/v1/ops/coverage/summary` (커버리지 지표)
+  - `GET /api/v1/ops/coverage/summary` (커버리지 지표, 누적 집계)
   - `GET /api/v1/ops/metrics/summary` (운영 지표)
   - `GET /api/v1/review-queue/items`
   - `GET /api/v1/review-queue/stats`
@@ -50,6 +50,11 @@ python -m app.jobs.bootstrap_ingest \
   --report data/bootstrap_ingest_dir_report.json
 ```
 - 요약 리포트 필수 필드: `total`, `success`, `fail`, `review_queue_count`
+
+## 데이터 추적 정책
+1. 재현용 입력 데이터(`data/bootstrap_ingest_coverage_v1.json` 등)는 Git 추적 유지
+2. 실행 산출물(`*_apply_report.json`, `*_issue*.json`, `reports/pm/*`)은 기본적으로 Git 비추적
+3. 실행 산출물 공유는 GitHub Actions artifact 또는 이슈 코멘트 첨부를 우선 사용
 
 ## 런타임 주의
 - Python `3.13` 사용 권장 (`3.14`에서는 `pydantic-core` 빌드 실패 가능)
