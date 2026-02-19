@@ -43,6 +43,7 @@ class _Cursor:
                 "date_inference_mode": "relative_published_at",
                 "date_inference_confidence": 0.92,
                 "observation_updated_at": "2026-02-18T03:00:00+00:00",
+                "official_release_at": None,
                 "article_published_at": "2026-02-18T01:00:00+00:00",
                 "nesdc_enriched": True,
                 "needs_manual_review": True,
@@ -89,6 +90,7 @@ def test_get_matchup_returns_legal_metadata_fields():
     assert out["date_inference_mode"] == "relative_published_at"
     assert out["date_inference_confidence"] == 0.92
     assert out["observation_updated_at"] == "2026-02-18T03:00:00+00:00"
+    assert out["official_release_at"] is None
     assert out["article_published_at"] == "2026-02-18T01:00:00+00:00"
     assert out["nesdc_enriched"] is True
     assert out["needs_manual_review"] is True

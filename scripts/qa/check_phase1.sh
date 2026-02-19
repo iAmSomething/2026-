@@ -206,8 +206,15 @@ obj=json.loads(urllib.request.urlopen(base+"/api/v1/dashboard/summary").read().d
 assert "party_support" in obj
 assert "presidential_approval" in obj
 if obj["party_support"]:
-    for k in ["option_name","value_mid","pollster","survey_end_date","verified"]:
+    for k in [
+        "option_name","value_mid","pollster","survey_end_date","verified",
+        "audience_scope","audience_region_code","source_channel","source_channels",
+        "source_priority","freshness_hours","official_release_at","article_published_at","is_official_confirmed"
+    ]:
         assert k in obj["party_support"][0]
+    assert obj["party_support"][0]["source_channel"] in ("article", "nesdc", None)
+    assert isinstance(obj["party_support"][0]["source_channels"], list)
+    assert obj["party_support"][0]["source_priority"] in ("official", "article", "mixed")
 print("summary ok")
 PY
 
@@ -230,13 +237,19 @@ candidate_id="cand-jwo"
 obj=json.loads(urllib.request.urlopen(base+f"/api/v1/candidates/{candidate_id}").read().decode())
 for k in [
     "candidate_id","name_ko","party_name",
-    "party_inferred","party_inference_source","party_inference_confidence","needs_manual_review"
+    "party_inferred","party_inference_source","party_inference_confidence","needs_manual_review",
+    "source_channel","source_channels",
+    "source_priority","freshness_hours","official_release_at","article_published_at","is_official_confirmed"
 ]:
     assert k in obj
 assert isinstance(obj["party_inferred"], bool)
 assert isinstance(obj["needs_manual_review"], bool)
 assert obj["party_inference_source"] is None or isinstance(obj["party_inference_source"], str)
 assert obj["party_inference_confidence"] is None or isinstance(obj["party_inference_confidence"], (int, float))
+assert obj["source_priority"] in ("official", "article", "mixed")
+assert obj["freshness_hours"] is None or isinstance(obj["freshness_hours"], (int, float))
+assert isinstance(obj["is_official_confirmed"], bool)
+assert isinstance(obj["source_channels"], list)
 print("candidate ok")
 PY
 fi

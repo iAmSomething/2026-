@@ -102,6 +102,7 @@ def merge_observation_by_priority(existing: dict, incoming: dict) -> dict:
         "date_resolution",
         "date_inference_mode",
         "date_inference_confidence",
+        "official_release_at",
         "method",
     )
     for field in meta_fields:

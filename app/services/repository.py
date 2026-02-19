@@ -78,19 +78,25 @@ class PostgresRepository:
         payload.setdefault("party_inferred", False)
         payload.setdefault("party_inference_source", None)
         payload.setdefault("party_inference_confidence", None)
-        payload.setdefault("needs_manual_review", False)
+        payload.setdefault("source_channel", "article")
+        if payload.get("source_channels") in (None, []):
+            payload["source_channels"] = [payload["source_channel"]]
+        payload.setdefault("official_release_at", None)
+        payload.setdefault("article_published_at", None)
 
         with self.conn.cursor() as cur:
             cur.execute(
                 """
                 INSERT INTO candidates (
                     candidate_id, name_ko, party_name,
-                    party_inferred, party_inference_source, party_inference_confidence, needs_manual_review,
+                    party_inferred, party_inference_source, party_inference_confidence,
+                    source_channel, source_channels, official_release_at, article_published_at,
                     gender, birth_date, job, profile_updated_at
                 )
                 VALUES (
                     %(candidate_id)s, %(name_ko)s, %(party_name)s,
-                    %(party_inferred)s, %(party_inference_source)s, %(party_inference_confidence)s, %(needs_manual_review)s,
+                    %(party_inferred)s, %(party_inference_source)s, %(party_inference_confidence)s,
+                    %(source_channel)s, %(source_channels)s, %(official_release_at)s, %(article_published_at)s,
                     %(gender)s, %(birth_date)s, %(job)s, NOW()
                 )
                 ON CONFLICT (candidate_id) DO UPDATE
@@ -99,7 +105,20 @@ class PostgresRepository:
                     party_inferred=EXCLUDED.party_inferred,
                     party_inference_source=EXCLUDED.party_inference_source,
                     party_inference_confidence=EXCLUDED.party_inference_confidence,
-                    needs_manual_review=EXCLUDED.needs_manual_review,
+                    source_channel=CASE
+                        WHEN candidates.source_channel = 'nesdc' OR EXCLUDED.source_channel = 'nesdc'
+                            THEN 'nesdc'
+                        ELSE EXCLUDED.source_channel
+                    END,
+                    source_channels=CASE
+                        WHEN candidates.source_channels IS NULL THEN EXCLUDED.source_channels
+                        WHEN EXCLUDED.source_channels IS NULL THEN candidates.source_channels
+                        ELSE ARRAY(
+                            SELECT DISTINCT unnest(candidates.source_channels || EXCLUDED.source_channels)
+                        )
+                    END,
+                    official_release_at=COALESCE(candidates.official_release_at, EXCLUDED.official_release_at),
+                    article_published_at=COALESCE(EXCLUDED.article_published_at, candidates.article_published_at),
                     gender=EXCLUDED.gender,
                     birth_date=EXCLUDED.birth_date,
                     job=EXCLUDED.job,
@@ -151,7 +170,7 @@ class PostgresRepository:
                     margin_of_error, method, region_code, office_type, matchup_id,
                     audience_scope, audience_region_code, sampling_population_text,
                     legal_completeness_score, legal_filled_count, legal_required_count,
-                    date_resolution, date_inference_mode, date_inference_confidence,
+                    date_resolution, date_inference_mode, date_inference_confidence, official_release_at,
                     poll_fingerprint, source_channel, source_channels,
                     verified, source_grade, ingestion_run_id
                 FROM poll_observations
@@ -177,6 +196,7 @@ class PostgresRepository:
         payload.setdefault("date_resolution", None)
         payload.setdefault("date_inference_mode", None)
         payload.setdefault("date_inference_confidence", None)
+        payload.setdefault("official_release_at", None)
         payload.setdefault("poll_fingerprint", None)
         payload.setdefault("source_channel", "article")
         if payload.get("source_channels") in (None, []):
@@ -204,7 +224,7 @@ class PostgresRepository:
                     office_type, matchup_id, audience_scope, audience_region_code,
                     sampling_population_text, legal_completeness_score,
                     legal_filled_count, legal_required_count, date_resolution,
-                    date_inference_mode, date_inference_confidence,
+                    date_inference_mode, date_inference_confidence, official_release_at,
                     poll_fingerprint, source_channel, source_channels,
                     verified, source_grade,
                     ingestion_run_id
@@ -216,7 +236,7 @@ class PostgresRepository:
                     %(office_type)s, %(matchup_id)s, %(audience_scope)s, %(audience_region_code)s,
                     %(sampling_population_text)s, %(legal_completeness_score)s,
                     %(legal_filled_count)s, %(legal_required_count)s, %(date_resolution)s,
-                    %(date_inference_mode)s, %(date_inference_confidence)s,
+                    %(date_inference_mode)s, %(date_inference_confidence)s, %(official_release_at)s,
                     %(poll_fingerprint)s, %(source_channel)s, %(source_channels)s,
                     %(verified)s, %(source_grade)s,
                     %(ingestion_run_id)s
@@ -245,6 +265,7 @@ class PostgresRepository:
                     date_resolution=EXCLUDED.date_resolution,
                     date_inference_mode=EXCLUDED.date_inference_mode,
                     date_inference_confidence=EXCLUDED.date_inference_confidence,
+                    official_release_at=COALESCE(poll_observations.official_release_at, EXCLUDED.official_release_at),
                     poll_fingerprint=COALESCE(poll_observations.poll_fingerprint, EXCLUDED.poll_fingerprint),
                     source_channel=CASE
                         WHEN poll_observations.source_channel = 'nesdc' OR EXCLUDED.source_channel = 'nesdc'
@@ -353,18 +374,18 @@ class PostgresRepository:
         if as_of is not None:
             as_of_filter = "AND o.survey_end_date <= %s"
             params.append(as_of)
-        scope_filter = "AND o.audience_scope = 'national'"
-
         query = f"""
             WITH latest AS (
-                SELECT po.option_type, MAX(o.survey_end_date) AS max_date
+                SELECT
+                    po.option_type,
+                    o.audience_scope,
+                    MAX(o.survey_end_date) AS max_date
                 FROM poll_options po
                 JOIN poll_observations o ON o.id = po.observation_id
                 WHERE po.option_type IN ('party_support', 'presidential_approval')
                   AND o.verified = TRUE
-                  {scope_filter}
                   {as_of_filter}
-                GROUP BY po.option_type
+                GROUP BY po.option_type, o.audience_scope
             )
             SELECT
                 po.option_type,
@@ -373,7 +394,9 @@ class PostgresRepository:
                 o.pollster,
                 o.survey_end_date,
                 o.audience_scope,
+                o.audience_region_code,
                 o.updated_at AS observation_updated_at,
+                o.official_release_at,
                 a.published_at AS article_published_at,
                 o.source_channel,
                 COALESCE(o.source_channels, CASE WHEN o.source_channel IS NULL THEN ARRAY[]::text[] ELSE ARRAY[o.source_channel] END) AS source_channels,
@@ -381,9 +404,11 @@ class PostgresRepository:
             FROM poll_options po
             JOIN poll_observations o ON o.id = po.observation_id
             LEFT JOIN articles a ON a.id = o.article_id
-            JOIN latest l ON l.option_type = po.option_type AND l.max_date = o.survey_end_date
+            JOIN latest l
+              ON l.option_type = po.option_type
+             AND l.max_date = o.survey_end_date
+             AND l.audience_scope IS NOT DISTINCT FROM o.audience_scope
             WHERE po.option_type IN ('party_support', 'presidential_approval')
-              {scope_filter}
             ORDER BY po.option_type, po.option_name
         """
 
@@ -411,7 +436,9 @@ class PostgresRepository:
                     po.value_mid,
                     o.survey_end_date,
                     o.audience_scope,
+                    o.audience_region_code,
                     o.updated_at AS observation_updated_at,
+                    o.official_release_at,
                     a.published_at AS article_published_at,
                     o.source_channel,
                     COALESCE(
@@ -441,7 +468,9 @@ class PostgresRepository:
                 r.survey_end_date,
                 r.option_name,
                 r.audience_scope,
+                r.audience_region_code,
                 r.observation_updated_at,
+                r.official_release_at,
                 r.article_published_at,
                 r.source_channel,
                 r.source_channels
@@ -608,6 +637,7 @@ class PostgresRepository:
                     o.date_inference_mode,
                     o.date_inference_confidence,
                     o.updated_at AS observation_updated_at,
+                    o.official_release_at,
                     a.published_at AS article_published_at,
                     CASE
                         WHEN o.source_channel = 'nesdc' THEN TRUE
@@ -680,6 +710,7 @@ class PostgresRepository:
             "date_inference_mode": row["date_inference_mode"],
             "date_inference_confidence": row["date_inference_confidence"],
             "observation_updated_at": row["observation_updated_at"],
+            "official_release_at": row["official_release_at"],
             "article_published_at": row["article_published_at"],
             "nesdc_enriched": row["nesdc_enriched"],
             "needs_manual_review": row["needs_manual_review"],
@@ -696,7 +727,16 @@ class PostgresRepository:
                 """
                 SELECT
                     c.candidate_id, c.name_ko, c.party_name,
-                    c.party_inferred, c.party_inference_source, c.party_inference_confidence, c.needs_manual_review,
+                    c.party_inferred, c.party_inference_source, c.party_inference_confidence,
+                    c.source_channel, c.source_channels, c.official_release_at, c.article_published_at,
+                    c.profile_updated_at AS observation_updated_at,
+                    EXISTS (
+                        SELECT 1
+                        FROM review_queue rq
+                        WHERE rq.entity_type IN ('candidate', 'ingest_record')
+                          AND rq.entity_id = c.candidate_id
+                          AND rq.status IN ('pending', 'in_progress')
+                    ) AS needs_manual_review,
                     c.gender,
                     c.birth_date, c.job,
                     cp.career_summary, cp.election_history
