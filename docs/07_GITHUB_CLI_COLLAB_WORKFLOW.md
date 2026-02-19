@@ -68,6 +68,17 @@ bash scripts/pm/report_scan.sh --date 2026-02-18
 2. 공용 잠금 경로(`docs/**`, `.github/**`, `scripts/pm/**`, `README.md`) 수정은 PM 승인 코멘트 필수
 3. 역할별 이슈 템플릿의 Workspace Lock Checklist 체크 후 작업 시작
 
+## 6-3) QA FAIL 자동탐지 표준 포맷
+1. 자동 판정은 아래 줄 시작 토큰만 유효로 본다.
+- `[QA FAIL]` 단독 줄
+- `Status: FAIL` 또는 `- Status: FAIL`
+- `Verdict: FAIL` 또는 `- Verdict: FAIL`
+- `판정: FAIL`
+- `결론: Done 처리 불가`
+2. 비허용 예시(오탐 방지):
+- 문서 안내문/템플릿 예시 텍스트의 `[QA FAIL]`
+- `"[QA PASS] / [QA FAIL] 템플릿"` 형태의 설명 줄
+
 ## 7) 권한 이슈
 - `gh project` 사용 시 아래 스코프가 필요할 수 있음:
 ```bash
