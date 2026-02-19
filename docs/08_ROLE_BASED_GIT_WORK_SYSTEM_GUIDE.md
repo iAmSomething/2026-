@@ -48,6 +48,9 @@
 ```bash
 bash scripts/pm/bootstrap_github_cli.sh iAmSomething/2026-
 ```
+- 부트스트랩은 PM 주기운영 변수도 기본값으로 설정한다.
+  - `PM_CYCLE_MODE=dry-run`
+  - `PM_CYCLE_MAX_CREATE=4`
 
 ## 4.2 작업 생성
 ```bash
@@ -140,3 +143,14 @@ bash scripts/pm/link_report_to_issue.sh iAmSomething/2026- <issue_no> <보고서
 3. 보고서 파일명이 규칙에 맞는가
 4. PR 본문에 `Report-Path:`를 썼는가
 5. 문서 계약과 필드명이 일치하는가
+
+## 10. 운영 듀얼레인 요약
+1. 오프라인 자동 레인 전환:
+```bash
+bash scripts/pm/set_pm_cycle_mode.sh --repo iAmSomething/2026- --lane offline
+```
+2. 온라인 수동 레인 전환:
+```bash
+bash scripts/pm/set_pm_cycle_mode.sh --repo iAmSomething/2026- --lane online
+```
+3. 온라인 세션에서는 `dry-run`으로 현황만 갱신하고, 상태 변경(`apply`)은 근거 코멘트 후 1회 수동 실행 원칙을 따른다.
