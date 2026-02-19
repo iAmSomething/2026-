@@ -246,6 +246,14 @@ DoD
 - [ ] QA 재검증에서 [QA PASS] 획득
 EOF
 )
+      ASSIGNEE_ARGS=()
+      if ME_LOGIN="$(gh api user --jq '.login' 2>/dev/null)"; then
+        if [[ "$ME_LOGIN" != "github-actions[bot]" ]] && gh api "repos/${REPO}/assignees/${ME_LOGIN}" >/dev/null 2>&1; then
+          ASSIGNEE_ARGS=(--assignee "$ME_LOGIN")
+        else
+          APPLIED_ACTIONS+=("qa_followup_unassigned:${auto_key}")
+        fi
+      fi
       gh issue create \
         --repo "$REPO" \
         --title "$title" \
@@ -254,7 +262,7 @@ EOF
         --label "type/bug" \
         --label "status/backlog" \
         --label "priority/p1" \
-        --assignee "@me" >/dev/null
+        "${ASSIGNEE_ARGS[@]}" >/dev/null
       CREATED_COUNT=$((CREATED_COUNT + 1))
       APPLIED_ACTIONS+=("qa_followup_created:${auto_key}")
     done < <(find "QA_reports" -maxdepth 1 -type f -name "$REPORT_PATTERN" | sort)
