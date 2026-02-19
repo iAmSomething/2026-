@@ -1,0 +1,11 @@
+{
+  "captured_at": "2026-02-19T00:55:03.805582+00:00",
+  "status_code": 200,
+  "response": {
+    "generated_at": "2026-02-19T00:55:03.803453Z",
+    "regions_covered": 11,
+    "sido_covered": 6,
+    "observations_total": 102,
+    "latest_survey_end_date": "2026-02-18"
+  }
+}

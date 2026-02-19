@@ -1,0 +1,358 @@
+{
+  "suite": "qa_api_contract_suite",
+  "generated_at": "2026-02-19T00:35:53.199943+00:00",
+  "python": "3.13.5",
+  "summary": {
+    "total": 27,
+    "pass": 27,
+    "fail": 0,
+    "pass_rate": 100.0
+  },
+  "by_category": {
+    "success": {
+      "total": 12,
+      "pass": 12,
+      "fail": 0
+    },
+    "empty": {
+      "total": 9,
+      "pass": 9,
+      "fail": 0
+    },
+    "auth_failure": {
+      "total": 2,
+      "pass": 2,
+      "fail": 0
+    },
+    "failure": {
+      "total": 4,
+      "pass": 4,
+      "fail": 0
+    }
+  },
+  "cases": [
+    {
+      "name": "summary_success",
+      "category": "success",
+      "endpoint": "GET /api/v1/dashboard/summary",
+      "status": "pass",
+      "error": null,
+      "details": [
+        null,
+        true
+      ],
+      "executed_at": "2026-02-19T00:35:53.162419+00:00"
+    },
+    {
+      "name": "map_latest_success",
+      "category": "success",
+      "endpoint": "GET /api/v1/dashboard/map-latest",
+      "status": "pass",
+      "error": null,
+      "details": [
+        true,
+        true
+      ],
+      "executed_at": "2026-02-19T00:35:53.167933+00:00"
+    },
+    {
+      "name": "big_matches_success",
+      "category": "success",
+      "endpoint": "GET /api/v1/dashboard/big-matches",
+      "status": "pass",
+      "error": null,
+      "details": [
+        true,
+        true
+      ],
+      "executed_at": "2026-02-19T00:35:53.169214+00:00"
+    },
+    {
+      "name": "regions_search_success",
+      "category": "success",
+      "endpoint": "GET /api/v1/regions/search",
+      "status": "pass",
+      "error": null,
+      "details": [
+        true,
+        true,
+        true
+      ],
+      "executed_at": "2026-02-19T00:35:53.170372+00:00"
+    },
+    {
+      "name": "region_elections_success",
+      "category": "success",
+      "endpoint": "GET /api/v1/regions/{region_code}/elections",
+      "status": "pass",
+      "error": null,
+      "details": [
+        true,
+        true,
+        true
+      ],
+      "executed_at": "2026-02-19T00:35:53.171590+00:00"
+    },
+    {
+      "name": "matchup_success",
+      "category": "success",
+      "endpoint": "GET /api/v1/matchups/{matchup_id}",
+      "status": "pass",
+      "error": null,
+      "details": [
+        true,
+        null
+      ],
+      "executed_at": "2026-02-19T00:35:53.172715+00:00"
+    },
+    {
+      "name": "candidate_success",
+      "category": "success",
+      "endpoint": "GET /api/v1/candidates/{candidate_id}",
+      "status": "pass",
+      "error": null,
+      "details": [
+        true,
+        null
+      ],
+      "executed_at": "2026-02-19T00:35:53.173892+00:00"
+    },
+    {
+      "name": "review_queue_items_success",
+      "category": "success",
+      "endpoint": "GET /api/v1/review-queue/items",
+      "status": "pass",
+      "error": null,
+      "details": [
+        true,
+        true,
+        true
+      ],
+      "executed_at": "2026-02-19T00:35:53.176281+00:00"
+    },
+    {
+      "name": "ops_coverage_summary_success",
+      "category": "success",
+      "endpoint": "GET /api/v1/ops/coverage/summary",
+      "status": "pass",
+      "error": null,
+      "details": [
+        true,
+        null
+      ],
+      "executed_at": "2026-02-19T00:35:53.177526+00:00"
+    },
+    {
+      "name": "review_queue_stats_success",
+      "category": "success",
+      "endpoint": "GET /api/v1/review-queue/stats",
+      "status": "pass",
+      "error": null,
+      "details": [
+        true,
+        null
+      ],
+      "executed_at": "2026-02-19T00:35:53.178520+00:00"
+    },
+    {
+      "name": "review_queue_trends_success",
+      "category": "success",
+      "endpoint": "GET /api/v1/review-queue/trends",
+      "status": "pass",
+      "error": null,
+      "details": [
+        true,
+        null
+      ],
+      "executed_at": "2026-02-19T00:35:53.179590+00:00"
+    },
+    {
+      "name": "run_ingest_success",
+      "category": "success",
+      "endpoint": "POST /api/v1/jobs/run-ingest",
+      "status": "pass",
+      "error": null,
+      "details": [
+        true,
+        true
+      ],
+      "executed_at": "2026-02-19T00:35:53.180683+00:00"
+    },
+    {
+      "name": "summary_empty",
+      "category": "empty",
+      "endpoint": "GET /api/v1/dashboard/summary",
+      "status": "pass",
+      "error": null,
+      "details": [
+        true,
+        true,
+        true
+      ],
+      "executed_at": "2026-02-19T00:35:53.182590+00:00"
+    },
+    {
+      "name": "regions_search_empty",
+      "category": "empty",
+      "endpoint": "GET /api/v1/regions/search",
+      "status": "pass",
+      "error": null,
+      "details": [
+        true,
+        true
+      ],
+      "executed_at": "2026-02-19T00:35:53.183680+00:00"
+    },
+    {
+      "name": "map_latest_empty",
+      "category": "empty",
+      "endpoint": "GET /api/v1/dashboard/map-latest",
+      "status": "pass",
+      "error": null,
+      "details": [
+        true,
+        true
+      ],
+      "executed_at": "2026-02-19T00:35:53.184960+00:00"
+    },
+    {
+      "name": "big_matches_empty",
+      "category": "empty",
+      "endpoint": "GET /api/v1/dashboard/big-matches",
+      "status": "pass",
+      "error": null,
+      "details": [
+        true,
+        true
+      ],
+      "executed_at": "2026-02-19T00:35:53.186129+00:00"
+    },
+    {
+      "name": "region_elections_empty",
+      "category": "empty",
+      "endpoint": "GET /api/v1/regions/{region_code}/elections",
+      "status": "pass",
+      "error": null,
+      "details": [
+        true,
+        true
+      ],
+      "executed_at": "2026-02-19T00:35:53.187239+00:00"
+    },
+    {
+      "name": "review_queue_items_empty",
+      "category": "empty",
+      "endpoint": "GET /api/v1/review-queue/items",
+      "status": "pass",
+      "error": null,
+      "details": [
+        true,
+        true
+      ],
+      "executed_at": "2026-02-19T00:35:53.188280+00:00"
+    },
+    {
+      "name": "ops_coverage_summary_empty",
+      "category": "empty",
+      "endpoint": "GET /api/v1/ops/coverage/summary",
+      "status": "pass",
+      "error": null,
+      "details": [
+        true,
+        true,
+        true
+      ],
+      "executed_at": "2026-02-19T00:35:53.189391+00:00"
+    },
+    {
+      "name": "review_queue_stats_empty",
+      "category": "empty",
+      "endpoint": "GET /api/v1/review-queue/stats",
+      "status": "pass",
+      "error": null,
+      "details": [
+        true,
+        true
+      ],
+      "executed_at": "2026-02-19T00:35:53.190446+00:00"
+    },
+    {
+      "name": "review_queue_trends_empty",
+      "category": "empty",
+      "endpoint": "GET /api/v1/review-queue/trends",
+      "status": "pass",
+      "error": null,
+      "details": [
+        true,
+        true
+      ],
+      "executed_at": "2026-02-19T00:35:53.191779+00:00"
+    },
+    {
+      "name": "run_ingest_auth_missing",
+      "category": "auth_failure",
+      "endpoint": "POST /api/v1/jobs/run-ingest",
+      "status": "pass",
+      "error": null,
+      "details": [
+        true
+      ],
+      "executed_at": "2026-02-19T00:35:53.192870+00:00"
+    },
+    {
+      "name": "run_ingest_auth_invalid",
+      "category": "auth_failure",
+      "endpoint": "POST /api/v1/jobs/run-ingest",
+      "status": "pass",
+      "error": null,
+      "details": [
+        true
+      ],
+      "executed_at": "2026-02-19T00:35:53.193872+00:00"
+    },
+    {
+      "name": "summary_internal_error_500",
+      "category": "failure",
+      "endpoint": "GET /api/v1/dashboard/summary",
+      "status": "pass",
+      "error": null,
+      "details": [
+        true
+      ],
+      "executed_at": "2026-02-19T00:35:53.195001+00:00"
+    },
+    {
+      "name": "candidate_not_found_404",
+      "category": "failure",
+      "endpoint": "GET /api/v1/candidates/{candidate_id}",
+      "status": "pass",
+      "error": null,
+      "details": [
+        true
+      ],
+      "executed_at": "2026-02-19T00:35:53.196177+00:00"
+    },
+    {
+      "name": "matchup_not_found_404",
+      "category": "failure",
+      "endpoint": "GET /api/v1/matchups/{matchup_id}",
+      "status": "pass",
+      "error": null,
+      "details": [
+        true
+      ],
+      "executed_at": "2026-02-19T00:35:53.197341+00:00"
+    },
+    {
+      "name": "run_ingest_invalid_payload_422",
+      "category": "failure",
+      "endpoint": "POST /api/v1/jobs/run-ingest",
+      "status": "pass",
+      "error": null,
+      "details": [
+        true
+      ],
+      "executed_at": "2026-02-19T00:35:53.198381+00:00"
+    }
+  ]
+}
