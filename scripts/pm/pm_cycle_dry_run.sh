@@ -111,7 +111,7 @@ extract_primary_path() {
 
 is_qa_fail_report() {
   local file="$1"
-  if grep -Eq '\[QA FAIL\]|Status:[[:space:]]*FAIL|판정[[:space:]]*:[[:space:]]*FAIL|결론:[[:space:]]*Done 처리 불가' "$file"; then
+  if python3 scripts/pm/qafail_detection.py --file "$file" >/dev/null 2>&1; then
     return 0
   fi
   return 1
