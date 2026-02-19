@@ -46,6 +46,63 @@ def _build_scope_breakdown(rows: list[dict]) -> dict[str, int]:
     return counts
 
 
+def _to_datetime(value) -> datetime | None:
+    if value is None:
+        return None
+    if isinstance(value, datetime):
+        return value if value.tzinfo else value.replace(tzinfo=timezone.utc)
+    if isinstance(value, date):
+        return datetime.combine(value, datetime.min.time(), tzinfo=timezone.utc)
+    if isinstance(value, str):
+        text = value.strip()
+        if not text:
+            return None
+        try:
+            parsed = datetime.fromisoformat(text.replace("Z", "+00:00"))
+        except ValueError:
+            return None
+        return parsed if parsed.tzinfo else parsed.replace(tzinfo=timezone.utc)
+    return None
+
+
+def _derive_source_meta(row: dict) -> dict:
+    raw_channels = row.get("source_channels") or []
+    channels = {str(ch).strip().lower() for ch in raw_channels if ch is not None}
+    source_channel = str(row.get("source_channel") or "").strip().lower()
+    if source_channel:
+        channels.add(source_channel)
+
+    has_article = "article" in channels or source_channel == "article"
+    has_nesdc = "nesdc" in channels or source_channel == "nesdc"
+
+    if has_article and has_nesdc:
+        source_priority = "mixed"
+    elif has_nesdc:
+        source_priority = "official"
+    else:
+        source_priority = "article"
+
+    observation_updated_at = _to_datetime(row.get("observation_updated_at"))
+    article_published_at = _to_datetime(row.get("article_published_at"))
+    official_release_at = _to_datetime(row.get("official_release_at"))
+    if official_release_at is None and has_nesdc:
+        official_release_at = observation_updated_at
+
+    freshness_anchor = official_release_at or article_published_at or observation_updated_at
+    freshness_hours = None
+    if freshness_anchor is not None:
+        delta_seconds = (datetime.now(timezone.utc) - freshness_anchor).total_seconds()
+        freshness_hours = round(max(delta_seconds, 0.0) / 3600.0, 2)
+
+    return {
+        "source_priority": source_priority,
+        "official_release_at": official_release_at,
+        "article_published_at": article_published_at,
+        "freshness_hours": freshness_hours,
+        "is_official_confirmed": has_nesdc,
+    }
+
+
 @router.get("/dashboard/summary", response_model=DashboardSummaryOut)
 def get_dashboard_summary(
     as_of: date | None = Query(default=None),
@@ -58,12 +115,18 @@ def get_dashboard_summary(
     for row in rows:
         if row.get("audience_scope") != "national":
             continue
+        source_meta = _derive_source_meta(row)
         point = SummaryPoint(
             option_name=row["option_name"],
             value_mid=row["value_mid"],
             pollster=row["pollster"],
             survey_end_date=row["survey_end_date"],
             audience_scope=row.get("audience_scope"),
+            source_priority=source_meta["source_priority"],
+            official_release_at=source_meta["official_release_at"],
+            article_published_at=source_meta["article_published_at"],
+            freshness_hours=source_meta["freshness_hours"],
+            is_official_confirmed=source_meta["is_official_confirmed"],
             source_channel=row.get("source_channel"),
             source_channels=row.get("source_channels") or [],
             verified=row["verified"],
@@ -88,9 +151,30 @@ def get_dashboard_map_latest(
     repo=Depends(get_repository),
 ):
     rows = repo.fetch_dashboard_map_latest(as_of=as_of, limit=limit)
+    items = []
+    for row in rows:
+        source_meta = _derive_source_meta(row)
+        items.append(
+            MapLatestPoint(
+                region_code=row["region_code"],
+                office_type=row["office_type"],
+                title=row["title"],
+                value_mid=row.get("value_mid"),
+                survey_end_date=row.get("survey_end_date"),
+                option_name=row.get("option_name"),
+                audience_scope=row.get("audience_scope"),
+                source_priority=source_meta["source_priority"],
+                official_release_at=source_meta["official_release_at"],
+                article_published_at=source_meta["article_published_at"],
+                freshness_hours=source_meta["freshness_hours"],
+                is_official_confirmed=source_meta["is_official_confirmed"],
+                source_channel=row.get("source_channel"),
+                source_channels=row.get("source_channels") or [],
+            )
+        )
     return DashboardMapLatestOut(
         as_of=as_of,
-        items=[MapLatestPoint(**row) for row in rows],
+        items=items,
         scope_breakdown=ScopeBreakdownOut(**_build_scope_breakdown(rows)),
     )
 
@@ -130,7 +214,10 @@ def get_matchup(matchup_id: str, repo=Depends(get_repository)):
     matchup = repo.get_matchup(matchup_id)
     if not matchup:
         raise HTTPException(status_code=404, detail="matchup not found")
-    return MatchupOut(**matchup)
+    source_meta = _derive_source_meta(matchup)
+    payload = dict(matchup)
+    payload.update(source_meta)
+    return MatchupOut(**payload)
 
 
 @router.get("/candidates/{candidate_id}", response_model=CandidateOut)

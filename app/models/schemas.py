@@ -28,6 +28,11 @@ class SummaryPoint(BaseModel):
     pollster: str | None = None
     survey_end_date: date | None = None
     audience_scope: Literal["national", "regional", "local"] | None = None
+    source_priority: Literal["official", "article", "mixed"] = "article"
+    official_release_at: datetime | None = None
+    article_published_at: datetime | None = None
+    freshness_hours: float | None = None
+    is_official_confirmed: bool = False
     source_channel: Literal["article", "nesdc"] | None = None
     source_channels: list[Literal["article", "nesdc"]] = Field(default_factory=list)
     verified: bool
@@ -55,6 +60,11 @@ class MapLatestPoint(BaseModel):
     survey_end_date: date | None = None
     option_name: str | None = None
     audience_scope: Literal["national", "regional", "local"] | None = None
+    source_priority: Literal["official", "article", "mixed"] = "article"
+    official_release_at: datetime | None = None
+    article_published_at: datetime | None = None
+    freshness_hours: float | None = None
+    is_official_confirmed: bool = False
     source_channel: Literal["article", "nesdc"] | None = None
     source_channels: list[Literal["article", "nesdc"]] = Field(default_factory=list)
 
@@ -123,6 +133,11 @@ class MatchupOut(BaseModel):
     date_inference_confidence: float | None = None
     nesdc_enriched: bool = False
     needs_manual_review: bool = False
+    source_priority: Literal["official", "article", "mixed"] = "article"
+    official_release_at: datetime | None = None
+    article_published_at: datetime | None = None
+    freshness_hours: float | None = None
+    is_official_confirmed: bool = False
     poll_fingerprint: str | None = None
     source_channel: Literal["article", "nesdc"] | None = None
     source_channels: list[Literal["article", "nesdc"]] | None = None

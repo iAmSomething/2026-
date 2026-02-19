@@ -21,6 +21,8 @@ class FakeApiRepo:
                 "pollster": "KBS",
                 "survey_end_date": date(2026, 2, 18),
                 "audience_scope": "national",
+                "observation_updated_at": "2026-02-18T03:00:00+00:00",
+                "article_published_at": "2026-02-18T01:00:00+00:00",
                 "source_channel": "nesdc",
                 "source_channels": ["article", "nesdc"],
                 "verified": True,
@@ -32,6 +34,8 @@ class FakeApiRepo:
                 "pollster": "KBS",
                 "survey_end_date": date(2026, 2, 18),
                 "audience_scope": "regional",
+                "observation_updated_at": "2026-02-18T02:00:00+00:00",
+                "article_published_at": "2026-02-18T01:30:00+00:00",
                 "source_channel": "article",
                 "source_channels": ["article"],
                 "verified": True,
@@ -43,6 +47,8 @@ class FakeApiRepo:
                 "pollster": "KBS",
                 "survey_end_date": date(2026, 2, 18),
                 "audience_scope": "national",
+                "observation_updated_at": "2026-02-18T03:30:00+00:00",
+                "article_published_at": "2026-02-18T03:00:00+00:00",
                 "source_channel": "article",
                 "source_channels": ["article"],
                 "verified": True,
@@ -54,6 +60,8 @@ class FakeApiRepo:
                 "pollster": "KBS",
                 "survey_end_date": date(2026, 2, 18),
                 "audience_scope": "local",
+                "observation_updated_at": "2026-02-18T04:00:00+00:00",
+                "article_published_at": "2026-02-18T03:30:00+00:00",
                 "source_channel": "article",
                 "source_channels": ["article"],
                 "verified": True,
@@ -80,6 +88,8 @@ class FakeApiRepo:
                 "survey_end_date": date(2026, 2, 18),
                 "option_name": "정원오",
                 "audience_scope": "regional",
+                "observation_updated_at": "2026-02-18T03:00:00+00:00",
+                "article_published_at": "2026-02-18T01:00:00+00:00",
                 "source_channel": "nesdc",
                 "source_channels": ["article", "nesdc"],
             }
@@ -135,6 +145,8 @@ class FakeApiRepo:
             "date_resolution": "exact",
             "date_inference_mode": "relative_published_at",
             "date_inference_confidence": 0.92,
+            "observation_updated_at": "2026-02-18T03:00:00+00:00",
+            "article_published_at": "2026-02-18T01:00:00+00:00",
             "nesdc_enriched": True,
             "needs_manual_review": True,
             "poll_fingerprint": "f" * 64,
@@ -365,6 +377,11 @@ def test_api_contract_fields():
     assert [x["option_name"] for x in body["party_support"]] == ["더불어민주당"]
     assert [x["option_name"] for x in body["presidential_approval"]] == ["국정안정론"]
     assert body["scope_breakdown"] == {"national": 2, "regional": 1, "local": 1, "unknown": 0}
+    assert body["party_support"][0]["source_priority"] == "mixed"
+    assert body["party_support"][0]["is_official_confirmed"] is True
+    assert isinstance(body["party_support"][0]["freshness_hours"], float)
+    assert body["party_support"][0]["article_published_at"] is not None
+    assert body["party_support"][0]["official_release_at"] is not None
 
     regions = client.get("/api/v1/regions/search", params={"q": "서울"})
     assert regions.status_code == 200
@@ -376,6 +393,9 @@ def test_api_contract_fields():
     assert map_latest.json()["items"][0]["source_channels"] == ["article", "nesdc"]
     assert map_latest.json()["items"][0]["audience_scope"] == "regional"
     assert map_latest.json()["scope_breakdown"] == {"national": 0, "regional": 1, "local": 0, "unknown": 0}
+    assert map_latest.json()["items"][0]["source_priority"] == "mixed"
+    assert map_latest.json()["items"][0]["is_official_confirmed"] is True
+    assert isinstance(map_latest.json()["items"][0]["freshness_hours"], float)
 
     big_matches = client.get("/api/v1/dashboard/big-matches")
     assert big_matches.status_code == 200
@@ -401,6 +421,11 @@ def test_api_contract_fields():
     assert matchup.json()["date_inference_confidence"] == 0.92
     assert matchup.json()["nesdc_enriched"] is True
     assert matchup.json()["needs_manual_review"] is True
+    assert matchup.json()["source_priority"] == "mixed"
+    assert matchup.json()["is_official_confirmed"] is True
+    assert isinstance(matchup.json()["freshness_hours"], float)
+    assert matchup.json()["article_published_at"] is not None
+    assert matchup.json()["official_release_at"] is not None
     assert matchup.json()["source_channel"] == "article"
     assert matchup.json()["source_channels"] == ["article", "nesdc"]
     assert matchup.json()["options"][0]["party_inferred"] is True
