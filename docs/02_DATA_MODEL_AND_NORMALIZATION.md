@@ -1,7 +1,7 @@
 # 데이터 모델 및 정규화 명세
 
 - 문서 버전: v0.2
-- 최종 수정일: 2026-02-18
+- 최종 수정일: 2026-02-19
 - 수정자: Codex
 
 ## 1. 핵심 테이블
@@ -20,6 +20,8 @@
 - `id`, `survey_name`, `pollster`, `survey_start_date`, `survey_end_date`
 - `sample_size`, `response_rate`, `margin_of_error`
 - `region_code`, `office_type`, `matchup_id`, `verified`, `source_grade`, `ingestion_run_id`
+- `audience_scope`(`national|regional|local`), `audience_region_code`, `sampling_population_text`
+- `legal_completeness_score`, `legal_filled_count`, `legal_required_count`, `date_resolution`
 
 ## 1.4 `poll_options`
 - 목적: 조사 선택지(후보/문항값) 저장
@@ -57,6 +59,8 @@
 5. 단위: `%`를 `0~100` float로 저장
 6. 원문 보존: `value_raw`에 기사 원문 표현 저장
 7. 오차범위(`±x%`)가 명시되면 `margin_of_error` 저장, 없으면 null
+8. 스코프 정규화: `audience_scope`는 `national|regional|local`만 허용
+9. 법정필수 completeness: `legal_completeness_score = legal_filled_count / legal_required_count` 기준(입력값 보존)
 
 ## 3. 식별자/코드 매핑 규칙
 1. `election_id`: 선거 회차 ID
@@ -88,3 +92,8 @@
 1. `POST /api/v1/jobs/run-ingest`
 2. `POST /api/v1/review/{item_id}/approve`
 3. `POST /api/v1/review/{item_id}/reject`
+
+## 6. 스코프 분리 집계 규칙
+1. `GET /api/v1/dashboard/summary`는 `audience_scope='national'` 데이터만 집계한다.
+2. 레거시 데이터 호환을 위해 `audience_scope IS NULL`도 임시 포함한다.
+3. `audience_scope='regional'|'local'` 관측치는 요약 집계에서 제외한다.

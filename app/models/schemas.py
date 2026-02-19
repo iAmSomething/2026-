@@ -1,4 +1,5 @@
 from datetime import date, datetime
+from typing import Literal
 
 from pydantic import BaseModel, Field
 
@@ -85,6 +86,13 @@ class MatchupOut(BaseModel):
     survey_end_date: date | None = None
     margin_of_error: float | None = None
     source_grade: str | None = None
+    audience_scope: Literal["national", "regional", "local"] | None = None
+    audience_region_code: str | None = None
+    sampling_population_text: str | None = None
+    legal_completeness_score: float | None = None
+    legal_filled_count: int | None = None
+    legal_required_count: int | None = None
+    date_resolution: str | None = None
     verified: bool
     options: list[MatchupOptionOut]
 
@@ -235,6 +243,13 @@ class PollObservationInput(BaseModel):
     region_code: str
     office_type: str
     matchup_id: str
+    audience_scope: Literal["national", "regional", "local"] | None = None
+    audience_region_code: str | None = None
+    sampling_population_text: str | None = None
+    legal_completeness_score: float | None = None
+    legal_filled_count: int | None = None
+    legal_required_count: int | None = None
+    date_resolution: str | None = None
     verified: bool = False
     source_grade: str = "C"
 

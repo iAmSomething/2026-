@@ -105,6 +105,13 @@ class PostgresRepository:
         payload = dict(observation)
         payload["article_id"] = article_id
         payload["ingestion_run_id"] = ingestion_run_id
+        payload.setdefault("audience_scope", None)
+        payload.setdefault("audience_region_code", None)
+        payload.setdefault("sampling_population_text", None)
+        payload.setdefault("legal_completeness_score", None)
+        payload.setdefault("legal_filled_count", None)
+        payload.setdefault("legal_required_count", None)
+        payload.setdefault("date_resolution", None)
 
         with self.conn.cursor() as cur:
             cur.execute(
@@ -113,14 +120,20 @@ class PostgresRepository:
                     observation_key, article_id, survey_name, pollster,
                     survey_start_date, survey_end_date, sample_size,
                     response_rate, margin_of_error, region_code,
-                    office_type, matchup_id, verified, source_grade,
+                    office_type, matchup_id, audience_scope, audience_region_code,
+                    sampling_population_text, legal_completeness_score,
+                    legal_filled_count, legal_required_count, date_resolution,
+                    verified, source_grade,
                     ingestion_run_id
                 )
                 VALUES (
                     %(observation_key)s, %(article_id)s, %(survey_name)s, %(pollster)s,
                     %(survey_start_date)s, %(survey_end_date)s, %(sample_size)s,
                     %(response_rate)s, %(margin_of_error)s, %(region_code)s,
-                    %(office_type)s, %(matchup_id)s, %(verified)s, %(source_grade)s,
+                    %(office_type)s, %(matchup_id)s, %(audience_scope)s, %(audience_region_code)s,
+                    %(sampling_population_text)s, %(legal_completeness_score)s,
+                    %(legal_filled_count)s, %(legal_required_count)s, %(date_resolution)s,
+                    %(verified)s, %(source_grade)s,
                     %(ingestion_run_id)s
                 )
                 ON CONFLICT (observation_key) DO UPDATE
@@ -135,6 +148,13 @@ class PostgresRepository:
                     region_code=EXCLUDED.region_code,
                     office_type=EXCLUDED.office_type,
                     matchup_id=EXCLUDED.matchup_id,
+                    audience_scope=EXCLUDED.audience_scope,
+                    audience_region_code=EXCLUDED.audience_region_code,
+                    sampling_population_text=EXCLUDED.sampling_population_text,
+                    legal_completeness_score=EXCLUDED.legal_completeness_score,
+                    legal_filled_count=EXCLUDED.legal_filled_count,
+                    legal_required_count=EXCLUDED.legal_required_count,
+                    date_resolution=EXCLUDED.date_resolution,
                     verified=EXCLUDED.verified,
                     source_grade=EXCLUDED.source_grade,
                     ingestion_run_id=EXCLUDED.ingestion_run_id,
@@ -218,6 +238,7 @@ class PostgresRepository:
         if as_of is not None:
             as_of_filter = "AND o.survey_end_date <= %s"
             params.append(as_of)
+        scope_filter = "AND (o.audience_scope = 'national' OR o.audience_scope IS NULL)"
 
         query = f"""
             WITH latest AS (
@@ -226,6 +247,7 @@ class PostgresRepository:
                 JOIN poll_observations o ON o.id = po.observation_id
                 WHERE po.option_type IN ('party_support', 'presidential_approval')
                   AND o.verified = TRUE
+                  {scope_filter}
                   {as_of_filter}
                 GROUP BY po.option_type
             )
@@ -234,6 +256,7 @@ class PostgresRepository:
             JOIN poll_observations o ON o.id = po.observation_id
             JOIN latest l ON l.option_type = po.option_type AND l.max_date = o.survey_end_date
             WHERE po.option_type IN ('party_support', 'presidential_approval')
+              {scope_filter}
             ORDER BY po.option_type, po.option_name
         """
 
@@ -417,6 +440,13 @@ class PostgresRepository:
                     o.survey_end_date,
                     o.margin_of_error,
                     o.source_grade,
+                    o.audience_scope,
+                    o.audience_region_code,
+                    o.sampling_population_text,
+                    o.legal_completeness_score,
+                    o.legal_filled_count,
+                    o.legal_required_count,
+                    o.date_resolution,
                     o.verified,
                     o.id AS observation_id
                 FROM poll_observations o
@@ -451,6 +481,13 @@ class PostgresRepository:
             "survey_end_date": row["survey_end_date"],
             "margin_of_error": row["margin_of_error"],
             "source_grade": row["source_grade"],
+            "audience_scope": row["audience_scope"],
+            "audience_region_code": row["audience_region_code"],
+            "sampling_population_text": row["sampling_population_text"],
+            "legal_completeness_score": row["legal_completeness_score"],
+            "legal_filled_count": row["legal_filled_count"],
+            "legal_required_count": row["legal_required_count"],
+            "date_resolution": row["date_resolution"],
             "verified": row["verified"],
             "options": options,
         }

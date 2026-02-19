@@ -65,7 +65,14 @@ PAYLOAD = {
                 "pollster": "MBC",
                 "region_code": "11-000",
                 "office_type": "광역자치단체장",
-                "matchup_id": "20260603|광역자치단체장|11-000"
+                "matchup_id": "20260603|광역자치단체장|11-000",
+                "audience_scope": "national",
+                "audience_region_code": "11-000",
+                "sampling_population_text": "서울 거주 만 18세 이상",
+                "legal_completeness_score": 0.86,
+                "legal_filled_count": 6,
+                "legal_required_count": 7,
+                "date_resolution": "exact",
             },
             "options": [
                 {"option_type": "presidential_approval", "option_name": "국정안정론", "value_raw": "53~55%"}
@@ -85,6 +92,8 @@ def test_idempotent_ingest_no_duplicate_records():
     assert len(repo.articles) == 1
     assert len(repo.observations) == 1
     assert len(repo.options) == 1
+    assert repo.observations["obs-1"]["audience_scope"] == "national"
+    assert repo.observations["obs-1"]["legal_filled_count"] == 6
 
 
 def test_ingest_error_pushes_review_queue():

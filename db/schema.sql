@@ -69,12 +69,42 @@ CREATE TABLE IF NOT EXISTS poll_observations (
     region_code TEXT NOT NULL REFERENCES regions(region_code),
     office_type TEXT NOT NULL,
     matchup_id TEXT NOT NULL,
+    audience_scope TEXT NULL,
+    audience_region_code TEXT NULL,
+    sampling_population_text TEXT NULL,
+    legal_completeness_score FLOAT NULL,
+    legal_filled_count INT NULL,
+    legal_required_count INT NULL,
+    date_resolution TEXT NULL,
     verified BOOLEAN NOT NULL DEFAULT FALSE,
     source_grade TEXT NOT NULL DEFAULT 'C',
     ingestion_run_id BIGINT NULL REFERENCES ingestion_runs(id),
     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
+
+ALTER TABLE poll_observations
+    ADD COLUMN IF NOT EXISTS audience_scope TEXT NULL,
+    ADD COLUMN IF NOT EXISTS audience_region_code TEXT NULL,
+    ADD COLUMN IF NOT EXISTS sampling_population_text TEXT NULL,
+    ADD COLUMN IF NOT EXISTS legal_completeness_score FLOAT NULL,
+    ADD COLUMN IF NOT EXISTS legal_filled_count INT NULL,
+    ADD COLUMN IF NOT EXISTS legal_required_count INT NULL,
+    ADD COLUMN IF NOT EXISTS date_resolution TEXT NULL;
+
+DO $$
+BEGIN
+    IF NOT EXISTS (
+        SELECT 1
+        FROM pg_constraint
+        WHERE conname = 'poll_observations_audience_scope_check'
+    ) THEN
+        ALTER TABLE poll_observations
+            ADD CONSTRAINT poll_observations_audience_scope_check
+            CHECK (audience_scope IN ('national', 'regional', 'local'));
+    END IF;
+END;
+$$;
 
 CREATE TABLE IF NOT EXISTS matchups (
     matchup_id TEXT PRIMARY KEY,
@@ -117,6 +147,7 @@ CREATE TABLE IF NOT EXISTS review_queue (
 CREATE INDEX IF NOT EXISTS idx_regions_search ON regions (sido_name, sigungu_name);
 CREATE INDEX IF NOT EXISTS idx_poll_observations_date ON poll_observations (survey_end_date DESC);
 CREATE INDEX IF NOT EXISTS idx_poll_observations_matchup ON poll_observations (matchup_id);
+CREATE INDEX IF NOT EXISTS idx_poll_observations_scope_date ON poll_observations (audience_scope, survey_end_date DESC);
 CREATE INDEX IF NOT EXISTS idx_poll_options_type ON poll_options (option_type);
 CREATE INDEX IF NOT EXISTS idx_review_queue_status ON review_queue (status, created_at DESC);
 CREATE INDEX IF NOT EXISTS idx_matchups_region_active ON matchups (region_code, is_active);
