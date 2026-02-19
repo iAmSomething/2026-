@@ -24,6 +24,12 @@
 - 정규화 로직 (`53~55%` -> min/max/mid)
 - 테스트(정규화, 적재 idempotent, API 계약)
 
+`GET /api/v1/ops/coverage/summary` 주요 필드:
+- `state` (`ready|partial|empty`)
+- `warning_message`
+- `regions_total`, `regions_covered`, `sido_covered`
+- `observations_total`, `latest_survey_end_date`
+
 ## 빠른 시작
 ```bash
 python3.13 -m venv .venv
