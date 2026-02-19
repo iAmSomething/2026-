@@ -1,0 +1,133 @@
+name: Vercel Preview
+
+on:
+  workflow_dispatch:
+    inputs:
+      root_dir:
+        description: "Web root directory"
+        required: true
+        default: "apps/staging-web"
+        type: choice
+        options:
+          - apps/staging-web
+          - apps/web
+      issue_number:
+        description: "Issue number to post preview URL"
+        required: true
+        default: "92"
+        type: string
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  deploy-preview:
+    runs-on: ubuntu-latest
+    env:
+      ROOT_DIR: ${{ inputs.root_dir }}
+      ISSUE_NUMBER: ${{ inputs.issue_number }}
+      VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+      VERCEL_SCOPE: ${{ secrets.VERCEL_SCOPE }}
+      VERCEL_PROJECT_NAME: ${{ secrets.VERCEL_PROJECT_NAME }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Preflight required Vercel secrets
+        run: |
+          missing=()
+          [ -z "${VERCEL_TOKEN:-}" ] && missing+=("VERCEL_TOKEN")
+          [ -z "${VERCEL_SCOPE:-}" ] && missing+=("VERCEL_SCOPE")
+          [ -z "${VERCEL_PROJECT_NAME:-}" ] && missing+=("VERCEL_PROJECT_NAME")
+          if [ "${#missing[@]}" -gt 0 ]; then
+            echo "::error::Missing required repository secrets: ${missing[*]}"
+            exit 1
+          fi
+
+      - name: Validate root directory
+        run: |
+          if [ ! -d "$ROOT_DIR" ]; then
+            echo "::error::Root directory not found: $ROOT_DIR"
+            exit 1
+          fi
+          if [ ! -f "$ROOT_DIR/package.json" ]; then
+            echo "::error::package.json not found under root directory: $ROOT_DIR"
+            exit 1
+          fi
+
+      - name: Setup Node 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+          cache-dependency-path: ${{ inputs.root_dir }}/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+        working-directory: ${{ inputs.root_dir }}
+
+      - name: Build web app
+        run: npm run build
+        working-directory: ${{ inputs.root_dir }}
+
+      - name: Deploy preview to Vercel
+        id: deploy
+        working-directory: ${{ inputs.root_dir }}
+        run: |
+          set -o pipefail
+          DEPLOY_LOG=/tmp/vercel-preview-deploy.log
+          npx vercel@latest deploy \
+            --yes \
+            --token "$VERCEL_TOKEN" \
+            --scope "$VERCEL_SCOPE" \
+            --name "$VERCEL_PROJECT_NAME" \
+            2>&1 | tee "$DEPLOY_LOG"
+
+          PREVIEW_URL=$(grep -Eo 'https://[^ ]+' "$DEPLOY_LOG" | grep 'vercel.app' | tail -n 1)
+          if [ -z "$PREVIEW_URL" ]; then
+            echo "::error::Preview URL was not found in deploy log"
+            exit 1
+          fi
+
+          echo "preview_url=$PREVIEW_URL" >> "$GITHUB_OUTPUT"
+
+      - name: Verify preview URL accessibility
+        id: verify
+        run: |
+          PREVIEW_URL="${{ steps.deploy.outputs.preview_url }}"
+          curl -fsSL "$PREVIEW_URL" -o /tmp/vercel-preview-home.html
+          echo "verified=true" >> "$GITHUB_OUTPUT"
+
+      - name: Comment preview URL to issue
+        if: ${{ success() && env.ISSUE_NUMBER != '' }}
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const issueNumber = Number(process.env.ISSUE_NUMBER);
+            const previewUrl = "${{ steps.deploy.outputs.preview_url }}";
+            const rootDir = process.env.ROOT_DIR;
+            const runUrl = `${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: issueNumber,
+              body: [
+                "[DEVELOP] Vercel preview URL issued via CI.",
+                "",
+                `- root_dir: ${rootDir}`,
+                `- preview_url: ${previewUrl}`,
+                `- action_run: ${runUrl}`,
+                "",
+                "Access verification: curl success"
+              ].join("\n")
+            });
+
+      - name: Upload deploy artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: vercel-preview-${{ github.run_id }}
+          path: |
+            /tmp/vercel-preview-deploy.log
+            /tmp/vercel-preview-home.html
