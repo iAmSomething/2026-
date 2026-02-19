@@ -32,6 +32,15 @@ def _normalize_option(option: PollOptionInput) -> dict:
         payload["value_max"] = normalized.value_max
         payload["value_mid"] = normalized.value_mid
         payload["is_missing"] = normalized.is_missing
+
+    confidence = payload.get("party_inference_confidence")
+    if payload.get("party_inferred") and confidence is not None:
+        try:
+            payload["needs_manual_review"] = float(confidence) < PARTY_INFERENCE_REVIEW_THRESHOLD
+        except (TypeError, ValueError):
+            payload["needs_manual_review"] = False
+    else:
+        payload["needs_manual_review"] = bool(payload.get("needs_manual_review", False))
     return payload
 
 

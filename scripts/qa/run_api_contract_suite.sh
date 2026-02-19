@@ -162,8 +162,24 @@ class FakeRepo:
             "source_grade": "B",
             "verified": True,
             "options": [
-                {"option_name": "정원오", "value_mid": 44.0, "value_raw": "44%"},
-                {"option_name": "오세훈", "value_mid": 42.0, "value_raw": "42%"},
+                {
+                    "option_name": "정원오",
+                    "value_mid": 44.0,
+                    "value_raw": "44%",
+                    "party_inferred": True,
+                    "party_inference_source": "name_rule",
+                    "party_inference_confidence": 0.91,
+                    "needs_manual_review": False,
+                },
+                {
+                    "option_name": "오세훈",
+                    "value_mid": 42.0,
+                    "value_raw": "42%",
+                    "party_inferred": False,
+                    "party_inference_source": None,
+                    "party_inference_confidence": None,
+                    "needs_manual_review": True,
+                },
             ],
         }
 
@@ -177,6 +193,10 @@ class FakeRepo:
             "candidate_id": candidate_id,
             "name_ko": "정원오",
             "party_name": "더불어민주당",
+            "party_inferred": True,
+            "party_inference_source": "name_rule",
+            "party_inference_confidence": 0.91,
+            "needs_manual_review": False,
             "gender": "M",
             "birth_date": date(1968, 8, 12),
             "job": "구청장",
@@ -502,6 +522,17 @@ def main() -> int:
             lambda r: (
                 r.status_code == 200 or (_ for _ in ()).throw(AssertionError(f"status={r.status_code}")),
                 assert_keys(r.json(), ["matchup_id", "options"]),
+                len(r.json().get("options", [])) >= 1
+                or (_ for _ in ()).throw(AssertionError("options empty")),
+                assert_keys(
+                    r.json()["options"][0],
+                    [
+                        "party_inferred",
+                        "party_inference_source",
+                        "party_inference_confidence",
+                        "needs_manual_review",
+                    ],
+                ),
             )
         )(make_client(FakeRepo("success")).get("/api/v1/matchups/20260603|광역자치단체장|11-000")),
     )
@@ -513,7 +544,22 @@ def main() -> int:
         lambda: (
             lambda r: (
                 r.status_code == 200 or (_ for _ in ()).throw(AssertionError(f"status={r.status_code}")),
-                assert_keys(r.json(), ["candidate_id", "name_ko", "party_name"]),
+                assert_keys(
+                    r.json(),
+                    [
+                        "candidate_id",
+                        "name_ko",
+                        "party_name",
+                        "party_inferred",
+                        "party_inference_source",
+                        "party_inference_confidence",
+                        "needs_manual_review",
+                    ],
+                ),
+                isinstance(r.json().get("party_inferred"), bool)
+                or (_ for _ in ()).throw(AssertionError("party_inferred type mismatch")),
+                isinstance(r.json().get("needs_manual_review"), bool)
+                or (_ for _ in ()).throw(AssertionError("needs_manual_review type mismatch")),
             )
         )(make_client(FakeRepo("success")).get("/api/v1/candidates/cand-jwo")),
     )

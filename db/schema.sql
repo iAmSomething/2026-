@@ -12,6 +12,10 @@ CREATE TABLE IF NOT EXISTS candidates (
     candidate_id TEXT PRIMARY KEY,
     name_ko TEXT NOT NULL,
     party_name TEXT NULL,
+    party_inferred BOOLEAN NOT NULL DEFAULT FALSE,
+    party_inference_source TEXT NULL,
+    party_inference_confidence FLOAT NULL,
+    needs_manual_review BOOLEAN NOT NULL DEFAULT FALSE,
     gender TEXT NULL,
     birth_date DATE NULL,
     job TEXT NULL,
@@ -19,6 +23,12 @@ CREATE TABLE IF NOT EXISTS candidates (
     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
+
+ALTER TABLE candidates
+    ADD COLUMN IF NOT EXISTS party_inferred BOOLEAN NOT NULL DEFAULT FALSE,
+    ADD COLUMN IF NOT EXISTS party_inference_source TEXT NULL,
+    ADD COLUMN IF NOT EXISTS party_inference_confidence FLOAT NULL,
+    ADD COLUMN IF NOT EXISTS needs_manual_review BOOLEAN NOT NULL DEFAULT FALSE;
 
 CREATE TABLE IF NOT EXISTS candidate_profiles (
     id BIGSERIAL PRIMARY KEY,
@@ -185,6 +195,7 @@ CREATE TABLE IF NOT EXISTS poll_options (
     party_inferred BOOLEAN NOT NULL DEFAULT FALSE,
     party_inference_source TEXT NULL,
     party_inference_confidence FLOAT NULL,
+    needs_manual_review BOOLEAN NOT NULL DEFAULT FALSE,
     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     UNIQUE (observation_id, option_type, option_name)
@@ -193,7 +204,8 @@ CREATE TABLE IF NOT EXISTS poll_options (
 ALTER TABLE poll_options
     ADD COLUMN IF NOT EXISTS party_inferred BOOLEAN NOT NULL DEFAULT FALSE,
     ADD COLUMN IF NOT EXISTS party_inference_source TEXT NULL,
-    ADD COLUMN IF NOT EXISTS party_inference_confidence FLOAT NULL;
+    ADD COLUMN IF NOT EXISTS party_inference_confidence FLOAT NULL,
+    ADD COLUMN IF NOT EXISTS needs_manual_review BOOLEAN NOT NULL DEFAULT FALSE;
 
 CREATE TABLE IF NOT EXISTS review_queue (
     id BIGSERIAL PRIMARY KEY,

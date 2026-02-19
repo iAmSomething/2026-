@@ -74,20 +74,38 @@ class PostgresRepository:
         self.conn.commit()
 
     def upsert_candidate(self, candidate: dict) -> None:
+        payload = dict(candidate)
+        payload.setdefault("party_inferred", False)
+        payload.setdefault("party_inference_source", None)
+        payload.setdefault("party_inference_confidence", None)
+        payload.setdefault("needs_manual_review", False)
+
         with self.conn.cursor() as cur:
             cur.execute(
                 """
-                INSERT INTO candidates (candidate_id, name_ko, party_name, gender, birth_date, job, profile_updated_at)
-                VALUES (%(candidate_id)s, %(name_ko)s, %(party_name)s, %(gender)s, %(birth_date)s, %(job)s, NOW())
+                INSERT INTO candidates (
+                    candidate_id, name_ko, party_name,
+                    party_inferred, party_inference_source, party_inference_confidence, needs_manual_review,
+                    gender, birth_date, job, profile_updated_at
+                )
+                VALUES (
+                    %(candidate_id)s, %(name_ko)s, %(party_name)s,
+                    %(party_inferred)s, %(party_inference_source)s, %(party_inference_confidence)s, %(needs_manual_review)s,
+                    %(gender)s, %(birth_date)s, %(job)s, NOW()
+                )
                 ON CONFLICT (candidate_id) DO UPDATE
                 SET name_ko=EXCLUDED.name_ko,
                     party_name=EXCLUDED.party_name,
+                    party_inferred=EXCLUDED.party_inferred,
+                    party_inference_source=EXCLUDED.party_inference_source,
+                    party_inference_confidence=EXCLUDED.party_inference_confidence,
+                    needs_manual_review=EXCLUDED.needs_manual_review,
                     gender=EXCLUDED.gender,
                     birth_date=EXCLUDED.birth_date,
                     job=EXCLUDED.job,
                     profile_updated_at=NOW()
                 """,
-                candidate,
+                payload,
             )
             cur.execute(
                 """
@@ -98,7 +116,7 @@ class PostgresRepository:
                     election_history=EXCLUDED.election_history,
                     updated_at=NOW()
                 """,
-                candidate,
+                payload,
             )
         self.conn.commit()
 
@@ -281,6 +299,7 @@ class PostgresRepository:
         payload.setdefault("party_inferred", False)
         payload.setdefault("party_inference_source", None)
         payload.setdefault("party_inference_confidence", None)
+        payload.setdefault("needs_manual_review", False)
 
         with self.conn.cursor() as cur:
             cur.execute(
@@ -288,12 +307,12 @@ class PostgresRepository:
                 INSERT INTO poll_options (
                     observation_id, option_type, option_name,
                     value_raw, value_min, value_max, value_mid, is_missing,
-                    party_inferred, party_inference_source, party_inference_confidence
+                    party_inferred, party_inference_source, party_inference_confidence, needs_manual_review
                 )
                 VALUES (
                     %(observation_id)s, %(option_type)s, %(option_name)s,
                     %(value_raw)s, %(value_min)s, %(value_max)s, %(value_mid)s, %(is_missing)s,
-                    %(party_inferred)s, %(party_inference_source)s, %(party_inference_confidence)s
+                    %(party_inferred)s, %(party_inference_source)s, %(party_inference_confidence)s, %(needs_manual_review)s
                 )
                 ON CONFLICT (observation_id, option_type, option_name) DO UPDATE
                 SET value_raw=EXCLUDED.value_raw,
@@ -304,6 +323,7 @@ class PostgresRepository:
                     party_inferred=EXCLUDED.party_inferred,
                     party_inference_source=EXCLUDED.party_inference_source,
                     party_inference_confidence=EXCLUDED.party_inference_confidence,
+                    needs_manual_review=EXCLUDED.needs_manual_review,
                     updated_at=NOW()
                 """,
                 payload,
@@ -627,7 +647,8 @@ class PostgresRepository:
                     value_raw,
                     party_inferred,
                     party_inference_source,
-                    party_inference_confidence
+                    party_inference_confidence,
+                    needs_manual_review
                 FROM poll_options
                 WHERE observation_id = %s
                 ORDER BY value_mid DESC NULLS LAST, option_name
@@ -674,7 +695,9 @@ class PostgresRepository:
             cur.execute(
                 """
                 SELECT
-                    c.candidate_id, c.name_ko, c.party_name, c.gender,
+                    c.candidate_id, c.name_ko, c.party_name,
+                    c.party_inferred, c.party_inference_source, c.party_inference_confidence, c.needs_manual_review,
+                    c.gender,
                     c.birth_date, c.job,
                     cp.career_summary, cp.election_history
                 FROM candidates c
