@@ -1,0 +1,53 @@
+{
+  "generated_at": "2026-02-19T04:57:08.704703+00:00",
+  "input_path": "data/bootstrap_ingest_coverage_v2.json",
+  "v1_baseline": {
+    "generated_at": "2026-02-19T00:55:03.803453Z",
+    "regions_covered": 11,
+    "sido_covered": 6,
+    "observations_total": 102,
+    "latest_survey_end_date": "2026-02-18"
+  },
+  "v2_current": {
+    "state": "ready",
+    "warning_message": null,
+    "regions_total": 31,
+    "regions_covered": 31,
+    "sido_covered": 13,
+    "observations_total": 194,
+    "latest_survey_end_date": "2026-02-18"
+  },
+  "delta_v1_to_v2": {
+    "regions_total": 31,
+    "regions_covered": 20,
+    "sido_covered": 7,
+    "observations_total": 92
+  },
+  "idempotent_check": {
+    "before_reapply": {
+      "state": "ready",
+      "warning_message": null,
+      "regions_total": 31,
+      "regions_covered": 31,
+      "sido_covered": 13,
+      "observations_total": 194,
+      "latest_survey_end_date": "2026-02-18"
+    },
+    "after_reapply": {
+      "state": "ready",
+      "warning_message": null,
+      "regions_total": 31,
+      "regions_covered": 31,
+      "sido_covered": 13,
+      "observations_total": 194,
+      "latest_survey_end_date": "2026-02-18"
+    },
+    "delta": {
+      "regions_total": 0,
+      "regions_covered": 0,
+      "sido_covered": 0,
+      "observations_total": 0
+    },
+    "all_zero_growth": true
+  }
+}
