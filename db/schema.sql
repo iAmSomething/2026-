@@ -80,6 +80,7 @@ CREATE TABLE IF NOT EXISTS poll_observations (
     date_resolution TEXT NULL,
     poll_fingerprint TEXT NULL,
     source_channel TEXT NULL,
+    source_channels TEXT[] NULL,
     verified BOOLEAN NOT NULL DEFAULT FALSE,
     source_grade TEXT NOT NULL DEFAULT 'C',
     ingestion_run_id BIGINT NULL REFERENCES ingestion_runs(id),
@@ -98,7 +99,8 @@ ALTER TABLE poll_observations
     ADD COLUMN IF NOT EXISTS legal_required_count INT NULL,
     ADD COLUMN IF NOT EXISTS date_resolution TEXT NULL,
     ADD COLUMN IF NOT EXISTS poll_fingerprint TEXT NULL,
-    ADD COLUMN IF NOT EXISTS source_channel TEXT NULL;
+    ADD COLUMN IF NOT EXISTS source_channel TEXT NULL,
+    ADD COLUMN IF NOT EXISTS source_channels TEXT[] NULL;
 
 DO $$
 BEGIN
@@ -113,6 +115,25 @@ BEGIN
     END IF;
 END;
 $$;
+
+DO $$
+BEGIN
+    IF NOT EXISTS (
+        SELECT 1
+        FROM pg_constraint
+        WHERE conname = 'poll_observations_source_channels_check'
+    ) THEN
+        ALTER TABLE poll_observations
+            ADD CONSTRAINT poll_observations_source_channels_check
+            CHECK (source_channels IS NULL OR source_channels <@ ARRAY['article', 'nesdc']::text[]);
+    END IF;
+END;
+$$;
+
+UPDATE poll_observations
+SET source_channels = ARRAY[source_channel]
+WHERE source_channels IS NULL
+  AND source_channel IS NOT NULL;
 
 DO $$
 BEGIN
@@ -171,6 +192,7 @@ CREATE INDEX IF NOT EXISTS idx_poll_observations_date ON poll_observations (surv
 CREATE INDEX IF NOT EXISTS idx_poll_observations_matchup ON poll_observations (matchup_id);
 CREATE INDEX IF NOT EXISTS idx_poll_observations_scope_date ON poll_observations (audience_scope, survey_end_date DESC);
 CREATE INDEX IF NOT EXISTS idx_poll_observations_fingerprint ON poll_observations (poll_fingerprint);
+CREATE INDEX IF NOT EXISTS idx_poll_observations_source_channels ON poll_observations USING GIN (source_channels);
 CREATE INDEX IF NOT EXISTS idx_poll_options_type ON poll_options (option_type);
 CREATE INDEX IF NOT EXISTS idx_review_queue_status ON review_queue (status, created_at DESC);
 CREATE INDEX IF NOT EXISTS idx_matchups_region_active ON matchups (region_code, is_active);

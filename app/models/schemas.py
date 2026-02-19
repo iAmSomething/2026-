@@ -95,6 +95,7 @@ class MatchupOut(BaseModel):
     date_resolution: str | None = None
     poll_fingerprint: str | None = None
     source_channel: Literal["article", "nesdc"] | None = None
+    source_channels: list[Literal["article", "nesdc"]] | None = None
     verified: bool
     options: list[MatchupOptionOut]
 
@@ -256,6 +257,7 @@ class PollObservationInput(BaseModel):
     date_resolution: str | None = None
     poll_fingerprint: str | None = None
     source_channel: Literal["article", "nesdc"] = "article"
+    source_channels: list[Literal["article", "nesdc"]] | None = None
     verified: bool = False
     source_grade: str = "C"
 

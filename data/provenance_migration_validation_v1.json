@@ -1,0 +1,15 @@
+{
+  "scenario": "provenance_multi_source_migration_v1",
+  "generated_at": "2026-02-19T05:55:00Z",
+  "compatibility": {
+    "source_channel_kept": true,
+    "source_channels_added": true,
+    "legacy_backfill_rule": "source_channels=[source_channel] when source_channels is null"
+  },
+  "merge_validation": {
+    "input_channels": ["article", "nesdc"],
+    "merged_source_channel": "nesdc",
+    "merged_source_channels": ["article", "nesdc"],
+    "duplicate_increase_after_reingest": 0
+  }
+}
