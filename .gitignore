@@ -9,3 +9,10 @@ __pycache__/
 .pytest_cache/
 node_modules/
 .next/
+
+# Runtime artifacts (do not track execution outputs)
+reports/pm/
+data/*_apply_report.json
+data/*_issue*.json
+data/ingest_schedule_report.json
+data/bootstrap_ingest_dir_report.json
