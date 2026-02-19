@@ -161,6 +161,7 @@ class FakeApiRepo:
                     "party_inferred": True,
                     "party_inference_source": "name_rule",
                     "party_inference_confidence": 0.86,
+                    "needs_manual_review": False,
                 },
                 {
                     "option_name": "오세훈",
@@ -169,6 +170,7 @@ class FakeApiRepo:
                     "party_inferred": False,
                     "party_inference_source": None,
                     "party_inference_confidence": None,
+                    "needs_manual_review": True,
                 },
             ],
         }
@@ -180,6 +182,10 @@ class FakeApiRepo:
             "candidate_id": candidate_id,
             "name_ko": "정원오",
             "party_name": "더불어민주당",
+            "party_inferred": True,
+            "party_inference_source": "name_rule",
+            "party_inference_confidence": 0.91,
+            "needs_manual_review": False,
             "gender": "M",
             "birth_date": date(1968, 8, 12),
             "job": "구청장",
@@ -431,10 +437,18 @@ def test_api_contract_fields():
     assert matchup.json()["options"][0]["party_inferred"] is True
     assert matchup.json()["options"][0]["party_inference_source"] == "name_rule"
     assert matchup.json()["options"][0]["party_inference_confidence"] == 0.86
+    assert matchup.json()["options"][0]["needs_manual_review"] is False
+    assert matchup.json()["options"][1]["needs_manual_review"] is True
 
     candidate = client.get("/api/v1/candidates/cand-jwo")
     assert candidate.status_code == 200
     assert candidate.json()["candidate_id"] == "cand-jwo"
+    assert candidate.json()["party_inferred"] is True
+    assert candidate.json()["party_inference_source"] == "name_rule"
+    assert candidate.json()["party_inference_confidence"] == 0.91
+    assert candidate.json()["needs_manual_review"] is False
+    assert isinstance(candidate.json()["party_inferred"], bool)
+    assert isinstance(candidate.json()["needs_manual_review"], bool)
 
     ops = client.get("/api/v1/ops/metrics/summary")
     assert ops.status_code == 200
@@ -633,5 +647,9 @@ def test_candidate_endpoint_merges_data_go_fields():
     assert body["candidate_id"] == "cand-jwo"
     assert body["party_name"] == "공공데이터정당"
     assert body["job"] == "공공데이터직업"
+    assert "party_inferred" in body
+    assert "party_inference_source" in body
+    assert "party_inference_confidence" in body
+    assert "needs_manual_review" in body
 
     app.dependency_overrides.clear()

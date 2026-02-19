@@ -15,6 +15,10 @@ class CandidateOut(BaseModel):
     candidate_id: str
     name_ko: str
     party_name: str | None = None
+    party_inferred: bool = False
+    party_inference_source: str | None = None
+    party_inference_confidence: float | None = None
+    needs_manual_review: bool = False
     gender: str | None = None
     birth_date: date | None = None
     job: str | None = None
@@ -107,6 +111,7 @@ class MatchupOptionOut(BaseModel):
     party_inferred: bool = False
     party_inference_source: str | None = None
     party_inference_confidence: float | None = None
+    needs_manual_review: bool = False
 
 
 class MatchupOut(BaseModel):
@@ -274,6 +279,10 @@ class CandidateInput(BaseModel):
     candidate_id: str
     name_ko: str
     party_name: str | None = None
+    party_inferred: bool = False
+    party_inference_source: str | None = None
+    party_inference_confidence: float | None = None
+    needs_manual_review: bool = False
     gender: str | None = None
     birth_date: date | None = None
     job: str | None = None
@@ -323,6 +332,7 @@ class PollOptionInput(BaseModel):
     party_inferred: bool = False
     party_inference_source: str | None = None
     party_inference_confidence: float | None = None
+    needs_manual_review: bool = False
 
 
 class IngestRecordInput(BaseModel):

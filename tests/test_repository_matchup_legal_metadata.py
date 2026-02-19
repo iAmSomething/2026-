@@ -63,6 +63,7 @@ class _Cursor:
                 "party_inferred": True,
                 "party_inference_source": "name_rule",
                 "party_inference_confidence": 0.84,
+                "needs_manual_review": False,
             }
         ]
 
@@ -94,3 +95,4 @@ def test_get_matchup_returns_legal_metadata_fields():
     assert out["options"][0]["party_inferred"] is True
     assert out["options"][0]["party_inference_source"] == "name_rule"
     assert out["options"][0]["party_inference_confidence"] == 0.84
+    assert out["options"][0]["needs_manual_review"] is False

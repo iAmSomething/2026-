@@ -228,8 +228,15 @@ import json, urllib.request
 base="$API_BASE"
 candidate_id="cand-jwo"
 obj=json.loads(urllib.request.urlopen(base+f"/api/v1/candidates/{candidate_id}").read().decode())
-for k in ["candidate_id","name_ko","party_name"]:
+for k in [
+    "candidate_id","name_ko","party_name",
+    "party_inferred","party_inference_source","party_inference_confidence","needs_manual_review"
+]:
     assert k in obj
+assert isinstance(obj["party_inferred"], bool)
+assert isinstance(obj["needs_manual_review"], bool)
+assert obj["party_inference_source"] is None or isinstance(obj["party_inference_source"], str)
+assert obj["party_inference_confidence"] is None or isinstance(obj["party_inference_confidence"], (int, float))
 print("candidate ok")
 PY
 fi
