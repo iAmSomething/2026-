@@ -198,3 +198,17 @@ scripts/qa/smoke_staging.sh --api-base "$API_BASE" --web-base "$WEB_BASE"
   - 필요 시 `API_BASE_URL`도 동일 값으로 주입
 6. fallback 동작:
 - 스테이징/공개 환경에서 API Base env가 비어 있어도 Railway 공개 URL을 fallback으로 사용한다.
+
+## 14. API 도메인 전략 (Issue #137)
+1. 현재 운영 기준:
+- `https://2026-api-production.up.railway.app`
+- 이유: 실배포 응답(health/API/CORS) 검증 완료 상태로 즉시 안정 운영 가능
+2. 전환 전략:
+- 베타/운영 직전에 1회 커스텀 도메인(`api.<your-domain>`)으로 컷오버
+- 컷오버 전까지는 기존 Railway 생성 도메인을 기준값으로 유지
+3. 컷오버 완료 기준:
+- Railway Custom Domain + TLS 활성화
+- Vercel env(`API_BASE_URL`, `NEXT_PUBLIC_API_BASE_URL`) 신규 도메인 반영
+- 공개 API smoke 200 및 공개 웹 3개 URL 200 재검증
+4. 롤백 기준:
+- 컷오버 후 API/CORS 실패 시 즉시 env를 `https://2026-api-production.up.railway.app`로 복귀

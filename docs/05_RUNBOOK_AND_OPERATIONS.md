@@ -308,3 +308,28 @@ done
 3. 판정:
 - 3개 URL이 모두 `200`이면 PASS
 - `404`가 하나라도 나오면 Vercel 프로젝트 루트(`apps/web`) 및 최신 배포 상태를 우선 점검
+
+## 17. API 커스텀 도메인 컷오버 런북 (Issue #137)
+1. 사전 고정:
+- 현재 기준 API: `https://2026-api-production.up.railway.app`
+- 목표 API: `https://api.<your-domain>`
+2. 순서:
+- DNS(CNAME/TXT) 검증 완료
+- Railway Custom Domain 연결 + TLS 발급 완료
+- API CORS allowlist에 `https://2026-deploy.vercel.app` 유지 확인
+- Vercel 환경변수(`API_BASE_URL`, `NEXT_PUBLIC_API_BASE_URL`)를 목표 API로 교체
+- Vercel 재배포 후 웹/API 스모크 재실행
+3. 검증 명령:
+```bash
+NEW_API_BASE="https://api.<your-domain>"
+scripts/qa/smoke_public_api.sh \
+  --api-base "$NEW_API_BASE" \
+  --web-origin "https://2026-deploy.vercel.app" \
+  --out-dir /tmp/public_api_smoke_custom_domain
+```
+4. 성공 판정:
+- `/health`, summary/regions/candidate, CORS preflight 모두 200
+- `https://2026-deploy.vercel.app/`, `/matchups/m_2026_seoul_mayor`, `/candidates/cand-jwo` 모두 200
+5. 실패/롤백:
+- 실패 시 Vercel env를 기존 `https://2026-api-production.up.railway.app`로 즉시 복구
+- 복구 후 동일 스모크로 200 재확인
