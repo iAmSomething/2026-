@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-API_BASE="${API_BASE:-https://2026-api.up.railway.app}"
+API_BASE="${API_BASE:-https://2026-api-production.up.railway.app}"
 WEB_ORIGIN="${WEB_ORIGIN:-https://2026-deploy.vercel.app}"
 OUT_DIR="${OUT_DIR:-/tmp/public_api_smoke}"
 

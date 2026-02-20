@@ -248,7 +248,7 @@ python -m app.jobs.bootstrap_ingest --input data/bootstrap_ingest_coverage_v2.js
 1. 준비 변수:
 ```bash
 WEB_URL="https://2026-deploy.vercel.app"
-API_BASE="https://2026-api.up.railway.app"
+API_BASE="https://2026-api-production.up.railway.app"
 ```
 2. URL 접근(200) 확인:
 ```bash
@@ -266,7 +266,7 @@ curl -sS -o /tmp/web_rc_candidate.json -w "%{http_code}\n" "$API_BASE/api/v1/can
 ```
 5. fallback/오류 표시 확인:
 - `summary fetch failed`가 보이면 web이 정상적으로 오류 fallback을 렌더링한 상태다.
-- 스테이징/공개 환경 기본값은 `https://2026-api.up.railway.app`이며, 장애 시 fallback 오류 문구를 확인한다.
+- 스테이징/공개 환경 기본값은 `https://2026-api-production.up.railway.app`이며, 장애 시 fallback 오류 문구를 확인한다.
 6. 내부 운영 API 토큰 정책 유지:
 - `/api/v1/jobs/*`는 `Authorization: Bearer <INTERNAL_JOB_TOKEN>` 필수
 - `/api/v1/review/*` 계열 엔드포인트도 토큰 필수 정책 유지
@@ -275,7 +275,7 @@ curl -sS -o /tmp/web_rc_candidate.json -w "%{http_code}\n" "$API_BASE/api/v1/can
 1. 스크립트:
 - `scripts/qa/smoke_public_api.sh`
 2. 기본 타깃:
-- `API_BASE=https://2026-api.up.railway.app`
+- `API_BASE=https://2026-api-production.up.railway.app`
 - `WEB_ORIGIN=https://2026-deploy.vercel.app`
 3. 검증 항목:
 - `GET /health` (200)
@@ -286,7 +286,7 @@ curl -sS -o /tmp/web_rc_candidate.json -w "%{http_code}\n" "$API_BASE/api/v1/can
 4. 실행 예시:
 ```bash
 scripts/qa/smoke_public_api.sh \
-  --api-base "https://2026-api.up.railway.app" \
+  --api-base "https://2026-api-production.up.railway.app" \
   --web-origin "https://2026-deploy.vercel.app" \
   --out-dir /tmp/public_api_smoke
 ```
