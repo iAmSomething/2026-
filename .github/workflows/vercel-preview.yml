@@ -29,7 +29,7 @@ jobs:
       VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
       VERCEL_SCOPE: ${{ secrets.VERCEL_SCOPE }}
       VERCEL_PROJECT_NAME: ${{ secrets.VERCEL_PROJECT_NAME }}
-      WEB_API_BASE_URL: https://2026-api.up.railway.app
+      WEB_API_BASE_URL: https://2026-api-production.up.railway.app
     steps:
       - name: Checkout
         uses: actions/checkout@v4

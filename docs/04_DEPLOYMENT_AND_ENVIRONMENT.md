@@ -182,19 +182,19 @@ scripts/qa/smoke_staging.sh --api-base "$API_BASE" --web-base "$WEB_BASE"
 - 타깃: `Vercel`
 - 프로젝트 루트: `apps/web` (공개 라우트 RC), 필요 시 `apps/staging-web` fallback
 - 배포 입력값은 GitHub Secrets(`VERCEL_TOKEN`, `VERCEL_SCOPE`, `VERCEL_PROJECT_NAME`)으로만 주입
-- Preview/Production 공통 API base 고정값: `https://2026-api.up.railway.app`
+- Preview/Production 공통 API base 고정값: `https://2026-api-production.up.railway.app`
 4. 공개 라우트 RC 확인 대상:
 - `/`
 - `/matchups/m_2026_seoul_mayor`
 - `/candidates/cand-jwo`
 5. 웹 API endpoint 환경변수 계약:
 - 코드 기준: `apps/web/app/_lib/api.js` (staging 대체 경로: `apps/staging-web/app/page.js`)
-- 해석 우선순위: `API_BASE_URL` -> `NEXT_PUBLIC_API_BASE_URL` -> `https://2026-api.up.railway.app`
+- 해석 우선순위: `API_BASE_URL` -> `NEXT_PUBLIC_API_BASE_URL` -> `https://2026-api-production.up.railway.app`
 - 개발(local) 권장:
   - `API_BASE_URL=http://127.0.0.1:8100`
   - `NEXT_PUBLIC_API_BASE_URL=http://127.0.0.1:8100`
 - 스테이징/공개 확인 권장:
-  - `NEXT_PUBLIC_API_BASE_URL=https://2026-api.up.railway.app`
+  - `NEXT_PUBLIC_API_BASE_URL=https://2026-api-production.up.railway.app`
   - 필요 시 `API_BASE_URL`도 동일 값으로 주입
 6. fallback 동작:
 - 스테이징/공개 환경에서 API Base env가 비어 있어도 Railway 공개 URL을 fallback으로 사용한다.
