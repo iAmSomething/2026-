@@ -53,7 +53,7 @@ echo "[INFO] WEB_ORIGIN=${WEB_ORIGIN}"
 
 health_status="$(request "health" "/health" | awk '{print $2}')"
 summary_status="$(request "summary" "/api/v1/dashboard/summary" | awk '{print $2}')"
-regions_status="$(request "regions" "/api/v1/regions/search?query=%EC%84%9C%EC%9A%B8" | awk '{print $2}')"
+regions_status="$(request "regions" "/api/v1/regions/search?q=%EC%84%9C%EC%9A%B8" | awk '{print $2}')"
 candidate_status="$(request "candidate" "/api/v1/candidates/cand-jwo" | awk '{print $2}')"
 
 curl -sS -D "$OUT_DIR/cors_headers.txt" -o "$OUT_DIR/cors_body.txt" \

@@ -403,6 +403,11 @@ def test_api_contract_fields():
     regions = client.get("/api/v1/regions/search", params={"q": "서울"})
     assert regions.status_code == 200
     assert regions.json()[0]["region_code"] == "11-000"
+    regions_query_alias = client.get("/api/v1/regions/search", params={"query": "서울"})
+    assert regions_query_alias.status_code == 200
+    assert regions_query_alias.json()[0]["region_code"] == "11-000"
+    regions_missing = client.get("/api/v1/regions/search")
+    assert regions_missing.status_code == 422
 
     map_latest = client.get("/api/v1/dashboard/map-latest")
     assert map_latest.status_code == 200
