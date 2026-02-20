@@ -34,6 +34,10 @@ from app.services.ingest_service import ingest_payload
 
 router = APIRouter(prefix="/api/v1", tags=["v1"])
 
+MATCHUP_ID_ALIASES = {
+    "m_2026_seoul_mayor": "20260603|광역자치단체장|11-000",
+}
+
 
 def _build_scope_breakdown(rows: list[dict]) -> dict[str, int]:
     counts = {"national": 0, "regional": 0, "local": 0, "unknown": 0}
@@ -219,7 +223,8 @@ def get_region_elections(region_code: str, repo=Depends(get_repository)):
 
 @router.get("/matchups/{matchup_id}", response_model=MatchupOut)
 def get_matchup(matchup_id: str, repo=Depends(get_repository)):
-    matchup = repo.get_matchup(matchup_id)
+    resolved_matchup_id = MATCHUP_ID_ALIASES.get(matchup_id, matchup_id)
+    matchup = repo.get_matchup(resolved_matchup_id)
     if not matchup:
         raise HTTPException(status_code=404, detail="matchup not found")
     source_meta = _derive_source_meta(matchup)

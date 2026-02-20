@@ -456,6 +456,9 @@ def test_api_contract_fields():
     assert matchup.json()["options"][0]["party_inference_confidence"] == 0.86
     assert matchup.json()["options"][0]["needs_manual_review"] is False
     assert matchup.json()["options"][1]["needs_manual_review"] is True
+    matchup_alias = client.get("/api/v1/matchups/m_2026_seoul_mayor")
+    assert matchup_alias.status_code == 200
+    assert matchup_alias.json()["matchup_id"] == "20260603|광역자치단체장|11-000"
 
     candidate = client.get("/api/v1/candidates/cand-jwo")
     assert candidate.status_code == 200
