@@ -290,3 +290,21 @@ scripts/qa/smoke_public_api.sh \
   --web-origin "https://2026-deploy.vercel.app" \
   --out-dir /tmp/public_api_smoke
 ```
+
+## 16. 공개 웹 라우트 RC 스모크
+1. 대상 URL:
+- `https://2026-deploy.vercel.app/`
+- `https://2026-deploy.vercel.app/matchups/m_2026_seoul_mayor`
+- `https://2026-deploy.vercel.app/candidates/cand-jwo`
+2. 확인 명령:
+```bash
+for u in \
+  "https://2026-deploy.vercel.app/" \
+  "https://2026-deploy.vercel.app/matchups/m_2026_seoul_mayor" \
+  "https://2026-deploy.vercel.app/candidates/cand-jwo"; do
+  curl -sS -o /tmp/$(echo "$u" | tr '/:.' '_').html -w "$u -> %{http_code}\n" "$u"
+done
+```
+3. 판정:
+- 3개 URL이 모두 `200`이면 PASS
+- `404`가 하나라도 나오면 Vercel 프로젝트 루트(`apps/web`) 및 최신 배포 상태를 우선 점검

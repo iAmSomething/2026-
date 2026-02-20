@@ -6,9 +6,10 @@ on:
       root_dir:
         description: "Web root directory"
         required: true
-        default: "apps/staging-web"
+        default: "apps/web"
         type: choice
         options:
+          - apps/web
           - apps/staging-web
       issue_number:
         description: "Issue number to post preview URL"
