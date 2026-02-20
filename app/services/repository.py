@@ -560,6 +560,89 @@ class PostgresRepository:
             cur.execute(query, params)
             return cur.fetchall()
 
+    def fetch_dashboard_quality(self):
+        with self.conn.cursor() as cur:
+            cur.execute(
+                """
+                WITH base AS (
+                    SELECT
+                        EXTRACT(
+                            EPOCH FROM (
+                                NOW() - COALESCE(o.official_release_at, a.published_at, o.updated_at)
+                            )
+                        ) / 3600.0 AS freshness_hours,
+                        CASE
+                            WHEN o.source_channel = 'article'
+                              OR COALESCE('article' = ANY(o.source_channels), FALSE)
+                            THEN TRUE
+                            ELSE FALSE
+                        END AS has_article,
+                        CASE
+                            WHEN o.source_channel = 'nesdc'
+                              OR COALESCE('nesdc' = ANY(o.source_channels), FALSE)
+                            THEN TRUE
+                            ELSE FALSE
+                        END AS has_nesdc
+                    FROM poll_observations o
+                    LEFT JOIN articles a ON a.id = o.article_id
+                    WHERE o.verified = TRUE
+                ),
+                aggregate AS (
+                    SELECT
+                        COUNT(*)::int AS total_count,
+                        percentile_cont(0.5) WITHIN GROUP (ORDER BY freshness_hours) AS freshness_p50_hours,
+                        percentile_cont(0.9) WITHIN GROUP (ORDER BY freshness_hours) AS freshness_p90_hours,
+                        COUNT(*) FILTER (WHERE has_article)::int AS article_count,
+                        COUNT(*) FILTER (WHERE has_nesdc)::int AS nesdc_count
+                    FROM base
+                ),
+                review AS (
+                    SELECT
+                        COUNT(*) FILTER (
+                            WHERE status IN ('pending', 'in_progress')
+                        )::int AS needs_manual_review_count
+                    FROM review_queue
+                )
+                SELECT
+                    a.total_count,
+                    a.freshness_p50_hours,
+                    a.freshness_p90_hours,
+                    a.article_count,
+                    a.nesdc_count,
+                    r.needs_manual_review_count
+                FROM aggregate a
+                CROSS JOIN review r
+                """
+            )
+            row = cur.fetchone() or {}
+
+        total_count = row.get("total_count", 0) or 0
+        article_count = row.get("article_count", 0) or 0
+        nesdc_count = row.get("nesdc_count", 0) or 0
+
+        if total_count > 0:
+            official_confirmed_ratio = round(nesdc_count / total_count, 4)
+            article_ratio = round(article_count / total_count, 4)
+            nesdc_ratio = round(nesdc_count / total_count, 4)
+        else:
+            official_confirmed_ratio = 0.0
+            article_ratio = 0.0
+            nesdc_ratio = 0.0
+
+        freshness_p50 = row.get("freshness_p50_hours")
+        freshness_p90 = row.get("freshness_p90_hours")
+
+        return {
+            "freshness_p50_hours": round(float(freshness_p50), 2) if freshness_p50 is not None else None,
+            "freshness_p90_hours": round(float(freshness_p90), 2) if freshness_p90 is not None else None,
+            "official_confirmed_ratio": official_confirmed_ratio,
+            "needs_manual_review_count": row.get("needs_manual_review_count", 0) or 0,
+            "source_channel_mix": {
+                "article_ratio": article_ratio,
+                "nesdc_ratio": nesdc_ratio,
+            },
+        }
+
     def search_regions(self, query: str, limit: int = 20):
         q = f"%{query}%"
         with self.conn.cursor() as cur:

@@ -86,10 +86,11 @@
 1. `GET /api/v1/dashboard/summary`
 2. `GET /api/v1/dashboard/map-latest`
 3. `GET /api/v1/dashboard/big-matches`
-4. `GET /api/v1/regions/search`
-5. `GET /api/v1/regions/{region_code}/elections`
-6. `GET /api/v1/matchups/{matchup_id}`
-7. `GET /api/v1/candidates/{candidate_id}`
+4. `GET /api/v1/dashboard/quality`
+5. `GET /api/v1/regions/search`
+6. `GET /api/v1/regions/{region_code}/elections`
+7. `GET /api/v1/matchups/{matchup_id}`
+8. `GET /api/v1/candidates/{candidate_id}`
 
 ### 내부 운영 API
 1. `POST /api/v1/jobs/run-ingest`
@@ -101,6 +102,14 @@
 2. `audience_scope IS NULL` 관측치는 summary 집계에서 제외한다.
 3. `audience_scope='regional'|'local'` 관측치는 summary 집계에서 제외한다.
 4. `GET /api/v1/dashboard/summary`, `GET /api/v1/dashboard/map-latest`, `GET /api/v1/dashboard/big-matches`는 `scope_breakdown`을 함께 노출한다.
+
+## 6.1 운영 품질 요약 규칙 (`GET /api/v1/dashboard/quality`)
+1. `freshness_p50_hours`, `freshness_p90_hours`는 검증 완료(`verified=true`) 관측치의 freshness 분포 백분위를 시간 단위로 노출한다.
+2. freshness 기준 시각은 `official_release_at` 우선, 없으면 `article_published_at`, 둘 다 없으면 관측치 `updated_at`을 사용한다.
+3. `official_confirmed_ratio`는 `source_channels`에 `nesdc`가 포함된 관측치 비율이다.
+4. `needs_manual_review_count`는 `review_queue`의 `pending|in_progress` 건수 합이다.
+5. `source_channel_mix`는 관측치 기준 `article_ratio`, `nesdc_ratio`를 각각 0~1 범위로 노출한다.
+6. 데이터가 없으면 percentile 필드는 `null`, ratio/count 필드는 `0`으로 응답한다.
 
 ## 7. 중복제어(fingerprint) 규칙
 1. fingerprint 기본 입력: `pollster`, `sponsor`, `survey_start_date`, `survey_end_date`, `region_code(or region_text)`, `sample_size`, `method`
