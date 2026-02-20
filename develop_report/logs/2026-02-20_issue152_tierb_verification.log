@@ -1,0 +1,11 @@
+# issue152 tierb verification
+timestamp_utc=2026-02-20T05:43:32Z
+[PASS] D04
+[PASS] D05
+[PASS] D06
+[PASS] D07
+[SMOKE] /?scope_mix=1 -> 200
+[SMOKE] /?selected_region=KR-11 -> 200
+[SMOKE] /search?demo_query=%EC%97%B0%EC%88%98%EA%B5%AD -> 200
+[SMOKE] /matchups/m_2026_seoul_mayor?confirm_demo=official&source_demo=nesdc&demo_state=ready -> 200
+[SMOKE] /candidates/cand-jwo?party_demo=inferred_low&confirm_demo=pending48 -> 200

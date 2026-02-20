@@ -102,8 +102,8 @@ export default async function SearchPage({ searchParams }) {
                 <div className="empty-actions">
                   <p>대체 액션</p>
                   <div className="empty-actions-links">
-                    <Link href="/search?q=서울">서울로 재검색</Link>
-                    <Link href="/search?q=인천">인천으로 재검색</Link>
+                    <Link href="/search?q=서울">예시 검색어 적용</Link>
+                    <Link href="/">최근 업데이트</Link>
                   </div>
                 </div>
               ) : null}

@@ -41,6 +41,15 @@ export default async function MatchupPage({ params, searchParams }) {
   const maxValue = Math.max(...options.map((option) => option.value_mid || 0), 1);
 
   const scenarioBadges = [];
+  const isOfficialScenario = confirmDemo === "official" || sourceDemo === "nesdc";
+  const isArticleScenario = confirmDemo === "article" || sourceDemo === "article";
+
+  if (isOfficialScenario) {
+    scenarioBadges.push(toScenarioBadge("공식확정", "ok"));
+  } else if (isArticleScenario) {
+    scenarioBadges.push(toScenarioBadge("기사 기반 추정", "warn"));
+  }
+
   if (confirmDemo) {
     scenarioBadges.push(
       toScenarioBadge(
@@ -59,10 +68,14 @@ export default async function MatchupPage({ params, searchParams }) {
   }
 
   let scenarioCopy = "";
-  if (confirmDemo || sourceDemo || demoState) {
+  if (isOfficialScenario) {
+    scenarioCopy = "공식확정 데이터 기준으로 결과를 노출합니다.";
+  } else if (isArticleScenario) {
+    scenarioCopy = "기사 기반 추정 데이터 기준으로 결과를 노출합니다.";
+  } else if (confirmDemo || sourceDemo || demoState) {
     const confirmLabel =
       confirmDemo === "official"
-        ? "공식 확정"
+        ? "공식확정"
         : confirmDemo === "article"
           ? "기사 보강"
           : "기본";
