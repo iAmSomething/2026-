@@ -270,3 +270,23 @@ curl -sS -o /tmp/web_rc_candidate.json -w "%{http_code}\n" "$API_BASE/api/v1/can
 6. 내부 운영 API 토큰 정책 유지:
 - `/api/v1/jobs/*`는 `Authorization: Bearer <INTERNAL_JOB_TOKEN>` 필수
 - `/api/v1/review/*` 계열 엔드포인트도 토큰 필수 정책 유지
+
+## 15. 공개 API 원격 스모크 (Railway)
+1. 스크립트:
+- `scripts/qa/smoke_public_api.sh`
+2. 기본 타깃:
+- `API_BASE=https://2026-api.up.railway.app`
+- `WEB_ORIGIN=https://2026-deploy.vercel.app`
+3. 검증 항목:
+- `GET /health` (200)
+- `GET /api/v1/dashboard/summary` (200)
+- `GET /api/v1/regions/search?query=서울` (200)
+- `GET /api/v1/candidates/cand-jwo` (200 또는 계약된 404)
+- CORS preflight(`OPTIONS /api/v1/dashboard/summary`) 응답 및 `access-control-allow-origin` 일치
+4. 실행 예시:
+```bash
+scripts/qa/smoke_public_api.sh \
+  --api-base "https://2026-api.up.railway.app" \
+  --web-origin "https://2026-deploy.vercel.app" \
+  --out-dir /tmp/public_api_smoke
+```
