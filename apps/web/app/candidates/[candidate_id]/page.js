@@ -56,6 +56,18 @@ export default async function CandidatePage({ params, searchParams }) {
   const relatedMatchup = await fetchApi(`/api/v1/matchups/${encodeURIComponent(relatedAlias)}`);
 
   const scenarioBadges = [];
+  const scenarioCopies = [];
+
+  if (partyDemo === "inferred_low") {
+    scenarioBadges.push(toScenarioBadge("검수 필요", "warn"));
+    scenarioCopies.push("정당 정보 신뢰도가 낮아 검수 필요 상태입니다.");
+  }
+
+  if (confirmDemo === "pending48") {
+    scenarioBadges.push(toScenarioBadge("공식확정 대기(48시간)", "info"));
+    scenarioCopies.push("공식확정 대기(48시간) 상태로 운영 정책상 재확인을 기다립니다.");
+  }
+
   if (partyDemo) {
     scenarioBadges.push(
       toScenarioBadge(
@@ -108,6 +120,11 @@ export default async function CandidatePage({ params, searchParams }) {
             baseline 안전 fallback 적용: 요청 후보를 찾지 못해 <strong>{effectiveCandidateId}</strong> 기준으로 화면을 유지했습니다.
           </p>
         ) : null}
+        {scenarioCopies.map((copy) => (
+          <p key={copy} className="scenario-copy">
+            {copy}
+          </p>
+        ))}
       </section>
 
       <section className="detail-grid">
