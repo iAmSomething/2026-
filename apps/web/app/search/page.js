@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-import { formatDate } from "../_components/format";
+import { normalizeDemoQuery } from "../_components/demoParams";
 import { fetchApi } from "../_lib/api";
 
 const OFFICE_TABS = [
@@ -23,19 +23,36 @@ function buildQueryString(params) {
 
 export default async function SearchPage({ searchParams }) {
   const resolved = await searchParams;
-  const q = (resolved?.q || "").trim();
+  const rawQ = (resolved?.q || "").trim();
+  const demoQueryParam = (resolved?.demo_query || "").trim();
+
+  const queryFromScenario = rawQ || demoQueryParam;
+  const normalizedQuery = normalizeDemoQuery(queryFromScenario);
+
   const selectedRegion = resolved?.region || "";
   const selectedOffice = resolved?.office || "all";
 
-  const regionsRes = q ? await fetchApi(`/api/v1/regions/search?q=${encodeURIComponent(q)}`) : { ok: true, body: [] };
+  const regionsRes = normalizedQuery.normalized
+    ? await fetchApi(`/api/v1/regions/search?q=${encodeURIComponent(normalizedQuery.normalized)}`)
+    : { ok: true, body: [] };
+
   const regions = regionsRes.ok && Array.isArray(regionsRes.body) ? regionsRes.body : [];
   const regionCode = selectedRegion || regions[0]?.region_code || "";
 
-  const electionsRes = regionCode ? await fetchApi(`/api/v1/regions/${encodeURIComponent(regionCode)}/elections`) : { ok: true, body: [] };
+  const electionsRes = regionCode
+    ? await fetchApi(`/api/v1/regions/${encodeURIComponent(regionCode)}/elections`)
+    : { ok: true, body: [] };
   const elections = electionsRes.ok && Array.isArray(electionsRes.body) ? electionsRes.body : [];
 
   const filteredElections =
     selectedOffice === "all" ? elections : elections.filter((election) => election.office_type === selectedOffice);
+
+  const scenarioFixed = Boolean(demoQueryParam);
+  const isScenarioEmptyCase = demoQueryParam === "없는지역명";
+
+  const scenarioBaseParams = {
+    demo_query: demoQueryParam
+  };
 
   return (
     <main className="search-root">
@@ -50,21 +67,54 @@ export default async function SearchPage({ searchParams }) {
           </Link>
         </header>
 
+        {scenarioFixed ? (
+          <div className="param-callout">
+            baseline demo_query 적용: <strong>{demoQueryParam}</strong>
+            {normalizedQuery.corrected ? (
+              <span>
+                {" -> 자동 보정 "}
+                <strong>{normalizedQuery.normalized}</strong>
+              </span>
+            ) : null}
+          </div>
+        ) : null}
+
         <form method="GET" className="search-form">
-          <input name="q" defaultValue={q} placeholder="예: 서울 강남구, 경기 시흥시" aria-label="지역 검색" />
+          <input
+            name="q"
+            defaultValue={rawQ || demoQueryParam}
+            placeholder="예: 서울 강남구, 경기 시흥시"
+            aria-label="지역 검색"
+            readOnly={scenarioFixed}
+          />
+          {demoQueryParam ? <input type="hidden" name="demo_query" value={demoQueryParam} /> : null}
           <button type="submit">검색</button>
         </form>
 
-        {q && !regionsRes.ok ? <div className="error-chip">검색 API 오류: {regionsRes.status}</div> : null}
+        {normalizedQuery.normalized && !regionsRes.ok ? <div className="error-chip">검색 API 오류: {regionsRes.status}</div> : null}
 
-        {q && regionsRes.ok ? (
+        {normalizedQuery.normalized && regionsRes.ok ? (
           <div className="search-layout">
             <section className="panel inset-panel">
               <h3>검색 결과 ({regions.length})</h3>
               {regions.length === 0 ? <div className="empty-state">검색 결과가 없습니다.</div> : null}
+              {isScenarioEmptyCase && regions.length === 0 ? (
+                <div className="empty-actions">
+                  <p>대체 액션</p>
+                  <div className="empty-actions-links">
+                    <Link href="/search?q=서울">서울로 재검색</Link>
+                    <Link href="/search?q=인천">인천으로 재검색</Link>
+                  </div>
+                </div>
+              ) : null}
               <ul className="region-result-list">
                 {regions.map((region) => {
-                  const href = buildQueryString({ q, region: region.region_code, office: selectedOffice === "all" ? "" : selectedOffice });
+                  const href = buildQueryString({
+                    ...(scenarioFixed ? scenarioBaseParams : {}),
+                    q: rawQ || normalizedQuery.input,
+                    region: region.region_code,
+                    office: selectedOffice === "all" ? "" : selectedOffice
+                  });
                   const active = region.region_code === regionCode;
                   return (
                     <li key={region.region_code}>
@@ -83,7 +133,7 @@ export default async function SearchPage({ searchParams }) {
               <h3>선거 타입</h3>
               <div className="tab-row">
                 <Link
-                  href={`/search${buildQueryString({ q, region: regionCode })}`}
+                  href={`/search${buildQueryString({ ...(scenarioFixed ? scenarioBaseParams : {}), q: rawQ || normalizedQuery.input, region: regionCode })}`}
                   className={selectedOffice === "all" ? "tab active" : "tab"}
                 >
                   전체
@@ -91,7 +141,12 @@ export default async function SearchPage({ searchParams }) {
                 {OFFICE_TABS.map((officeType) => (
                   <Link
                     key={officeType}
-                    href={`/search${buildQueryString({ q, region: regionCode, office: officeType })}`}
+                    href={`/search${buildQueryString({
+                      ...(scenarioFixed ? scenarioBaseParams : {}),
+                      q: rawQ || normalizedQuery.input,
+                      region: regionCode,
+                      office: officeType
+                    })}`}
                     className={selectedOffice === officeType ? "tab active" : "tab"}
                   >
                     {officeType}

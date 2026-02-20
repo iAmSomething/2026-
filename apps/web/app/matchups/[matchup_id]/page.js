@@ -1,5 +1,6 @@
 import Link from "next/link";
 
+import { toScenarioBadge } from "../../_components/demoParams";
 import { formatDate, formatDateTime, formatPercent, joinChannels } from "../../_components/format";
 import { fetchApi } from "../../_lib/api";
 
@@ -7,17 +8,23 @@ const CANDIDATE_ALIAS_BY_NAME = {
   정원오: "cand-jwo"
 };
 
-export default async function MatchupPage({ params }) {
+export default async function MatchupPage({ params, searchParams }) {
   const resolvedParams = await params;
-  const matchupId = resolvedParams.matchup_id;
-  const payload = await fetchApi(`/api/v1/matchups/${encodeURIComponent(matchupId)}`);
+  const resolvedSearch = await searchParams;
+  const requestedMatchupId = resolvedParams.matchup_id;
+
+  const confirmDemo = (resolvedSearch?.confirm_demo || "").trim().toLowerCase();
+  const sourceDemo = (resolvedSearch?.source_demo || "").trim().toLowerCase();
+  const demoState = (resolvedSearch?.demo_state || "").trim().toLowerCase();
+
+  const payload = await fetchApi(`/api/v1/matchups/${encodeURIComponent(requestedMatchupId)}`);
 
   if (!payload.ok) {
     return (
       <main className="detail-root">
         <section className="panel error-panel">
           <h1>매치업을 불러오지 못했습니다.</h1>
-          <p>요청 ID: {matchupId}</p>
+          <p>요청 ID: {requestedMatchupId}</p>
           <p>status: {payload.status}</p>
           <p className="muted-text">{JSON.stringify(payload.body)}</p>
           <Link href="/" className="text-link">
@@ -32,6 +39,38 @@ export default async function MatchupPage({ params }) {
   const options = Array.isArray(matchup.options) ? [...matchup.options] : [];
   options.sort((a, b) => (b.value_mid || 0) - (a.value_mid || 0));
   const maxValue = Math.max(...options.map((option) => option.value_mid || 0), 1);
+
+  const scenarioBadges = [];
+  if (confirmDemo) {
+    scenarioBadges.push(
+      toScenarioBadge(
+        `confirm_demo=${confirmDemo}`,
+        confirmDemo === "official" ? "ok" : "warn"
+      )
+    );
+  }
+  if (sourceDemo) {
+    scenarioBadges.push(
+      toScenarioBadge(`source_demo=${sourceDemo}`, sourceDemo === "nesdc" ? "ok" : "info")
+    );
+  }
+  if (demoState) {
+    scenarioBadges.push(toScenarioBadge(`demo_state=${demoState}`, demoState === "ready" ? "ok" : "info"));
+  }
+
+  let scenarioCopy = "";
+  if (confirmDemo || sourceDemo || demoState) {
+    const confirmLabel =
+      confirmDemo === "official"
+        ? "공식 확정"
+        : confirmDemo === "article"
+          ? "기사 보강"
+          : "기본";
+    const sourceLabel =
+      sourceDemo === "nesdc" ? "중앙선관위/NESDC" : sourceDemo === "article" ? "기사" : "기본";
+    const stateLabel = demoState === "ready" ? "ready(노출 준비 완료)" : demoState || "기본";
+    scenarioCopy = `상태 시나리오: ${confirmLabel} · ${sourceLabel} · ${stateLabel}`;
+  }
 
   return (
     <main className="detail-root">
@@ -51,6 +90,19 @@ export default async function MatchupPage({ params }) {
             대시보드
           </Link>
         </div>
+      </section>
+
+      <section className="panel scenario-panel">
+        <div className="badge-row">
+          <span className="state-badge info">요청 ID(alias): {requestedMatchupId}</span>
+          <span className="state-badge ok">표준 ID(canonical): {matchup.matchup_id}</span>
+          {scenarioBadges.map((badge) => (
+            <span key={badge.text} className={`state-badge ${badge.tone}`}>
+              {badge.text}
+            </span>
+          ))}
+        </div>
+        {scenarioCopy ? <p className="scenario-copy">{scenarioCopy}</p> : null}
       </section>
 
       <section className="detail-grid">

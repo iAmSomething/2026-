@@ -56,13 +56,22 @@ function pickLatestByRegion(items) {
   return map;
 }
 
-export default function RegionalMapPanel({ items, apiBase }) {
+export default function RegionalMapPanel({
+  items,
+  apiBase,
+  initialSelectedRegionCode = null,
+  selectedRegionHint = ""
+}) {
   const [hoveredCode, setHoveredCode] = useState(null);
-  const [selectedCode, setSelectedCode] = useState(null);
+  const [selectedCode, setSelectedCode] = useState(initialSelectedRegionCode);
   const [geoState, setGeoState] = useState("loading");
   const [geoJson, setGeoJson] = useState(null);
   const [electionsState, setElectionsState] = useState("idle");
   const [elections, setElections] = useState([]);
+
+  useEffect(() => {
+    setSelectedCode(initialSelectedRegionCode || null);
+  }, [initialSelectedRegionCode]);
 
   useEffect(() => {
     let mounted = true;
@@ -200,6 +209,12 @@ export default function RegionalMapPanel({ items, apiBase }) {
           <h3>지역 인터랙션</h3>
           <p>지도에서 지역을 선택하면 최신 조사와 연결된 매치업을 확인할 수 있습니다.</p>
         </header>
+
+        {selectedRegionHint ? (
+          <div className="param-callout">
+            baseline selected_region 적용: <strong>{selectedRegionHint}</strong>
+          </div>
+        ) : null}
 
         {!activeCode ? <div className="empty-state">지역을 선택해 주세요.</div> : null}
 
