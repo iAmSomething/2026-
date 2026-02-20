@@ -1,6 +1,6 @@
 from datetime import date, datetime, timezone
 
-from fastapi import APIRouter, Depends, HTTPException, Query
+from fastapi import APIRouter, Depends, HTTPException, Query, Request
 
 from app.api.dependencies import get_candidate_data_go_service, get_repository, require_internal_job_token
 from app.models.schemas import (
@@ -197,11 +197,17 @@ def get_dashboard_big_matches(
 
 @router.get("/regions/search", response_model=list[RegionOut])
 def search_regions(
-    q: str = Query(min_length=1),
+    request: Request,
+    q: str | None = Query(default=None, min_length=1),
     limit: int = Query(default=20, ge=1, le=100),
     repo=Depends(get_repository),
 ):
-    rows = repo.search_regions(query=q, limit=limit)
+    query_fallback = request.query_params.get("query")
+    resolved_query = q or query_fallback
+    if not resolved_query:
+        raise HTTPException(status_code=422, detail="q or query is required")
+
+    rows = repo.search_regions(query=resolved_query, limit=limit)
     return [RegionOut(**row) for row in rows]
 
 

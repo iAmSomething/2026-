@@ -261,7 +261,7 @@ rg -n "Election 2026 Staging|API Base|summary fetch failed" /tmp/web_rc_home.htm
 4. API 3개 연동 확인(200 기대):
 ```bash
 curl -sS -o /tmp/web_rc_summary.json -w "%{http_code}\n" "$API_BASE/api/v1/dashboard/summary"
-curl -sS -o /tmp/web_rc_regions.json -w "%{http_code}\n" "$API_BASE/api/v1/regions/search?query=%EC%84%9C%EC%9A%B8"
+curl -sS -o /tmp/web_rc_regions.json -w "%{http_code}\n" "$API_BASE/api/v1/regions/search?q=%EC%84%9C%EC%9A%B8"
 curl -sS -o /tmp/web_rc_candidate.json -w "%{http_code}\n" "$API_BASE/api/v1/candidates/cand-jwo"
 ```
 5. fallback/오류 표시 확인:
@@ -280,7 +280,7 @@ curl -sS -o /tmp/web_rc_candidate.json -w "%{http_code}\n" "$API_BASE/api/v1/can
 3. 검증 항목:
 - `GET /health` (200)
 - `GET /api/v1/dashboard/summary` (200)
-- `GET /api/v1/regions/search?query=서울` (200)
+- `GET /api/v1/regions/search?q=서울` (200, `query` alias도 허용)
 - `GET /api/v1/candidates/cand-jwo` (200 또는 계약된 404)
 - CORS preflight(`OPTIONS /api/v1/dashboard/summary`) 응답 및 `access-control-allow-origin` 일치
 4. 실행 예시:
