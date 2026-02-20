@@ -57,9 +57,10 @@
 1. 수동 배치 실행: `POST /api/v1/jobs/run-ingest`
 2. 운영 지표 요약: `GET /api/v1/ops/metrics/summary`
 3. 커버리지 지표 요약: `GET /api/v1/ops/coverage/summary`
-4. 검수 큐 목록: `GET /api/v1/review-queue/items`
-5. 검수 큐 통계: `GET /api/v1/review-queue/stats`
-6. 검수 큐 추세: `GET /api/v1/review-queue/trends`
+4. 운영 품질 요약: `GET /api/v1/dashboard/quality`
+5. 검수 큐 목록: `GET /api/v1/review-queue/items`
+6. 검수 큐 통계: `GET /api/v1/review-queue/stats`
+7. 검수 큐 추세: `GET /api/v1/review-queue/trends`
 
 ## 6. 장애 대응
 1. 수집 실패:
@@ -135,6 +136,15 @@
 - `empty`: `observations_total == 0`
 - `partial`: 데이터는 있으나 `regions_covered < regions_total` 또는 `regions_total` 기준 미확보
 - `ready`: `regions_total > 0` 이고 `regions_covered >= regions_total`
+7. `GET /api/v1/dashboard/quality` 호출
+8. 확인 항목:
+- `freshness_p50_hours`, `freshness_p90_hours`
+- `official_confirmed_ratio`
+- `needs_manual_review_count`
+- `source_channel_mix.article_ratio`, `source_channel_mix.nesdc_ratio`
+9. 품질 해석 기준:
+- percentile 값이 `null`이면 관측치 부족 상태로 간주
+- `official_confirmed_ratio` 하락 또는 `needs_manual_review_count` 급증 시 QA/수집기 재점검 트리거
 
 ## 8.3 경고 규칙 (기본값)
 1. `fetch_fail_rate > 0.15` 이면 경고

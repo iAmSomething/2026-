@@ -1,0 +1,4 @@
+timestamp_utc=2026-02-20T09:35:54Z
+endpoint=http://127.0.0.1:8110/api/v1/dashboard/quality
+http_code=200
+sample_json_path=data/verification/issue158_dashboard_quality_sample.json

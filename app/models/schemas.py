@@ -105,6 +105,20 @@ class DashboardBigMatchesOut(BaseModel):
     scope_breakdown: ScopeBreakdownOut = Field(default_factory=ScopeBreakdownOut)
 
 
+class SourceChannelMixOut(BaseModel):
+    article_ratio: float = 0.0
+    nesdc_ratio: float = 0.0
+
+
+class DashboardQualityOut(BaseModel):
+    generated_at: datetime
+    freshness_p50_hours: float | None = None
+    freshness_p90_hours: float | None = None
+    official_confirmed_ratio: float = 0.0
+    needs_manual_review_count: int = 0
+    source_channel_mix: SourceChannelMixOut = Field(default_factory=SourceChannelMixOut)
+
+
 class RegionElectionOut(BaseModel):
     matchup_id: str
     region_code: str

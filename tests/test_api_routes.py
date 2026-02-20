@@ -242,6 +242,15 @@ class FakeApiRepo:
             "latest_survey_end_date": date(2026, 2, 19),
         }
 
+    def fetch_dashboard_quality(self):
+        return {
+            "freshness_p50_hours": 18.5,
+            "freshness_p90_hours": 42.25,
+            "official_confirmed_ratio": 0.6,
+            "needs_manual_review_count": 4,
+            "source_channel_mix": {"article_ratio": 0.8, "nesdc_ratio": 0.6},
+        }
+
     def fetch_review_queue_items(  # noqa: ARG002
         self,
         *,
@@ -427,6 +436,17 @@ def test_api_contract_fields():
     assert big_matches.json()["items"][0]["audience_scope"] == "regional"
     assert big_matches.json()["scope_breakdown"] == {"national": 0, "regional": 1, "local": 0, "unknown": 0}
 
+    quality = client.get("/api/v1/dashboard/quality")
+    assert quality.status_code == 200
+    quality_body = quality.json()
+    assert "generated_at" in quality_body
+    assert quality_body["freshness_p50_hours"] == 18.5
+    assert quality_body["freshness_p90_hours"] == 42.25
+    assert quality_body["official_confirmed_ratio"] == 0.6
+    assert quality_body["needs_manual_review_count"] == 4
+    assert quality_body["source_channel_mix"]["article_ratio"] == 0.8
+    assert quality_body["source_channel_mix"]["nesdc_ratio"] == 0.6
+
     region_elections = client.get("/api/v1/regions/11-000/elections")
     assert region_elections.status_code == 200
     assert region_elections.json()[0]["is_active"] is True
@@ -593,6 +613,36 @@ def test_ops_coverage_summary_state_contract(summary, expected_state, expected_w
     assert "sido_covered" in body
     assert "observations_total" in body
     assert "latest_survey_end_date" in body
+
+    app.dependency_overrides.clear()
+
+
+def test_dashboard_quality_empty_safe_contract():
+    class QualityRepo(FakeApiRepo):
+        def fetch_dashboard_quality(self):
+            return {
+                "freshness_p50_hours": None,
+                "freshness_p90_hours": None,
+                "official_confirmed_ratio": 0.0,
+                "needs_manual_review_count": 0,
+                "source_channel_mix": {"article_ratio": 0.0, "nesdc_ratio": 0.0},
+            }
+
+    def override_quality_repo():
+        yield QualityRepo()
+
+    app.dependency_overrides[get_repository] = override_quality_repo
+    app.dependency_overrides[get_candidate_data_go_service] = override_candidate_data_go_service
+    client = TestClient(app)
+
+    res = client.get("/api/v1/dashboard/quality")
+    assert res.status_code == 200
+    body = res.json()
+    assert body["freshness_p50_hours"] is None
+    assert body["freshness_p90_hours"] is None
+    assert body["official_confirmed_ratio"] == 0.0
+    assert body["needs_manual_review_count"] == 0
+    assert body["source_channel_mix"] == {"article_ratio": 0.0, "nesdc_ratio": 0.0}
 
     app.dependency_overrides.clear()
 

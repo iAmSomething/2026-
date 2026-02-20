@@ -7,6 +7,7 @@ from app.models.schemas import (
     BigMatchPoint,
     CandidateOut,
     DashboardBigMatchesOut,
+    DashboardQualityOut,
     DashboardMapLatestOut,
     DashboardSummaryOut,
     IngestPayload,
@@ -19,6 +20,7 @@ from app.models.schemas import (
     OpsMetricsSummaryOut,
     OpsReviewMetricsOut,
     ScopeBreakdownOut,
+    SourceChannelMixOut,
     OpsWarningRuleOut,
     ReviewQueueItemOut,
     ReviewQueueStatsOut,
@@ -196,6 +198,22 @@ def get_dashboard_big_matches(
         as_of=as_of,
         items=[BigMatchPoint(**row) for row in rows],
         scope_breakdown=ScopeBreakdownOut(**_build_scope_breakdown(rows)),
+    )
+
+
+@router.get("/dashboard/quality", response_model=DashboardQualityOut)
+def get_dashboard_quality(repo=Depends(get_repository)):
+    metrics = repo.fetch_dashboard_quality()
+    return DashboardQualityOut(
+        generated_at=datetime.now(timezone.utc),
+        freshness_p50_hours=metrics["freshness_p50_hours"],
+        freshness_p90_hours=metrics["freshness_p90_hours"],
+        official_confirmed_ratio=metrics["official_confirmed_ratio"],
+        needs_manual_review_count=metrics["needs_manual_review_count"],
+        source_channel_mix=SourceChannelMixOut(
+            article_ratio=metrics["source_channel_mix"]["article_ratio"],
+            nesdc_ratio=metrics["source_channel_mix"]["nesdc_ratio"],
+        ),
     )
 
 
