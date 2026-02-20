@@ -308,6 +308,8 @@ done
 3. 판정:
 - 3개 URL이 모두 `200`이면 PASS
 - `404`가 하나라도 나오면 Vercel 프로젝트 루트(`apps/web`) 및 최신 배포 상태를 우선 점검
+4. 매치업 ID 정합화 참고:
+- 공개 웹 라우트 `/matchups/m_2026_seoul_mayor`는 API alias 매핑으로 canonical `matchup_id`(`20260603|광역자치단체장|11-000`)를 조회한다.
 
 ## 17. API 커스텀 도메인 컷오버 런북 (Issue #137)
 1. 사전 고정:
