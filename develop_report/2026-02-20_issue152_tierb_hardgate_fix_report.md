@@ -51,7 +51,7 @@
 - 결과: 전부 HTTP `200`
 
 4. 로그 경로
-- `develop_report/logs/2026-02-20_issue152_tierb_verification.log`
+- `data/verification/issue152_tierb_verification_2026-02-20.log`
 
 ## 4. 수용기준 충족 여부
 1. D04~D07 키워드 규칙: 충족
