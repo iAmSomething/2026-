@@ -335,3 +335,20 @@ scripts/qa/smoke_public_api.sh \
 5. 실패/롤백:
 - 실패 시 Vercel env를 기존 `https://2026-api-production.up.railway.app`로 즉시 복구
 - 복구 후 동일 스모크로 200 재확인
+
+## 18. 공개 웹 Baseline 파라미터 시나리오 (Issue #148)
+1. 대상 URL:
+- `https://2026-deploy.vercel.app/?scope_mix=1`
+- `https://2026-deploy.vercel.app/?selected_region=KR-11`
+- `https://2026-deploy.vercel.app/search?demo_query=%EC%97%B0%EC%88%98%EA%B5%AD`
+- `https://2026-deploy.vercel.app/search?demo_query=%EC%97%86%EB%8A%94%EC%A7%80%EC%97%AD%EB%AA%85`
+- `https://2026-deploy.vercel.app/matchups/m_2026_seoul_mayor?confirm_demo=article&source_demo=article&demo_state=ready`
+- `https://2026-deploy.vercel.app/matchups/m_2026_seoul_mayor?confirm_demo=official&source_demo=nesdc&demo_state=ready`
+- `https://2026-deploy.vercel.app/candidates/cand-jwo?party_demo=inferred&confirm_demo=article`
+- `https://2026-deploy.vercel.app/candidates/cand-jwo?party_demo=official&confirm_demo=official`
+- `https://2026-deploy.vercel.app/candidates/cand-does-not-exist?party_demo=inferred&confirm_demo=official`
+2. 판정 포인트:
+- Home: `scope_mix` 경고/배지 노출, `selected_region` 선택 상태 반영
+- Search: alias 보정(`연수국 -> 연수구`)과 empty-state 대체 액션 노출
+- Matchup: `confirm_demo`/`source_demo`/`demo_state` 배지와 상태 카피 노출
+- Candidate: `party_demo`/`confirm_demo` 배지 노출, 미존재 후보 ID는 안전 fallback으로 렌더 유지

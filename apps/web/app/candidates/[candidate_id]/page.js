@@ -1,5 +1,6 @@
 import Link from "next/link";
 
+import { toScenarioBadge } from "../../_components/demoParams";
 import { formatDate, formatDateTime, joinChannels } from "../../_components/format";
 import { fetchApi } from "../../_lib/api";
 
@@ -7,19 +8,35 @@ const RELATED_MATCHUP_ALIAS_BY_CANDIDATE = {
   "cand-jwo": "m_2026_seoul_mayor"
 };
 
-export default async function CandidatePage({ params }) {
+export default async function CandidatePage({ params, searchParams }) {
   const resolvedParams = await params;
-  const candidateId = resolvedParams.candidate_id;
-  const payload = await fetchApi(`/api/v1/candidates/${encodeURIComponent(candidateId)}`);
+  const resolvedSearch = await searchParams;
+  const requestedCandidateId = resolvedParams.candidate_id;
 
-  if (!payload.ok) {
+  const partyDemo = (resolvedSearch?.party_demo || "").trim().toLowerCase();
+  const confirmDemo = (resolvedSearch?.confirm_demo || "").trim().toLowerCase();
+
+  const payload = await fetchApi(`/api/v1/candidates/${encodeURIComponent(requestedCandidateId)}`);
+
+  let candidatePayload = payload;
+  let fallbackApplied = false;
+
+  if (!candidatePayload.ok) {
+    const fallbackPayload = await fetchApi("/api/v1/candidates/cand-jwo");
+    if (fallbackPayload.ok) {
+      candidatePayload = fallbackPayload;
+      fallbackApplied = true;
+    }
+  }
+
+  if (!candidatePayload.ok) {
     return (
       <main className="detail-root">
         <section className="panel error-panel">
           <h1>후보 정보를 불러오지 못했습니다.</h1>
-          <p>요청 ID: {candidateId}</p>
-          <p>status: {payload.status}</p>
-          <p className="muted-text">{JSON.stringify(payload.body)}</p>
+          <p>요청 ID: {requestedCandidateId}</p>
+          <p>status: {candidatePayload.status}</p>
+          <p className="muted-text">{JSON.stringify(candidatePayload.body)}</p>
           <Link href="/" className="text-link">
             대시보드로 이동
           </Link>
@@ -28,11 +45,33 @@ export default async function CandidatePage({ params }) {
     );
   }
 
-  const candidate = payload.body;
-  const relatedAlias = RELATED_MATCHUP_ALIAS_BY_CANDIDATE[candidateId];
-  const relatedMatchup = relatedAlias
-    ? await fetchApi(`/api/v1/matchups/${encodeURIComponent(relatedAlias)}`)
-    : { ok: false, body: null };
+  const candidate = candidatePayload.body;
+  const effectiveCandidateId = candidate.candidate_id;
+
+  const relatedAlias =
+    RELATED_MATCHUP_ALIAS_BY_CANDIDATE[effectiveCandidateId] ||
+    RELATED_MATCHUP_ALIAS_BY_CANDIDATE[requestedCandidateId] ||
+    "m_2026_seoul_mayor";
+
+  const relatedMatchup = await fetchApi(`/api/v1/matchups/${encodeURIComponent(relatedAlias)}`);
+
+  const scenarioBadges = [];
+  if (partyDemo) {
+    scenarioBadges.push(
+      toScenarioBadge(
+        `party_demo=${partyDemo}`,
+        partyDemo === "official" ? "ok" : partyDemo === "inferred" ? "warn" : "info"
+      )
+    );
+  }
+  if (confirmDemo) {
+    scenarioBadges.push(
+      toScenarioBadge(
+        `confirm_demo=${confirmDemo}`,
+        confirmDemo === "official" ? "ok" : confirmDemo === "article" ? "warn" : "info"
+      )
+    );
+  }
 
   return (
     <main className="detail-root">
@@ -52,6 +91,23 @@ export default async function CandidatePage({ params }) {
             대시보드
           </Link>
         </div>
+      </section>
+
+      <section className="panel scenario-panel">
+        <div className="badge-row">
+          <span className="state-badge info">요청 후보 ID: {requestedCandidateId}</span>
+          <span className="state-badge ok">표준 후보 ID: {effectiveCandidateId}</span>
+          {scenarioBadges.map((badge) => (
+            <span key={badge.text} className={`state-badge ${badge.tone}`}>
+              {badge.text}
+            </span>
+          ))}
+        </div>
+        {fallbackApplied ? (
+          <p className="scenario-copy">
+            baseline 안전 fallback 적용: 요청 후보를 찾지 못해 <strong>{effectiveCandidateId}</strong> 기준으로 화면을 유지했습니다.
+          </p>
+        ) : null}
       </section>
 
       <section className="detail-grid">

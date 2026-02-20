@@ -509,6 +509,91 @@ main {
   font-size: 0.82rem;
 }
 
+.param-callout {
+  margin: 10px 0 0;
+  border: 1px solid #bfdbfe;
+  border-radius: 10px;
+  background: #eff6ff;
+  color: #1e3a8a;
+  font-size: 0.84rem;
+  padding: 8px 10px;
+}
+
+.scenario-panel {
+  border-style: dashed;
+}
+
+.badge-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.state-badge {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 999px;
+  border: 1px solid #d0e3f3;
+  background: #f8fbff;
+  color: #1e293b;
+  padding: 4px 10px;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.state-badge.info {
+  border-color: #bae6fd;
+  background: #ecfeff;
+  color: #155e75;
+}
+
+.state-badge.ok {
+  border-color: #bbf7d0;
+  background: #f0fdf4;
+  color: #166534;
+}
+
+.state-badge.warn {
+  border-color: #fed7aa;
+  background: #fff7ed;
+  color: #9a3412;
+}
+
+.scenario-copy {
+  margin-top: 8px;
+  font-size: 0.88rem;
+}
+
+.empty-actions {
+  margin-top: 10px;
+  border: 1px dashed #c7d7e8;
+  border-radius: 10px;
+  padding: 10px;
+  background: #f8fbff;
+}
+
+.empty-actions p {
+  margin: 0 0 6px;
+  font-size: 0.84rem;
+  color: #475569;
+}
+
+.empty-actions-links {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.empty-actions-links a {
+  border: 1px solid #bfdbfe;
+  background: #eff6ff;
+  color: #1d4ed8;
+  border-radius: 999px;
+  padding: 4px 10px;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
 .empty-state {
   border: 1px dashed #c5d8e7;
   border-radius: 10px;

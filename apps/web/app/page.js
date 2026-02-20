@@ -1,5 +1,6 @@
 import Link from "next/link";
 
+import { normalizeRegionParam, parseOnFlag, toScenarioBadge } from "./_components/demoParams";
 import RegionalMapPanel from "./_components/RegionalMapPanel";
 import { formatDate, formatPercent, joinChannels } from "./_components/format";
 import { API_BASE, fetchApi } from "./_lib/api";
@@ -67,7 +68,11 @@ function BigMatchCards({ items }) {
   );
 }
 
-export default async function HomePage() {
+export default async function HomePage({ searchParams }) {
+  const resolved = await searchParams;
+  const scopeMixEnabled = parseOnFlag(resolved?.scope_mix || "");
+  const regionScenario = normalizeRegionParam(resolved?.selected_region || "");
+
   const [summaryRes, mapRes, bigMatchRes] = await Promise.all([
     fetchApi("/api/v1/dashboard/summary"),
     fetchApi("/api/v1/dashboard/map-latest"),
@@ -79,6 +84,19 @@ export default async function HomePage() {
     summaryRes.ok && Array.isArray(summaryRes.body?.presidential_approval) ? summaryRes.body.presidential_approval : [];
   const mapItems = mapRes.ok && Array.isArray(mapRes.body?.items) ? mapRes.body.items : [];
   const bigMatchItems = bigMatchRes.ok && Array.isArray(bigMatchRes.body?.items) ? bigMatchRes.body.items : [];
+
+  const scenarioBadges = [];
+  if (scopeMixEnabled) {
+    scenarioBadges.push(toScenarioBadge("scope_mix=1", "warn"));
+  }
+  if (regionScenario.input) {
+    scenarioBadges.push(
+      toScenarioBadge(
+        `selected_region=${regionScenario.input}${regionScenario.corrected ? ` -> ${regionScenario.normalized}` : ""}`,
+        "info"
+      )
+    );
+  }
 
   return (
     <main className="dashboard-root">
@@ -96,6 +114,21 @@ export default async function HomePage() {
           <p className="muted-text">데이터는 운영 API 기준 실시간 조회 결과를 사용합니다.</p>
         </div>
       </section>
+
+      {scenarioBadges.length > 0 ? (
+        <section className="panel scenario-panel">
+          <div className="badge-row">
+            {scenarioBadges.map((badge) => (
+              <span key={badge.text} className={`state-badge ${badge.tone}`}>
+                {badge.text}
+              </span>
+            ))}
+          </div>
+          {scopeMixEnabled ? (
+            <p className="scenario-copy">스코프 혼재 경고: 전국/지역 스코프 데이터가 동시에 노출될 수 있는 baseline 시나리오입니다.</p>
+          ) : null}
+        </section>
+      ) : null}
 
       {!summaryRes.ok ? (
         <section className="panel error-panel">
@@ -123,7 +156,12 @@ export default async function HomePage() {
           <p>status: {mapRes.status}</p>
         </section>
       ) : (
-        <RegionalMapPanel items={mapItems} apiBase={API_BASE} />
+        <RegionalMapPanel
+          items={mapItems}
+          apiBase={API_BASE}
+          initialSelectedRegionCode={regionScenario.normalized}
+          selectedRegionHint={regionScenario.input}
+        />
       )}
 
       {!bigMatchRes.ok ? (
