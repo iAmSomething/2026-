@@ -4,13 +4,12 @@ on:
   workflow_dispatch:
     inputs:
       root_dir:
-        description: "Web root directory"
+        description: "Public web root directory"
         required: true
         default: "apps/web"
         type: choice
         options:
           - apps/web
-          - apps/staging-web
       issue_number:
         description: "Issue number to post preview URL"
         required: true
