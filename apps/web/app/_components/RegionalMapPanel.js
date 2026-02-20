@@ -1,0 +1,258 @@
+"use client";
+
+import Link from "next/link";
+import { useEffect, useMemo, useState } from "react";
+
+import { cn, formatDate, formatPercent, joinChannels } from "./format";
+
+function getLonLatPoints(feature) {
+  if (feature.geometry.type === "Polygon") {
+    return feature.geometry.coordinates.flat();
+  }
+  return feature.geometry.coordinates.flat(2);
+}
+
+function projectFeature(feature, projectFn) {
+  if (feature.geometry.type === "Polygon") {
+    return feature.geometry.coordinates.map((ring) => ring.map((point) => projectFn(point)));
+  }
+  return feature.geometry.coordinates.flatMap((polygon) => polygon.map((ring) => ring.map((point) => projectFn(point))));
+}
+
+function toPath(rings) {
+  return rings
+    .map((ring) => {
+      if (!ring.length) return "";
+      const [first, ...rest] = ring;
+      const commands = [`M ${first.x.toFixed(2)} ${first.y.toFixed(2)}`];
+      for (const point of rest) commands.push(`L ${point.x.toFixed(2)} ${point.y.toFixed(2)}`);
+      commands.push("Z");
+      return commands.join(" ");
+    })
+    .join(" ");
+}
+
+function averageCenter(rings) {
+  const points = rings.flat();
+  if (!points.length) return { x: 0, y: 0 };
+  return points.reduce(
+    (acc, point) => ({ x: acc.x + point.x / points.length, y: acc.y + point.y / points.length }),
+    { x: 0, y: 0 }
+  );
+}
+
+function pickLatestByRegion(items) {
+  const map = new Map();
+  for (const item of items || []) {
+    const existing = map.get(item.region_code);
+    if (!existing) {
+      map.set(item.region_code, item);
+      continue;
+    }
+    const existingDate = existing.survey_end_date || "";
+    const nextDate = item.survey_end_date || "";
+    if (nextDate >= existingDate) map.set(item.region_code, item);
+  }
+  return map;
+}
+
+export default function RegionalMapPanel({ items, apiBase }) {
+  const [hoveredCode, setHoveredCode] = useState(null);
+  const [selectedCode, setSelectedCode] = useState(null);
+  const [geoState, setGeoState] = useState("loading");
+  const [geoJson, setGeoJson] = useState(null);
+  const [electionsState, setElectionsState] = useState("idle");
+  const [elections, setElections] = useState([]);
+
+  useEffect(() => {
+    let mounted = true;
+    const load = async () => {
+      setGeoState("loading");
+      try {
+        const res = await fetch("/geo/kr_adm1_simplified.geojson", { cache: "no-store" });
+        if (!res.ok) throw new Error("geo fetch failed");
+        const data = await res.json();
+        if (!mounted) return;
+        setGeoJson(data);
+        setGeoState("ready");
+      } catch {
+        if (!mounted) return;
+        setGeoState("error");
+      }
+    };
+    void load();
+    return () => {
+      mounted = false;
+    };
+  }, []);
+
+  const latestByRegion = useMemo(() => pickLatestByRegion(items), [items]);
+
+  const features = useMemo(() => geoJson?.features || [], [geoJson]);
+
+  const projected = useMemo(() => {
+    if (!features.length) return new Map();
+    const allPoints = features.flatMap((feature) => getLonLatPoints(feature));
+    const lons = allPoints.map((pt) => pt[0]);
+    const lats = allPoints.map((pt) => pt[1]);
+    const minLon = Math.min(...lons);
+    const maxLon = Math.max(...lons);
+    const minLat = Math.min(...lats);
+    const maxLat = Math.max(...lats);
+
+    const width = 760;
+    const height = 900;
+    const padding = 30;
+
+    const projectPoint = ([lon, lat]) => {
+      const lonRange = Math.max(maxLon - minLon, 0.1);
+      const latRange = Math.max(maxLat - minLat, 0.1);
+      const x = padding + ((lon - minLon) / lonRange) * (width - padding * 2);
+      const y = padding + ((maxLat - lat) / latRange) * (height - padding * 2);
+      return { x, y };
+    };
+
+    return new Map(
+      features.map((feature) => {
+        const rings = projectFeature(feature, projectPoint);
+        return [feature.properties.region_code, { path: toPath(rings), center: averageCenter(rings) }];
+      })
+    );
+  }, [features]);
+
+  const activeCode = selectedCode || hoveredCode;
+  const activeFeature = features.find((feature) => feature.properties.region_code === activeCode) || null;
+  const activeLatest = activeCode ? latestByRegion.get(activeCode) || null : null;
+
+  useEffect(() => {
+    if (!selectedCode) {
+      setElections([]);
+      setElectionsState("idle");
+      return;
+    }
+    let cancelled = false;
+    const loadElections = async () => {
+      setElectionsState("loading");
+      try {
+        const res = await fetch(`${apiBase}/api/v1/regions/${encodeURIComponent(selectedCode)}/elections`, { cache: "no-store" });
+        if (!res.ok) throw new Error("elections fetch failed");
+        const body = await res.json();
+        if (cancelled) return;
+        setElections(Array.isArray(body) ? body : []);
+        setElectionsState("ready");
+      } catch {
+        if (cancelled) return;
+        setElections([]);
+        setElectionsState("error");
+      }
+    };
+    void loadElections();
+    return () => {
+      cancelled = true;
+    };
+  }, [apiBase, selectedCode]);
+
+  return (
+    <section className="panel region-layout">
+      <div className="map-shell">
+        {geoState === "loading" ? <div className="empty-state">지도를 불러오는 중...</div> : null}
+        {geoState === "error" ? <div className="empty-state">지도를 불러오지 못했습니다.</div> : null}
+        {geoState === "ready" ? (
+          <svg viewBox="0 0 760 900" role="img" aria-label="대한민국 광역 지도" className="korea-map">
+            {features.map((feature) => {
+              const regionCode = feature.properties.region_code;
+              const projectedFeature = projected.get(regionCode);
+              if (!projectedFeature) return null;
+
+              const hasData = latestByRegion.has(regionCode);
+              const isActive = activeCode === regionCode;
+
+              return (
+                <g
+                  key={regionCode}
+                  role="button"
+                  tabIndex={0}
+                  onMouseEnter={() => setHoveredCode(regionCode)}
+                  onMouseLeave={() => setHoveredCode((prev) => (prev === regionCode ? null : prev))}
+                  onClick={() => setSelectedCode((prev) => (prev === regionCode ? null : regionCode))}
+                  onKeyDown={(event) => {
+                    if (event.key === "Enter" || event.key === " ") {
+                      event.preventDefault();
+                      setSelectedCode((prev) => (prev === regionCode ? null : regionCode));
+                    }
+                  }}
+                >
+                  <path
+                    d={projectedFeature.path}
+                    fill={isActive ? "#22d3ee" : hasData ? "#cffafe" : "#dbe4ee"}
+                    stroke={isActive ? "#0f172a" : "#55657a"}
+                    strokeWidth={isActive ? 2.6 : 1.4}
+                  />
+                </g>
+              );
+            })}
+          </svg>
+        ) : null}
+      </div>
+
+      <aside className="region-detail" aria-live="polite">
+        <header>
+          <h3>지역 인터랙션</h3>
+          <p>지도에서 지역을 선택하면 최신 조사와 연결된 매치업을 확인할 수 있습니다.</p>
+        </header>
+
+        {!activeCode ? <div className="empty-state">지역을 선택해 주세요.</div> : null}
+
+        {activeCode ? (
+          <div className="region-block">
+            <p className="region-name">{activeFeature?.properties?.region_name || activeCode}</p>
+            <p className="region-code">{activeCode}</p>
+          </div>
+        ) : null}
+
+        {activeLatest ? (
+          <div className="region-block">
+            <strong>{activeLatest.title}</strong>
+            <p>대표값: {formatPercent(activeLatest.value_mid)}</p>
+            <p>조사 종료: {formatDate(activeLatest.survey_end_date)}</p>
+            <p className="muted-text">채널: {joinChannels(activeLatest.source_channels)}</p>
+          </div>
+        ) : null}
+
+        {selectedCode ? (
+          <div className="region-block">
+            <strong>연결 선거</strong>
+            {electionsState === "loading" ? <p className="muted-text">불러오는 중...</p> : null}
+            {electionsState === "error" ? <p className="muted-text">선거 목록을 불러오지 못했습니다.</p> : null}
+            {electionsState === "ready" && elections.length === 0 ? <p className="muted-text">연결된 선거가 없습니다.</p> : null}
+            {electionsState === "ready" && elections.length > 0 ? (
+              <ul className="election-list">
+                {elections.slice(0, 6).map((election) => (
+                  <li key={election.matchup_id}>
+                    <Link href={`/matchups/${encodeURIComponent(election.matchup_id)}`}>
+                      <span>{election.office_type}</span>
+                      <strong>{election.title}</strong>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            ) : null}
+          </div>
+        ) : null}
+
+        <div className="region-chip-grid">
+          {[...latestByRegion.keys()].slice(0, 10).map((code) => (
+            <button
+              key={code}
+              type="button"
+              className={cn("region-chip", selectedCode === code && "active")}
+              onClick={() => setSelectedCode((prev) => (prev === code ? null : code))}
+            >
+              {code}
+            </button>
+          ))}
+        </div>
+      </aside>
+    </section>
+  );
+}
