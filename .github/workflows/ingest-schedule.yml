@@ -33,6 +33,11 @@ jobs:
           python -m venv .venv
           .venv/bin/pip install -r requirements.txt
 
+      - name: Build live coverage payload
+        run: |
+          .venv/bin/python scripts/generate_collector_live_coverage_v1_pack.py
+          test -s data/collector_live_coverage_v1_payload.json
+
       - name: Start API server
         run: |
           nohup .venv/bin/uvicorn app.main:app --host 127.0.0.1 --port 8100 >/tmp/ingest-schedule-api.log 2>&1 &
@@ -49,7 +54,7 @@ jobs:
         run: |
           .venv/bin/python scripts/qa/run_ingest_with_retry.py \
             --api-base "$API_BASE_URL" \
-            --input data/sample_ingest.json \
+            --input data/collector_live_coverage_v1_payload.json \
             --max-retries 2 \
             --backoff-seconds 1 \
             --report data/ingest_schedule_report.json
