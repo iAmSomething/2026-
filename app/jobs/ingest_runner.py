@@ -21,6 +21,7 @@ class AttemptLog:
     job_status: str | None
     retryable: bool
     error: str | None = None
+    detail: str | None = None
 
 
 @dataclass
@@ -29,6 +30,7 @@ class IngestRunnerResult:
     attempts: list[AttemptLog]
     run_ids: list[int]
     finished_at: str
+    failure_reason: str | None = None
 
     def to_dict(self) -> dict[str, Any]:
         return {
@@ -36,6 +38,7 @@ class IngestRunnerResult:
             "attempts": [asdict(item) for item in self.attempts],
             "run_ids": self.run_ids,
             "finished_at": self.finished_at,
+            "failure_reason": self.failure_reason,
         }
 
 
@@ -65,6 +68,39 @@ def _is_retryable(http_status: int | None, job_status: str | None, error: str | 
     return False
 
 
+def _to_error_detail(body: Any) -> str | None:
+    if isinstance(body, dict):
+        detail = body.get("detail") or body.get("error")
+        if detail is None:
+            return None
+        if isinstance(detail, str):
+            return detail
+        return str(detail)
+    if isinstance(body, list):
+        return str(body[:3])
+    if body is None:
+        return None
+    return str(body)
+
+
+def _derive_failure_reason(attempts: list[AttemptLog]) -> str:
+    if not attempts:
+        return "no_attempts"
+
+    last = attempts[-1]
+    if last.error:
+        return f"request_error: {last.error}"
+    if last.http_status is not None and last.http_status != 200:
+        if last.detail:
+            return f"http_status: {last.http_status} ({last.detail})"
+        return f"http_status: {last.http_status}"
+    if last.job_status:
+        if last.detail:
+            return f"job_status: {last.job_status} ({last.detail})"
+        return f"job_status: {last.job_status}"
+    return "unknown_failure"
+
+
 def run_ingest_with_retry(
     *,
     api_base_url: str,
@@ -86,11 +122,16 @@ def run_ingest_with_retry(
         http_status: int | None = None
         job_status: str | None = None
         error: str | None = None
+        detail: str | None = None
         try:
             response = request_fn(url, headers, payload, request_timeout)
             http_status = response.status_code
-            body = response.json()
+            try:
+                body = response.json()
+            except Exception:  # noqa: BLE001
+                body = {"detail": response.text[:300] if hasattr(response, "text") else "non-json response"}
             job_status = body.get("status")
+            detail = _to_error_detail(body)
             run_id = body.get("run_id")
             if isinstance(run_id, int):
                 run_ids.append(run_id)
@@ -105,16 +146,29 @@ def run_ingest_with_retry(
                 job_status=job_status,
                 retryable=retryable,
                 error=error,
+                detail=detail,
             )
         )
 
         if error is None and http_status == 200 and job_status == "success":
-            return IngestRunnerResult(success=True, attempts=attempts, run_ids=run_ids, finished_at=utc_now())
+            return IngestRunnerResult(
+                success=True,
+                attempts=attempts,
+                run_ids=run_ids,
+                finished_at=utc_now(),
+                failure_reason=None,
+            )
 
         if attempt < max_attempts and retryable:
             sleep_fn(backoff_seconds * attempt)
 
-    return IngestRunnerResult(success=False, attempts=attempts, run_ids=run_ids, finished_at=utc_now())
+    return IngestRunnerResult(
+        success=False,
+        attempts=attempts,
+        run_ids=run_ids,
+        finished_at=utc_now(),
+        failure_reason=_derive_failure_reason(attempts),
+    )
 
 
 def write_runner_report(path: str | Path, result: IngestRunnerResult) -> None:

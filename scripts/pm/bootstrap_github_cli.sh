@@ -67,5 +67,7 @@ fi
 echo "[4/4] PM cycle default variables"
 upsert_variable "PM_CYCLE_MODE" "dry-run"
 upsert_variable "PM_CYCLE_MAX_CREATE" "4"
+upsert_variable "PM_CYCLE_ALLOW_REOPEN_DONE" "false"
+upsert_variable "PM_CYCLE_REOPEN_LOOKBACK_DAYS" "7"
 
 echo "bootstrap complete"

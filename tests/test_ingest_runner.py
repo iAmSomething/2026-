@@ -33,6 +33,7 @@ def test_ingest_runner_success_without_retry():
     assert result.success is True
     assert calls["count"] == 1
     assert result.run_ids == [1]
+    assert result.failure_reason is None
 
 
 def test_ingest_runner_retries_then_succeeds():
@@ -57,6 +58,7 @@ def test_ingest_runner_retries_then_succeeds():
     assert calls["count"] == 2
     assert result.run_ids == [10, 11]
     assert result.attempts[0].retryable is True
+    assert result.failure_reason is None
 
 
 def test_ingest_runner_fails_after_retries():
@@ -77,3 +79,4 @@ def test_ingest_runner_fails_after_retries():
 
     assert result.success is False
     assert calls["count"] == 3
+    assert result.failure_reason == "http_status: 500 (server error)"

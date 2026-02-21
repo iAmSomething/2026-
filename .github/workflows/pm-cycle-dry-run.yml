@@ -18,6 +18,19 @@ on:
         required: false
         default: "4"
         type: string
+      allow_reopen_done:
+        description: "Allow reopening closed+done issues missing QA PASS"
+        required: false
+        default: "false"
+        type: choice
+        options:
+          - "false"
+          - "true"
+      reopen_lookback_days:
+        description: "Reopen candidate lookback days"
+        required: false
+        default: "7"
+        type: string
       date_filter:
         description: "Optional report date filter (YYYY-MM-DD)"
         required: false
@@ -43,10 +56,14 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           MODE_INPUT: ${{ github.event.inputs.mode }}
           MAX_CREATE_INPUT: ${{ github.event.inputs.max_create }}
+          ALLOW_REOPEN_DONE_INPUT: ${{ github.event.inputs.allow_reopen_done }}
+          REOPEN_LOOKBACK_DAYS_INPUT: ${{ github.event.inputs.reopen_lookback_days }}
           DATE_FILTER: ${{ github.event.inputs.date_filter }}
           COMMENT_ISSUE_INPUT: ${{ github.event.inputs.comment_issue }}
           PM_CYCLE_MODE: ${{ vars.PM_CYCLE_MODE }}
           PM_CYCLE_MAX_CREATE: ${{ vars.PM_CYCLE_MAX_CREATE }}
+          PM_CYCLE_ALLOW_REOPEN_DONE: ${{ vars.PM_CYCLE_ALLOW_REOPEN_DONE }}
+          PM_CYCLE_REOPEN_LOOKBACK_DAYS: ${{ vars.PM_CYCLE_REOPEN_LOOKBACK_DAYS }}
           PM_CYCLE_ISSUE_NUMBER: ${{ vars.PM_CYCLE_ISSUE_NUMBER }}
         run: |
           set -euo pipefail
@@ -59,6 +76,12 @@ jobs:
 
           MAX_CREATE="${MAX_CREATE_INPUT:-${PM_CYCLE_MAX_CREATE:-4}}"
           ARGS+=(--max-create "${MAX_CREATE}")
+
+          ALLOW_REOPEN_DONE="${ALLOW_REOPEN_DONE_INPUT:-${PM_CYCLE_ALLOW_REOPEN_DONE:-false}}"
+          ARGS+=(--allow-reopen-done "${ALLOW_REOPEN_DONE}")
+
+          REOPEN_LOOKBACK_DAYS="${REOPEN_LOOKBACK_DAYS_INPUT:-${PM_CYCLE_REOPEN_LOOKBACK_DAYS:-7}}"
+          ARGS+=(--reopen-lookback-days "${REOPEN_LOOKBACK_DAYS}")
 
           if [ -n "${DATE_FILTER:-}" ]; then
             ARGS+=(--date "${DATE_FILTER}")
