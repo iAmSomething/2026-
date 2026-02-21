@@ -33,10 +33,21 @@ jobs:
           python -m venv .venv
           .venv/bin/pip install -r requirements.txt
 
-      - name: Build live coverage payload
+      - name: Build ingest payload (best available source)
         run: |
-          .venv/bin/python scripts/generate_collector_live_coverage_v1_pack.py
-          test -s data/collector_live_coverage_v1_payload.json
+          set -euo pipefail
+          if [ -f scripts/generate_collector_live_coverage_v1_pack.py ]; then
+            .venv/bin/python scripts/generate_collector_live_coverage_v1_pack.py
+            test -s data/collector_live_coverage_v1_payload.json
+            echo "INGEST_INPUT_PATH=data/collector_live_coverage_v1_payload.json" >> "$GITHUB_ENV"
+          elif [ -f scripts/generate_collector_sample_ingest.py ]; then
+            .venv/bin/python scripts/generate_collector_sample_ingest.py
+            test -s data/sample_ingest_collector_5.json
+            echo "INGEST_INPUT_PATH=data/sample_ingest_collector_5.json" >> "$GITHUB_ENV"
+          else
+            test -s data/sample_ingest.json
+            echo "INGEST_INPUT_PATH=data/sample_ingest.json" >> "$GITHUB_ENV"
+          fi
 
       - name: Start API server
         run: |
@@ -54,7 +65,7 @@ jobs:
         run: |
           .venv/bin/python scripts/qa/run_ingest_with_retry.py \
             --api-base "$API_BASE_URL" \
-            --input data/collector_live_coverage_v1_payload.json \
+            --input "$INGEST_INPUT_PATH" \
             --max-retries 2 \
             --backoff-seconds 1 \
             --report data/ingest_schedule_report.json
