@@ -51,6 +51,8 @@ bash scripts/pm/bootstrap_github_cli.sh iAmSomething/2026-
 - 부트스트랩은 PM 주기운영 변수도 기본값으로 설정한다.
   - `PM_CYCLE_MODE=dry-run`
   - `PM_CYCLE_MAX_CREATE=4`
+  - `PM_CYCLE_ALLOW_REOPEN_DONE=false`
+  - `PM_CYCLE_REOPEN_LOOKBACK_DAYS=7`
 
 ## 4.2 작업 생성
 ```bash
@@ -154,3 +156,4 @@ bash scripts/pm/set_pm_cycle_mode.sh --repo iAmSomething/2026- --lane offline
 bash scripts/pm/set_pm_cycle_mode.sh --repo iAmSomething/2026- --lane online
 ```
 3. 온라인 세션에서는 `dry-run`으로 현황만 갱신하고, 상태 변경(`apply`)은 근거 코멘트 후 1회 수동 실행 원칙을 따른다.
+4. `status/done` 이슈 자동 재오픈은 기본 금지이며, 필요 시 `PM_CYCLE_ALLOW_REOPEN_DONE=true`를 단발성으로만 사용한다.

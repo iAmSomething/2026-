@@ -15,6 +15,7 @@ Usage: $0 --repo <owner/repo> --lane <offline|online> [--max-create N] [--commen
 Policy:
 - offline lane: PM_CYCLE_MODE=apply, PM_CYCLE_MAX_CREATE=4 (default)
 - online lane: PM_CYCLE_MODE=dry-run, PM_CYCLE_MAX_CREATE=0 (default)
+- reopen guard: PM_CYCLE_ALLOW_REOPEN_DONE=false, PM_CYCLE_REOPEN_LOOKBACK_DAYS=7 (default)
 
 Examples:
   $0 --repo iAmSomething/2026- --lane offline
@@ -119,6 +120,8 @@ delete_var() {
 
 set_var "PM_CYCLE_MODE" "$MODE_VALUE"
 set_var "PM_CYCLE_MAX_CREATE" "$MAX_CREATE_VALUE"
+set_var "PM_CYCLE_ALLOW_REOPEN_DONE" "false"
+set_var "PM_CYCLE_REOPEN_LOOKBACK_DAYS" "7"
 
 if [[ -n "$COMMENT_ISSUE" ]]; then
   set_var "PM_CYCLE_ISSUE_NUMBER" "$COMMENT_ISSUE"
@@ -131,6 +134,8 @@ echo "- repo: $REPO"
 echo "- lane: $LANE"
 echo "- PM_CYCLE_MODE=$MODE_VALUE"
 echo "- PM_CYCLE_MAX_CREATE=$MAX_CREATE_VALUE"
+echo "- PM_CYCLE_ALLOW_REOPEN_DONE=false"
+echo "- PM_CYCLE_REOPEN_LOOKBACK_DAYS=7"
 if [[ -n "$COMMENT_ISSUE" ]]; then
   echo "- PM_CYCLE_ISSUE_NUMBER=$COMMENT_ISSUE"
 elif [[ "$CLEAR_COMMENT_ISSUE" -eq 1 ]]; then

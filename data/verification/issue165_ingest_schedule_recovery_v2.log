@@ -1,0 +1,8 @@
+# issue165 recovery evidence
+timestamp_utc=2026-02-21T11:31:25Z
+previous_failed_runs=22255577275,22255638221,22255662831,22255775694
+green_run_id=22256026677
+green_run_url=https://github.com/iAmSomething/2026-/actions/runs/22256026677
+artifact_name=ingest-schedule-diagnostics
+artifact_download_api=https://api.github.com/repos/iAmSomething/2026-/actions/artifacts/5601064864/zip
+note=workflow now uploads diagnostics with if:always and enforces final status in dedicated step

@@ -41,7 +41,22 @@ def main() -> int:
         request_timeout=args.timeout,
     )
     write_runner_report(args.report, result)
-    print(json.dumps({"success": result.success, "report": args.report}, ensure_ascii=False))
+    output = {
+        "success": result.success,
+        "report": args.report,
+        "attempt_count": len(result.attempts),
+        "failure_reason": result.failure_reason,
+    }
+    if result.attempts:
+        last = result.attempts[-1]
+        output["last_attempt"] = {
+            "attempt": last.attempt,
+            "http_status": last.http_status,
+            "job_status": last.job_status,
+            "error": last.error,
+            "detail": last.detail,
+        }
+    print(json.dumps(output, ensure_ascii=False))
     return 0 if result.success else 1
 
 

@@ -7,14 +7,18 @@ COMMENT_ISSUE=""
 LIMIT=200
 MODE="dry-run"   # dry-run | apply
 MAX_CREATE=4
+ALLOW_REOPEN_DONE_RAW="${PM_CYCLE_ALLOW_REOPEN_DONE:-false}"
+REOPEN_LOOKBACK_DAYS="${PM_CYCLE_REOPEN_LOOKBACK_DAYS:-7}"
 
 usage() {
   cat <<USAGE
 Usage: $0 --repo <owner/repo> [--date YYYY-MM-DD] [--comment-issue <number>] [--mode dry-run|apply] [--max-create N]
+          [--allow-reopen-done true|false] [--reopen-lookback-days N]
 
 - dry-run: 이슈 변경 없이 PM 요약/제안만 생성
 - apply: QA 게이트/리마인드/QA FAIL 후속이슈 자동 반영
 - 출력 파일: reports/pm/pm_cycle_<mode>_<UTC timestamp>.md
+- reopen 기본정책: PM_CYCLE_ALLOW_REOPEN_DONE=false (명시적 opt-in일 때만 reopen)
 USAGE
 }
 
@@ -38,6 +42,14 @@ while [[ $# -gt 0 ]]; do
       ;;
     --max-create)
       MAX_CREATE="${2:-}"
+      shift 2
+      ;;
+    --allow-reopen-done)
+      ALLOW_REOPEN_DONE_RAW="${2:-}"
+      shift 2
+      ;;
+    --reopen-lookback-days)
+      REOPEN_LOOKBACK_DAYS="${2:-}"
       shift 2
       ;;
     -h|--help)
@@ -64,6 +76,29 @@ if ! [[ "$MAX_CREATE" =~ ^[0-9]+$ ]]; then
   echo "Invalid --max-create: $MAX_CREATE"
   exit 1
 fi
+if ! [[ "$REOPEN_LOOKBACK_DAYS" =~ ^[0-9]+$ ]]; then
+  echo "Invalid --reopen-lookback-days: $REOPEN_LOOKBACK_DAYS"
+  exit 1
+fi
+
+normalize_bool() {
+  local raw="${1:-}"
+  local lowered
+  lowered="$(echo "$raw" | tr '[:upper:]' '[:lower:]')"
+  case "$lowered" in
+    1|true|yes|on)
+      echo "true"
+      ;;
+    0|false|no|off|"")
+      echo "false"
+      ;;
+    *)
+      echo "false"
+      ;;
+  esac
+}
+
+ALLOW_REOPEN_DONE="$(normalize_bool "$ALLOW_REOPEN_DONE_RAW")"
 
 for cmd in gh jq; do
   if ! command -v "$cmd" >/dev/null 2>&1; then
@@ -151,13 +186,24 @@ ROLE_QA_OPEN="$(role_open_count "role/qa")"
 BLOCKED_OPEN="$(echo "$OPEN_ISSUES_JSON" | jq '[.[] | select(([.labels[].name] | index("status/blocked")))] | length')"
 READY_OPEN="$(echo "$OPEN_ISSUES_JSON" | jq '[.[] | select(([.labels[].name] | index("status/ready")))] | length')"
 
-MISSING_QA_PASS=()
+REOPEN_ELIGIBLE=()
 while IFS= read -r issue_no; do
   [[ -z "$issue_no" ]] && continue
-  if ! has_qa_pass_comment "$issue_no"; then
-    MISSING_QA_PASS+=("$issue_no")
-  fi
-done < <(echo "$ALL_ISSUES_JSON" | jq -r '.[] | select(.state=="CLOSED" and ([.labels[].name] | index("status/done"))) | .number')
+  REOPEN_ELIGIBLE+=("$issue_no")
+done < <(echo "$ALL_ISSUES_JSON" | python3 scripts/pm/reopen_policy.py \
+  --allow-reopen-done "$ALLOW_REOPEN_DONE" \
+  --lookback-days "$REOPEN_LOOKBACK_DAYS" \
+  --now "$TIMESTAMP_UTC")
+
+MISSING_QA_PASS=()
+if [[ "${#REOPEN_ELIGIBLE[@]}" -gt 0 ]]; then
+  while IFS= read -r issue_no; do
+    [[ -z "$issue_no" ]] && continue
+    if ! has_qa_pass_comment "$issue_no"; then
+      MISSING_QA_PASS+=("$issue_no")
+    fi
+  done < <(printf "%s\n" "${REOPEN_ELIGIBLE[@]}")
+fi
 
 HAS_ROLE_QA="no"
 HAS_STATUS_IN_QA="no"
@@ -197,14 +243,18 @@ if [[ "$MODE" == "apply" ]]; then
 fi
 
 if [[ "$MODE" == "apply" ]]; then
-  # 1) QA gate backfill: done+closed but no QA PASS -> reopen + status/in-qa
-  for n in "${MISSING_QA_PASS[@]}"; do
-    gh issue edit "$n" --repo "$REPO" --add-label "status/in-qa" >/dev/null
-    gh issue edit "$n" --repo "$REPO" --remove-label "status/done" >/dev/null || true
-    gh issue reopen "$n" --repo "$REPO" >/dev/null || true
-    gh issue comment "$n" --repo "$REPO" --body "[PM AUTO][QA GATE]\nauto_key: qa-gate-${n}-${TODAY_UTC}\n\n해당 이슈는 \`status/done\` 상태였지만 \`[QA PASS]\` 코멘트가 확인되지 않아 \`status/in-qa\`로 복귀되었습니다." >/dev/null
-    APPLIED_ACTIONS+=("qa_gate_reopen:#${n}")
-  done
+  # 1) QA gate backfill: explicit opt-in + filtered done+closed without QA PASS
+  if [[ "$ALLOW_REOPEN_DONE" == "true" ]]; then
+    for n in "${MISSING_QA_PASS[@]}"; do
+      gh issue edit "$n" --repo "$REPO" --add-label "status/in-qa" >/dev/null
+      gh issue edit "$n" --repo "$REPO" --remove-label "status/done" >/dev/null || true
+      gh issue reopen "$n" --repo "$REPO" >/dev/null || true
+      gh issue comment "$n" --repo "$REPO" --body "[PM AUTO][QA GATE]\nauto_key: qa-gate-${n}-${TODAY_UTC}\n\n해당 이슈는 \`status/done\` 상태였지만 \`[QA PASS]\` 코멘트가 확인되지 않아 \`status/in-qa\`로 복귀되었습니다." >/dev/null
+      APPLIED_ACTIONS+=("qa_gate_reopen:#${n}")
+    done
+  else
+    APPLIED_ACTIONS+=("qa_gate_reopen_skipped:allow_reopen_done=false")
+  fi
 
   # 2) blocked open issue daily nudge (idempotent by auto_key)
   while IFS= read -r blocked_no; do
@@ -361,6 +411,9 @@ fi
   fi
   echo
   echo "## Gate Checks"
+  echo "- reopen_policy_enabled: ${ALLOW_REOPEN_DONE}"
+  echo "- reopen_lookback_days: ${REOPEN_LOOKBACK_DAYS}"
+  echo "- reopen_candidates_checked: ${#REOPEN_ELIGIBLE[@]}"
   if [[ "${#MISSING_QA_PASS[@]}" -eq 0 ]]; then
     echo "- closed+done without [QA PASS]: 0"
   else
@@ -384,7 +437,7 @@ fi
   echo "## Suggested Next Actions"
   echo "1. blocked 이슈 우선 해소 후 ready 이슈 순차 진행"
   echo "2. QA FAIL 보고서는 auto_key 기반 중복 없이 후속 이슈 생성"
-  echo "3. 운영 안정화 후 schedule 모드를 apply로 전환"
+  echo "3. done 이슈 자동 재오픈은 PM_CYCLE_ALLOW_REOPEN_DONE=true 를 명시한 단발성 apply에서만 사용"
 } > "$OUT_FILE"
 
 echo "Wrote: ${OUT_FILE}"
