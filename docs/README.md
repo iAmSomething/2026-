@@ -16,6 +16,7 @@
 9. `08_ROLE_BASED_GIT_WORK_SYSTEM_GUIDE.md`
 10. `09_QA_TRACK_OPERATIONS.md`
 11. `10_WORKSPACE_LOCK_POLICY.md`
+12. `11_ISSUE_COMMENT_LABEL_CONTRACT.md`
 
 ## 추천 읽기 순서
 1. `00_PROJECT_OVERVIEW.md` (목표/범위/결정사항)
@@ -29,6 +30,7 @@
 9. `08_ROLE_BASED_GIT_WORK_SYSTEM_GUIDE.md` (역할별 실행 가이드)
 10. `09_QA_TRACK_OPERATIONS.md` (QA 게이트 운영 규칙)
 11. `10_WORKSPACE_LOCK_POLICY.md` (작업영역/공용파일 락 규칙)
+12. `11_ISSUE_COMMENT_LABEL_CONTRACT.md` (이슈 라벨/코멘트 자동화 계약)
 
 ## 변경 이력 규칙
 - 각 문서 상단 `문서 버전`, `최종 수정일`, `수정자`를 유지합니다.
