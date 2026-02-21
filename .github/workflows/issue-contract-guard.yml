@@ -1,0 +1,130 @@
+name: Issue Contract Guard
+
+on:
+  issues:
+    types: [opened, edited, reopened, labeled, unlabeled, closed]
+  issue_comment:
+    types: [created]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  validate-issue-contract:
+    if: github.event_name == 'issues'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Validate issue labels and close contract
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const issue = context.payload.issue;
+            if (!issue || issue.pull_request) return;
+
+            const labels = (issue.labels || []).map((l) => (typeof l === 'string' ? l : l.name));
+            const errors = [];
+            const oneOfPrefixes = ['role/', 'status/', 'priority/', 'type/'];
+
+            for (const prefix of oneOfPrefixes) {
+              const count = labels.filter((x) => x.startsWith(prefix)).length;
+              if (count !== 1) {
+                errors.push(`label cardinality violation: ${prefix} expected 1, got ${count}`);
+              }
+            }
+
+            const hasDone = labels.includes('status/done');
+            if (issue.state === 'closed') {
+              if (!hasDone) {
+                errors.push('closed issue must have status/done');
+              }
+              const comments = await github.paginate(github.rest.issues.listComments, {
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: issue.number,
+                per_page: 100,
+              });
+              const hasQaPass = comments.some((c) => (c.body || '').includes('[QA PASS]'));
+              if (!hasQaPass) {
+                errors.push('closed+done issue requires a [QA PASS] comment');
+              }
+            } else {
+              if (hasDone) {
+                errors.push('open issue cannot have status/done');
+              }
+            }
+
+            if (errors.length > 0) {
+              const today = new Date().toISOString().slice(0, 10);
+              const autoKey = `contract-issue-${issue.number}-${today}`;
+              const comments = await github.paginate(github.rest.issues.listComments, {
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: issue.number,
+                per_page: 100,
+              });
+              const already = comments.some((c) => (c.body || '').includes(`auto_key: ${autoKey}`));
+              if (!already) {
+                await github.rest.issues.createComment({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: issue.number,
+                  body: `[CONTRACT FAIL][ISSUE]\nauto_key: ${autoKey}\n\n- ${errors.join('\n- ')}`,
+                });
+              }
+              core.setFailed(errors.join(' | '));
+            }
+
+  validate-comment-contract:
+    if: github.event_name == 'issue_comment'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Validate comment required keys
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const issue = context.payload.issue;
+            const comment = context.payload.comment;
+            if (!issue || !comment) return;
+            if (issue.pull_request) return;
+            if ((comment.user?.login || '').endsWith('[bot]')) return;
+
+            const body = comment.body || '';
+            if (body.includes('[PM AUTO]')) return;
+
+            const hasKey = (k) => new RegExp(`(^|\\n)\\s*${k}\\s*:`, 'i').test(body);
+            const errors = [];
+
+            const isPmDirective = /^\s*\[PM[^\]]*\]/i.test(body) && !body.includes('[PM AUTO]');
+            if (isPmDirective) {
+              for (const k of ['decision', 'next_status']) {
+                if (!hasKey(k)) errors.push(`PM comment missing key: ${k}:`);
+              }
+            }
+
+            const isDevelopDone = body.includes('[DEVELOP 완료 보고]');
+            if (isDevelopDone) {
+              for (const k of ['report_path', 'evidence', 'next_status']) {
+                if (!hasKey(k)) errors.push(`DEVELOP complete comment missing key: ${k}:`);
+              }
+            }
+
+            const isQaResult = body.includes('[QA PASS]') || body.includes('[QA FAIL]');
+            if (isQaResult) {
+              for (const k of ['report_path', 'evidence', 'next_status']) {
+                if (!hasKey(k)) errors.push(`QA result comment missing key: ${k}:`);
+              }
+            }
+
+            if (errors.length > 0) {
+              const today = new Date().toISOString().slice(0, 10);
+              const autoKey = `contract-comment-${issue.number}-${comment.id}-${today}`;
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: issue.number,
+                body: `[CONTRACT FAIL][COMMENT]\nauto_key: ${autoKey}\n\n- ${errors.join('\n- ')}`,
+              });
+              core.setFailed(errors.join(' | '));
+            }
