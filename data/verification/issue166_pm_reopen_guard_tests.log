@@ -1,0 +1,7 @@
+# issue166 reopen guard regression
+timestamp_utc=2026-02-21T11:31:25Z
+command=.venv313/bin/python -m pytest tests/test_ingest_runner.py tests/test_pm_cycle_reopen_policy.py tests/test_pm_cycle_qafail_detection.py tests/test_pm_cycle_qapass_detection.py -q
+............                                                             [100%]
+12 passed in 0.26s
+command=bash -n scripts/pm/pm_cycle_dry_run.sh
+bash_syntax=ok
