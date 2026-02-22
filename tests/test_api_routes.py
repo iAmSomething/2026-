@@ -133,6 +133,9 @@ class FakeApiRepo:
                 "value_mid": 44.0,
                 "spread": 2.0,
                 "audience_scope": "regional",
+                "audience_region_code": "11-000",
+                "observation_updated_at": "2026-02-18T03:00:00+00:00",
+                "article_published_at": "2026-02-18T01:00:00+00:00",
                 "source_channel": "nesdc",
                 "source_channels": ["article", "nesdc"],
             }
@@ -448,6 +451,12 @@ def test_api_contract_fields():
     assert big_matches.json()["items"][0]["matchup_id"] == "20260603|광역자치단체장|11-000"
     assert big_matches.json()["items"][0]["source_channels"] == ["article", "nesdc"]
     assert big_matches.json()["items"][0]["audience_scope"] == "regional"
+    assert big_matches.json()["items"][0]["audience_region_code"] == "11-000"
+    assert big_matches.json()["items"][0]["source_priority"] == "mixed"
+    assert big_matches.json()["items"][0]["is_official_confirmed"] is True
+    assert isinstance(big_matches.json()["items"][0]["freshness_hours"], float)
+    assert big_matches.json()["items"][0]["article_published_at"] is not None
+    assert big_matches.json()["items"][0]["official_release_at"] is not None
     assert big_matches.json()["scope_breakdown"] == {"national": 0, "regional": 1, "local": 0, "unknown": 0}
 
     quality = client.get("/api/v1/dashboard/quality")

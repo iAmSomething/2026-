@@ -500,6 +500,10 @@ class PostgresRepository:
                     o.matchup_id,
                     o.survey_end_date,
                     o.audience_scope,
+                    o.audience_region_code,
+                    o.updated_at AS observation_updated_at,
+                    o.official_release_at,
+                    o.article_id,
                     o.source_channel,
                     COALESCE(
                         o.source_channels,
@@ -547,11 +551,16 @@ class PostgresRepository:
                 s.value_mid,
                 s.spread,
                 lo.audience_scope,
+                lo.audience_region_code,
+                lo.observation_updated_at,
+                lo.official_release_at,
+                a.published_at AS article_published_at,
                 lo.source_channel,
                 lo.source_channels
             FROM scored s
             JOIN latest_obs lo ON lo.id = s.observation_id
             LEFT JOIN matchups m ON m.matchup_id = s.matchup_id
+            LEFT JOIN articles a ON a.id = lo.article_id
             ORDER BY s.spread ASC NULLS LAST, s.survey_end_date DESC NULLS LAST, s.matchup_id
             LIMIT %s
         """

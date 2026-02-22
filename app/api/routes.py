@@ -195,9 +195,30 @@ def get_dashboard_big_matches(
     repo=Depends(get_repository),
 ):
     rows = repo.fetch_dashboard_big_matches(as_of=as_of, limit=limit)
+    items = []
+    for row in rows:
+        source_meta = _derive_source_meta(row)
+        items.append(
+            BigMatchPoint(
+                matchup_id=row["matchup_id"],
+                title=row["title"],
+                survey_end_date=row.get("survey_end_date"),
+                value_mid=row.get("value_mid"),
+                spread=row.get("spread"),
+                audience_scope=row.get("audience_scope"),
+                audience_region_code=row.get("audience_region_code"),
+                source_priority=source_meta["source_priority"],
+                official_release_at=source_meta["official_release_at"],
+                article_published_at=source_meta["article_published_at"],
+                freshness_hours=source_meta["freshness_hours"],
+                is_official_confirmed=source_meta["is_official_confirmed"],
+                source_channel=row.get("source_channel"),
+                source_channels=row.get("source_channels") or [],
+            )
+        )
     return DashboardBigMatchesOut(
         as_of=as_of,
-        items=[BigMatchPoint(**row) for row in rows],
+        items=items,
         scope_breakdown=ScopeBreakdownOut(**_build_scope_breakdown(rows)),
     )
 

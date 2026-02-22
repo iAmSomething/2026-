@@ -95,6 +95,12 @@ class BigMatchPoint(BaseModel):
     value_mid: float | None = None
     spread: float | None = None
     audience_scope: Literal["national", "regional", "local"] | None = None
+    audience_region_code: str | None = None
+    source_priority: Literal["official", "article", "mixed"] = "article"
+    official_release_at: datetime | None = None
+    article_published_at: datetime | None = None
+    freshness_hours: float | None = None
+    is_official_confirmed: bool = False
     source_channel: Literal["article", "nesdc"] | None = None
     source_channels: list[Literal["article", "nesdc"]] = Field(default_factory=list)
 
