@@ -1,0 +1,176 @@
+name: Autonomous Dispatch
+
+on:
+  schedule:
+    - cron: "*/30 * * * *"
+  workflow_dispatch:
+    inputs:
+      max_dispatch:
+        description: "Max ready issues to dispatch in this run"
+        required: false
+        default: "2"
+        type: string
+
+permissions:
+  contents: read
+  issues: write
+  actions: write
+
+concurrency:
+  group: autonomous-dispatch
+  cancel-in-progress: false
+
+jobs:
+  dispatch:
+    runs-on: ubuntu-latest
+    env:
+      MAX_DISPATCH_INPUT: ${{ github.event.inputs.max_dispatch }}
+      AUTO_DISPATCH_MAX: ${{ vars.AUTO_DISPATCH_MAX }}
+    steps:
+      - name: Dispatch ready issues by role
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const owner = context.repo.owner;
+            const repo = context.repo.repo;
+
+            const maxDispatch = Number.parseInt(process.env.MAX_DISPATCH_INPUT || process.env.AUTO_DISPATCH_MAX || '2', 10);
+            if (!Number.isFinite(maxDispatch) || maxDispatch <= 0) {
+              core.setFailed(`Invalid maxDispatch: ${process.env.MAX_DISPATCH_INPUT || process.env.AUTO_DISPATCH_MAX}`);
+              return;
+            }
+
+            const roleMap = {
+              'role/collector': {
+                workflow: 'ingest-schedule.yml',
+                inputs: {},
+                note: 'collector ingest schedule dispatch',
+              },
+              'role/develop': {
+                workflow: 'phase1-qa.yml',
+                inputs: { with_db: 'true', with_api: 'true' },
+                note: 'develop phase1 qa dispatch',
+              },
+              'role/uiux': {
+                workflow: 'staging-smoke.yml',
+                inputs: {},
+                note: 'uiux staging smoke dispatch',
+              },
+              'role/qa': {
+                workflow: 'qa-api-contract-suite.yml',
+                inputs: {},
+                note: 'qa api contract suite dispatch',
+              },
+            };
+
+            async function setStatus(issue, toStatusLabel) {
+              const current = (issue.labels || []).map((l) => (typeof l === 'string' ? l : l.name));
+              const next = current.filter((x) => !x.startsWith('status/'));
+              next.push(toStatusLabel);
+              await github.rest.issues.setLabels({
+                owner,
+                repo,
+                issue_number: issue.number,
+                labels: next,
+              });
+              issue.labels = next.map((name) => ({ name }));
+            }
+
+            const readyIssues = await github.paginate(github.rest.issues.listForRepo, {
+              owner,
+              repo,
+              state: 'open',
+              labels: 'status/ready',
+              per_page: 100,
+            });
+
+            const candidates = readyIssues
+              .filter((issue) => !issue.pull_request)
+              .map((issue) => {
+                const labels = (issue.labels || []).map((l) => (typeof l === 'string' ? l : l.name));
+                const roles = labels.filter((x) => x.startsWith('role/'));
+                return { issue, labels, roles };
+              })
+              .filter((x) => x.roles.length === 1 && roleMap[x.roles[0]])
+              .sort((a, b) => a.issue.number - b.issue.number);
+
+            const dispatched = [];
+            const skipped = [];
+
+            for (const item of candidates) {
+              if (dispatched.length >= maxDispatch) break;
+              const issueNo = item.issue.number;
+              const role = item.roles[0];
+              const target = roleMap[role];
+              const autoKey = `autonomous-dispatch-${issueNo}-${context.runId}`;
+
+              try {
+                await setStatus(item.issue, 'status/in-progress');
+
+                await github.rest.actions.createWorkflowDispatch({
+                  owner,
+                  repo,
+                  workflow_id: target.workflow,
+                  ref: context.ref.replace('refs/heads/', ''),
+                  inputs: target.inputs,
+                });
+
+                await github.rest.issues.createComment({
+                  owner,
+                  repo,
+                  issue_number: issueNo,
+                  body: [
+                    '[PM AUTO][DISPATCH]',
+                    `auto_key: ${autoKey}`,
+                    `decision: role=${role} workflow=${target.workflow}`,
+                    'next_status: status/in-progress',
+                    `evidence: actions_dispatch=${target.note}; run_id=${context.runId}`,
+                  ].join('\n'),
+                });
+
+                dispatched.push({ issue: issueNo, role, workflow: target.workflow });
+              } catch (error) {
+                try {
+                  await setStatus(item.issue, 'status/ready');
+                } catch (_) {
+                  // noop rollback best-effort
+                }
+                await github.rest.issues.createComment({
+                  owner,
+                  repo,
+                  issue_number: issueNo,
+                  body: [
+                    '[PM AUTO][DISPATCH FAILED]',
+                    `auto_key: ${autoKey}-failed`,
+                    `decision: dispatch_error role=${role}`,
+                    'next_status: status/ready',
+                    `evidence: ${error?.message || String(error)}`,
+                  ].join('\n'),
+                });
+                skipped.push({ issue: issueNo, role, reason: error?.message || String(error) });
+              }
+            }
+
+            core.summary
+              .addHeading('Autonomous Dispatch Result')
+              .addRaw(`max_dispatch=${maxDispatch}\n`)
+              .addRaw(`ready_candidates=${candidates.length}\n`)
+              .addRaw(`dispatched=${dispatched.length}\n`)
+              .addRaw(`skipped=${skipped.length}\n\n`);
+
+            if (dispatched.length > 0) {
+              core.summary.addHeading('Dispatched', 2);
+              for (const item of dispatched) {
+                core.summary.addRaw(`- #${item.issue} (${item.role}) -> ${item.workflow}\n`);
+              }
+              core.summary.addRaw('\n');
+            }
+
+            if (skipped.length > 0) {
+              core.summary.addHeading('Skipped', 2);
+              for (const item of skipped) {
+                core.summary.addRaw(`- #${item.issue} (${item.role}) reason=${item.reason}\n`);
+              }
+            }
+
+            await core.summary.write();

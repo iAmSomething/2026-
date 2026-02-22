@@ -157,3 +157,30 @@ bash scripts/pm/set_pm_cycle_mode.sh --repo iAmSomething/2026- --lane online
 ```
 3. 온라인 세션에서는 `dry-run`으로 현황만 갱신하고, 상태 변경(`apply`)은 근거 코멘트 후 1회 수동 실행 원칙을 따른다.
 4. `status/done` 이슈 자동 재오픈은 기본 금지이며, 필요 시 `PM_CYCLE_ALLOW_REOPEN_DONE=true`를 단발성으로만 사용한다.
+
+## 11. 무인 운영(Autopilot) 규칙
+1. 자동 디스패치 워크플로:
+- `.github/workflows/autonomous-dispatch.yml`
+- 주기: 30분
+- 대상: `status/ready` + `role/*` 라벨 이슈
+- 동작: `status/in-progress` 전환 후 역할별 워크플로 디스패치
+
+2. 역할별 디스패치 매핑:
+- `role/collector` -> `ingest-schedule.yml`
+- `role/develop` -> `phase1-qa.yml` (`with_db=true`, `with_api=true`)
+- `role/uiux` -> `staging-smoke.yml`
+- `role/qa` -> `qa-api-contract-suite.yml`
+
+3. 워치독 워크플로:
+- `.github/workflows/automation-watchdog.yml`
+- 주기: 30분
+- 기능: PM Cycle/Ingest Schedule 장시간 미실행 시 자동 재디스패치
+
+4. 운영 변수:
+- `AUTO_DISPATCH_MAX` (기본 2)
+- `PM_MAX_IDLE_MINUTES` (기본 70)
+- `INGEST_MAX_IDLE_MINUTES` (기본 150)
+
+5. 주의:
+- 자동화는 이슈를 `in-progress`까지 전진시킨다.
+- 최종 완료(`status/done`)는 QA PASS 계약을 만족해야 한다.
