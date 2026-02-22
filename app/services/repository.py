@@ -1009,6 +1009,34 @@ class PostgresRepository:
             cur.execute(query, params)
             return cur.fetchall()
 
+    def update_review_queue_status(
+        self,
+        *,
+        item_id: int,
+        status: str,
+        assigned_to: str | None = None,
+        review_note: str | None = None,
+    ):
+        with self.conn.cursor() as cur:
+            cur.execute(
+                """
+                UPDATE review_queue
+                SET
+                    status = %s,
+                    assigned_to = COALESCE(%s, assigned_to),
+                    review_note = COALESCE(%s, review_note),
+                    updated_at = NOW()
+                WHERE id = %s
+                RETURNING
+                    id, entity_type, entity_id, issue_type, status,
+                    assigned_to, review_note, created_at, updated_at
+                """,
+                (status, assigned_to, review_note, item_id),
+            )
+            row = cur.fetchone()
+        self.conn.commit()
+        return row
+
     def fetch_review_queue_stats(self, *, window_hours: int = 24):
         with self.conn.cursor() as cur:
             cur.execute(

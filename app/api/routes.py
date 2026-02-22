@@ -22,6 +22,7 @@ from app.models.schemas import (
     ScopeBreakdownOut,
     SourceChannelMixOut,
     OpsWarningRuleOut,
+    ReviewQueueDecisionIn,
     ReviewQueueItemOut,
     ReviewQueueStatsOut,
     ReviewQueueTrendsOut,
@@ -343,6 +344,54 @@ def get_review_queue_items(
         offset=offset,
     )
     return [ReviewQueueItemOut(**row) for row in rows]
+
+
+def _apply_review_queue_decision(
+    *,
+    item_id: int,
+    decision_status: str,
+    decision: ReviewQueueDecisionIn,
+    repo,
+):
+    row = repo.update_review_queue_status(
+        item_id=item_id,
+        status=decision_status,
+        assigned_to=decision.assigned_to,
+        review_note=decision.review_note,
+    )
+    if not row:
+        raise HTTPException(status_code=404, detail="review queue item not found")
+    return ReviewQueueItemOut(**row)
+
+
+@router.post("/review/{item_id}/approve", response_model=ReviewQueueItemOut)
+def approve_review_item(
+    item_id: int,
+    decision: ReviewQueueDecisionIn,
+    _=Depends(require_internal_job_token),
+    repo=Depends(get_repository),
+):
+    return _apply_review_queue_decision(
+        item_id=item_id,
+        decision_status="approved",
+        decision=decision,
+        repo=repo,
+    )
+
+
+@router.post("/review/{item_id}/reject", response_model=ReviewQueueItemOut)
+def reject_review_item(
+    item_id: int,
+    decision: ReviewQueueDecisionIn,
+    _=Depends(require_internal_job_token),
+    repo=Depends(get_repository),
+):
+    return _apply_review_queue_decision(
+        item_id=item_id,
+        decision_status="rejected",
+        decision=decision,
+        repo=repo,
+    )
 
 
 @router.get("/review-queue/stats", response_model=ReviewQueueStatsOut)

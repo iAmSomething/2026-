@@ -11,6 +11,30 @@ from app.main import app
 class FakeApiRepo:
     def __init__(self):
         self._run_id = 0
+        self._review_items = [
+            {
+                "id": 101,
+                "entity_type": "ingest_record",
+                "entity_id": "obs-1",
+                "issue_type": "ingestion_error",
+                "status": "pending",
+                "assigned_to": "qa.user",
+                "review_note": "invalid region code",
+                "created_at": "2026-02-18T14:00:00+00:00",
+                "updated_at": "2026-02-18T14:10:00+00:00",
+            },
+            {
+                "id": 100,
+                "entity_type": "ingest_record",
+                "entity_id": "obs-0",
+                "issue_type": "mapping_error:region_not_found",
+                "status": "in_progress",
+                "assigned_to": None,
+                "review_note": "manual check required",
+                "created_at": "2026-02-18T13:00:00+00:00",
+                "updated_at": "2026-02-18T13:05:00+00:00",
+            },
+        ]
 
     def fetch_dashboard_summary(self, as_of):
         return [
@@ -260,30 +284,7 @@ class FakeApiRepo:
         limit=50,
         offset=0,
     ):
-        rows = [
-            {
-                "id": 101,
-                "entity_type": "ingest_record",
-                "entity_id": "obs-1",
-                "issue_type": "ingestion_error",
-                "status": "pending",
-                "assigned_to": "qa.user",
-                "review_note": "invalid region code",
-                "created_at": "2026-02-18T14:00:00+00:00",
-                "updated_at": "2026-02-18T14:10:00+00:00",
-            },
-            {
-                "id": 100,
-                "entity_type": "ingest_record",
-                "entity_id": "obs-0",
-                "issue_type": "mapping_error:region_not_found",
-                "status": "in_progress",
-                "assigned_to": None,
-                "review_note": "manual check required",
-                "created_at": "2026-02-18T13:00:00+00:00",
-                "updated_at": "2026-02-18T13:05:00+00:00",
-            },
-        ]
+        rows = list(self._review_items)
         if status:
             rows = [r for r in rows if r["status"] == status]
         if issue_type:
@@ -291,6 +292,19 @@ class FakeApiRepo:
         if assigned_to:
             rows = [r for r in rows if r["assigned_to"] == assigned_to]
         return rows[offset : offset + limit]
+
+    def update_review_queue_status(self, *, item_id, status, assigned_to=None, review_note=None):  # noqa: ARG002
+        for row in self._review_items:
+            if row["id"] != item_id:
+                continue
+            row["status"] = status
+            if assigned_to is not None:
+                row["assigned_to"] = assigned_to
+            if review_note is not None:
+                row["review_note"] = review_note
+            row["updated_at"] = "2026-02-19T00:00:00+00:00"
+            return dict(row)
+        return None
 
     def fetch_review_queue_stats(self, *, window_hours=24):  # noqa: ARG002
         return {
@@ -645,6 +659,63 @@ def test_dashboard_quality_empty_safe_contract():
     assert body["source_channel_mix"] == {"article_ratio": 0.0, "nesdc_ratio": 0.0}
 
     app.dependency_overrides.clear()
+
+
+def test_review_decision_endpoints_require_token_and_update_status(monkeypatch: pytest.MonkeyPatch):
+    monkeypatch.setenv("SUPABASE_URL", "https://example.supabase.co")
+    monkeypatch.setenv("SUPABASE_SERVICE_ROLE_KEY", "test-service-role")
+    monkeypatch.setenv("DATA_GO_KR_KEY", "test-data-go-key")
+    monkeypatch.setenv("DATABASE_URL", "postgresql://localhost/test")
+    monkeypatch.setenv("INTERNAL_JOB_TOKEN", "dev-internal-token")
+    get_settings.cache_clear()
+
+    app.dependency_overrides[get_repository] = override_repo
+    app.dependency_overrides[get_candidate_data_go_service] = override_candidate_data_go_service
+    client = TestClient(app)
+
+    payload = {"assigned_to": "ops.user", "review_note": "검수 승인"}
+
+    missing = client.post("/api/v1/review/101/approve", json=payload)
+    assert missing.status_code == 401
+
+    invalid = client.post(
+        "/api/v1/review/101/approve",
+        json=payload,
+        headers={"Authorization": "Bearer wrong-token"},
+    )
+    assert invalid.status_code == 403
+
+    approved = client.post(
+        "/api/v1/review/101/approve",
+        json=payload,
+        headers={"Authorization": "Bearer dev-internal-token"},
+    )
+    assert approved.status_code == 200
+    body = approved.json()
+    assert body["id"] == 101
+    assert body["status"] == "approved"
+    assert body["assigned_to"] == "ops.user"
+    assert body["review_note"] == "검수 승인"
+
+    rejected = client.post(
+        "/api/v1/review/100/reject",
+        json={"review_note": "근거 부족"},
+        headers={"Authorization": "Bearer dev-internal-token"},
+    )
+    assert rejected.status_code == 200
+    assert rejected.json()["id"] == 100
+    assert rejected.json()["status"] == "rejected"
+    assert rejected.json()["review_note"] == "근거 부족"
+
+    missing_item = client.post(
+        "/api/v1/review/999/approve",
+        json={},
+        headers={"Authorization": "Bearer dev-internal-token"},
+    )
+    assert missing_item.status_code == 404
+
+    app.dependency_overrides.clear()
+    get_settings.cache_clear()
 
 
 def test_run_ingest_requires_bearer_token(monkeypatch: pytest.MonkeyPatch):

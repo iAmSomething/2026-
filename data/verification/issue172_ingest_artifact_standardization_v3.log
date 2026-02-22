@@ -1,0 +1,9 @@
+timestamp_utc=2026-02-22T01:48:12Z
+reference_run=22256026677
+reference_run_url=https://github.com/iAmSomething/2026-/actions/runs/22256026677
+reference_pr=167
+reference_merge_commit=5d03d8828fe8d685ba2f5620319b20f33b1fcdf2
+artifact_name=ingest-schedule-diagnostics
+artifact_id=5601064864
+artifact_download_api=https://api.github.com/repos/iAmSomething/2026-/actions/artifacts/5601064864/zip
+notes=always-upload diagnostics + failure_reason/last_attempt output is standardized in workflow/script
