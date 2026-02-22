@@ -1,0 +1,13 @@
+============================= test session starts ==============================
+platform darwin -- Python 3.13.5, pytest-8.4.2, pluggy-1.6.0
+rootdir: /private/tmp/election2026_codex_issue184
+configfile: pyproject.toml
+plugins: anyio-4.12.1
+collected 22 items
+
+tests/test_poll_fingerprint.py .....                                     [ 22%]
+tests/test_ingest_service.py .....                                       [ 45%]
+tests/test_repository_source_channels.py ..                              [ 54%]
+tests/test_api_routes.py ..........                                      [100%]
+
+============================== 22 passed in 0.32s ==============================

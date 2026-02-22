@@ -110,3 +110,63 @@ def test_merge_raises_duplicate_conflict_on_core_mismatch():
         raise AssertionError("expected DuplicateConflictError")
     except DuplicateConflictError as exc:
         assert "DUPLICATE_CONFLICT" in str(exc)
+
+
+def test_merge_normalizes_core_types_to_avoid_false_conflict():
+    existing = {
+        "observation_key": "obs-1",
+        "source_channel": "article",
+        "source_channels": ["article"],
+        "region_code": "11-000",
+        "office_type": "광역자치단체장",
+        "survey_start_date": "2026-02-10",
+        "survey_end_date": "2026-02-12",
+        "sample_size": 1000,
+        "source_grade": "C",
+    }
+    incoming = {
+        "observation_key": "obs-2",
+        "source_channel": "nesdc",
+        "source_channels": ["nesdc"],
+        "region_code": " 11-000 ",
+        "office_type": " 광역자치단체장 ",
+        "survey_start_date": "2026/02/10",
+        "survey_end_date": "2026-02-12",
+        "sample_size": "1000",
+        "source_grade": "A",
+    }
+
+    merged = merge_observation_by_priority(existing=existing, incoming=incoming)
+    assert merged["source_channel"] == "nesdc"
+    assert merged["source_channels"] == ["article", "nesdc"]
+    assert merged["source_grade"] == "A"
+
+
+def test_merge_source_grade_does_not_downgrade_when_article_arrives_later():
+    existing = {
+        "observation_key": "obs-1",
+        "source_channel": "nesdc",
+        "source_channels": ["article", "nesdc"],
+        "region_code": "11-000",
+        "office_type": "광역자치단체장",
+        "survey_start_date": "2026-02-10",
+        "survey_end_date": "2026-02-12",
+        "sample_size": 1000,
+        "source_grade": "A",
+    }
+    incoming = {
+        "observation_key": "obs-2",
+        "source_channel": "article",
+        "source_channels": ["article"],
+        "region_code": "11-000",
+        "office_type": "광역자치단체장",
+        "survey_start_date": "2026-02-10",
+        "survey_end_date": "2026-02-12",
+        "sample_size": 1000,
+        "source_grade": "C",
+    }
+
+    merged = merge_observation_by_priority(existing=existing, incoming=incoming)
+    assert merged["source_channel"] == "nesdc"
+    assert merged["source_channels"] == ["article", "nesdc"]
+    assert merged["source_grade"] == "A"

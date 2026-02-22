@@ -1,0 +1,33 @@
+{
+  "issue": 184,
+  "policy_version": "v2",
+  "core_normalization_merge": {
+    "input_types": {
+      "sample_size": [
+        1000,
+        "1000"
+      ],
+      "survey_start_date": [
+        "2026-02-10",
+        "2026/02/10"
+      ],
+      "region_code": [
+        "11-000",
+        " 11-000 "
+      ]
+    },
+    "output": {
+      "source_channel": "nesdc",
+      "source_channels": [
+        "article",
+        "nesdc"
+      ],
+      "source_grade": "A"
+    }
+  },
+  "source_grade_no_downgrade": {
+    "existing": "A",
+    "incoming": "C",
+    "output": "A"
+  }
+}
