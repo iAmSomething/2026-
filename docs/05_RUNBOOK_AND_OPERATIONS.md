@@ -362,3 +362,23 @@ scripts/qa/smoke_public_api.sh \
 - Search: alias 보정(`연수국 -> 연수구`)과 empty-state 대체 액션 노출
 - Matchup: `confirm_demo`/`source_demo`/`demo_state` 배지와 상태 카피 노출
 - Candidate: `party_demo`/`confirm_demo` 배지 노출, 미존재 후보 ID는 안전 fallback으로 렌더 유지
+
+## 15. 무인 오케스트레이션 운영
+1. 디스패치:
+- 워크플로: `autonomous-dispatch.yml`
+- 트리거: 30분 스케줄 + 수동 실행
+- 정책: `status/ready` 이슈를 역할별 파이프라인으로 자동 전달
+
+2. 워치독:
+- 워크플로: `automation-watchdog.yml`
+- 정책: `PM Cycle`과 `Ingest Schedule` 최근 실행 간격이 임계치를 넘으면 자동 self-heal dispatch
+
+3. 기본 임계값:
+- `PM_MAX_IDLE_MINUTES=70`
+- `INGEST_MAX_IDLE_MINUTES=150`
+- `AUTO_DISPATCH_MAX=2`
+
+4. 장애 시 확인 순서:
+1. `Automation Watchdog` 최근 런 결과
+2. `Autonomous Dispatch`의 dispatched/skipped 수
+3. 대상 워크플로(`PM Cycle`, `Ingest Schedule`) 최근 런 링크 확인
