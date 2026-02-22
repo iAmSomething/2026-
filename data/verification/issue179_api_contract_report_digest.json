@@ -1,0 +1,23 @@
+{
+  "summary": {
+    "total": 28,
+    "pass": 28,
+    "fail": 0,
+    "pass_rate": 100.0
+  },
+  "big_matches_case": {
+    "name": "matchup_success",
+    "category": "success",
+    "endpoint": "GET /api/v1/matchups/{matchup_id}",
+    "status": "pass",
+    "error": null,
+    "details": [
+      true,
+      null,
+      true,
+      null,
+      null
+    ],
+    "executed_at": "2026-02-22T02:04:19.096057+00:00"
+  }
+}

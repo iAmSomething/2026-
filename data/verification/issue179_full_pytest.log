@@ -1,0 +1,12 @@
+============================= test session starts ==============================
+platform darwin -- Python 3.13.5, pytest-8.4.2, pluggy-1.6.0
+rootdir: /private/tmp/election2026_codex_issue179
+configfile: pyproject.toml
+plugins: anyio-4.12.1
+collected 12 items
+
+tests/test_repository_matchup_legal_metadata.py .                        [  8%]
+tests/test_schema_read_performance_indexes.py .                          [ 16%]
+tests/test_api_routes.py ..........                                      [100%]
+
+============================== 12 passed in 0.35s ==============================

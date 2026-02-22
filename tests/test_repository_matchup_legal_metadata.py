@@ -52,21 +52,22 @@ class _Cursor:
                 "source_channels": ["article", "nesdc"],
                 "verified": True,
                 "observation_id": 101,
+                "options": [
+                    {
+                        "option_name": "정원오",
+                        "value_mid": 44.0,
+                        "value_raw": "44%",
+                        "party_inferred": True,
+                        "party_inference_source": "name_rule",
+                        "party_inference_confidence": 0.84,
+                        "needs_manual_review": False,
+                    }
+                ],
             }
         return None
 
     def fetchall(self):
-        return [
-            {
-                "option_name": "정원오",
-                "value_mid": 44.0,
-                "value_raw": "44%",
-                "party_inferred": True,
-                "party_inference_source": "name_rule",
-                "party_inference_confidence": 0.84,
-                "needs_manual_review": False,
-            }
-        ]
+        return []
 
 
 class _Conn:
@@ -78,7 +79,8 @@ class _Conn:
 
 
 def test_get_matchup_returns_legal_metadata_fields():
-    repo = PostgresRepository(_Conn())
+    conn = _Conn()
+    repo = PostgresRepository(conn)
     out = repo.get_matchup("m1")
 
     assert out is not None
@@ -98,3 +100,4 @@ def test_get_matchup_returns_legal_metadata_fields():
     assert out["options"][0]["party_inference_source"] == "name_rule"
     assert out["options"][0]["party_inference_confidence"] == 0.84
     assert out["options"][0]["needs_manual_review"] is False
+    assert len(conn.cur.execs) == 1

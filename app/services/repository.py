@@ -1,3 +1,4 @@
+import json
 from datetime import date
 
 from app.services.errors import DuplicateConflictError
@@ -747,10 +748,28 @@ class PostgresRepository:
                     o.source_channel,
                     o.source_channels,
                     o.verified,
-                    o.id AS observation_id
+                    o.id AS observation_id,
+                    COALESCE(opts.options, '[]'::json) AS options
                 FROM poll_observations o
                 LEFT JOIN matchups m ON m.matchup_id = o.matchup_id
                 LEFT JOIN articles a ON a.id = o.article_id
+                LEFT JOIN LATERAL (
+                    SELECT
+                        json_agg(
+                            json_build_object(
+                                'option_name', po.option_name,
+                                'value_mid', po.value_mid,
+                                'value_raw', po.value_raw,
+                                'party_inferred', po.party_inferred,
+                                'party_inference_source', po.party_inference_source,
+                                'party_inference_confidence', po.party_inference_confidence,
+                                'needs_manual_review', po.needs_manual_review
+                            )
+                            ORDER BY po.value_mid DESC NULLS LAST, po.option_name
+                        ) AS options
+                    FROM poll_options po
+                    WHERE po.observation_id = o.id
+                ) opts ON TRUE
                 WHERE o.matchup_id = %s
                 ORDER BY o.survey_end_date DESC NULLS LAST, o.id DESC
                 LIMIT 1
@@ -761,23 +780,16 @@ class PostgresRepository:
             if not row:
                 return None
 
-            cur.execute(
-                """
-                SELECT
-                    option_name,
-                    value_mid,
-                    value_raw,
-                    party_inferred,
-                    party_inference_source,
-                    party_inference_confidence,
-                    needs_manual_review
-                FROM poll_options
-                WHERE observation_id = %s
-                ORDER BY value_mid DESC NULLS LAST, option_name
-                """,
-                (row["observation_id"],),
-            )
-            options = cur.fetchall()
+            options = row.get("options")
+            if isinstance(options, str):
+                try:
+                    options = json.loads(options)
+                except json.JSONDecodeError:
+                    options = []
+            if options is None:
+                options = []
+            if not isinstance(options, list):
+                options = []
 
         return {
             "matchup_id": row["matchup_id"],

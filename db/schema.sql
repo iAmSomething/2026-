@@ -297,10 +297,16 @@ CREATE TABLE IF NOT EXISTS review_queue (
 CREATE INDEX IF NOT EXISTS idx_regions_search ON regions (sido_name, sigungu_name);
 CREATE INDEX IF NOT EXISTS idx_poll_observations_date ON poll_observations (survey_end_date DESC);
 CREATE INDEX IF NOT EXISTS idx_poll_observations_matchup ON poll_observations (matchup_id);
+CREATE INDEX IF NOT EXISTS idx_poll_observations_matchup_latest
+    ON poll_observations (matchup_id, survey_end_date DESC, id DESC);
 CREATE INDEX IF NOT EXISTS idx_poll_observations_scope_date ON poll_observations (audience_scope, survey_end_date DESC);
 CREATE INDEX IF NOT EXISTS idx_poll_observations_fingerprint ON poll_observations (poll_fingerprint);
 CREATE INDEX IF NOT EXISTS idx_poll_observations_source_channels ON poll_observations USING GIN (source_channels);
 CREATE INDEX IF NOT EXISTS idx_candidates_source_channels ON candidates USING GIN (source_channels);
 CREATE INDEX IF NOT EXISTS idx_poll_options_type ON poll_options (option_type);
+CREATE INDEX IF NOT EXISTS idx_poll_options_observation_value
+    ON poll_options (observation_id, value_mid DESC, option_name);
 CREATE INDEX IF NOT EXISTS idx_review_queue_status ON review_queue (status, created_at DESC);
+CREATE INDEX IF NOT EXISTS idx_review_queue_entity_status
+    ON review_queue (entity_type, entity_id, status);
 CREATE INDEX IF NOT EXISTS idx_matchups_region_active ON matchups (region_code, is_active);
