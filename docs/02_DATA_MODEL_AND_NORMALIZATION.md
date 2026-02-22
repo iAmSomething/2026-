@@ -116,6 +116,8 @@
 2. 입력 정규화 후 `sha256`으로 `poll_fingerprint` 생성해 저장한다.
 3. 동일 fingerprint 다중 소스 병합 시 메타 필드는 `nesdc` 우선, 문맥(기사 제목 기반 `survey_name`)은 `article` 보강 우선으로 적용한다.
 4. 동일 fingerprint에서 핵심 식별 필드 충돌 시 `review_queue.issue_type='DUPLICATE_CONFLICT'`로 분기한다.
+5. 핵심 식별 필드 비교는 형식 차이를 정규화해 판정한다(`sample_size` 숫자형, 날짜 포맷 통일, `region_code` 공백/대소문자 보정).
+6. `source_grade`는 병합 시 품질 우선(`A>B>C>D`)으로 선택해 후행 저품질 소스로 다운그레이드되지 않게 유지한다.
 
 ## 8. provenance 다중 출처 규칙
 1. 하위호환을 위해 `source_channel` 단일값은 유지한다.
