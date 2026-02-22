@@ -1,0 +1,26 @@
+{
+  "approve_status": 200,
+  "approve_body": {
+    "id": 1,
+    "entity_type": "ingest_record",
+    "entity_id": "obs-x",
+    "issue_type": "ingestion_error",
+    "status": "approved",
+    "assigned_to": "ops.user",
+    "review_note": "승인",
+    "created_at": "2026-02-21T00:00:00Z",
+    "updated_at": "2026-02-21T01:00:00Z"
+  },
+  "reject_status": 200,
+  "reject_body": {
+    "id": 1,
+    "entity_type": "ingest_record",
+    "entity_id": "obs-x",
+    "issue_type": "ingestion_error",
+    "status": "rejected",
+    "assigned_to": null,
+    "review_note": "반려",
+    "created_at": "2026-02-21T00:00:00Z",
+    "updated_at": "2026-02-21T01:00:00Z"
+  }
+}

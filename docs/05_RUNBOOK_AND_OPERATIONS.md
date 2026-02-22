@@ -61,6 +61,8 @@
 5. 검수 큐 목록: `GET /api/v1/review-queue/items`
 6. 검수 큐 통계: `GET /api/v1/review-queue/stats`
 7. 검수 큐 추세: `GET /api/v1/review-queue/trends`
+8. 검수 승인: `POST /api/v1/review/{item_id}/approve` (Bearer token)
+9. 검수 반려: `POST /api/v1/review/{item_id}/reject` (Bearer token)
 
 ## 6. 장애 대응
 1. 수집 실패:
@@ -99,6 +101,18 @@
 2. 소스 지정 재처리
 3. 검수 반영 후 부분 재집계
 4. 재처리 이력 `ingestion_runs`에 분리 기록
+
+## 7.1 검수 승인/반려 운영
+1. 승인 호출:
+- `POST /api/v1/review/{item_id}/approve`
+- body 예시: `{ "assigned_to": "ops.user", "review_note": "근거 확인 완료" }`
+2. 반려 호출:
+- `POST /api/v1/review/{item_id}/reject`
+- body 예시: `{ "review_note": "근거 부족" }`
+3. 인증:
+- `Authorization: Bearer $INTERNAL_JOB_TOKEN`
+4. 응답:
+- 최신 `review_queue` row를 반환하며 `status`가 `approved|rejected`로 갱신된다.
 
 ## 8. 모니터링 체크리스트
 1. 배치 성공률

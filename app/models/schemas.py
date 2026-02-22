@@ -246,6 +246,11 @@ class ReviewQueueItemOut(BaseModel):
     updated_at: datetime
 
 
+class ReviewQueueDecisionIn(BaseModel):
+    assigned_to: str | None = None
+    review_note: str | None = None
+
+
 class ReviewQueueIssueCountOut(BaseModel):
     issue_type: str
     count: int
