@@ -212,7 +212,7 @@
 3. 빅매치 계산 결과 이상치 여부
 4. 지도 데이터 누락 지역 여부
 5. `dashboard/summary`의 `scope_breakdown.regional/local/unknown`가 0인지 확인(전국 오염 방지)
-6. `dashboard/summary`/`dashboard/map-latest`의 `freshness_hours`와 `source_priority` 확인(공식확정 지연 감시)
+6. `dashboard/summary`/`dashboard/map-latest`/`dashboard/big-matches`의 `freshness_hours`와 `source_priority` 확인(공식확정 지연 감시)
 
 ## 10. 준법 체크
 1. robots 정책 위반 요청 로그 여부

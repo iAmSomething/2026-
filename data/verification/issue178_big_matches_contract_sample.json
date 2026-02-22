@@ -1,0 +1,19 @@
+{
+  "matchup_id": "20260603|광역자치단체장|11-000",
+  "title": "서울시장 가상대결",
+  "survey_end_date": "2026-02-18",
+  "value_mid": 44.0,
+  "spread": 2.0,
+  "audience_scope": "regional",
+  "audience_region_code": "11-000",
+  "source_priority": "mixed",
+  "official_release_at": "2026-02-18T03:00:00Z",
+  "article_published_at": "2026-02-18T01:00:00Z",
+  "freshness_hours": 95.0,
+  "is_official_confirmed": true,
+  "source_channel": "nesdc",
+  "source_channels": [
+    "article",
+    "nesdc"
+  ]
+}

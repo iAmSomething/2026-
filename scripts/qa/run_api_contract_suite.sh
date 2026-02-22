@@ -133,6 +133,12 @@ class FakeRepo:
                 "survey_end_date": date(2026, 2, 18),
                 "value_mid": 44.0,
                 "spread": 2.0,
+                "audience_scope": "regional",
+                "audience_region_code": "11-000",
+                "observation_updated_at": "2026-02-18T03:00:00+00:00",
+                "article_published_at": "2026-02-18T01:00:00+00:00",
+                "source_channel": "nesdc",
+                "source_channels": ["article", "nesdc"],
             }
         ]
 
@@ -534,6 +540,20 @@ def main() -> int:
             lambda r: (
                 r.status_code == 200 or (_ for _ in ()).throw(AssertionError(f"status={r.status_code}")),
                 len(r.json().get("items", [])) >= 1 or (_ for _ in ()).throw(AssertionError("items empty")),
+                assert_keys(
+                    r.json()["items"][0],
+                    [
+                        "audience_scope",
+                        "audience_region_code",
+                        "source_channel",
+                        "source_channels",
+                        "source_priority",
+                        "freshness_hours",
+                        "official_release_at",
+                        "article_published_at",
+                        "is_official_confirmed",
+                    ],
+                ),
             )
         )(make_client(FakeRepo("success")).get("/api/v1/dashboard/big-matches")),
     )
