@@ -13,8 +13,9 @@ def _write_generator(path: Path, payload_path: Path, marker: str) -> None:
     path.write_text(
         "\n".join(
             [
+                "import json",
                 "from pathlib import Path",
-                f'Path(r"{payload_path}").write_text("{marker}", encoding="utf-8")',
+                f'Path(r"{payload_path}").write_text(json.dumps({{"marker":"{marker}","records":[]}}), encoding="utf-8")',
             ]
         ),
         encoding="utf-8",
@@ -56,7 +57,7 @@ def test_prefers_v2_and_writes_canonical_payload(tmp_path: Path) -> None:
 
     assert proc.returncode == 0
     assert "generator=v2" in proc.stdout
-    assert canonical_payload.read_text(encoding="utf-8") == "from-v2"
+    assert '"marker": "from-v2"' in canonical_payload.read_text(encoding="utf-8")
 
 
 def test_falls_back_to_v1_when_v2_is_missing(tmp_path: Path) -> None:
@@ -90,7 +91,7 @@ def test_falls_back_to_v1_when_v2_is_missing(tmp_path: Path) -> None:
 
     assert proc.returncode == 0
     assert "generator=v1" in proc.stdout
-    assert canonical_payload.read_text(encoding="utf-8") == "from-v1"
+    assert '"marker": "from-v1"' in canonical_payload.read_text(encoding="utf-8")
 
 
 def test_exits_nonzero_when_no_generator_script_exists(tmp_path: Path) -> None:

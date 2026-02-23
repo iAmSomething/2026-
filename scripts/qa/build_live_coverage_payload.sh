@@ -64,11 +64,12 @@ mkdir -p "$(dirname "$CANONICAL_PAYLOAD")"
 
 run_generator() {
   local script_path="$1"
+  shift
   local py_path="${PYTHONPATH:-}"
   if [[ -n "$py_path" ]]; then
-    PYTHONPATH=".:$py_path" "$PYTHON_BIN" "$script_path"
+    PYTHONPATH=".:$py_path" "$PYTHON_BIN" "$script_path" "$@"
   else
-    PYTHONPATH="." "$PYTHON_BIN" "$script_path"
+    PYTHONPATH="." "$PYTHON_BIN" "$script_path" "$@"
   fi
 }
 
@@ -90,4 +91,10 @@ else
 fi
 
 test -s "$CANONICAL_PAYLOAD"
+
+# Ingest API contract expects strict bool/literal candidate fields.
+run_generator "scripts/qa/normalize_ingest_payload_for_schedule.py" \
+  --input "$CANONICAL_PAYLOAD" \
+  --output "$CANONICAL_PAYLOAD"
+
 echo "[build-live-coverage] canonical_payload=$CANONICAL_PAYLOAD"
