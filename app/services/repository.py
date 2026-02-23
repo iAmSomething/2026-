@@ -722,7 +722,12 @@ class PostgresRepository:
         }
 
     def search_regions(self, query: str, limit: int = 20):
-        q = f"%{query}%"
+        normalized_query = " ".join(query.split()).strip()
+        if not normalized_query:
+            return []
+
+        q = f"%{normalized_query}%"
+        compact_q = f"%{normalized_query.replace(' ', '')}%"
         with self.conn.cursor() as cur:
             cur.execute(
                 """
@@ -731,10 +736,13 @@ class PostgresRepository:
                 WHERE (sido_name || ' ' || sigungu_name) ILIKE %s
                    OR sido_name ILIKE %s
                    OR sigungu_name ILIKE %s
+                   OR REPLACE((sido_name || sigungu_name), ' ', '') ILIKE %s
+                   OR REPLACE(sido_name, ' ', '') ILIKE %s
+                   OR REPLACE(sigungu_name, ' ', '') ILIKE %s
                 ORDER BY admin_level, sido_name, sigungu_name
                 LIMIT %s
                 """,
-                (q, q, q, limit),
+                (q, q, q, compact_q, compact_q, compact_q, limit),
             )
             return cur.fetchall()
 

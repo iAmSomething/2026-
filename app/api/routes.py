@@ -1,4 +1,7 @@
+import re
+import unicodedata
 from datetime import date, datetime, timezone
+from urllib.parse import unquote_plus
 
 from fastapi import APIRouter, Depends, HTTPException, Query, Request
 
@@ -73,6 +76,32 @@ def _to_datetime(value) -> datetime | None:
             return None
         return parsed if parsed.tzinfo else parsed.replace(tzinfo=timezone.utc)
     return None
+
+
+def _decode_query_text(value: str) -> str:
+    if "%" not in value and "+" not in value:
+        return value
+    try:
+        return unquote_plus(value)
+    except Exception:
+        return value
+
+
+def _normalize_region_query(raw_query: str) -> str:
+    text = raw_query.replace("\u3000", " ").strip()
+    if not text:
+        return ""
+
+    # Some clients send double-encoded non-ASCII query strings.
+    for _ in range(2):
+        decoded = _decode_query_text(text)
+        if decoded == text:
+            break
+        text = decoded
+
+    text = unicodedata.normalize("NFC", text)
+    text = re.sub(r"\s+", " ", text).strip()
+    return text
 
 
 def _derive_source_meta(row: dict) -> dict:
@@ -268,7 +297,7 @@ def search_regions(
     repo=Depends(get_repository),
 ):
     query_fallback = request.query_params.get("query")
-    resolved_query = q or query_fallback
+    resolved_query = _normalize_region_query(q or query_fallback or "")
     if not resolved_query:
         raise HTTPException(status_code=422, detail="q or query is required")
 

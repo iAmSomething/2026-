@@ -1,4 +1,5 @@
 from datetime import date
+import unicodedata
 
 import pytest
 from fastapi.testclient import TestClient
@@ -592,6 +593,41 @@ def test_api_contract_fields():
     assert trends_body["bucket_hours"] == 6
     assert len(trends_body["points"]) == 1
     assert trends_body["points"][0]["error_code"] == "region_not_found"
+
+    app.dependency_overrides.clear()
+
+
+def test_regions_search_normalizes_non_ascii_and_encoded_query_forms():
+    class CaptureRegionQueryRepo(FakeApiRepo):
+        def __init__(self):
+            super().__init__()
+            self.last_query = None
+
+        def search_regions(self, query, limit=20):
+            self.last_query = query
+            return super().search_regions(query=query, limit=limit)
+
+    repo = CaptureRegionQueryRepo()
+
+    def override_capture_repo():
+        yield repo
+
+    app.dependency_overrides[get_repository] = override_capture_repo
+    client = TestClient(app)
+
+    # Double-encoded "서울": %25EC%2584%259C%25EC%259A%25B8
+    double_encoded = client.get("/api/v1/regions/search?q=%25EC%2584%259C%25EC%259A%25B8")
+    assert double_encoded.status_code == 200
+    assert repo.last_query == "서울"
+
+    nfd_seoul = unicodedata.normalize("NFD", "서울")
+    nfd_query = client.get("/api/v1/regions/search", params={"q": nfd_seoul})
+    assert nfd_query.status_code == 200
+    assert repo.last_query == "서울"
+
+    full_width_space = client.get("/api/v1/regions/search", params={"q": "  서울　특별시  "})
+    assert full_width_space.status_code == 200
+    assert repo.last_query == "서울 특별시"
 
     app.dependency_overrides.clear()
 

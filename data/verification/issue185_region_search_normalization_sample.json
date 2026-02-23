@@ -1,0 +1,22 @@
+{
+  "cases": [
+    {
+      "name": "double_encoded",
+      "status_code": 200,
+      "normalized_query": "서울",
+      "region_code": "11-000"
+    },
+    {
+      "name": "nfd",
+      "status_code": 200,
+      "normalized_query": "서울",
+      "region_code": "11-000"
+    },
+    {
+      "name": "full_width_space",
+      "status_code": 200,
+      "normalized_query": "서울 특별시",
+      "region_code": "11-000"
+    }
+  ]
+}
