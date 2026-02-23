@@ -19,15 +19,15 @@ jobs:
         run: |
           set -euo pipefail
 
-          REPORT_PATH=$(printf "%s" "$PR_BODY" | sed -n 's/^Report-Path:[[:space:]]*//p' | head -n1)
+          REPORT_PATH=$(printf "%s" "$PR_BODY" | sed -nE 's/^[[:space:]]*-?[[:space:]]*Report-Path:[[:space:]]*`?([^`]+)`?[[:space:]]*$/\1/p' | head -n1)
 
           if [ -z "$REPORT_PATH" ]; then
-            echo "::error::PR body must include 'Report-Path: <path>' line."
+            echo "::error::PR body must include 'Report-Path: <path>' line (bullet form '- Report-Path: ...' also allowed)."
             exit 1
           fi
 
           if ! [[ "$REPORT_PATH" =~ ^(UIUX_reports|Collector_reports|develop_report)/[0-9]{4}-[0-9]{2}-[0-9]{2}_.+_report\.md$ ]]; then
-            echo "::error::Invalid Report-Path format: $REPORT_PATH"
+            echo "::error::Invalid Report-Path format: $REPORT_PATH (example: develop_report/2026-02-23_topic_report.md)"
             exit 1
           fi
 
@@ -45,3 +45,30 @@ jobs:
             echo "::error::Report file '$REPORT_PATH' is not in changed files."
             exit 1
           fi
+
+      - name: Post Report-Path guidance comment on validation failure
+        if: failure()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const marker = '<!-- report-governance-guidance-v1 -->';
+            const guidance = [
+              '[Report Governance 안내]',
+              '',
+              'PR 본문에 아래 줄을 추가/수정해주세요.',
+              'Report-Path: develop_report/2026-02-23_topic_report.md',
+              '',
+              '또한 위 파일이 이번 PR 변경 파일에 포함되어야 합니다.',
+              marker,
+            ].join('\n');
+            const { owner, repo } = context.repo;
+            const issue_number = context.payload.pull_request.number;
+            const comments = await github.paginate(github.rest.issues.listComments, {
+              owner,
+              repo,
+              issue_number,
+              per_page: 100,
+            });
+            if (!comments.some((c) => c.body && c.body.includes(marker))) {
+              await github.rest.issues.createComment({ owner, repo, issue_number, body: guidance });
+            }

@@ -5,7 +5,7 @@
 - Closes #
 
 ## Report-Path
-- Report-Path: <UIUX_reports|Collector_reports|develop_report>/YYYY-MM-DD_<topic>_report.md
+Report-Path: <UIUX_reports|Collector_reports|develop_report>/YYYY-MM-DD_<topic>_report.md
 
 ## Checklist
 - [ ] docs 계약(필드/API/용어)과 일치
