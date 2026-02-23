@@ -58,9 +58,11 @@ jobs:
           .venv/bin/python scripts/qa/run_ingest_with_retry.py \
             --api-base "$API_BASE_URL" \
             --input data/collector_freshness_hotfix_v1_payload.json \
-            --max-retries 2 \
-            --backoff-seconds 1 \
-            --timeout 180 \
+            --max-retries 1 \
+            --backoff-seconds 3 \
+            --timeout 240 \
+            --timeout-scale-on-timeout 1.5 \
+            --timeout-max 420 \
             --report data/ingest_schedule_report.json
 
       - name: Upload ingest report artifact

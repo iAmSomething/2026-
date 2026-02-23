@@ -19,7 +19,9 @@ class AttemptLog:
     attempt: int
     http_status: int | None
     job_status: str | None
+    failure_class: str | None
     retryable: bool
+    request_timeout_seconds: float
     error: str | None = None
     detail: str | None = None
 
@@ -30,6 +32,7 @@ class IngestRunnerResult:
     attempts: list[AttemptLog]
     run_ids: list[int]
     finished_at: str
+    failure_class: str | None = None
     failure_reason: str | None = None
 
     def to_dict(self) -> dict[str, Any]:
@@ -38,6 +41,7 @@ class IngestRunnerResult:
             "attempts": [asdict(item) for item in self.attempts],
             "run_ids": self.run_ids,
             "finished_at": self.finished_at,
+            "failure_class": self.failure_class,
             "failure_reason": self.failure_reason,
         }
 
@@ -54,18 +58,55 @@ def default_request_fn(
     return httpx.post(url, headers=headers, json=payload, timeout=timeout)
 
 
-def _is_retryable(http_status: int | None, job_status: str | None, error: str | None) -> bool:
+def _classify_failure(
+    http_status: int | None,
+    job_status: str | None,
+    error: str | None,
+) -> str | None:
     if error is not None:
-        return True
+        lowered = error.lower()
+        if "timeout" in lowered:
+            return "timeout"
+        return "request_error"
+
     if http_status is None:
-        return True
-    if http_status in {408, 429}:
-        return True
+        return "request_error"
+
+    if http_status == 422:
+        return "payload_contract_422"
+    if http_status == 408:
+        return "http_408"
+    if http_status == 429:
+        return "http_429"
+    if 400 <= http_status < 500:
+        return "http_4xx"
     if http_status >= 500:
-        return True
-    if job_status in {"partial_success", "failed"}:
-        return True
-    return False
+        return "http_5xx"
+
+    if job_status == "success":
+        return None
+    if job_status == "partial_success":
+        return "job_partial_success"
+    if job_status == "failed":
+        return "job_failed"
+    return "unknown_failure"
+
+
+def _is_retryable_failure_class(failure_class: str | None) -> bool:
+    if failure_class is None:
+        return False
+    if failure_class in {"payload_contract_422", "http_4xx"}:
+        return False
+    return True
+
+
+def _next_backoff_seconds(failure_class: str | None, base_backoff_seconds: float, attempt: int) -> float:
+    step = max(0.0, base_backoff_seconds) * max(1, attempt)
+    if failure_class == "timeout":
+        return max(step, 5.0)
+    if failure_class in {"http_408", "http_429", "http_5xx", "request_error"}:
+        return max(step, 2.0)
+    return step
 
 
 def _to_error_detail(body: Any) -> str | None:
@@ -88,16 +129,17 @@ def _derive_failure_reason(attempts: list[AttemptLog]) -> str:
         return "no_attempts"
 
     last = attempts[-1]
+    prefix = last.failure_class or "unknown_failure"
     if last.error:
-        return f"request_error: {last.error}"
+        return f"{prefix}: {last.error}"
     if last.http_status is not None and last.http_status != 200:
         if last.detail:
-            return f"http_status: {last.http_status} ({last.detail})"
-        return f"http_status: {last.http_status}"
+            return f"{prefix}: http_status={last.http_status} ({last.detail})"
+        return f"{prefix}: http_status={last.http_status}"
     if last.job_status:
         if last.detail:
-            return f"job_status: {last.job_status} ({last.detail})"
-        return f"job_status: {last.job_status}"
+            return f"{prefix}: job_status={last.job_status} ({last.detail})"
+        return f"{prefix}: job_status={last.job_status}"
     return "unknown_failure"
 
 
@@ -109,6 +151,8 @@ def run_ingest_with_retry(
     max_retries: int = 2,
     backoff_seconds: float = 1.0,
     request_timeout: float = 30.0,
+    timeout_scale_on_timeout: float = 1.5,
+    timeout_max: float = 600.0,
     request_fn: RequestFn = default_request_fn,
     sleep_fn: Callable[[float], None] = time.sleep,
 ) -> IngestRunnerResult:
@@ -117,6 +161,9 @@ def run_ingest_with_retry(
     headers = {"Authorization": f"Bearer {token}"}
     attempts: list[AttemptLog] = []
     run_ids: list[int] = []
+    current_timeout = max(1.0, request_timeout)
+    timeout_scale = max(1.0, timeout_scale_on_timeout)
+    timeout_ceiling = max(current_timeout, timeout_max)
 
     for attempt in range(1, max_attempts + 1):
         http_status: int | None = None
@@ -124,7 +171,7 @@ def run_ingest_with_retry(
         error: str | None = None
         detail: str | None = None
         try:
-            response = request_fn(url, headers, payload, request_timeout)
+            response = request_fn(url, headers, payload, current_timeout)
             http_status = response.status_code
             try:
                 body = response.json()
@@ -138,13 +185,16 @@ def run_ingest_with_retry(
         except Exception as exc:  # noqa: BLE001
             error = f"{exc.__class__.__name__}: {exc}"
 
-        retryable = _is_retryable(http_status, job_status, error)
+        failure_class = _classify_failure(http_status, job_status, error)
+        retryable = _is_retryable_failure_class(failure_class)
         attempts.append(
             AttemptLog(
                 attempt=attempt,
                 http_status=http_status,
                 job_status=job_status,
+                failure_class=failure_class,
                 retryable=retryable,
+                request_timeout_seconds=current_timeout,
                 error=error,
                 detail=detail,
             )
@@ -156,17 +206,24 @@ def run_ingest_with_retry(
                 attempts=attempts,
                 run_ids=run_ids,
                 finished_at=utc_now(),
+                failure_class=None,
                 failure_reason=None,
             )
 
+        if not retryable:
+            break
+
         if attempt < max_attempts and retryable:
-            sleep_fn(backoff_seconds * attempt)
+            sleep_fn(_next_backoff_seconds(failure_class, backoff_seconds, attempt))
+            if failure_class == "timeout":
+                current_timeout = min(current_timeout * timeout_scale, timeout_ceiling)
 
     return IngestRunnerResult(
         success=False,
         attempts=attempts,
         run_ids=run_ids,
         finished_at=utc_now(),
+        failure_class=attempts[-1].failure_class if attempts else None,
         failure_reason=_derive_failure_reason(attempts),
     )
 

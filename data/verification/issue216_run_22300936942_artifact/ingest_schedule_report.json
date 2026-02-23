@@ -1,0 +1,21 @@
+{
+  "success": true,
+  "attempts": [
+    {
+      "attempt": 1,
+      "http_status": 200,
+      "job_status": "success",
+      "failure_class": null,
+      "retryable": false,
+      "request_timeout_seconds": 240.0,
+      "error": null,
+      "detail": null
+    }
+  ],
+  "run_ids": [
+    308
+  ],
+  "finished_at": "2026-02-23T09:54:45.516235+00:00",
+  "failure_class": null,
+  "failure_reason": null
+}

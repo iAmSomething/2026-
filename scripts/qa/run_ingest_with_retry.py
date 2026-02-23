@@ -21,6 +21,8 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--max-retries", type=int, default=2)
     parser.add_argument("--backoff-seconds", type=float, default=1.0)
     parser.add_argument("--timeout", type=float, default=30.0)
+    parser.add_argument("--timeout-scale-on-timeout", type=float, default=1.5)
+    parser.add_argument("--timeout-max", type=float, default=600.0)
     parser.add_argument("--report", default="data/ingest_retry_report.json")
     return parser.parse_args()
 
@@ -39,12 +41,15 @@ def main() -> int:
         max_retries=args.max_retries,
         backoff_seconds=args.backoff_seconds,
         request_timeout=args.timeout,
+        timeout_scale_on_timeout=args.timeout_scale_on_timeout,
+        timeout_max=args.timeout_max,
     )
     write_runner_report(args.report, result)
     output = {
         "success": result.success,
         "report": args.report,
         "attempt_count": len(result.attempts),
+        "failure_class": result.failure_class,
         "failure_reason": result.failure_reason,
     }
     if result.attempts:
