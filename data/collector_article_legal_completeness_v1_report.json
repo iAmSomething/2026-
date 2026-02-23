@@ -1,0 +1,92 @@
+{
+  "run_type": "collector_article_legal_completeness_v1",
+  "source_path": "data/bootstrap_ingest_coverage_v2.json",
+  "sample_size": 50,
+  "required_fields": [
+    "sponsor",
+    "pollster",
+    "survey_period",
+    "sample_size",
+    "response_rate",
+    "margin_of_error"
+  ],
+  "threshold": 0.8,
+  "completeness": {
+    "avg_score": 0.1667,
+    "min_score": 0.1667,
+    "max_score": 0.1667,
+    "threshold_miss_count": 50,
+    "threshold_miss_rate": 1.0
+  },
+  "field_rates": {
+    "sponsor": {
+      "present_count": 0,
+      "present_rate": 0.0,
+      "valid_count": 0,
+      "valid_rate": 0.0,
+      "missing_count": 50,
+      "missing_rate": 1.0,
+      "invalid_count": 0,
+      "invalid_rate": 0.0
+    },
+    "pollster": {
+      "present_count": 50,
+      "present_rate": 1.0,
+      "valid_count": 50,
+      "valid_rate": 1.0,
+      "missing_count": 0,
+      "missing_rate": 0.0,
+      "invalid_count": 0,
+      "invalid_rate": 0.0
+    },
+    "survey_period": {
+      "present_count": 0,
+      "present_rate": 0.0,
+      "valid_count": 0,
+      "valid_rate": 0.0,
+      "missing_count": 50,
+      "missing_rate": 1.0,
+      "invalid_count": 0,
+      "invalid_rate": 0.0
+    },
+    "sample_size": {
+      "present_count": 0,
+      "present_rate": 0.0,
+      "valid_count": 0,
+      "valid_rate": 0.0,
+      "missing_count": 50,
+      "missing_rate": 1.0,
+      "invalid_count": 0,
+      "invalid_rate": 0.0
+    },
+    "response_rate": {
+      "present_count": 0,
+      "present_rate": 0.0,
+      "valid_count": 0,
+      "valid_rate": 0.0,
+      "missing_count": 50,
+      "missing_rate": 1.0,
+      "invalid_count": 0,
+      "invalid_rate": 0.0
+    },
+    "margin_of_error": {
+      "present_count": 0,
+      "present_rate": 0.0,
+      "valid_count": 0,
+      "valid_rate": 0.0,
+      "missing_count": 50,
+      "missing_rate": 1.0,
+      "invalid_count": 0,
+      "invalid_rate": 0.0
+    }
+  },
+  "reason_code_counts": {
+    "MISSING_SURVEY_PERIOD": 50
+  },
+  "review_queue_candidate_count": 50,
+  "acceptance_checks": {
+    "sample_size_eq_50": true,
+    "threshold_miss_review_queue_synced": true,
+    "has_missing_or_abnormal_cases": true
+  }
+}
