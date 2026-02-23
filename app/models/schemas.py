@@ -116,13 +116,37 @@ class SourceChannelMixOut(BaseModel):
     nesdc_ratio: float = 0.0
 
 
+class DashboardQualityFreshnessOut(BaseModel):
+    p50_hours: float | None = None
+    p90_hours: float | None = None
+    over_24h_ratio: float = 0.0
+    over_48h_ratio: float = 0.0
+    status: Literal["healthy", "warn", "critical"] = "healthy"
+
+
+class DashboardQualityOfficialOut(BaseModel):
+    confirmed_ratio: float = 0.0
+    unconfirmed_count: int = 0
+    status: Literal["healthy", "warn", "critical"] = "healthy"
+
+
+class DashboardQualityReviewOut(BaseModel):
+    pending_count: int = 0
+    in_progress_count: int = 0
+    pending_over_24h_count: int = 0
+
+
 class DashboardQualityOut(BaseModel):
     generated_at: datetime
+    quality_status: Literal["healthy", "warn", "critical"] = "healthy"
     freshness_p50_hours: float | None = None
     freshness_p90_hours: float | None = None
     official_confirmed_ratio: float = 0.0
     needs_manual_review_count: int = 0
     source_channel_mix: SourceChannelMixOut = Field(default_factory=SourceChannelMixOut)
+    freshness: DashboardQualityFreshnessOut = Field(default_factory=DashboardQualityFreshnessOut)
+    official_confirmation: DashboardQualityOfficialOut = Field(default_factory=DashboardQualityOfficialOut)
+    review_queue: DashboardQualityReviewOut = Field(default_factory=DashboardQualityReviewOut)
 
 
 class RegionElectionOut(BaseModel):

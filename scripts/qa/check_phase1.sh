@@ -252,6 +252,28 @@ assert isinstance(obj["is_official_confirmed"], bool)
 assert isinstance(obj["source_channels"], list)
 print("candidate ok")
 PY
+
+  run_check "api quality contract" "$PYTHON_BIN" - <<PY
+import json, urllib.request
+base="$API_BASE"
+obj=json.loads(urllib.request.urlopen(base+"/api/v1/dashboard/quality").read().decode())
+for k in [
+    "generated_at","quality_status","freshness_p50_hours","freshness_p90_hours",
+    "official_confirmed_ratio","needs_manual_review_count",
+    "source_channel_mix","freshness","official_confirmation","review_queue"
+]:
+    assert k in obj
+assert obj["quality_status"] in ("healthy", "warn", "critical")
+for k in ["article_ratio","nesdc_ratio"]:
+    assert k in obj["source_channel_mix"]
+for k in ["status","over_24h_ratio","over_48h_ratio"]:
+    assert k in obj["freshness"]
+for k in ["confirmed_ratio","unconfirmed_count","status"]:
+    assert k in obj["official_confirmation"]
+for k in ["pending_count","in_progress_count","pending_over_24h_count"]:
+    assert k in obj["review_queue"]
+print("quality ok")
+PY
 fi
 
 # E) Issue status overview (non-blocking)

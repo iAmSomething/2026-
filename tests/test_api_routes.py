@@ -271,11 +271,29 @@ class FakeApiRepo:
 
     def fetch_dashboard_quality(self):
         return {
+            "quality_status": "warn",
             "freshness_p50_hours": 18.5,
             "freshness_p90_hours": 42.25,
             "official_confirmed_ratio": 0.6,
             "needs_manual_review_count": 4,
             "source_channel_mix": {"article_ratio": 0.8, "nesdc_ratio": 0.6},
+            "freshness": {
+                "p50_hours": 18.5,
+                "p90_hours": 42.25,
+                "over_24h_ratio": 0.25,
+                "over_48h_ratio": 0.05,
+                "status": "warn",
+            },
+            "official_confirmation": {
+                "confirmed_ratio": 0.6,
+                "unconfirmed_count": 4,
+                "status": "warn",
+            },
+            "review_queue": {
+                "pending_count": 3,
+                "in_progress_count": 1,
+                "pending_over_24h_count": 1,
+            },
         }
 
     def fetch_review_queue_items(  # noqa: ARG002
@@ -469,6 +487,14 @@ def test_api_contract_fields():
     assert quality_body["needs_manual_review_count"] == 4
     assert quality_body["source_channel_mix"]["article_ratio"] == 0.8
     assert quality_body["source_channel_mix"]["nesdc_ratio"] == 0.6
+    assert quality_body["quality_status"] == "warn"
+    assert quality_body["freshness"]["status"] == "warn"
+    assert quality_body["freshness"]["over_24h_ratio"] == 0.25
+    assert quality_body["official_confirmation"]["confirmed_ratio"] == 0.6
+    assert quality_body["official_confirmation"]["unconfirmed_count"] == 4
+    assert quality_body["review_queue"]["pending_count"] == 3
+    assert quality_body["review_queue"]["in_progress_count"] == 1
+    assert quality_body["review_queue"]["pending_over_24h_count"] == 1
 
     region_elections = client.get("/api/v1/regions/11-000/elections")
     assert region_elections.status_code == 200
@@ -644,11 +670,29 @@ def test_dashboard_quality_empty_safe_contract():
     class QualityRepo(FakeApiRepo):
         def fetch_dashboard_quality(self):
             return {
+                "quality_status": "warn",
                 "freshness_p50_hours": None,
                 "freshness_p90_hours": None,
                 "official_confirmed_ratio": 0.0,
                 "needs_manual_review_count": 0,
                 "source_channel_mix": {"article_ratio": 0.0, "nesdc_ratio": 0.0},
+                "freshness": {
+                    "p50_hours": None,
+                    "p90_hours": None,
+                    "over_24h_ratio": 0.0,
+                    "over_48h_ratio": 0.0,
+                    "status": "warn",
+                },
+                "official_confirmation": {
+                    "confirmed_ratio": 0.0,
+                    "unconfirmed_count": 0,
+                    "status": "critical",
+                },
+                "review_queue": {
+                    "pending_count": 0,
+                    "in_progress_count": 0,
+                    "pending_over_24h_count": 0,
+                },
             }
 
     def override_quality_repo():
@@ -666,6 +710,10 @@ def test_dashboard_quality_empty_safe_contract():
     assert body["official_confirmed_ratio"] == 0.0
     assert body["needs_manual_review_count"] == 0
     assert body["source_channel_mix"] == {"article_ratio": 0.0, "nesdc_ratio": 0.0}
+    assert body["quality_status"] == "warn"
+    assert body["freshness"]["status"] == "warn"
+    assert body["official_confirmation"]["status"] == "critical"
+    assert body["review_queue"]["pending_count"] == 0
 
     app.dependency_overrides.clear()
 

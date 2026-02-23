@@ -602,24 +602,33 @@ class PostgresRepository:
                         COUNT(*)::int AS total_count,
                         percentile_cont(0.5) WITHIN GROUP (ORDER BY freshness_hours) AS freshness_p50_hours,
                         percentile_cont(0.9) WITHIN GROUP (ORDER BY freshness_hours) AS freshness_p90_hours,
+                        COUNT(*) FILTER (WHERE freshness_hours > 24)::int AS stale_over_24h_count,
+                        COUNT(*) FILTER (WHERE freshness_hours > 48)::int AS stale_over_48h_count,
                         COUNT(*) FILTER (WHERE has_article)::int AS article_count,
                         COUNT(*) FILTER (WHERE has_nesdc)::int AS nesdc_count
                     FROM base
                 ),
                 review AS (
                     SELECT
+                        COUNT(*) FILTER (WHERE status = 'pending')::int AS pending_count,
+                        COUNT(*) FILTER (WHERE status = 'in_progress')::int AS in_progress_count,
                         COUNT(*) FILTER (
-                            WHERE status IN ('pending', 'in_progress')
-                        )::int AS needs_manual_review_count
+                            WHERE status = 'pending'
+                              AND created_at < NOW() - INTERVAL '24 hours'
+                        )::int AS pending_over_24h_count
                     FROM review_queue
                 )
                 SELECT
                     a.total_count,
                     a.freshness_p50_hours,
                     a.freshness_p90_hours,
+                    a.stale_over_24h_count,
+                    a.stale_over_48h_count,
                     a.article_count,
                     a.nesdc_count,
-                    r.needs_manual_review_count
+                    r.pending_count,
+                    r.in_progress_count,
+                    r.pending_over_24h_count
                 FROM aggregate a
                 CROSS JOIN review r
                 """
@@ -629,27 +638,86 @@ class PostgresRepository:
         total_count = row.get("total_count", 0) or 0
         article_count = row.get("article_count", 0) or 0
         nesdc_count = row.get("nesdc_count", 0) or 0
+        stale_over_24h_count = row.get("stale_over_24h_count", 0) or 0
+        stale_over_48h_count = row.get("stale_over_48h_count", 0) or 0
+        pending_count = row.get("pending_count", 0) or 0
+        in_progress_count = row.get("in_progress_count", 0) or 0
+        pending_over_24h_count = row.get("pending_over_24h_count", 0) or 0
+        needs_manual_review_count = pending_count + in_progress_count
 
         if total_count > 0:
             official_confirmed_ratio = round(nesdc_count / total_count, 4)
             article_ratio = round(article_count / total_count, 4)
             nesdc_ratio = round(nesdc_count / total_count, 4)
+            stale_over_24h_ratio = round(stale_over_24h_count / total_count, 4)
+            stale_over_48h_ratio = round(stale_over_48h_count / total_count, 4)
         else:
             official_confirmed_ratio = 0.0
             article_ratio = 0.0
             nesdc_ratio = 0.0
+            stale_over_24h_ratio = 0.0
+            stale_over_48h_ratio = 0.0
 
         freshness_p50 = row.get("freshness_p50_hours")
         freshness_p90 = row.get("freshness_p90_hours")
+        freshness_p90_value = round(float(freshness_p90), 2) if freshness_p90 is not None else None
+
+        if freshness_p90_value is None:
+            freshness_status = "warn"
+        elif freshness_p90_value > 72 or stale_over_48h_ratio >= 0.3:
+            freshness_status = "critical"
+        elif freshness_p90_value > 48 or stale_over_24h_ratio >= 0.3:
+            freshness_status = "warn"
+        else:
+            freshness_status = "healthy"
+
+        if official_confirmed_ratio < 0.4:
+            official_status = "critical"
+        elif official_confirmed_ratio < 0.7:
+            official_status = "warn"
+        else:
+            official_status = "healthy"
+
+        if pending_over_24h_count >= 20 or needs_manual_review_count >= 50:
+            review_status = "critical"
+        elif pending_over_24h_count >= 5 or needs_manual_review_count >= 10:
+            review_status = "warn"
+        else:
+            review_status = "healthy"
+
+        if "critical" in {freshness_status, official_status, review_status}:
+            quality_status = "critical"
+        elif "warn" in {freshness_status, official_status, review_status}:
+            quality_status = "warn"
+        else:
+            quality_status = "healthy"
 
         return {
+            "quality_status": quality_status,
             "freshness_p50_hours": round(float(freshness_p50), 2) if freshness_p50 is not None else None,
-            "freshness_p90_hours": round(float(freshness_p90), 2) if freshness_p90 is not None else None,
+            "freshness_p90_hours": freshness_p90_value,
             "official_confirmed_ratio": official_confirmed_ratio,
-            "needs_manual_review_count": row.get("needs_manual_review_count", 0) or 0,
+            "needs_manual_review_count": needs_manual_review_count,
             "source_channel_mix": {
                 "article_ratio": article_ratio,
                 "nesdc_ratio": nesdc_ratio,
+            },
+            "freshness": {
+                "p50_hours": round(float(freshness_p50), 2) if freshness_p50 is not None else None,
+                "p90_hours": freshness_p90_value,
+                "over_24h_ratio": stale_over_24h_ratio,
+                "over_48h_ratio": stale_over_48h_ratio,
+                "status": freshness_status,
+            },
+            "official_confirmation": {
+                "confirmed_ratio": official_confirmed_ratio,
+                "unconfirmed_count": max(total_count - nesdc_count, 0),
+                "status": official_status,
+            },
+            "review_queue": {
+                "pending_count": pending_count,
+                "in_progress_count": in_progress_count,
+                "pending_over_24h_count": pending_over_24h_count,
             },
         }
 

@@ -110,6 +110,13 @@
 4. `needs_manual_review_count`는 `review_queue`의 `pending|in_progress` 건수 합이다.
 5. `source_channel_mix`는 관측치 기준 `article_ratio`, `nesdc_ratio`를 각각 0~1 범위로 노출한다.
 6. 데이터가 없으면 percentile 필드는 `null`, ratio/count 필드는 `0`으로 응답한다.
+7. v2 확장 필드:
+- `quality_status`: `healthy|warn|critical`
+- `freshness.status`: freshness 분포 임계치 기반 상태
+- `freshness.over_24h_ratio`, `freshness.over_48h_ratio`: freshness 지연 비율
+- `official_confirmation.status`: 공식확정 비율 임계치 기반 상태
+- `official_confirmation.unconfirmed_count`: 미공식 확정 건수
+- `review_queue.pending_count`, `review_queue.in_progress_count`, `review_queue.pending_over_24h_count`
 
 ## 7. 중복제어(fingerprint) 규칙
 1. fingerprint 기본 입력: `pollster`, `sponsor`, `survey_start_date`, `survey_end_date`, `region_code(or region_text)`, `sample_size`, `method`

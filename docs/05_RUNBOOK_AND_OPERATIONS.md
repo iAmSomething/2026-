@@ -156,6 +156,10 @@
 - `official_confirmed_ratio`
 - `needs_manual_review_count`
 - `source_channel_mix.article_ratio`, `source_channel_mix.nesdc_ratio`
+- `quality_status`
+- `freshness.status`, `freshness.over_24h_ratio`, `freshness.over_48h_ratio`
+- `official_confirmation.status`, `official_confirmation.unconfirmed_count`
+- `review_queue.pending_count`, `review_queue.in_progress_count`, `review_queue.pending_over_24h_count`
 9. 품질 해석 기준:
 - percentile 값이 `null`이면 관측치 부족 상태로 간주
 - `official_confirmed_ratio` 하락 또는 `needs_manual_review_count` 급증 시 QA/수집기 재점검 트리거
