@@ -60,6 +60,7 @@ jobs:
             --input data/collector_freshness_hotfix_v1_payload.json \
             --max-retries 2 \
             --backoff-seconds 1 \
+            --timeout 180 \
             --report data/ingest_schedule_report.json
 
       - name: Upload ingest report artifact
