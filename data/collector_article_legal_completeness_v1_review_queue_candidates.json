@@ -1,0 +1,1252 @@
+[
+  {
+    "id": "rvq_6f17aabcbb91b809",
+    "entity_type": "poll_observation",
+    "entity_id": "obs_8aff3ed1d23504f8",
+    "issue_type": "extract_error",
+    "stage": "legal_completeness_v1",
+    "error_code": "LEGAL_COMPLETENESS_BELOW_THRESHOLD",
+    "error_message": "required legal fields completeness below threshold",
+    "source_url": "https://news.google.com/rss/articles/CBMiPEFVX3lxTE56ZzduSTFSc2FmQUxiT2wzUGswSVIzcXM2Z0Z3dHRwWTNaclBRZ3RsZTBxVUx3dXN1YWQ2NdIBWEFVX3lxTE92RlNERThyckZnRmxlb2cxbFJ5WDhQX21lS2Qxb21KSkZxb2VPWkVQVU9RYnFuWHc4dDJJX3JNdGxFQXFyVm1BamU1enZHeERjcHpkN1FPb0I",
+    "payload": {
+      "completeness_score": 0.1667,
+      "threshold": 0.8,
+      "reason_code": "MISSING_SURVEY_PERIOD",
+      "missing_fields": [
+        "sponsor",
+        "survey_period",
+        "sample_size",
+        "response_rate",
+        "margin_of_error"
+      ],
+      "invalid_fields": []
+    },
+    "status": "pending",
+    "created_at": "2026-02-23T10:16:15.436231+00:00"
+  },
+  {
+    "id": "rvq_7d8d6aaabeb771b6",
+    "entity_type": "poll_observation",
+    "entity_id": "obs_1beca86ca98386bb",
+    "issue_type": "extract_error",
+    "stage": "legal_completeness_v1",
+    "error_code": "LEGAL_COMPLETENESS_BELOW_THRESHOLD",
+    "error_message": "required legal fields completeness below threshold",
+    "source_url": "https://news.google.com/rss/articles/CBMiRkFVX3lxTE1OME1aSlEzR1QyUkZqa2Uza2NZOC13SnJDVnpTS3hkS0o0alBjbkRFQzVvT2RKYWJsaHBQbzgweGlRQVNIdFE",
+    "payload": {
+      "completeness_score": 0.1667,
+      "threshold": 0.8,
+      "reason_code": "MISSING_SURVEY_PERIOD",
+      "missing_fields": [
+        "sponsor",
+        "survey_period",
+        "sample_size",
+        "response_rate",
+        "margin_of_error"
+      ],
+      "invalid_fields": []
+    },
+    "status": "pending",
+    "created_at": "2026-02-23T10:16:15.436693+00:00"
+  },
+  {
+    "id": "rvq_5adb1ce9b0f67e8f",
+    "entity_type": "poll_observation",
+    "entity_id": "obs_69b9a07a4997e975",
+    "issue_type": "extract_error",
+    "stage": "legal_completeness_v1",
+    "error_code": "LEGAL_COMPLETENESS_BELOW_THRESHOLD",
+    "error_message": "required legal fields completeness below threshold",
+    "source_url": "https://news.google.com/rss/articles/CBMiS0FVX3lxTE1XanN5QjNfa1BVTERQOFFnaklucmFveWtnUkFFNEY3WWFOOHM5QVFiWEE5UmE0b252UDRDQmJWeGlfWTZTaUszdTBBSQ",
+    "payload": {
+      "completeness_score": 0.1667,
+      "threshold": 0.8,
+      "reason_code": "MISSING_SURVEY_PERIOD",
+      "missing_fields": [
+        "sponsor",
+        "survey_period",
+        "sample_size",
+        "response_rate",
+        "margin_of_error"
+      ],
+      "invalid_fields": []
+    },
+    "status": "pending",
+    "created_at": "2026-02-23T10:16:15.436713+00:00"
+  },
+  {
+    "id": "rvq_66d521a6f5eb45e7",
+    "entity_type": "poll_observation",
+    "entity_id": "obs_350f14ce7e3668fb",
+    "issue_type": "extract_error",
+    "stage": "legal_completeness_v1",
+    "error_code": "LEGAL_COMPLETENESS_BELOW_THRESHOLD",
+    "error_message": "required legal fields completeness below threshold",
+    "source_url": "https://news.google.com/rss/articles/CBMiSEFVX3lxTE16dW16SWM5dUtrWlZ2WUlrSk5xVGhzZmRLUUhlMldBX3RiZHNjV1k5QXF2UzRmNWwtcEZuczk1NEVyNEZPa2pKRQ",
+    "payload": {
+      "completeness_score": 0.1667,
+      "threshold": 0.8,
+      "reason_code": "MISSING_SURVEY_PERIOD",
+      "missing_fields": [
+        "sponsor",
+        "survey_period",
+        "sample_size",
+        "response_rate",
+        "margin_of_error"
+      ],
+      "invalid_fields": []
+    },
+    "status": "pending",
+    "created_at": "2026-02-23T10:16:15.436727+00:00"
+  },
+  {
+    "id": "rvq_05a54c33775d7adb",
+    "entity_type": "poll_observation",
+    "entity_id": "obs_8c8010fe1c12852a",
+    "issue_type": "extract_error",
+    "stage": "legal_completeness_v1",
+    "error_code": "LEGAL_COMPLETENESS_BELOW_THRESHOLD",
+    "error_message": "required legal fields completeness below threshold",
+    "source_url": "https://news.google.com/rss/articles/CBMiU0FVX3lxTFBwUEV3THRiRXVTbW90VDBYSGF4dzcxaHNOWUhtYWZNaUYzU0hIRVdvYjhUTERXZVJ1a3hfYlB6OHJFSkNBZXZQRUJjOGZqRVh0eUFV",
+    "payload": {
+      "completeness_score": 0.1667,
+      "threshold": 0.8,
+      "reason_code": "MISSING_SURVEY_PERIOD",
+      "missing_fields": [
+        "sponsor",
+        "survey_period",
+        "sample_size",
+        "response_rate",
+        "margin_of_error"
+      ],
+      "invalid_fields": []
+    },
+    "status": "pending",
+    "created_at": "2026-02-23T10:16:15.436741+00:00"
+  },
+  {
+    "id": "rvq_3692881a454af579",
+    "entity_type": "poll_observation",
+    "entity_id": "obs_28eb3ac87760e5d3",
+    "issue_type": "extract_error",
+    "stage": "legal_completeness_v1",
+    "error_code": "LEGAL_COMPLETENESS_BELOW_THRESHOLD",
+    "error_message": "required legal fields completeness below threshold",
+    "source_url": "https://news.google.com/rss/articles/CBMiUkFVX3lxTE5pY25MWDNpREthWURTQ2FuWkRMXzUybF9NVkN2MG93Vzk2bm1KbXBpbFB3ZV85SzVMNlBWT0E5bDJsQlBfZVJYb1B2TDhJRDIzMVE",
+    "payload": {
+      "completeness_score": 0.1667,
+      "threshold": 0.8,
+      "reason_code": "MISSING_SURVEY_PERIOD",
+      "missing_fields": [
+        "sponsor",
+        "survey_period",
+        "sample_size",
+        "response_rate",
+        "margin_of_error"
+      ],
+      "invalid_fields": []
+    },
+    "status": "pending",
+    "created_at": "2026-02-23T10:16:15.436752+00:00"
+  },
+  {
+    "id": "rvq_0681e39f2a9de947",
+    "entity_type": "poll_observation",
+    "entity_id": "obs_1b304a647ade54cf",
+    "issue_type": "extract_error",
+    "stage": "legal_completeness_v1",
+    "error_code": "LEGAL_COMPLETENESS_BELOW_THRESHOLD",
+    "error_message": "required legal fields completeness below threshold",
+    "source_url": "https://news.google.com/rss/articles/CBMiVEFVX3lxTE4yc3BiSVh6NlJkbmVadjh4eWFleUJ2M0tYYTdkQ2pLRVhPR2dzRnNhR1lpNGZsd21XeWwwQ09nSXR1YjNBTnd2U05PY1oyaFZfOXNDMQ",
+    "payload": {
+      "completeness_score": 0.1667,
+      "threshold": 0.8,
+      "reason_code": "MISSING_SURVEY_PERIOD",
+      "missing_fields": [
+        "sponsor",
+        "survey_period",
+        "sample_size",
+        "response_rate",
+        "margin_of_error"
+      ],
+      "invalid_fields": []
+    },
+    "status": "pending",
+    "created_at": "2026-02-23T10:16:15.436762+00:00"
+  },
+  {
+    "id": "rvq_1e776c7f0cdfc129",
+    "entity_type": "poll_observation",
+    "entity_id": "obs_9210db1b70c7c97e",
+    "issue_type": "extract_error",
+    "stage": "legal_completeness_v1",
+    "error_code": "LEGAL_COMPLETENESS_BELOW_THRESHOLD",
+    "error_message": "required legal fields completeness below threshold",
+    "source_url": "https://news.google.com/rss/articles/CBMiVkFVX3lxTE1xNE1xVGxjX19tSnp3NGNENUJuR0I4Q01HNUN3UkVNdEpUaUxGcVQ2RlNCaTR0MTdnOVQtNXNjckg2M3dmbzRyYkFUNTRxR0NJYkszbnZ3",
+    "payload": {
+      "completeness_score": 0.1667,
+      "threshold": 0.8,
+      "reason_code": "MISSING_SURVEY_PERIOD",
+      "missing_fields": [
+        "sponsor",
+        "survey_period",
+        "sample_size",
+        "response_rate",
+        "margin_of_error"
+      ],
+      "invalid_fields": []
+    },
+    "status": "pending",
+    "created_at": "2026-02-23T10:16:15.436772+00:00"
+  },
+  {
+    "id": "rvq_2cb8c1269377ae0a",
+    "entity_type": "poll_observation",
+    "entity_id": "obs_019a0a0e22089be2",
+    "issue_type": "extract_error",
+    "stage": "legal_completeness_v1",
+    "error_code": "LEGAL_COMPLETENESS_BELOW_THRESHOLD",
+    "error_message": "required legal fields completeness below threshold",
+    "source_url": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE1YVHBLX2ZkX1Z1Ry1IZnRBUklqRVY1X0x1RnlVbHUtaXl6eEkyRTVUVkhaS0JIU1hhTUlJRFlLVlFXenVMdUxYMk1WTGdNQVNiSEFFbTMwcTBEUlE",
+    "payload": {
+      "completeness_score": 0.1667,
+      "threshold": 0.8,
+      "reason_code": "MISSING_SURVEY_PERIOD",
+      "missing_fields": [
+        "sponsor",
+        "survey_period",
+        "sample_size",
+        "response_rate",
+        "margin_of_error"
+      ],
+      "invalid_fields": []
+    },
+    "status": "pending",
+    "created_at": "2026-02-23T10:16:15.436782+00:00"
+  },
+  {
+    "id": "rvq_681eec807587f866",
+    "entity_type": "poll_observation",
+    "entity_id": "obs_c2a8e80898e2eb78",
+    "issue_type": "extract_error",
+    "stage": "legal_completeness_v1",
+    "error_code": "LEGAL_COMPLETENESS_BELOW_THRESHOLD",
+    "error_message": "required legal fields completeness below threshold",
+    "source_url": "https://news.google.com/rss/articles/CBMiW0FVX3lxTFA1OHEzY1prQ3RCa2F2Z3VvbGNBQjRTZWp1YktvUlBwek9IYVJOaDNJc0ZkbWxGQkFoUEpUeHZFTHExa1dydlZuVU9pWWdFR3lzZGgyekY2TEh3SjQ",
+    "payload": {
+      "completeness_score": 0.1667,
+      "threshold": 0.8,
+      "reason_code": "MISSING_SURVEY_PERIOD",
+      "missing_fields": [
+        "sponsor",
+        "survey_period",
+        "sample_size",
+        "response_rate",
+        "margin_of_error"
+      ],
+      "invalid_fields": []
+    },
+    "status": "pending",
+    "created_at": "2026-02-23T10:16:15.436792+00:00"
+  },
+  {
+    "id": "rvq_4ada7b4622f4b46b",
+    "entity_type": "poll_observation",
+    "entity_id": "obs_2abffbb597220668",
+    "issue_type": "extract_error",
+    "stage": "legal_completeness_v1",
+    "error_code": "LEGAL_COMPLETENESS_BELOW_THRESHOLD",
+    "error_message": "required legal fields completeness below threshold",
+    "source_url": "https://news.google.com/rss/articles/CBMiWEFVX3lxTFA3QzZLYmNnQUdGcE5xeUZTWjBlaWFTbXc5Rl81a0xVY0FQTXlzZWthcG81dGRldDZHcTRTdDZDSVp0d1hiMlhKcmtmM2FkYUFSb2RHNzhEN3M",
+    "payload": {
+      "completeness_score": 0.1667,
+      "threshold": 0.8,
+      "reason_code": "MISSING_SURVEY_PERIOD",
+      "missing_fields": [
+        "sponsor",
+        "survey_period",
+        "sample_size",
+        "response_rate",
+        "margin_of_error"
+      ],
+      "invalid_fields": []
+    },
+    "status": "pending",
+    "created_at": "2026-02-23T10:16:15.436801+00:00"
+  },
+  {
+    "id": "rvq_f27e17d68352d3ba",
+    "entity_type": "poll_observation",
+    "entity_id": "obs_a8a990474f6b1bc2",
+    "issue_type": "extract_error",
+    "stage": "legal_completeness_v1",
+    "error_code": "LEGAL_COMPLETENESS_BELOW_THRESHOLD",
+    "error_message": "required legal fields completeness below threshold",
+    "source_url": "https://news.google.com/rss/articles/CBMia0FVX3lxTE9CQWZnOGdZdzdGYWtINXdjeHZTdncxLWlEY251LWVMd3ZNbGZwRlQ3YksyT3FqVGl0M0U5VFZHX2d5clFZWlBLS2R4U2VmRjRZdnpnSkdfZ3pJamQ1X0p0aUllVFJxdC12LS1z",
+    "payload": {
+      "completeness_score": 0.1667,
+      "threshold": 0.8,
+      "reason_code": "MISSING_SURVEY_PERIOD",
+      "missing_fields": [
+        "sponsor",
+        "survey_period",
+        "sample_size",
+        "response_rate",
+        "margin_of_error"
+      ],
+      "invalid_fields": []
+    },
+    "status": "pending",
+    "created_at": "2026-02-23T10:16:15.436812+00:00"
+  },
+  {
+    "id": "rvq_e6f58bfd600f54dd",
+    "entity_type": "poll_observation",
+    "entity_id": "obs_570a0e3cef2d44c8",
+    "issue_type": "extract_error",
+    "stage": "legal_completeness_v1",
+    "error_code": "LEGAL_COMPLETENESS_BELOW_THRESHOLD",
+    "error_message": "required legal fields completeness below threshold",
+    "source_url": "https://news.google.com/rss/articles/CBMiUEFVX3lxTE04cmc5WjRBVFV2THhIaW9GbXFtVXdIdnktSXdUc2Znb08yZ0xfalBmNElQVWdTd3AwOHRRMXpXSktQOEppVmVkWnFreUNHc3Rv",
+    "payload": {
+      "completeness_score": 0.1667,
+      "threshold": 0.8,
+      "reason_code": "MISSING_SURVEY_PERIOD",
+      "missing_fields": [
+        "sponsor",
+        "survey_period",
+        "sample_size",
+        "response_rate",
+        "margin_of_error"
+      ],
+      "invalid_fields": []
+    },
+    "status": "pending",
+    "created_at": "2026-02-23T10:16:15.436823+00:00"
+  },
+  {
+    "id": "rvq_08051115c58906df",
+    "entity_type": "poll_observation",
+    "entity_id": "obs_1b4cc75fe542165c",
+    "issue_type": "extract_error",
+    "stage": "legal_completeness_v1",
+    "error_code": "LEGAL_COMPLETENESS_BELOW_THRESHOLD",
+    "error_message": "required legal fields completeness below threshold",
+    "source_url": "https://news.google.com/rss/articles/CBMiY0FVX3lxTE9fRTUxSnA0YUFrVFI0eThGODJwTHY0N3BuaTdhc3dPVVozOHo0LUlRc1BFZV9zU2FqdjltUDBRWFJWeGV4aERjbUtZZGVrcHJ3QXpGa2Z2UlBMVUZxZThwaDFTSQ",
+    "payload": {
+      "completeness_score": 0.1667,
+      "threshold": 0.8,
+      "reason_code": "MISSING_SURVEY_PERIOD",
+      "missing_fields": [
+        "sponsor",
+        "survey_period",
+        "sample_size",
+        "response_rate",
+        "margin_of_error"
+      ],
+      "invalid_fields": []
+    },
+    "status": "pending",
+    "created_at": "2026-02-23T10:16:15.436832+00:00"
+  },
+  {
+    "id": "rvq_ab3927feaab6b5b0",
+    "entity_type": "poll_observation",
+    "entity_id": "obs_e2bc30a4e716291f",
+    "issue_type": "extract_error",
+    "stage": "legal_completeness_v1",
+    "error_code": "LEGAL_COMPLETENESS_BELOW_THRESHOLD",
+    "error_message": "required legal fields completeness below threshold",
+    "source_url": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE84MVZyNUFHanNWTWdid08zcWtzLU85bk5aSEw4UGFKemNqQi1LWVczWHpEZnN2TlA5a0MzbnJPckJwcFh5QTdSSThCdWluamkxa1plSWRmMEtEbV9UWS1VcNIBeEFVX3lxTE05VmZpdG9KYk1FVlRnS3JRazhQR285LWJZb3d1QlBVeDNTQ24zZXB6elkxZEJfQ2EwNWpLcGJTWmZCZEVidWN0dTI4MVI4WVhUUEVrLUVncmxMZG1pRUhGZUZISURDQ1NjbHNTZVVXN2d5N2dRWEpwdg",
+    "payload": {
+      "completeness_score": 0.1667,
+      "threshold": 0.8,
+      "reason_code": "MISSING_SURVEY_PERIOD",
+      "missing_fields": [
+        "sponsor",
+        "survey_period",
+        "sample_size",
+        "response_rate",
+        "margin_of_error"
+      ],
+      "invalid_fields": []
+    },
+    "status": "pending",
+    "created_at": "2026-02-23T10:16:15.436841+00:00"
+  },
+  {
+    "id": "rvq_30d51290a4c0080c",
+    "entity_type": "poll_observation",
+    "entity_id": "obs_9961c9bafbda6f30",
+    "issue_type": "extract_error",
+    "stage": "legal_completeness_v1",
+    "error_code": "LEGAL_COMPLETENESS_BELOW_THRESHOLD",
+    "error_message": "required legal fields completeness below threshold",
+    "source_url": "https://news.google.com/rss/articles/CBMiZ0FVX3lxTE1aQmVGVVEtN1o4dG1VcG04WTZGem9Vb3lxRXRfaTlONjBiVXJ4YVotTUhYX2xCWExqblNidjlhdVlGWmltVllxQmhGazRpMjhSc1pjQmVZNUNMLU92MVpOWDJpZ1Qtb0k",
+    "payload": {
+      "completeness_score": 0.1667,
+      "threshold": 0.8,
+      "reason_code": "MISSING_SURVEY_PERIOD",
+      "missing_fields": [
+        "sponsor",
+        "survey_period",
+        "sample_size",
+        "response_rate",
+        "margin_of_error"
+      ],
+      "invalid_fields": []
+    },
+    "status": "pending",
+    "created_at": "2026-02-23T10:16:15.436850+00:00"
+  },
+  {
+    "id": "rvq_4cbe49d937c6ae6b",
+    "entity_type": "poll_observation",
+    "entity_id": "obs_eb296d307d9f189a",
+    "issue_type": "extract_error",
+    "stage": "legal_completeness_v1",
+    "error_code": "LEGAL_COMPLETENESS_BELOW_THRESHOLD",
+    "error_message": "required legal fields completeness below threshold",
+    "source_url": "https://news.google.com/rss/articles/CBMia0FVX3lxTFA5eUxUeHFPUUVBcW1vVWREb3kwSExyai1SNXpPMDR3XzJRRGNweURmYmJNbnY5dnFOR2xSYWpzNVdfZGxMVTFVRTQtR1p4b0cwSUFCblB6dkpJN2puUXdXd1dtZFNOUWpXQUJ30gFvQVVfeXFMTWY2cndSUFMzV3lBNTZmVHY0ODZ2Yzc3NndTYzFXNTZpa1pneWpaMmJmczRRRzlRM3N5TTMyVkJvbHc1OU5OZV9QM1Jmc2tJcVlRamd4Y0wyNkhManFxNDRuemUzM0NBRG5BR0pvdkdV",
+    "payload": {
+      "completeness_score": 0.1667,
+      "threshold": 0.8,
+      "reason_code": "MISSING_SURVEY_PERIOD",
+      "missing_fields": [
+        "sponsor",
+        "survey_period",
+        "sample_size",
+        "response_rate",
+        "margin_of_error"
+      ],
+      "invalid_fields": []
+    },
+    "status": "pending",
+    "created_at": "2026-02-23T10:16:15.436860+00:00"
+  },
+  {
+    "id": "rvq_48bd53b180ea6b99",
+    "entity_type": "poll_observation",
+    "entity_id": "obs_5425934b495c835e",
+    "issue_type": "extract_error",
+    "stage": "legal_completeness_v1",
+    "error_code": "LEGAL_COMPLETENESS_BELOW_THRESHOLD",
+    "error_message": "required legal fields completeness below threshold",
+    "source_url": "https://news.google.com/rss/articles/CBMib0FVX3lxTE5ybFpja3JUNExzVm5vSVFzR19wX1ZZZGVSWWxXYWJnUmpyaXMxdExpRVFQM1pjVDhYSEFZVFJ3M0djek8tNml5NXlGTjlLN3lncEhfMENxUGw2dHB3RTYzMU50T1F6MEQxMFBfSUgzWdIBc0FVX3lxTE0xS0dybzFlb0o2bUgtdHdRTHNFTE5IbVNIRzRBQ1NBa1ZfUGkyTHFfc2ZsNnFsajZhZ1RWaXI1NlE2cEV1eHpyTWI2LUQwWTVRdDVkeFVnMDBqR3RuTU1kSWdRQzlpOER6d2Voc2tVNlRBX1U",
+    "payload": {
+      "completeness_score": 0.1667,
+      "threshold": 0.8,
+      "reason_code": "MISSING_SURVEY_PERIOD",
+      "missing_fields": [
+        "sponsor",
+        "survey_period",
+        "sample_size",
+        "response_rate",
+        "margin_of_error"
+      ],
+      "invalid_fields": []
+    },
+    "status": "pending",
+    "created_at": "2026-02-23T10:16:15.436870+00:00"
+  },
+  {
+    "id": "rvq_a023d9369606aba0",
+    "entity_type": "poll_observation",
+    "entity_id": "obs_b61d10f49a5d5fdd",
+    "issue_type": "extract_error",
+    "stage": "legal_completeness_v1",
+    "error_code": "LEGAL_COMPLETENESS_BELOW_THRESHOLD",
+    "error_message": "required legal fields completeness below threshold",
+    "source_url": "https://news.google.com/rss/articles/CBMibkFVX3lxTE9tU29Yc0dzaDhTR3BHUFNsaTdhb3h6N3Z2b3M4eEFxVHBtZzYwU3BrZV9DdEdNSWoxZV8wWk1lanEwRk4yLTJucFpwNnBZQ3hZdUNfNFNWOG1SVGdRc21qZjVVY3p0UFR2NHoycjRR0gFyQVVfeXFMUDc1RnNZaFhKeVE1NXMwbUtWSDJNMmYxWWJGY09Ea1Bxb191UlRiblBVWXhwRzNRT1JIWFRuME5DeF9YTjBjRHNOOE1WMFRWVWN5Nlo3U3d2OUVlX2ZzSVJ3bTRTQ3ZjWGRGdExlQTdnV2x3",
+    "payload": {
+      "completeness_score": 0.1667,
+      "threshold": 0.8,
+      "reason_code": "MISSING_SURVEY_PERIOD",
+      "missing_fields": [
+        "sponsor",
+        "survey_period",
+        "sample_size",
+        "response_rate",
+        "margin_of_error"
+      ],
+      "invalid_fields": []
+    },
+    "status": "pending",
+    "created_at": "2026-02-23T10:16:15.436879+00:00"
+  },
+  {
+    "id": "rvq_2b5c8b3893f15849",
+    "entity_type": "poll_observation",
+    "entity_id": "obs_4a3cfc6a5b3dc73a",
+    "issue_type": "extract_error",
+    "stage": "legal_completeness_v1",
+    "error_code": "LEGAL_COMPLETENESS_BELOW_THRESHOLD",
+    "error_message": "required legal fields completeness below threshold",
+    "source_url": "https://news.google.com/rss/articles/CBMic0FVX3lxTE0wV2NwN2ZtUDhIZERpUXBQWUhsOVVCVjVPcVVac3ZLMVZaM29nYWltbVBTU1VjNkV2NnlVaVQzSi1jOE1QUkVyWUpwT3l3dlYyM1BjMEt4VlFiUF93QjZ0V3F2d3BxV3NsSFJaRjVhTHpWR2s",
+    "payload": {
+      "completeness_score": 0.1667,
+      "threshold": 0.8,
+      "reason_code": "MISSING_SURVEY_PERIOD",
+      "missing_fields": [
+        "sponsor",
+        "survey_period",
+        "sample_size",
+        "response_rate",
+        "margin_of_error"
+      ],
+      "invalid_fields": []
+    },
+    "status": "pending",
+    "created_at": "2026-02-23T10:16:15.436888+00:00"
+  },
+  {
+    "id": "rvq_ae761544cbc1874f",
+    "entity_type": "poll_observation",
+    "entity_id": "obs_6490a50035ace1dd",
+    "issue_type": "extract_error",
+    "stage": "legal_completeness_v1",
+    "error_code": "LEGAL_COMPLETENESS_BELOW_THRESHOLD",
+    "error_message": "required legal fields completeness below threshold",
+    "source_url": "https://news.google.com/rss/articles/CBMib0FVX3lxTE96eDNvQlc1VXBmcUFkcDNCRnFMTUVvTTBCTWhuOE40d0JaSUNhMDV0RGtVLWdnNkMyNWZQdTJ0YkVrVXhUMU5aUW5yM1Q1VzBJV2tkNm5yclE5dExzV0paY0t0YTRWc0d3TkRfUzh0QQ",
+    "payload": {
+      "completeness_score": 0.1667,
+      "threshold": 0.8,
+      "reason_code": "MISSING_SURVEY_PERIOD",
+      "missing_fields": [
+        "sponsor",
+        "survey_period",
+        "sample_size",
+        "response_rate",
+        "margin_of_error"
+      ],
+      "invalid_fields": []
+    },
+    "status": "pending",
+    "created_at": "2026-02-23T10:16:15.436897+00:00"
+  },
+  {
+    "id": "rvq_f83bc3ed1e27f29f",
+    "entity_type": "poll_observation",
+    "entity_id": "obs_4f65234aef2f2255",
+    "issue_type": "extract_error",
+    "stage": "legal_completeness_v1",
+    "error_code": "LEGAL_COMPLETENESS_BELOW_THRESHOLD",
+    "error_message": "required legal fields completeness below threshold",
+    "source_url": "https://news.google.com/rss/articles/CBMiSEFVX3lxTFA1aXhpamJBU3lNS2NSMUJzLXFLS3hPR3JiYkJXaEFORTZVVXBwaUoxWXhNTzJFSXFrVXFuaURLZkZxWndxMHRSNA",
+    "payload": {
+      "completeness_score": 0.1667,
+      "threshold": 0.8,
+      "reason_code": "MISSING_SURVEY_PERIOD",
+      "missing_fields": [
+        "sponsor",
+        "survey_period",
+        "sample_size",
+        "response_rate",
+        "margin_of_error"
+      ],
+      "invalid_fields": []
+    },
+    "status": "pending",
+    "created_at": "2026-02-23T10:16:15.436909+00:00"
+  },
+  {
+    "id": "rvq_36441ef9531f5000",
+    "entity_type": "poll_observation",
+    "entity_id": "obs_28b652315fffc54c",
+    "issue_type": "extract_error",
+    "stage": "legal_completeness_v1",
+    "error_code": "LEGAL_COMPLETENESS_BELOW_THRESHOLD",
+    "error_message": "required legal fields completeness below threshold",
+    "source_url": "https://news.google.com/rss/articles/CBMic0FVX3lxTFB6SWZjTVVtenBZRko1RTBSUVZfQndNcmQ4cnc0UlZhVDNSY3IxaHBENmFZSTlyMS14cGtFN1dqYXEzc1g1QzR1T2NVY0RHNTNhTjRNWGFZSWZ3UHRsREdhckhpLWRXTDRtZ19fMUcyMXdFdmfSAXdBVV95cUxQTUxjaThUSlAyWHdHTE11aTRTVTdVUmFvNlZLMlo0M25tWXRTNzRYUDRQV05BSVhqR20xY1lJSHVVZVlVZVhXZnBkSThmbWZuZmNDX2R3NGdzZjBPWXN2OThJZ2dreHFWQ3l0TFZDUl9iN1pYbWE0bw",
+    "payload": {
+      "completeness_score": 0.1667,
+      "threshold": 0.8,
+      "reason_code": "MISSING_SURVEY_PERIOD",
+      "missing_fields": [
+        "sponsor",
+        "survey_period",
+        "sample_size",
+        "response_rate",
+        "margin_of_error"
+      ],
+      "invalid_fields": []
+    },
+    "status": "pending",
+    "created_at": "2026-02-23T10:16:15.436918+00:00"
+  },
+  {
+    "id": "rvq_e7db6457e0ce0676",
+    "entity_type": "poll_observation",
+    "entity_id": "obs_f02b9da293d85f45",
+    "issue_type": "extract_error",
+    "stage": "legal_completeness_v1",
+    "error_code": "LEGAL_COMPLETENESS_BELOW_THRESHOLD",
+    "error_message": "required legal fields completeness below threshold",
+    "source_url": "https://news.google.com/rss/articles/CBMicEFVX3lxTE5SVTdnNi1DU3hFdmF1S3ZjbHdidU9tOVktNE1TZ095c2hMdmMxODNHckNxd0ZSQjVtYUZHeVg0TExGUU1jUUotdTFRUUJRZldLb1BSeTFueGhSM1p2WURuZnBUa3JHLVh3Q3FCcXJhdnM",
+    "payload": {
+      "completeness_score": 0.1667,
+      "threshold": 0.8,
+      "reason_code": "MISSING_SURVEY_PERIOD",
+      "missing_fields": [
+        "sponsor",
+        "survey_period",
+        "sample_size",
+        "response_rate",
+        "margin_of_error"
+      ],
+      "invalid_fields": []
+    },
+    "status": "pending",
+    "created_at": "2026-02-23T10:16:15.436927+00:00"
+  },
+  {
+    "id": "rvq_323f63e0c10801b8",
+    "entity_type": "poll_observation",
+    "entity_id": "obs_0f7b70cba187620c",
+    "issue_type": "extract_error",
+    "stage": "legal_completeness_v1",
+    "error_code": "LEGAL_COMPLETENESS_BELOW_THRESHOLD",
+    "error_message": "required legal fields completeness below threshold",
+    "source_url": "https://news.google.com/rss/articles/CBMiTkFVX3lxTE9xeU1ObnV5dzM5NTF2eURUelNNWFlTcVNlR3RpSU4xNFVUWXdBQi1ZbzRIcl83ZUNnOTVxS1o5a1MzSlNzRGQzMS16R2kwQQ",
+    "payload": {
+      "completeness_score": 0.1667,
+      "threshold": 0.8,
+      "reason_code": "MISSING_SURVEY_PERIOD",
+      "missing_fields": [
+        "sponsor",
+        "survey_period",
+        "sample_size",
+        "response_rate",
+        "margin_of_error"
+      ],
+      "invalid_fields": []
+    },
+    "status": "pending",
+    "created_at": "2026-02-23T10:16:15.436936+00:00"
+  },
+  {
+    "id": "rvq_fc454acbd0c59466",
+    "entity_type": "poll_observation",
+    "entity_id": "obs_ca72aacb9b35270c",
+    "issue_type": "extract_error",
+    "stage": "legal_completeness_v1",
+    "error_code": "LEGAL_COMPLETENESS_BELOW_THRESHOLD",
+    "error_message": "required legal fields completeness below threshold",
+    "source_url": "https://news.google.com/rss/articles/CBMiVEFVX3lxTFBZZ1NjWTBJb2VFbmV1alZ0WXY5bnBzVEFrWEItMG92enpSQkpTNGtMVy12X21uUS1mUnJTeWdTM29sSHE0VGpiWjVFMXBQb3ZoR1BhbNIBWEFVX3lxTE9NRzItMGNnM3VFdmFFWHFsc2VOUU5nVXZld3BYOV9JNFZZeEZDUFlkeE9ueFZzRkN5d3NsMjBnYkg4NmVCQXIwYUZYZGp2TUxOaVdmc3VaLUs",
+    "payload": {
+      "completeness_score": 0.1667,
+      "threshold": 0.8,
+      "reason_code": "MISSING_SURVEY_PERIOD",
+      "missing_fields": [
+        "sponsor",
+        "survey_period",
+        "sample_size",
+        "response_rate",
+        "margin_of_error"
+      ],
+      "invalid_fields": []
+    },
+    "status": "pending",
+    "created_at": "2026-02-23T10:16:15.436945+00:00"
+  },
+  {
+    "id": "rvq_d1cea183316b85f3",
+    "entity_type": "poll_observation",
+    "entity_id": "obs_452db4024c0a564f",
+    "issue_type": "extract_error",
+    "stage": "legal_completeness_v1",
+    "error_code": "LEGAL_COMPLETENESS_BELOW_THRESHOLD",
+    "error_message": "required legal fields completeness below threshold",
+    "source_url": "https://news.google.com/rss/articles/CBMiWkFVX3lxTFBtSUU5RVB3VnZEMDRzWUpNamxPNXk4WHpVR29KVVE2MDYtSFMxTTh5UWIxZ0dfcUlUVVZhVVhyYjlPeHNoYTdzam0tY2d0YUZibGRESW9MSXNoQQ",
+    "payload": {
+      "completeness_score": 0.1667,
+      "threshold": 0.8,
+      "reason_code": "MISSING_SURVEY_PERIOD",
+      "missing_fields": [
+        "sponsor",
+        "survey_period",
+        "sample_size",
+        "response_rate",
+        "margin_of_error"
+      ],
+      "invalid_fields": []
+    },
+    "status": "pending",
+    "created_at": "2026-02-23T10:16:15.436955+00:00"
+  },
+  {
+    "id": "rvq_1a6fc23ef0f7c081",
+    "entity_type": "poll_observation",
+    "entity_id": "obs_abb740f7fe640154",
+    "issue_type": "extract_error",
+    "stage": "legal_completeness_v1",
+    "error_code": "LEGAL_COMPLETENESS_BELOW_THRESHOLD",
+    "error_message": "required legal fields completeness below threshold",
+    "source_url": "https://news.google.com/rss/articles/CBMimwFBVV95cUxPMjFRclBzZnhwdWlFY1l1QU1aRHNzem5UM0kzSW9LQjVldFNHeGg5ajlkZ1MycDYzek5RbWFTLVl5RjFlTlBLSzV4LXR1M1VmdTR3akpvTEp0SkFaR3h3Q0lIdEhDR0VkOFNJRWZEYXYtNEJGcHhuTEJOTG5zSEItZG04UWNUM2JsZUJsLUJnNXZYZExjSjRfQk0wQQ",
+    "payload": {
+      "completeness_score": 0.1667,
+      "threshold": 0.8,
+      "reason_code": "MISSING_SURVEY_PERIOD",
+      "missing_fields": [
+        "sponsor",
+        "survey_period",
+        "sample_size",
+        "response_rate",
+        "margin_of_error"
+      ],
+      "invalid_fields": []
+    },
+    "status": "pending",
+    "created_at": "2026-02-23T10:16:15.436966+00:00"
+  },
+  {
+    "id": "rvq_93aeb36910033672",
+    "entity_type": "poll_observation",
+    "entity_id": "obs_4466ab3585586751",
+    "issue_type": "extract_error",
+    "stage": "legal_completeness_v1",
+    "error_code": "LEGAL_COMPLETENESS_BELOW_THRESHOLD",
+    "error_message": "required legal fields completeness below threshold",
+    "source_url": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE1uRzhOaDNwa3IwZzl2RUdGNFZpdFVuU09Nd1VQS1F0UVZtLUdqOG5XcXNsNGxfb0gwRmllS2FxbVU5THN1ai1WLXRHVUxOY0ZzT2syakVYb3E3ME1Md05Dbw",
+    "payload": {
+      "completeness_score": 0.1667,
+      "threshold": 0.8,
+      "reason_code": "MISSING_SURVEY_PERIOD",
+      "missing_fields": [
+        "sponsor",
+        "survey_period",
+        "sample_size",
+        "response_rate",
+        "margin_of_error"
+      ],
+      "invalid_fields": []
+    },
+    "status": "pending",
+    "created_at": "2026-02-23T10:16:15.436975+00:00"
+  },
+  {
+    "id": "rvq_46f1ca5611145674",
+    "entity_type": "poll_observation",
+    "entity_id": "obs_99f136b9a635fd9c",
+    "issue_type": "extract_error",
+    "stage": "legal_completeness_v1",
+    "error_code": "LEGAL_COMPLETENESS_BELOW_THRESHOLD",
+    "error_message": "required legal fields completeness below threshold",
+    "source_url": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE4xWmdDbjdTOGNqY2Nrb3YxZXBuWGI3Wk5JVHpPVkVXMGpTbFhJcFdwNE9YdW91SG5OcmREWmVsU2hHYXJraEFsZmRfbUU1X2plYktaZWsta096RmNLSXlwbA",
+    "payload": {
+      "completeness_score": 0.1667,
+      "threshold": 0.8,
+      "reason_code": "MISSING_SURVEY_PERIOD",
+      "missing_fields": [
+        "sponsor",
+        "survey_period",
+        "sample_size",
+        "response_rate",
+        "margin_of_error"
+      ],
+      "invalid_fields": []
+    },
+    "status": "pending",
+    "created_at": "2026-02-23T10:16:15.436984+00:00"
+  },
+  {
+    "id": "rvq_02bb980a8ad92829",
+    "entity_type": "poll_observation",
+    "entity_id": "obs_95b0381df82f842f",
+    "issue_type": "extract_error",
+    "stage": "legal_completeness_v1",
+    "error_code": "LEGAL_COMPLETENESS_BELOW_THRESHOLD",
+    "error_message": "required legal fields completeness below threshold",
+    "source_url": "https://news.google.com/rss/articles/CBMiakFVX3lxTE4wZGZXMFVLN3J2UHp3azQ4QXo3djlLTlpYQW5IQTdBMjRzSVJvWTlXRGVWNDZITi14WEp1ZDR2N2w5M0NVeEt5d0UzTjAtcmM2c0g2NVk2QWNMNGRzUjBVa2hISHY4UUJhZWfSAW5BVV95cUxOT3ZlMFB2VWxXNDBzVEdEazZHdWdfZkN5MkJ6a1N3TTVCM3ZZb0hnRXZDenhhMi1uZnVBYkp2UnVVN0Nld1BFTWIzMUpjekNvcFRnZGQyVTNBanowNFFiN3FVYWRxZ09OTnB1MHRhZw",
+    "payload": {
+      "completeness_score": 0.1667,
+      "threshold": 0.8,
+      "reason_code": "MISSING_SURVEY_PERIOD",
+      "missing_fields": [
+        "sponsor",
+        "survey_period",
+        "sample_size",
+        "response_rate",
+        "margin_of_error"
+      ],
+      "invalid_fields": []
+    },
+    "status": "pending",
+    "created_at": "2026-02-23T10:16:15.436993+00:00"
+  },
+  {
+    "id": "rvq_c5bd3e5b6cce6170",
+    "entity_type": "poll_observation",
+    "entity_id": "obs_ab61646857088d53",
+    "issue_type": "extract_error",
+    "stage": "legal_completeness_v1",
+    "error_code": "LEGAL_COMPLETENESS_BELOW_THRESHOLD",
+    "error_message": "required legal fields completeness below threshold",
+    "source_url": "https://news.google.com/rss/articles/CBMiZkFVX3lxTE9KVFFNaktfaGhib2ktZi1kU1BDdFRFNkpkMjU3V0ZvbS1ZcUlCTGtPeV9xZWdvVlNzLUFpUi11aEpDSThtRFJ6eU15ZTFDdENobTNHeGJkdHhBWmtTWEpvS2R4dzlkUQ",
+    "payload": {
+      "completeness_score": 0.1667,
+      "threshold": 0.8,
+      "reason_code": "MISSING_SURVEY_PERIOD",
+      "missing_fields": [
+        "sponsor",
+        "survey_period",
+        "sample_size",
+        "response_rate",
+        "margin_of_error"
+      ],
+      "invalid_fields": []
+    },
+    "status": "pending",
+    "created_at": "2026-02-23T10:16:15.437003+00:00"
+  },
+  {
+    "id": "rvq_f655b985f50181c6",
+    "entity_type": "poll_observation",
+    "entity_id": "obs_d665019db527a0c8",
+    "issue_type": "extract_error",
+    "stage": "legal_completeness_v1",
+    "error_code": "LEGAL_COMPLETENESS_BELOW_THRESHOLD",
+    "error_message": "required legal fields completeness below threshold",
+    "source_url": "https://news.google.com/rss/articles/CBMic0FVX3lxTE9vcmhfUVFoYXhYSWFsbW5HLXRFRnhxZDNyWXJKMWJFR05sVUIzVTFtN21TTTBldU5GWVFXa1BjVDk3YTRJNDlaQTJnOXhxQmpwT1dIaW9GSEF3NzBLZnIwZG44TGZvbzVwbEo3RFhjek81M3M",
+    "payload": {
+      "completeness_score": 0.1667,
+      "threshold": 0.8,
+      "reason_code": "MISSING_SURVEY_PERIOD",
+      "missing_fields": [
+        "sponsor",
+        "survey_period",
+        "sample_size",
+        "response_rate",
+        "margin_of_error"
+      ],
+      "invalid_fields": []
+    },
+    "status": "pending",
+    "created_at": "2026-02-23T10:16:15.437013+00:00"
+  },
+  {
+    "id": "rvq_6914b5cfa65d0615",
+    "entity_type": "poll_observation",
+    "entity_id": "obs_8dc5d149038ab97c",
+    "issue_type": "extract_error",
+    "stage": "legal_completeness_v1",
+    "error_code": "LEGAL_COMPLETENESS_BELOW_THRESHOLD",
+    "error_message": "required legal fields completeness below threshold",
+    "source_url": "https://news.google.com/rss/articles/CBMicEFVX3lxTE9TYVNqLXN0aW1lemlIME05b25KX09HNFYydlg1Zk9iaUgyZ2kwcG12b0tTVHRtSEZNVTBoRm1xYS1zMlVCQzZaSnVYZjJlWjNZSkI2cUZlUVZ4TlY1M1BJUUFLd09UV2hiV0taaERtbi0",
+    "payload": {
+      "completeness_score": 0.1667,
+      "threshold": 0.8,
+      "reason_code": "MISSING_SURVEY_PERIOD",
+      "missing_fields": [
+        "sponsor",
+        "survey_period",
+        "sample_size",
+        "response_rate",
+        "margin_of_error"
+      ],
+      "invalid_fields": []
+    },
+    "status": "pending",
+    "created_at": "2026-02-23T10:16:15.437022+00:00"
+  },
+  {
+    "id": "rvq_b683e5fe6d70a4cb",
+    "entity_type": "poll_observation",
+    "entity_id": "obs_abd5a820705a0c85",
+    "issue_type": "extract_error",
+    "stage": "legal_completeness_v1",
+    "error_code": "LEGAL_COMPLETENESS_BELOW_THRESHOLD",
+    "error_message": "required legal fields completeness below threshold",
+    "source_url": "https://news.google.com/rss/articles/CBMia0FVX3lxTE5rV1JFMFR0SkxfYlpaYkdnX1NtV1prMG9wSnV5aXRzZjJyMUVVWTg4cGx6NE45QlQ4RXE0anZDcWFwdGc1VldURDk5RENTcnRkQ2g4RjdfTDFYQkJhWkYtOFROWUZVZldWOFlF",
+    "payload": {
+      "completeness_score": 0.1667,
+      "threshold": 0.8,
+      "reason_code": "MISSING_SURVEY_PERIOD",
+      "missing_fields": [
+        "sponsor",
+        "survey_period",
+        "sample_size",
+        "response_rate",
+        "margin_of_error"
+      ],
+      "invalid_fields": []
+    },
+    "status": "pending",
+    "created_at": "2026-02-23T10:16:15.437031+00:00"
+  },
+  {
+    "id": "rvq_7d1d3cd5a84d23a0",
+    "entity_type": "poll_observation",
+    "entity_id": "obs_267a35b25c0310e6",
+    "issue_type": "extract_error",
+    "stage": "legal_completeness_v1",
+    "error_code": "LEGAL_COMPLETENESS_BELOW_THRESHOLD",
+    "error_message": "required legal fields completeness below threshold",
+    "source_url": "https://news.google.com/rss/articles/CBMia0FVX3lxTE9RaTBaY1Qtc1A4RUlBQjJsSTZ4RnFfejV3MWlyZ1hhdFFBNjBQZGxCRzFTQVdMZlBhM0FjYnJCVDFQYVdiQzg3cHprdlRqT2RkbEpQTlk5S2VnaGZKS0pneTJZbDhZVF9mYlJr",
+    "payload": {
+      "completeness_score": 0.1667,
+      "threshold": 0.8,
+      "reason_code": "MISSING_SURVEY_PERIOD",
+      "missing_fields": [
+        "sponsor",
+        "survey_period",
+        "sample_size",
+        "response_rate",
+        "margin_of_error"
+      ],
+      "invalid_fields": []
+    },
+    "status": "pending",
+    "created_at": "2026-02-23T10:16:15.437042+00:00"
+  },
+  {
+    "id": "rvq_239c2cd09ba3301b",
+    "entity_type": "poll_observation",
+    "entity_id": "obs_ca5a62c853918c7d",
+    "issue_type": "extract_error",
+    "stage": "legal_completeness_v1",
+    "error_code": "LEGAL_COMPLETENESS_BELOW_THRESHOLD",
+    "error_message": "required legal fields completeness below threshold",
+    "source_url": "https://news.google.com/rss/articles/CBMiakFVX3lxTE96dFJCbG1saGdROTh2XzBiTC1JWmVadFNRNkxGc3hsUk1ObDBHR3ZUUTJIclZGWVRxejZpNVlmeXU3WEJfZDduTU1DaWNyLVBXVFNBb2JNcDhQbmFENEtaVXFJZUdiLUx3OFE",
+    "payload": {
+      "completeness_score": 0.1667,
+      "threshold": 0.8,
+      "reason_code": "MISSING_SURVEY_PERIOD",
+      "missing_fields": [
+        "sponsor",
+        "survey_period",
+        "sample_size",
+        "response_rate",
+        "margin_of_error"
+      ],
+      "invalid_fields": []
+    },
+    "status": "pending",
+    "created_at": "2026-02-23T10:16:15.437051+00:00"
+  },
+  {
+    "id": "rvq_7debc3a645ccf71a",
+    "entity_type": "poll_observation",
+    "entity_id": "obs_10bff193dbeab2c2",
+    "issue_type": "extract_error",
+    "stage": "legal_completeness_v1",
+    "error_code": "LEGAL_COMPLETENESS_BELOW_THRESHOLD",
+    "error_message": "required legal fields completeness below threshold",
+    "source_url": "https://news.google.com/rss/articles/CBMib0FVX3lxTE9hSmNUcHRHczB6dUJMb1dQdVFGWURiZkwtT185Z3NPREM2SEhhUVR3em40MC1Bb1RrWVQ0QW5EcFRrWDNMMDlUamF6WG5jMEpPYTdyQWE0alFkVlBrUDNEN1BlRHNfaEx2UG5sZ3lIc9IBc0FVX3lxTFBpckNUaTJsNWJoWTF2VWswYXp2cEVCSDBkLXRhekxwR3NldGhTZ1dNLUYtRDRQVDZ4NnhhUmRESkc1ek1EbEVKNmlDVEZjZGg3V1Y0OWtvNm8xZ1BUYnNzajIwVTVwME9Db0NNUzJEQVMyekE",
+    "payload": {
+      "completeness_score": 0.1667,
+      "threshold": 0.8,
+      "reason_code": "MISSING_SURVEY_PERIOD",
+      "missing_fields": [
+        "sponsor",
+        "survey_period",
+        "sample_size",
+        "response_rate",
+        "margin_of_error"
+      ],
+      "invalid_fields": []
+    },
+    "status": "pending",
+    "created_at": "2026-02-23T10:16:15.437061+00:00"
+  },
+  {
+    "id": "rvq_cfd0f29214bf9879",
+    "entity_type": "poll_observation",
+    "entity_id": "obs_9d3ae556e5c1176c",
+    "issue_type": "extract_error",
+    "stage": "legal_completeness_v1",
+    "error_code": "LEGAL_COMPLETENESS_BELOW_THRESHOLD",
+    "error_message": "required legal fields completeness below threshold",
+    "source_url": "https://news.google.com/rss/articles/CBMibEFVX3lxTFB4a1kyeXpHZGEwQUQ2TlBXMkVhdFlmVVMzNzE4Y280SUVtQThUb2t0ZkVCVnAtTW81emxZLUpLb3BfdVV4MFgyX3ZPZ29xSndCdlBMSUJ6OGNnMlNzTFk3U3NmMWFiZDNNd1FoXw",
+    "payload": {
+      "completeness_score": 0.1667,
+      "threshold": 0.8,
+      "reason_code": "MISSING_SURVEY_PERIOD",
+      "missing_fields": [
+        "sponsor",
+        "survey_period",
+        "sample_size",
+        "response_rate",
+        "margin_of_error"
+      ],
+      "invalid_fields": []
+    },
+    "status": "pending",
+    "created_at": "2026-02-23T10:16:15.437070+00:00"
+  },
+  {
+    "id": "rvq_b1fd7c77f7f9da4c",
+    "entity_type": "poll_observation",
+    "entity_id": "obs_dce561b2d5190dbd",
+    "issue_type": "extract_error",
+    "stage": "legal_completeness_v1",
+    "error_code": "LEGAL_COMPLETENESS_BELOW_THRESHOLD",
+    "error_message": "required legal fields completeness below threshold",
+    "source_url": "https://news.google.com/rss/articles/CBMibkFVX3lxTE13dHFYekJqODh4ZWhRMXJsM3JGNmRfUWlfM1ZBSVAteTZMVUZDZkJkUGRMbXhUbmRJaFBuUzZZVkVUVTd4ODlPeUpESDU5dVNTVjJnbjZBRERlZEVqMVhDSDgzWDFyU21RclBhdFV30gFyQVVfeXFMT0ZhbmdvTTVUd1ZYWEhLVFJ4RUVsZnkxWFNKUnFHLXAtbEFRbHRlLVZET0lHRTY0V0dQSWVuYl9vSjlBRnZ5UEw1LXVxdW9FNXgtUnlsV2xYWGgzSHZfS291RnNaUXJNMkg0cUM2UnhUUzRR",
+    "payload": {
+      "completeness_score": 0.1667,
+      "threshold": 0.8,
+      "reason_code": "MISSING_SURVEY_PERIOD",
+      "missing_fields": [
+        "sponsor",
+        "survey_period",
+        "sample_size",
+        "response_rate",
+        "margin_of_error"
+      ],
+      "invalid_fields": []
+    },
+    "status": "pending",
+    "created_at": "2026-02-23T10:16:15.437080+00:00"
+  },
+  {
+    "id": "rvq_980c9ab48c3e327e",
+    "entity_type": "poll_observation",
+    "entity_id": "obs_e1bbab6ef90f2035",
+    "issue_type": "extract_error",
+    "stage": "legal_completeness_v1",
+    "error_code": "LEGAL_COMPLETENESS_BELOW_THRESHOLD",
+    "error_message": "required legal fields completeness below threshold",
+    "source_url": "https://news.google.com/rss/articles/CBMid0FVX3lxTE1LVDNVWnh6TjVlamhFRnMyT0ZWUzFMYnFSaXdlTTRQeHlQMk5pVTVpaGlCT2l3WDhvanhKRDYtTnJ1NE5CaVZWUW1oSTNCZXFlbEpyY3JRd0U1WDhxUi16cTc5bWdUaDdwWVpReTg3bG5hbGFiMG9r",
+    "payload": {
+      "completeness_score": 0.1667,
+      "threshold": 0.8,
+      "reason_code": "MISSING_SURVEY_PERIOD",
+      "missing_fields": [
+        "sponsor",
+        "survey_period",
+        "sample_size",
+        "response_rate",
+        "margin_of_error"
+      ],
+      "invalid_fields": []
+    },
+    "status": "pending",
+    "created_at": "2026-02-23T10:16:15.437089+00:00"
+  },
+  {
+    "id": "rvq_d196f74ff3d8b835",
+    "entity_type": "poll_observation",
+    "entity_id": "obs_d341b16da9bbd2f8",
+    "issue_type": "extract_error",
+    "stage": "legal_completeness_v1",
+    "error_code": "LEGAL_COMPLETENESS_BELOW_THRESHOLD",
+    "error_message": "required legal fields completeness below threshold",
+    "source_url": "https://news.google.com/rss/articles/CBMic0FVX3lxTFBVYXlraGpwNnV1cG03cUptT1RVMzh5djQtUlhTaUU4TGl2RDROODE3d0ZNNWFOV2hIQ0Zib2NhS0tfT3J4QlZ6N0d4V1hDbENQbUhRM29zQklsRTZJMnN1Wksxem5QRnRUSXlRdFh4VDBRU2vSAXdBVV95cUxQdTgzNm1GNUxYZUkxMHBaX1VQWnp5ZXJGZExxMm8xVVlyeGlWcWxlYV9RVGJTWi1VOGljVzdFeUxVM3FqcGs1OWM5d043MWxibldsQm5aaWF1MDlYdDlkaUdQT0JVSXpGSnRMTXRrUjZNeEFtdUh2UQ",
+    "payload": {
+      "completeness_score": 0.1667,
+      "threshold": 0.8,
+      "reason_code": "MISSING_SURVEY_PERIOD",
+      "missing_fields": [
+        "sponsor",
+        "survey_period",
+        "sample_size",
+        "response_rate",
+        "margin_of_error"
+      ],
+      "invalid_fields": []
+    },
+    "status": "pending",
+    "created_at": "2026-02-23T10:16:15.437098+00:00"
+  },
+  {
+    "id": "rvq_83968a3e77f0a921",
+    "entity_type": "poll_observation",
+    "entity_id": "obs_7ccfac81c4403bf6",
+    "issue_type": "extract_error",
+    "stage": "legal_completeness_v1",
+    "error_code": "LEGAL_COMPLETENESS_BELOW_THRESHOLD",
+    "error_message": "required legal fields completeness below threshold",
+    "source_url": "https://news.google.com/rss/articles/CBMiX0FVX3lxTE9JS21CZlgydEwySXlWd2dLR01aYkt0TEk1d1lwMldvbmREQXgxM0lrU3pIRlE4Q2J1dUxGSGlVSnZMeTNnYzZYRXlrYmRiQk1HUExPR3l2NnRzbktSU21n",
+    "payload": {
+      "completeness_score": 0.1667,
+      "threshold": 0.8,
+      "reason_code": "MISSING_SURVEY_PERIOD",
+      "missing_fields": [
+        "sponsor",
+        "survey_period",
+        "sample_size",
+        "response_rate",
+        "margin_of_error"
+      ],
+      "invalid_fields": []
+    },
+    "status": "pending",
+    "created_at": "2026-02-23T10:16:15.437108+00:00"
+  },
+  {
+    "id": "rvq_4faf2d1dc3d4fc45",
+    "entity_type": "poll_observation",
+    "entity_id": "obs_a02b7812d9a92751",
+    "issue_type": "extract_error",
+    "stage": "legal_completeness_v1",
+    "error_code": "LEGAL_COMPLETENESS_BELOW_THRESHOLD",
+    "error_message": "required legal fields completeness below threshold",
+    "source_url": "https://news.google.com/rss/articles/CBMiZ0FVX3lxTE5jQVU3NlFQUjVHVWJZOHpLUzNzOVlhNlBHVWpidkpNc3ZHcmN3VzgxZjZHLUhMbFFwNHRFR2FTSFltVUZYZ3NRTlBaTlNHT2d0eGtXNE9uYm5PX3pyTU5tVzh0Um04ME0",
+    "payload": {
+      "completeness_score": 0.1667,
+      "threshold": 0.8,
+      "reason_code": "MISSING_SURVEY_PERIOD",
+      "missing_fields": [
+        "sponsor",
+        "survey_period",
+        "sample_size",
+        "response_rate",
+        "margin_of_error"
+      ],
+      "invalid_fields": []
+    },
+    "status": "pending",
+    "created_at": "2026-02-23T10:16:15.437117+00:00"
+  },
+  {
+    "id": "rvq_9f36849dc8ed0812",
+    "entity_type": "poll_observation",
+    "entity_id": "obs_160d17843ca5cf29",
+    "issue_type": "extract_error",
+    "stage": "legal_completeness_v1",
+    "error_code": "LEGAL_COMPLETENESS_BELOW_THRESHOLD",
+    "error_message": "required legal fields completeness below threshold",
+    "source_url": "https://news.google.com/rss/articles/CBMie0FVX3lxTE5oMVdrbXRkWnZ3el9Rdm9lUDFMXzFyLV84MGlNWHdKWkNDcUc5MjVrQWNyQ3h0Rml5TjFoVjU4YTR1ejRMbzltMXNoX0x6ektuVF90dHJkbnVwV1J5d2RvZ0FOcWc2cFI4MEZ3dnFQcGU0OXlIbmxSU0s1OA",
+    "payload": {
+      "completeness_score": 0.1667,
+      "threshold": 0.8,
+      "reason_code": "MISSING_SURVEY_PERIOD",
+      "missing_fields": [
+        "sponsor",
+        "survey_period",
+        "sample_size",
+        "response_rate",
+        "margin_of_error"
+      ],
+      "invalid_fields": []
+    },
+    "status": "pending",
+    "created_at": "2026-02-23T10:16:15.437127+00:00"
+  },
+  {
+    "id": "rvq_c1b38016a0466e5a",
+    "entity_type": "poll_observation",
+    "entity_id": "obs_3b751ae1d39aae53",
+    "issue_type": "extract_error",
+    "stage": "legal_completeness_v1",
+    "error_code": "LEGAL_COMPLETENESS_BELOW_THRESHOLD",
+    "error_message": "required legal fields completeness below threshold",
+    "source_url": "https://news.google.com/rss/articles/CBMiwwJBVV95cUxQX2VpWjVZelZWb1FuMWhYSV91QmZPa2ZtZ0NsbU0xN3FyVW9MbjVxOHRqRjYzMm1jNjFCNUduVXJ4TWF2UDFZVUdjLXk4YXl1YmpXaUJ1Y2l5WTBmUGpESWlfV1Zoai16Rncyc2JLenVFM0ZYNU1fbXdvcS0yTV9VT3JjelAxZi1KYTFZNjU5U2NkeUlTNlVmVXVDbk4zR3FZa2FPT2ZZcjdZQ0VlNWYwZHF4WldiYnBIdk1FSWFDYkQ1RW1mOWtLRHRKNUxxR05wS3JkQ0ctYkJCZnRfS2hpMEl3N3pPSVN5YzRXb0M4bkk5VXFxZEx4X0Z6bXE1dlRQMERjblQzNEswSkU3YS1vc201OExYS19DUFEzZE45UWFpeDlRaDdRY3FnWktaRnZXbmNtRWphY1QtTGNGcUU3WWRVVQ",
+    "payload": {
+      "completeness_score": 0.1667,
+      "threshold": 0.8,
+      "reason_code": "MISSING_SURVEY_PERIOD",
+      "missing_fields": [
+        "sponsor",
+        "survey_period",
+        "sample_size",
+        "response_rate",
+        "margin_of_error"
+      ],
+      "invalid_fields": []
+    },
+    "status": "pending",
+    "created_at": "2026-02-23T10:16:15.437137+00:00"
+  },
+  {
+    "id": "rvq_f194cf4eb16dcdf9",
+    "entity_type": "poll_observation",
+    "entity_id": "obs_92b3ae667ed44a57",
+    "issue_type": "extract_error",
+    "stage": "legal_completeness_v1",
+    "error_code": "LEGAL_COMPLETENESS_BELOW_THRESHOLD",
+    "error_message": "required legal fields completeness below threshold",
+    "source_url": "https://news.google.com/rss/articles/CBMiRkFVX3lxTE1fR1ZSZ0UtYi1yXzhrY2E2RG0zSVY1emdGY2d1X0E2MFhoMFJzWmdxdHVGc01SVVAtWXBRTFB1TF9HOWtKcHc",
+    "payload": {
+      "completeness_score": 0.1667,
+      "threshold": 0.8,
+      "reason_code": "MISSING_SURVEY_PERIOD",
+      "missing_fields": [
+        "sponsor",
+        "survey_period",
+        "sample_size",
+        "response_rate",
+        "margin_of_error"
+      ],
+      "invalid_fields": []
+    },
+    "status": "pending",
+    "created_at": "2026-02-23T10:16:15.437146+00:00"
+  },
+  {
+    "id": "rvq_e9c8facc659a7598",
+    "entity_type": "poll_observation",
+    "entity_id": "obs_83b190c9d54487cf",
+    "issue_type": "extract_error",
+    "stage": "legal_completeness_v1",
+    "error_code": "LEGAL_COMPLETENESS_BELOW_THRESHOLD",
+    "error_message": "required legal fields completeness below threshold",
+    "source_url": "https://news.google.com/rss/articles/CBMiVEFVX3lxTE9Md3dtcUxnNEdfenIxX3BmVFpvcTFXWDZSOF92eHY2cXMyWnRyZlJnUF92c29fNVRHNEhHSUV0QzNDbVJmVFVlSmFPQktaVHF1ckkxWA",
+    "payload": {
+      "completeness_score": 0.1667,
+      "threshold": 0.8,
+      "reason_code": "MISSING_SURVEY_PERIOD",
+      "missing_fields": [
+        "sponsor",
+        "survey_period",
+        "sample_size",
+        "response_rate",
+        "margin_of_error"
+      ],
+      "invalid_fields": []
+    },
+    "status": "pending",
+    "created_at": "2026-02-23T10:16:15.437155+00:00"
+  },
+  {
+    "id": "rvq_439c07c5a5112bcf",
+    "entity_type": "poll_observation",
+    "entity_id": "obs_13d822a5fd33a42a",
+    "issue_type": "extract_error",
+    "stage": "legal_completeness_v1",
+    "error_code": "LEGAL_COMPLETENESS_BELOW_THRESHOLD",
+    "error_message": "required legal fields completeness below threshold",
+    "source_url": "https://news.google.com/rss/articles/CBMimwFBVV95cUxOQ2VPMzZEc2hfMTg4U1JTREtmUFZ2N1dLR25UYzVyelk2RkJNMUxFSFpqSzBBYnZkcjROR19VX2N5MVE4QWh4ZWFtUWU2QTFiN293clhINkplVlFrbndmanNRb2ljVUlaWGJlTFhsLXZlWUM0RjZTTkM1OGhmbGJsVnBiRllQM2dESGN2OGVucG8tSmkxeXZkNWtYaw",
+    "payload": {
+      "completeness_score": 0.1667,
+      "threshold": 0.8,
+      "reason_code": "MISSING_SURVEY_PERIOD",
+      "missing_fields": [
+        "sponsor",
+        "survey_period",
+        "sample_size",
+        "response_rate",
+        "margin_of_error"
+      ],
+      "invalid_fields": []
+    },
+    "status": "pending",
+    "created_at": "2026-02-23T10:16:15.437164+00:00"
+  },
+  {
+    "id": "rvq_fe2721e6489aa6b8",
+    "entity_type": "poll_observation",
+    "entity_id": "obs_d0980e8b742d5af7",
+    "issue_type": "extract_error",
+    "stage": "legal_completeness_v1",
+    "error_code": "LEGAL_COMPLETENESS_BELOW_THRESHOLD",
+    "error_message": "required legal fields completeness below threshold",
+    "source_url": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE1BM2JoVG1qT3VaUG1Jd2xrb2ZWWVIyd0Q2VF80TjlORUhoODQ0RkVvOUZMTHdET3gzd29KV0ZNdXRzWnptRGlpTm80d2FSbFFGb3B2ajI1TkRzQdIBWEFVX3lxTE1vM2pwWUw4VVA5Mzd1MTk5dEQ2TlRETUhURnlFWjhQU2hXXzdlajJCXzIyUktYSW1HeDVWNXBldDd3a0ladWFCM2ZOakZ5QU9MZklhdi10cjE",
+    "payload": {
+      "completeness_score": 0.1667,
+      "threshold": 0.8,
+      "reason_code": "MISSING_SURVEY_PERIOD",
+      "missing_fields": [
+        "sponsor",
+        "survey_period",
+        "sample_size",
+        "response_rate",
+        "margin_of_error"
+      ],
+      "invalid_fields": []
+    },
+    "status": "pending",
+    "created_at": "2026-02-23T10:16:15.437173+00:00"
+  }
+]
