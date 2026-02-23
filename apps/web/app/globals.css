@@ -321,7 +321,7 @@ main {
 
 .quality-grid {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 10px;
 }
 
@@ -338,10 +338,35 @@ main {
   color: #0f172a;
 }
 
+.quality-item.ok {
+  border-color: #bbf7d0;
+  background: #f0fdf4;
+}
+
+.quality-item.info {
+  border-color: #bae6fd;
+  background: #ecfeff;
+}
+
+.quality-item.warn {
+  border-color: #fed7aa;
+  background: #fff7ed;
+}
+
 .quality-label {
   margin: 0;
   font-size: 0.82rem;
   color: #526172;
+}
+
+.quality-copy {
+  margin: 6px 0 0;
+  font-size: 0.8rem;
+  color: #526172;
+}
+
+.quality-footnote {
+  margin-top: 10px;
 }
 
 .search-form {
