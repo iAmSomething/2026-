@@ -21,10 +21,10 @@ jobs:
           set -euo pipefail
           git fetch origin "${{ github.base_ref }}" --depth=1
 
-          FILES=$(git diff --name-only --diff-filter=ACMR "origin/${{ github.base_ref }}"...HEAD | grep -E '^(UIUX_reports|Collector_reports|develop_report)/' || true)
+          FILES=$(git diff --name-only --diff-filter=ACMR "origin/${{ github.base_ref }}"...HEAD | grep -E '^(UIUX_reports|Collector_reports|develop_report)/.*_report\.md$' || true)
 
           if [ -z "$FILES" ]; then
-            echo "No report files changed."
+            echo "No markdown report files changed."
             exit 0
           fi
 
