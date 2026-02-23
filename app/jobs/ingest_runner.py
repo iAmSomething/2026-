@@ -20,6 +20,7 @@ class AttemptLog:
     http_status: int | None
     job_status: str | None
     failure_class: str | None
+    failure_type: str | None
     retryable: bool
     request_timeout_seconds: float
     error: str | None = None
@@ -33,6 +34,7 @@ class IngestRunnerResult:
     run_ids: list[int]
     finished_at: str
     failure_class: str | None = None
+    failure_type: str | None = None
     failure_reason: str | None = None
 
     def to_dict(self) -> dict[str, Any]:
@@ -42,6 +44,7 @@ class IngestRunnerResult:
             "run_ids": self.run_ids,
             "finished_at": self.finished_at,
             "failure_class": self.failure_class,
+            "failure_type": self.failure_type,
             "failure_reason": self.failure_reason,
         }
 
@@ -98,6 +101,18 @@ def _is_retryable_failure_class(failure_class: str | None) -> bool:
     if failure_class in {"payload_contract_422", "http_4xx"}:
         return False
     return True
+
+
+def _to_failure_type(failure_class: str | None) -> str | None:
+    if failure_class is None:
+        return None
+    if failure_class == "timeout":
+        return "timeout"
+    if failure_class in {"payload_contract_422", "http_408", "http_429", "http_4xx"}:
+        return "http_4xx"
+    if failure_class == "http_5xx":
+        return "http_5xx"
+    return failure_class
 
 
 def _next_backoff_seconds(failure_class: str | None, base_backoff_seconds: float, attempt: int) -> float:
@@ -193,6 +208,7 @@ def run_ingest_with_retry(
                 http_status=http_status,
                 job_status=job_status,
                 failure_class=failure_class,
+                failure_type=_to_failure_type(failure_class),
                 retryable=retryable,
                 request_timeout_seconds=current_timeout,
                 error=error,
@@ -207,6 +223,7 @@ def run_ingest_with_retry(
                 run_ids=run_ids,
                 finished_at=utc_now(),
                 failure_class=None,
+                failure_type=None,
                 failure_reason=None,
             )
 
@@ -224,6 +241,7 @@ def run_ingest_with_retry(
         run_ids=run_ids,
         finished_at=utc_now(),
         failure_class=attempts[-1].failure_class if attempts else None,
+        failure_type=attempts[-1].failure_type if attempts else None,
         failure_reason=_derive_failure_reason(attempts),
     )
 

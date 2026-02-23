@@ -872,6 +872,85 @@ def test_run_ingest_requires_bearer_token(monkeypatch: pytest.MonkeyPatch):
     get_settings.cache_clear()
 
 
+def test_run_ingest_normalizes_candidate_payload_before_validation(monkeypatch: pytest.MonkeyPatch):
+    monkeypatch.setenv("SUPABASE_URL", "https://example.supabase.co")
+    monkeypatch.setenv("SUPABASE_SERVICE_ROLE_KEY", "test-service-role")
+    monkeypatch.setenv("DATA_GO_KR_KEY", "test-data-go-key")
+    monkeypatch.setenv("DATABASE_URL", "postgresql://localhost/test")
+    monkeypatch.setenv("INTERNAL_JOB_TOKEN", "dev-internal-token")
+    get_settings.cache_clear()
+
+    class CaptureCandidateRepo(FakeApiRepo):
+        def __init__(self):
+            super().__init__()
+            self.captured_candidates: list[dict] = []
+
+        def upsert_candidate(self, candidate):
+            self.captured_candidates.append(candidate)
+            return None
+
+    repo = CaptureCandidateRepo()
+
+    def override_capture_repo():
+        yield repo
+
+    app.dependency_overrides[get_repository] = override_capture_repo
+    app.dependency_overrides[get_candidate_data_go_service] = override_candidate_data_go_service
+    client = TestClient(app)
+
+    payload = {
+        "run_type": "manual",
+        "extractor_version": "manual-v1",
+        "records": [
+            {
+                "article": {"url": "https://example.com/1", "title": "sample", "publisher": "pub"},
+                "region": {
+                    "region_code": "11-000",
+                    "sido_name": "서울특별시",
+                    "sigungu_name": "전체",
+                    "admin_level": "sido",
+                },
+                "candidates": [
+                    {
+                        "candidate_id": "cand-1",
+                        "name_ko": "홍길동",
+                        "party_name": None,
+                        "party_inferred": "더불어민주당",
+                        "party_inference_source": "data_go_candidate_api_region",
+                    }
+                ],
+                "observation": {
+                    "observation_key": "obs-220",
+                    "survey_name": "survey",
+                    "pollster": "MBC",
+                    "region_code": "11-000",
+                    "office_type": "광역자치단체장",
+                    "matchup_id": "20260603|광역자치단체장|11-000",
+                },
+                "options": [
+                    {"option_type": "candidate", "option_name": "홍길동", "value_raw": "51%"}
+                ],
+            }
+        ],
+    }
+
+    response = client.post(
+        "/api/v1/jobs/run-ingest",
+        json=payload,
+        headers={"Authorization": "Bearer dev-internal-token"},
+    )
+
+    assert response.status_code == 200
+    assert response.json()["status"] == "success"
+    assert repo.captured_candidates
+    assert repo.captured_candidates[0]["party_inferred"] is True
+    assert repo.captured_candidates[0]["party_name"] == "더불어민주당"
+    assert repo.captured_candidates[0]["party_inference_source"] == "manual"
+
+    app.dependency_overrides.clear()
+    get_settings.cache_clear()
+
+
 def test_cors_allows_public_web_origin():
     client = TestClient(app)
     res = client.options(

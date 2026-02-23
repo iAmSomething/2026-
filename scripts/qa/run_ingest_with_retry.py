@@ -50,6 +50,7 @@ def main() -> int:
         "report": args.report,
         "attempt_count": len(result.attempts),
         "failure_class": result.failure_class,
+        "failure_type": result.failure_type,
         "failure_reason": result.failure_reason,
     }
     if result.attempts:

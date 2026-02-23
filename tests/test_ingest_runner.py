@@ -34,6 +34,7 @@ def test_ingest_runner_success_without_retry():
     assert calls["count"] == 1
     assert result.run_ids == [1]
     assert result.failure_class is None
+    assert result.failure_type is None
     assert result.failure_reason is None
 
 
@@ -61,6 +62,7 @@ def test_ingest_runner_retries_then_succeeds():
     assert result.attempts[0].retryable is True
     assert result.attempts[0].failure_class == "job_partial_success"
     assert result.failure_class is None
+    assert result.failure_type is None
     assert result.failure_reason is None
 
 
@@ -83,6 +85,7 @@ def test_ingest_runner_fails_after_retries():
     assert result.success is False
     assert calls["count"] == 3
     assert result.failure_class == "http_5xx"
+    assert result.failure_type == "http_5xx"
     assert result.failure_reason == "http_5xx: http_status=500 (server error)"
 
 
@@ -105,7 +108,9 @@ def test_ingest_runner_does_not_retry_on_422_contract_error():
     assert result.success is False
     assert calls["count"] == 1
     assert result.failure_class == "payload_contract_422"
+    assert result.failure_type == "http_4xx"
     assert result.attempts[0].retryable is False
+    assert result.attempts[0].failure_type == "http_4xx"
     assert result.failure_reason == "payload_contract_422: http_status=422 (payload schema mismatch)"
 
 
@@ -136,5 +141,6 @@ def test_ingest_runner_scales_timeout_after_timeout_failure():
     assert calls["count"] == 2
     assert observed_timeouts == [100.0, 150.0]
     assert result.attempts[0].failure_class == "timeout"
+    assert result.attempts[0].failure_type == "timeout"
     assert result.attempts[0].request_timeout_seconds == 100.0
     assert result.attempts[1].request_timeout_seconds == 150.0
