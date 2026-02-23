@@ -1,0 +1,103 @@
+{
+  "sample_size": 5,
+  "pollster_distribution": {
+    "(주)엠브레인퍼블릭": 1,
+    "케이스탯리서치": 1,
+    "(주)코리아리서치인터내셔널": 1,
+    "(주)리얼미터": 1,
+    "KOPRA": 1
+  },
+  "field_metrics": {
+    "survey_datetime": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "accuracy": 1.0,
+      "tp": 5,
+      "fp": 0,
+      "fn": 0,
+      "tn": 0
+    },
+    "survey_population": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "accuracy": 1.0,
+      "tp": 5,
+      "fp": 0,
+      "fn": 0,
+      "tn": 0
+    },
+    "sample_size": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "accuracy": 1.0,
+      "tp": 5,
+      "fp": 0,
+      "fn": 0,
+      "tn": 0
+    },
+    "response_rate": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "accuracy": 1.0,
+      "tp": 5,
+      "fp": 0,
+      "fn": 0,
+      "tn": 0
+    },
+    "margin_of_error": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "accuracy": 1.0,
+      "tp": 5,
+      "fp": 0,
+      "fn": 0,
+      "tn": 0
+    },
+    "method": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "accuracy": 1.0,
+      "tp": 5,
+      "fp": 0,
+      "fn": 0,
+      "tn": 0
+    }
+  },
+  "result_block_metrics": {
+    "precision": 0.8,
+    "recall": 1.0,
+    "accuracy": 0.8,
+    "tp": 40,
+    "fp": 10,
+    "fn": 0,
+    "tn": 0
+  },
+  "parse_success_rate": 1.0,
+  "failure_types_top5": [
+    {
+      "type": "RESULT_OPTION_VALUE_MISMATCH_FP",
+      "count": 10
+    }
+  ],
+  "improvement_priorities": [
+    "1) 결과블록 테이블 헤더-값 매칭 고도화(다단 헤더 대응)",
+    "2) 조사방법은 목록값 외 상세 원문 라벨 파싱 추가",
+    "3) 표본크기 대체 규칙(sampleSexSizeSum 미존재 시 표 본문 합계 계산)",
+    "4) 옵션명 정규화(접촉현황/응답현황 공통 라벨 사전)",
+    "5) PDF 본문 좌표(page/paragraph) 실측 모듈 연결(v2)"
+  ],
+  "pollster_target_count": 5,
+  "pollster_covered_count": 5,
+  "per_pollster_counts": {
+    "(주)엠브레인퍼블릭": 1,
+    "케이스탯리서치": 1,
+    "(주)코리아리서치인터내셔널": 1,
+    "(주)리얼미터": 1,
+    "KOPRA": 1
+  },
+  "acceptance_checks": {
+    "pollster_coverage_ge_5": true,
+    "per_pollster_floor_met": true,
+    "total_sample_floor_met": true
+  }
+}

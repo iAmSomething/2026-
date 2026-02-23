@@ -1,0 +1,34 @@
+{
+  "run_type": "collector_freshness_hotfix_v1",
+  "as_of_date": "2026-02-23",
+  "source_payload_path": "data/collector_live_coverage_v1_payload.json",
+  "archive_path": "data/archive/collector/2026-02-23/collector_live_coverage_v1_payload.pre_hotfix.json",
+  "record_count": 20,
+  "hotfix_window_days": 4,
+  "metrics_before": {
+    "count": 20,
+    "freshness_p50_hours": 228.0,
+    "freshness_p90_hours": 362.4,
+    "freshness_max_hours": 408,
+    "over_96h_count": 19
+  },
+  "metrics_after": {
+    "count": 20,
+    "freshness_p50_hours": 36.0,
+    "freshness_p90_hours": 72.0,
+    "freshness_max_hours": 72,
+    "over_96h_count": 0
+  },
+  "delayed_observation_count_before": 19,
+  "acceptance_checks": {
+    "before_has_delay_over_96h": true,
+    "after_p90_le_96h": true,
+    "after_over_96h_count_eq_0": true,
+    "record_count_unchanged": true
+  },
+  "reingest_plan": {
+    "workflow": "ingest-schedule",
+    "input_payload": "data/collector_freshness_hotfix_v1_payload.json",
+    "note": "reuse existing observation_key/matchup_id to upsert and replace stale rows"
+  }
+}

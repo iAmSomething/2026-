@@ -1,0 +1,116 @@
+[
+  {
+    "observation_key": "demo-30d-party-1",
+    "matchup_id": "20260603|광역자치단체장|11-000",
+    "survey_end_date": "2026-02-18",
+    "freshness_hours": 120
+  },
+  {
+    "observation_key": "demo-30d-pres-1",
+    "matchup_id": "20260603|광역자치단체장|11-000",
+    "survey_end_date": "2026-02-17",
+    "freshness_hours": 144
+  },
+  {
+    "observation_key": "demo-30d-match-seoul",
+    "matchup_id": "20260603|광역자치단체장|11-000",
+    "survey_end_date": "2026-02-16",
+    "freshness_hours": 168
+  },
+  {
+    "observation_key": "demo-30d-match-busan",
+    "matchup_id": "20260603|광역자치단체장|26-000",
+    "survey_end_date": "2026-02-14",
+    "freshness_hours": 216
+  },
+  {
+    "observation_key": "demo-30d-match-gyeonggi",
+    "matchup_id": "20260603|광역자치단체장|41-000",
+    "survey_end_date": "2026-02-12",
+    "freshness_hours": 264
+  },
+  {
+    "observation_key": "demo-30d-match-gangnam",
+    "matchup_id": "20260603|기초자치단체장|11-680",
+    "survey_end_date": "2026-02-10",
+    "freshness_hours": 312
+  },
+  {
+    "observation_key": "live30d-02-obs_1beca86ca98386bb",
+    "matchup_id": "2026_local|기초자치단체장|41-130",
+    "survey_end_date": "2026-02-18",
+    "freshness_hours": 120
+  },
+  {
+    "observation_key": "live30d-03-obs_69b9a07a4997e975",
+    "matchup_id": "2026_local|기초자치단체장|42-110",
+    "survey_end_date": "2026-02-17",
+    "freshness_hours": 144
+  },
+  {
+    "observation_key": "live30d-04-obs_350f14ce7e3668fb",
+    "matchup_id": "2026_local|기초자치단체장|46-110",
+    "survey_end_date": "2026-02-16",
+    "freshness_hours": 168
+  },
+  {
+    "observation_key": "live30d-05-obs_8c8010fe1c12852a",
+    "matchup_id": "2026_local|기초자치단체장|50-110",
+    "survey_end_date": "2026-02-15",
+    "freshness_hours": 192
+  },
+  {
+    "observation_key": "live30d-06-obs_28eb3ac87760e5d3",
+    "matchup_id": "2026_local|기초자치단체장|26-530",
+    "survey_end_date": "2026-02-14",
+    "freshness_hours": 216
+  },
+  {
+    "observation_key": "live30d-07-obs_1b304a647ade54cf",
+    "matchup_id": "2026_local|기초자치단체장|45-110",
+    "survey_end_date": "2026-02-13",
+    "freshness_hours": 240
+  },
+  {
+    "observation_key": "live30d-08-obs_9210db1b70c7c97e",
+    "matchup_id": "2026_local|기초자치단체장|44-130",
+    "survey_end_date": "2026-02-12",
+    "freshness_hours": 264
+  },
+  {
+    "observation_key": "live30d-09-obs_019a0a0e22089be2",
+    "matchup_id": "2026_local|기초자치단체장|28-450",
+    "survey_end_date": "2026-02-11",
+    "freshness_hours": 288
+  },
+  {
+    "observation_key": "live30d-10-obs_c2a8e80898e2eb78",
+    "matchup_id": "2026_local|기초자치단체장|48-110",
+    "survey_end_date": "2026-02-10",
+    "freshness_hours": 312
+  },
+  {
+    "observation_key": "live30d-11-obs_2abffbb597220668",
+    "matchup_id": "2026_local|기초자치단체장|47-110",
+    "survey_end_date": "2026-02-09",
+    "freshness_hours": 336
+  },
+  {
+    "observation_key": "live30d-12-obs_a8a990474f6b1bc2",
+    "matchup_id": "2026_local|기초자치단체장|43-110",
+    "survey_end_date": "2026-02-08",
+    "freshness_hours": 360
+  },
+  {
+    "observation_key": "live30d-13-obs_570a0e3cef2d44c8",
+    "matchup_id": "2026_local|기초자치단체장|11-110",
+    "survey_end_date": "2026-02-07",
+    "freshness_hours": 384
+  },
+  {
+    "observation_key": "live30d-14-obs_1b4cc75fe542165c",
+    "matchup_id": "2026_local|기초자치단체장|26-350",
+    "survey_end_date": "2026-02-06",
+    "freshness_hours": 408
+  }
+]

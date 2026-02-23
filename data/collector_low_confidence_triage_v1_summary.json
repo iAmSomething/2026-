@@ -1,0 +1,52 @@
+{
+  "input_paths": [
+    "data/bootstrap_ingest_coverage_v2_review_queue_candidates.json",
+    "data/collector_scope_inference_v1_batch.json",
+    "data/collector_party_inference_v2_batch50.json",
+    "data/collector_enrichment_v2_batch.json",
+    "data/collector_live_coverage_v2_review_queue_candidates.json"
+  ],
+  "total_items": 480,
+  "low_confidence_scored_items": 73,
+  "bucket_distribution": {
+    "extract": 7,
+    "low-signal-backlog": 103,
+    "known-noise": 370
+  },
+  "route_action_distribution": {
+    "immediate_review": 7,
+    "defer_requeue": 103,
+    "drop_noise": 370
+  },
+  "error_code_top10": [
+    {
+      "type": "ROBOTS_BLOCKLIST_BYPASS",
+      "count": 370
+    },
+    {
+      "type": "PARTY_INFERENCE_NO_SIGNAL",
+      "count": 68
+    },
+    {
+      "type": "NESDC_ENRICH_V2_NO_MATCH",
+      "count": 30
+    },
+    {
+      "type": "PARTY_INFERENCE_INVALID_CANDIDATE",
+      "count": 5
+    },
+    {
+      "type": "NO_TITLE_CANDIDATE_SIGNAL",
+      "count": 4
+    },
+    {
+      "type": "POLICY_ONLY_SIGNAL",
+      "count": 3
+    }
+  ],
+  "acceptance_checks": {
+    "triage_fields_present": true,
+    "conflict_routed_high_priority": true,
+    "low_confidence_has_immediate_or_defer": true
+  }
+}

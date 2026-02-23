@@ -1,0 +1,373 @@
+{
+  "run_type": "collector_demo_pack",
+  "extractor_version": "collector-demo-30d-v1",
+  "llm_model": null,
+  "records": [
+    {
+      "article": {
+        "url": "https://demo.local/poll/party/1",
+        "title": "정당지지도 조사",
+        "publisher": "데모뉴스",
+        "published_at": "2026-02-18T09:00:00+09:00",
+        "raw_text": "정당지지도 조사",
+        "raw_hash": "hash-1"
+      },
+      "region": {
+        "region_code": "11-000",
+        "sido_name": "서울특별시",
+        "sigungu_name": "전체",
+        "admin_level": "sido",
+        "parent_region_code": null
+      },
+      "observation": {
+        "observation_key": "demo-30d-party-1",
+        "survey_name": "정당지지도(최근)",
+        "pollster": "한국리서치",
+        "survey_start_date": "2026-02-18",
+        "survey_end_date": "2026-02-18",
+        "sample_size": 1000,
+        "response_rate": 12.5,
+        "margin_of_error": 3.1,
+        "region_code": "11-000",
+        "office_type": "광역자치단체장",
+        "matchup_id": "20260603|광역자치단체장|11-000",
+        "verified": true,
+        "source_grade": "A"
+      },
+      "options": [
+        {
+          "option_type": "party_support",
+          "option_name": "국민의힘",
+          "value_raw": "38.0%",
+          "is_missing": false
+        },
+        {
+          "option_type": "party_support",
+          "option_name": "더불어민주당",
+          "value_raw": "35.0%",
+          "is_missing": false
+        }
+      ],
+      "candidates": []
+    },
+    {
+      "article": {
+        "url": "https://demo.local/poll/pres/1",
+        "title": "대통령지지율 조사",
+        "publisher": "데모뉴스",
+        "published_at": "2026-02-17T09:00:00+09:00",
+        "raw_text": "대통령지지율 조사",
+        "raw_hash": "hash-1"
+      },
+      "region": {
+        "region_code": "11-000",
+        "sido_name": "서울특별시",
+        "sigungu_name": "전체",
+        "admin_level": "sido",
+        "parent_region_code": null
+      },
+      "observation": {
+        "observation_key": "demo-30d-pres-1",
+        "survey_name": "대통령지지율(최근)",
+        "pollster": "코리아리서치",
+        "survey_start_date": "2026-02-17",
+        "survey_end_date": "2026-02-17",
+        "sample_size": 1000,
+        "response_rate": 12.5,
+        "margin_of_error": 3.0,
+        "region_code": "11-000",
+        "office_type": "광역자치단체장",
+        "matchup_id": "20260603|광역자치단체장|11-000",
+        "verified": true,
+        "source_grade": "A"
+      },
+      "options": [
+        {
+          "option_type": "presidential_approval",
+          "option_name": "국정안정론",
+          "value_raw": "47.0%",
+          "is_missing": false
+        },
+        {
+          "option_type": "presidential_approval",
+          "option_name": "국정견제론",
+          "value_raw": "45.0%",
+          "is_missing": false
+        }
+      ],
+      "candidates": []
+    },
+    {
+      "article": {
+        "url": "https://demo.local/poll/match/seoul",
+        "title": "서울시장 가상대결",
+        "publisher": "데모뉴스",
+        "published_at": "2026-02-16T09:00:00+09:00",
+        "raw_text": "서울시장 가상대결",
+        "raw_hash": "hash-seoul"
+      },
+      "region": {
+        "region_code": "11-000",
+        "sido_name": "서울특별시",
+        "sigungu_name": "전체",
+        "admin_level": "sido",
+        "parent_region_code": null
+      },
+      "observation": {
+        "observation_key": "demo-30d-match-seoul",
+        "survey_name": "서울시장 가상대결",
+        "pollster": "한국갤럽",
+        "survey_start_date": "2026-02-16",
+        "survey_end_date": "2026-02-16",
+        "sample_size": 1000,
+        "response_rate": 12.5,
+        "margin_of_error": 3.1,
+        "region_code": "11-000",
+        "office_type": "광역자치단체장",
+        "matchup_id": "20260603|광역자치단체장|11-000",
+        "verified": true,
+        "source_grade": "A"
+      },
+      "options": [
+        {
+          "option_type": "candidate_matchup",
+          "option_name": "김A",
+          "value_raw": "45.0%",
+          "is_missing": false
+        },
+        {
+          "option_type": "candidate_matchup",
+          "option_name": "이B",
+          "value_raw": "42.0%",
+          "is_missing": false
+        }
+      ],
+      "candidates": [
+        {
+          "candidate_id": "cand:kim_a",
+          "name_ko": "김A",
+          "party_name": "국민의힘",
+          "gender": null,
+          "birth_date": null,
+          "job": null,
+          "career_summary": null,
+          "election_history": null
+        },
+        {
+          "candidate_id": "cand:lee_b",
+          "name_ko": "이B",
+          "party_name": "더불어민주당",
+          "gender": null,
+          "birth_date": null,
+          "job": null,
+          "career_summary": null,
+          "election_history": null
+        }
+      ]
+    },
+    {
+      "article": {
+        "url": "https://demo.local/poll/match/busan",
+        "title": "부산시장 가상대결",
+        "publisher": "데모뉴스",
+        "published_at": "2026-02-14T09:00:00+09:00",
+        "raw_text": "부산시장 가상대결",
+        "raw_hash": "hash-busan"
+      },
+      "region": {
+        "region_code": "26-000",
+        "sido_name": "부산광역시",
+        "sigungu_name": "전체",
+        "admin_level": "sido",
+        "parent_region_code": null
+      },
+      "observation": {
+        "observation_key": "demo-30d-match-busan",
+        "survey_name": "부산시장 가상대결",
+        "pollster": "리얼미터",
+        "survey_start_date": "2026-02-14",
+        "survey_end_date": "2026-02-14",
+        "sample_size": 1000,
+        "response_rate": 12.5,
+        "margin_of_error": 3.1,
+        "region_code": "26-000",
+        "office_type": "광역자치단체장",
+        "matchup_id": "20260603|광역자치단체장|26-000",
+        "verified": true,
+        "source_grade": "A"
+      },
+      "options": [
+        {
+          "option_type": "candidate_matchup",
+          "option_name": "박C",
+          "value_raw": "44.0%",
+          "is_missing": false
+        },
+        {
+          "option_type": "candidate_matchup",
+          "option_name": "정D",
+          "value_raw": "39.0%",
+          "is_missing": false
+        }
+      ],
+      "candidates": [
+        {
+          "candidate_id": "cand:park_c",
+          "name_ko": "박C",
+          "party_name": "국민의힘",
+          "gender": null,
+          "birth_date": null,
+          "job": null,
+          "career_summary": null,
+          "election_history": null
+        },
+        {
+          "candidate_id": "cand:jung_d",
+          "name_ko": "정D",
+          "party_name": "더불어민주당",
+          "gender": null,
+          "birth_date": null,
+          "job": null,
+          "career_summary": null,
+          "election_history": null
+        }
+      ]
+    },
+    {
+      "article": {
+        "url": "https://demo.local/poll/match/gyeonggi",
+        "title": "경기지사 가상대결",
+        "publisher": "데모뉴스",
+        "published_at": "2026-02-12T09:00:00+09:00",
+        "raw_text": "경기지사 가상대결",
+        "raw_hash": "hash-gyeonggi"
+      },
+      "region": {
+        "region_code": "41-000",
+        "sido_name": "경기도",
+        "sigungu_name": "전체",
+        "admin_level": "sido",
+        "parent_region_code": null
+      },
+      "observation": {
+        "observation_key": "demo-30d-match-gyeonggi",
+        "survey_name": "경기지사 가상대결",
+        "pollster": "엠브레인",
+        "survey_start_date": "2026-02-12",
+        "survey_end_date": "2026-02-12",
+        "sample_size": 1000,
+        "response_rate": 12.5,
+        "margin_of_error": 3.1,
+        "region_code": "41-000",
+        "office_type": "광역자치단체장",
+        "matchup_id": "20260603|광역자치단체장|41-000",
+        "verified": true,
+        "source_grade": "A"
+      },
+      "options": [
+        {
+          "option_type": "candidate_matchup",
+          "option_name": "최E",
+          "value_raw": "43.0%",
+          "is_missing": false
+        },
+        {
+          "option_type": "candidate_matchup",
+          "option_name": "한F",
+          "value_raw": "41.0%",
+          "is_missing": false
+        }
+      ],
+      "candidates": [
+        {
+          "candidate_id": "cand:choi_e",
+          "name_ko": "최E",
+          "party_name": "국민의힘",
+          "gender": null,
+          "birth_date": null,
+          "job": null,
+          "career_summary": null,
+          "election_history": null
+        },
+        {
+          "candidate_id": "cand:han_f",
+          "name_ko": "한F",
+          "party_name": "더불어민주당",
+          "gender": null,
+          "birth_date": null,
+          "job": null,
+          "career_summary": null,
+          "election_history": null
+        }
+      ]
+    },
+    {
+      "article": {
+        "url": "https://demo.local/poll/match/gangnam",
+        "title": "강남구청장 가상대결",
+        "publisher": "데모뉴스",
+        "published_at": "2026-02-10T09:00:00+09:00",
+        "raw_text": "강남구청장 가상대결",
+        "raw_hash": "hash-gangnam"
+      },
+      "region": {
+        "region_code": "11-680",
+        "sido_name": "서울특별시",
+        "sigungu_name": "강남구",
+        "admin_level": "sigungu",
+        "parent_region_code": "11-000"
+      },
+      "observation": {
+        "observation_key": "demo-30d-match-gangnam",
+        "survey_name": "강남구청장 가상대결",
+        "pollster": "케이스탯리서치",
+        "survey_start_date": "2026-02-10",
+        "survey_end_date": "2026-02-10",
+        "sample_size": 1000,
+        "response_rate": 12.5,
+        "margin_of_error": 3.1,
+        "region_code": "11-680",
+        "office_type": "기초자치단체장",
+        "matchup_id": "20260603|기초자치단체장|11-680",
+        "verified": true,
+        "source_grade": "A"
+      },
+      "options": [
+        {
+          "option_type": "candidate_matchup",
+          "option_name": "오G",
+          "value_raw": "46.0%",
+          "is_missing": false
+        },
+        {
+          "option_type": "candidate_matchup",
+          "option_name": "임H",
+          "value_raw": "40.0%",
+          "is_missing": false
+        }
+      ],
+      "candidates": [
+        {
+          "candidate_id": "cand:oh_g",
+          "name_ko": "오G",
+          "party_name": "국민의힘",
+          "gender": null,
+          "birth_date": null,
+          "job": null,
+          "career_summary": null,
+          "election_history": null
+        },
+        {
+          "candidate_id": "cand:lim_h",
+          "name_ko": "임H",
+          "party_name": "더불어민주당",
+          "gender": null,
+          "birth_date": null,
+          "job": null,
+          "career_summary": null,
+          "election_history": null
+        }
+      ]
+    }
+  ]
+}
