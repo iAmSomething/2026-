@@ -1,0 +1,41 @@
+{
+  "run_type": "collector_live_coverage_v2",
+  "as_of_date": "2026-02-22",
+  "window_days": 30,
+  "source_payloads": {
+    "web_demo": "data/collector_web_demo_datapack_30d.json",
+    "party_v2_batch": "data/collector_party_inference_v2_batch50.json",
+    "nesdc_snapshot": "data/nesdc_registry_snapshot_v1.json"
+  },
+  "counts": {
+    "records": 30,
+    "unique_matchups": 26,
+    "unique_local_sigungu_regions": 23,
+    "in_window_count": 30
+  },
+  "source_channel_counts": {
+    "article": 22,
+    "nesdc": 8
+  },
+  "office_type_counts": {
+    "광역자치단체장": 5,
+    "기초자치단체장": 25
+  },
+  "option_type_counts": {
+    "party_support": 2,
+    "presidential_approval": 2,
+    "candidate_matchup": 58
+  },
+  "local_candidate_party_fill_rate": 0.28,
+  "review_queue_candidate_count": 0,
+  "acceptance_checks": {
+    "records_ge_30": true,
+    "dual_source_present": true,
+    "national_indicator_present": true,
+    "metro_matchup_present": true,
+    "local_sigungu_ge_12": true,
+    "unique_matchup_ge_24": true,
+    "survey_end_within_30d_all": true,
+    "local_candidate_party_fill_rate_ge_02": true
+  }
+}

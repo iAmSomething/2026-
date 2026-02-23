@@ -1,0 +1,130 @@
+{
+  "sample_size_articles": 50,
+  "candidate_target_count": 98,
+  "candidate_inferred_count": 25,
+  "candidate_high_conf_count": 25,
+  "inference_coverage": 0.2551,
+  "source_distribution": {
+    "data_go_candidate_api_region": 17,
+    "latest_candidate_registry_v2": 4,
+    "context_registry_v2": 4
+  },
+  "confidence_distribution": {
+    "none": 73,
+    "high": 21,
+    "mid": 4
+  },
+  "blocked_reason_distribution": {
+    "no_reliable_party_signal": 68,
+    "candidate_name_noise_or_invalid": 5
+  },
+  "support_stats": {
+    "avg_support_count": 1.32,
+    "avg_support_total": 1.32
+  },
+  "v1_comparison": {
+    "candidate_inferred_count_v1": 5,
+    "candidate_inferred_delta": 20,
+    "candidate_high_conf_count_v1": 5,
+    "candidate_high_conf_delta": 20
+  },
+  "evaluation_gold_labeled_count": 5,
+  "evaluation_metrics": {
+    "precision": 1.0,
+    "recall": 1.0,
+    "f1": 1.0,
+    "tp": 5,
+    "fp": 0,
+    "fn": 0
+  },
+  "wrong_inference_top5": [
+    {
+      "article_url": "https://news.google.com/rss/articles/CBMib0FVX3lxTE96eDNvQlc1VXBmcUFkcDNCRnFMTUVvTTBCTWhuOE40d0JaSUNhMDV0RGtVLWdnNkMyNWZQdTJ0YkVrVXhUMU5aUW5yM1Q1VzBJV2tkNm5yclE5dExzV0paY0t0YTRWc0d3TkRfUzh0QQ",
+      "article_title": "[오산시장 여론조사] 국힘 이권재 47.2% vs 민주 장인수 32.4%",
+      "candidate_name": "이권재",
+      "pred_party": "국민의힘",
+      "inference_source": "context_registry_v2",
+      "confidence": 0.8,
+      "support": "3/3",
+      "evidence": [
+        "context_registry count=3/3 ratio=1.0"
+      ],
+      "gold_party": null,
+      "inspection_result": "manual_review_required_no_gold"
+    },
+    {
+      "article_url": "https://news.google.com/rss/articles/CBMib0FVX3lxTE96eDNvQlc1VXBmcUFkcDNCRnFMTUVvTTBCTWhuOE40d0JaSUNhMDV0RGtVLWdnNkMyNWZQdTJ0YkVrVXhUMU5aUW5yM1Q1VzBJV2tkNm5yclE5dExzV0paY0t0YTRWc0d3TkRfUzh0QQ",
+      "article_title": "[오산시장 여론조사] 국힘 이권재 47.2% vs 민주 장인수 32.4%",
+      "candidate_name": "장인수",
+      "pred_party": "더불어민주당",
+      "inference_source": "context_registry_v2",
+      "confidence": 0.8,
+      "support": "3/3",
+      "evidence": [
+        "context_registry count=3/3 ratio=1.0"
+      ],
+      "gold_party": null,
+      "inspection_result": "manual_review_required_no_gold"
+    },
+    {
+      "article_url": "https://news.google.com/rss/articles/CBMibkFVX3lxTE13dHFYekJqODh4ZWhRMXJsM3JGNmRfUWlfM1ZBSVAteTZMVUZDZkJkUGRMbXhUbmRJaFBuUzZZVkVUVTd4ODlPeUpESDU5dVNTVjJnbjZBRERlZEVqMVhDSDgzWDFyU21RclBhdFV30gFyQVVfeXFMT0ZhbmdvTTVUd1ZYWEhLVFJ4RUVsZnkxWFNKUnFHLXAtbEFRbHRlLVZET0lHRTY0V0dQSWVuYl9vSjlBRnZ5UEw1LXVxdW9FNXgtUnlsV2xYWGgzSHZfS291RnNaUXJNMkg0cUM2UnhUUzRR",
+      "article_title": "[2026지방선거] 경남지사, 가상대결 민주당 김경수 38.1%, 국힘 박완수 38.3%로 초접전",
+      "candidate_name": "김경수",
+      "pred_party": "더불어민주당",
+      "inference_source": "context_registry_v2",
+      "confidence": 0.8,
+      "support": "3/3",
+      "evidence": [
+        "context_registry count=3/3 ratio=1.0"
+      ],
+      "gold_party": null,
+      "inspection_result": "manual_review_required_no_gold"
+    },
+    {
+      "article_url": "https://news.google.com/rss/articles/CBMibkFVX3lxTE13dHFYekJqODh4ZWhRMXJsM3JGNmRfUWlfM1ZBSVAteTZMVUZDZkJkUGRMbXhUbmRJaFBuUzZZVkVUVTd4ODlPeUpESDU5dVNTVjJnbjZBRERlZEVqMVhDSDgzWDFyU21RclBhdFV30gFyQVVfeXFMT0ZhbmdvTTVUd1ZYWEhLVFJ4RUVsZnkxWFNKUnFHLXAtbEFRbHRlLVZET0lHRTY0V0dQSWVuYl9vSjlBRnZ5UEw1LXVxdW9FNXgtUnlsV2xYWGgzSHZfS291RnNaUXJNMkg0cUM2UnhUUzRR",
+      "article_title": "[2026지방선거] 경남지사, 가상대결 민주당 김경수 38.1%, 국힘 박완수 38.3%로 초접전",
+      "candidate_name": "박완수",
+      "pred_party": "국민의힘",
+      "inference_source": "context_registry_v2",
+      "confidence": 0.8,
+      "support": "3/3",
+      "evidence": [
+        "context_registry count=3/3 ratio=1.0"
+      ],
+      "gold_party": null,
+      "inspection_result": "manual_review_required_no_gold"
+    },
+    {
+      "article_url": "https://news.google.com/rss/articles/CBMiVkFVX3lxTE1xNE1xVGxjX19tSnp3NGNENUJuR0I4Q01HNUN3UkVNdEpUaUxGcVQ2RlNCaTR0MTdnOVQtNXNjckg2M3dmbzRyYkFUNTRxR0NJYkszbnZ3",
+      "article_title": "허태정 43.6% 이장우 42.0%…대전시장 1.6%P차 초박빙 [지방선거 여론조사]",
+      "candidate_name": "허태정",
+      "pred_party": "더불어민주당",
+      "inference_source": "latest_candidate_registry_v2",
+      "confidence": 0.88,
+      "support": "1/1",
+      "evidence": [
+        "latest_registry_v2 rows=1 count=1/1 ratio=1.0"
+      ],
+      "gold_party": null,
+      "inspection_result": "manual_review_required_no_gold"
+    }
+  ],
+  "blocking_rules": [
+    "1) 후보명이 정당/직함/지표 토큰이면 추정 차단",
+    "2) confidence < 0.75 또는 무신호는 review_queue 라우팅",
+    "3) Data.go는 office_type별 sg_typecode 후보군 + pagination(pageNo) 조회",
+    "4) 다중 정당 신호는 ratio>=0.75 우세가 없으면 auto infer 금지",
+    "5) 근거 수(support_count/total)와 confidence_tier를 함께 저장"
+  ],
+  "review_queue_count": 73,
+  "failure_types_top5": [
+    {
+      "type": "PARTY_INFERENCE_NO_SIGNAL",
+      "count": 68
+    },
+    {
+      "type": "PARTY_INFERENCE_INVALID_CANDIDATE",
+      "count": 5
+    }
+  ]
+}
