@@ -1,0 +1,31 @@
+{
+  "run_type": "collector_nesdc_safe_collect_v1",
+  "registry_path": "data/nesdc_registry_snapshot_v1.json",
+  "adapter_path": "data/nesdc_pdf_adapter_v2_5pollsters.json",
+  "as_of_kst": "2026-02-23T19:20:09+09:00",
+  "safe_window_hours": 48,
+  "counts": {
+    "registry_total": 110,
+    "eligible_48h_total": 92,
+    "collected_success_count": 34,
+    "adapter_exact_success_count": 3,
+    "adapter_template_success_count": 31,
+    "fallback_count": 89,
+    "template_fallback_count": 31,
+    "hard_fallback_count": 58,
+    "review_queue_candidate_count": 89,
+    "unique_pollster_count": 5,
+    "total_option_count": 544
+  },
+  "value_normalization": {
+    "raw_and_normalized_option_count": 544,
+    "raw_and_normalized_ratio": 1.0
+  },
+  "acceptance_checks": {
+    "safe_window_applied_all": true,
+    "eligible_collection_success_present": true,
+    "pollster_coverage_ge_5": true,
+    "fallback_review_queue_synced": true,
+    "value_raw_and_normalized_present": true
+  }
+}
