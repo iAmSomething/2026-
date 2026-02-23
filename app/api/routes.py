@@ -7,7 +7,10 @@ from app.models.schemas import (
     BigMatchPoint,
     CandidateOut,
     DashboardBigMatchesOut,
+    DashboardQualityFreshnessOut,
+    DashboardQualityOfficialOut,
     DashboardQualityOut,
+    DashboardQualityReviewOut,
     DashboardMapLatestOut,
     DashboardSummaryOut,
     IngestPayload,
@@ -228,6 +231,7 @@ def get_dashboard_quality(repo=Depends(get_repository)):
     metrics = repo.fetch_dashboard_quality()
     return DashboardQualityOut(
         generated_at=datetime.now(timezone.utc),
+        quality_status=metrics["quality_status"],
         freshness_p50_hours=metrics["freshness_p50_hours"],
         freshness_p90_hours=metrics["freshness_p90_hours"],
         official_confirmed_ratio=metrics["official_confirmed_ratio"],
@@ -235,6 +239,23 @@ def get_dashboard_quality(repo=Depends(get_repository)):
         source_channel_mix=SourceChannelMixOut(
             article_ratio=metrics["source_channel_mix"]["article_ratio"],
             nesdc_ratio=metrics["source_channel_mix"]["nesdc_ratio"],
+        ),
+        freshness=DashboardQualityFreshnessOut(
+            p50_hours=metrics["freshness"]["p50_hours"],
+            p90_hours=metrics["freshness"]["p90_hours"],
+            over_24h_ratio=metrics["freshness"]["over_24h_ratio"],
+            over_48h_ratio=metrics["freshness"]["over_48h_ratio"],
+            status=metrics["freshness"]["status"],
+        ),
+        official_confirmation=DashboardQualityOfficialOut(
+            confirmed_ratio=metrics["official_confirmation"]["confirmed_ratio"],
+            unconfirmed_count=metrics["official_confirmation"]["unconfirmed_count"],
+            status=metrics["official_confirmation"]["status"],
+        ),
+        review_queue=DashboardQualityReviewOut(
+            pending_count=metrics["review_queue"]["pending_count"],
+            in_progress_count=metrics["review_queue"]["in_progress_count"],
+            pending_over_24h_count=metrics["review_queue"]["pending_over_24h_count"],
         ),
     )
 

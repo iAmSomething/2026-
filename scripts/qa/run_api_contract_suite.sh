@@ -10,7 +10,8 @@ usage() {
   cat <<USAGE
 Usage: $0 [--report <path>]
 
-Runs API 12-endpoint contract suite with success/failure/empty/auth-failure cases.
+Runs API contract suite (dashboard/regions/candidates/matchups/ops/review/jobs)
+with success/failure/empty/auth-failure cases.
 Writes JSON report (default: data/qa_api_contract_report.json).
 USAGE
 }
@@ -238,6 +239,60 @@ class FakeRepo:
             "job": "구청장",
             "career_summary": "성동구청장",
             "election_history": "지방선거 출마",
+        }
+
+    def fetch_dashboard_quality(self):
+        self._maybe_fail()
+        if self.mode == "empty":
+            return {
+                "quality_status": "warn",
+                "freshness_p50_hours": None,
+                "freshness_p90_hours": None,
+                "official_confirmed_ratio": 0.0,
+                "needs_manual_review_count": 0,
+                "source_channel_mix": {"article_ratio": 0.0, "nesdc_ratio": 0.0},
+                "freshness": {
+                    "p50_hours": None,
+                    "p90_hours": None,
+                    "over_24h_ratio": 0.0,
+                    "over_48h_ratio": 0.0,
+                    "status": "warn",
+                },
+                "official_confirmation": {
+                    "confirmed_ratio": 0.0,
+                    "unconfirmed_count": 0,
+                    "status": "critical",
+                },
+                "review_queue": {
+                    "pending_count": 0,
+                    "in_progress_count": 0,
+                    "pending_over_24h_count": 0,
+                },
+            }
+        return {
+            "quality_status": "warn",
+            "freshness_p50_hours": 18.5,
+            "freshness_p90_hours": 42.25,
+            "official_confirmed_ratio": 0.6,
+            "needs_manual_review_count": 4,
+            "source_channel_mix": {"article_ratio": 0.8, "nesdc_ratio": 0.6},
+            "freshness": {
+                "p50_hours": 18.5,
+                "p90_hours": 42.25,
+                "over_24h_ratio": 0.25,
+                "over_48h_ratio": 0.05,
+                "status": "warn",
+            },
+            "official_confirmation": {
+                "confirmed_ratio": 0.6,
+                "unconfirmed_count": 4,
+                "status": "warn",
+            },
+            "review_queue": {
+                "pending_count": 3,
+                "in_progress_count": 1,
+                "pending_over_24h_count": 1,
+            },
         }
 
     def fetch_review_queue_items(  # noqa: ARG002
@@ -656,6 +711,35 @@ def main() -> int:
     )
 
     run_case(
+        "quality_success",
+        "success",
+        "GET /api/v1/dashboard/quality",
+        lambda: (
+            lambda r: (
+                r.status_code == 200 or (_ for _ in ()).throw(AssertionError(f"status={r.status_code}")),
+                assert_keys(
+                    r.json(),
+                    [
+                        "generated_at",
+                        "quality_status",
+                        "freshness_p50_hours",
+                        "freshness_p90_hours",
+                        "official_confirmed_ratio",
+                        "needs_manual_review_count",
+                        "source_channel_mix",
+                        "freshness",
+                        "official_confirmation",
+                        "review_queue",
+                    ],
+                ),
+                assert_keys(r.json()["freshness"], ["status", "over_24h_ratio", "over_48h_ratio"]),
+                assert_keys(r.json()["official_confirmation"], ["confirmed_ratio", "unconfirmed_count", "status"]),
+                assert_keys(r.json()["review_queue"], ["pending_count", "in_progress_count", "pending_over_24h_count"]),
+            )
+        )(make_client(FakeRepo("success")).get("/api/v1/dashboard/quality")),
+    )
+
+    run_case(
         "review_queue_items_success",
         "success",
         "GET /api/v1/review-queue/items",
@@ -813,6 +897,25 @@ def main() -> int:
     )
 
     run_case(
+        "quality_empty",
+        "empty",
+        "GET /api/v1/dashboard/quality",
+        lambda: (
+            lambda r: (
+                r.status_code == 200 or (_ for _ in ()).throw(AssertionError(f"status={r.status_code}")),
+                r.json().get("freshness_p50_hours") is None
+                or (_ for _ in ()).throw(AssertionError("expected freshness_p50_hours=None")),
+                r.json().get("official_confirmed_ratio") == 0.0
+                or (_ for _ in ()).throw(AssertionError("expected official_confirmed_ratio=0.0")),
+                r.json().get("needs_manual_review_count") == 0
+                or (_ for _ in ()).throw(AssertionError("expected needs_manual_review_count=0")),
+                r.json().get("review_queue", {}).get("pending_count") == 0
+                or (_ for _ in ()).throw(AssertionError("expected review_queue.pending_count=0")),
+            )
+        )(make_client(FakeRepo("empty")).get("/api/v1/dashboard/quality")),
+    )
+
+    run_case(
         "region_elections_empty",
         "empty",
         "GET /api/v1/regions/{region_code}/elections",
@@ -915,6 +1018,17 @@ def main() -> int:
                 r.status_code == 500 or (_ for _ in ()).throw(AssertionError(f"status={r.status_code}")),
             )
         )(make_client(FakeRepo("failure"), raise_server_exceptions=False).get("/api/v1/dashboard/summary")),
+    )
+
+    run_case(
+        "quality_internal_error_500",
+        "failure",
+        "GET /api/v1/dashboard/quality",
+        lambda: (
+            lambda r: (
+                r.status_code == 500 or (_ for _ in ()).throw(AssertionError(f"status={r.status_code}")),
+            )
+        )(make_client(FakeRepo("failure"), raise_server_exceptions=False).get("/api/v1/dashboard/quality")),
     )
 
     run_case(

@@ -48,8 +48,8 @@
 - 결과: `10 passed`
 
 2. API 계약 스위트
-- 명령: `bash scripts/qa/run_api_contract_suite.sh --report data/qa_api_contract_report_issue178.json`
-- 결과: `total=28, pass=28, fail=0`
+- 명령: `bash scripts/qa/run_api_contract_suite.sh --report data/verification/issue178_api_contract_report.json`
+- 결과: `total=31, pass=31, fail=0`
 
 3. 샘플 응답 확인
 - `big-matches` 샘플에서 신규 필드 존재 확인:
@@ -60,7 +60,8 @@
   - `is_official_confirmed`
 
 ## 4. 증빙 파일
-- `data/qa_api_contract_report_issue178.json`
+- `data/verification/issue178_api_contract_report.json`
+- `data/verification/issue178_api_contract_report_digest.json`
 - `data/verification/issue178_dashboard_contract_pytest.log`
 - `data/verification/issue178_dashboard_contract_suite.log`
 - `data/verification/issue178_big_matches_contract_sample.json`

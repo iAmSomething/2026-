@@ -319,6 +319,31 @@ main {
   color: #0e7490;
 }
 
+.quality-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.quality-item {
+  border: 1px solid #d9e6f2;
+  border-radius: 12px;
+  background: #f8fbff;
+  padding: 10px 12px;
+}
+
+.quality-item strong {
+  display: block;
+  margin-top: 4px;
+  color: #0f172a;
+}
+
+.quality-label {
+  margin: 0;
+  font-size: 0.82rem;
+  color: #526172;
+}
+
 .search-form {
   display: flex;
   gap: 8px;
@@ -609,7 +634,8 @@ main {
   .region-layout,
   .search-layout,
   .detail-grid,
-  .bigmatch-grid {
+  .bigmatch-grid,
+  .quality-grid {
     grid-template-columns: 1fr;
   }
 

@@ -68,15 +68,54 @@ function BigMatchCards({ items }) {
   );
 }
 
+function formatHours(value) {
+  if (value === null || value === undefined || Number.isNaN(Number(value))) return "-";
+  return `${Number(value).toFixed(1)}h`;
+}
+
+function QualityPanel({ quality }) {
+  return (
+    <section className="panel">
+      <header className="panel-header">
+        <div>
+          <h3>운영 품질 패널</h3>
+          <p>신선도/공식확정 비율/검수대기 지표를 운영 기준으로 모니터링합니다.</p>
+        </div>
+      </header>
+      <div className="quality-grid">
+        <article className="quality-item">
+          <p className="quality-label">운영 품질</p>
+          <strong>{quality?.quality_status || "-"}</strong>
+        </article>
+        <article className="quality-item">
+          <p className="quality-label">신선도</p>
+          <strong>
+            P50 {formatHours(quality?.freshness_p50_hours)} / P90 {formatHours(quality?.freshness_p90_hours)}
+          </strong>
+        </article>
+        <article className="quality-item">
+          <p className="quality-label">공식확정 비율</p>
+          <strong>{formatPercent((quality?.official_confirmed_ratio ?? 0) * 100)}</strong>
+        </article>
+        <article className="quality-item">
+          <p className="quality-label">검수대기</p>
+          <strong>{quality?.needs_manual_review_count ?? 0}건</strong>
+        </article>
+      </div>
+    </section>
+  );
+}
+
 export default async function HomePage({ searchParams }) {
   const resolved = await searchParams;
   const scopeMixEnabled = parseOnFlag(resolved?.scope_mix || "");
   const regionScenario = normalizeRegionParam(resolved?.selected_region || "");
 
-  const [summaryRes, mapRes, bigMatchRes] = await Promise.all([
+  const [summaryRes, mapRes, bigMatchRes, qualityRes] = await Promise.all([
     fetchApi("/api/v1/dashboard/summary"),
     fetchApi("/api/v1/dashboard/map-latest"),
-    fetchApi("/api/v1/dashboard/big-matches")
+    fetchApi("/api/v1/dashboard/big-matches"),
+    fetchApi("/api/v1/dashboard/quality")
   ]);
 
   const partyItems = summaryRes.ok && Array.isArray(summaryRes.body?.party_support) ? summaryRes.body.party_support : [];
@@ -84,6 +123,7 @@ export default async function HomePage({ searchParams }) {
     summaryRes.ok && Array.isArray(summaryRes.body?.presidential_approval) ? summaryRes.body.presidential_approval : [];
   const mapItems = mapRes.ok && Array.isArray(mapRes.body?.items) ? mapRes.body.items : [];
   const bigMatchItems = bigMatchRes.ok && Array.isArray(bigMatchRes.body?.items) ? bigMatchRes.body.items : [];
+  const qualityMetrics = qualityRes.ok && qualityRes.body ? qualityRes.body : null;
 
   const scenarioBadges = [];
   if (scopeMixEnabled) {
@@ -172,6 +212,14 @@ export default async function HomePage({ searchParams }) {
       ) : (
         <BigMatchCards items={bigMatchItems} />
       )}
+
+      {!qualityRes.ok ? (
+        <section className="panel error-panel">
+          <h3>품질 데이터 로드 실패</h3>
+          <p>status: {qualityRes.status}</p>
+        </section>
+      ) : null}
+      <QualityPanel quality={qualityMetrics} />
     </main>
   );
 }

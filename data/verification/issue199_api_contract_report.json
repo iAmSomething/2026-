@@ -1,0 +1,428 @@
+{
+  "suite": "qa_api_contract_suite",
+  "generated_at": "2026-02-23T04:23:09.399822+00:00",
+  "python": "3.13.5",
+  "summary": {
+    "total": 31,
+    "pass": 31,
+    "fail": 0,
+    "pass_rate": 100.0
+  },
+  "by_category": {
+    "success": {
+      "total": 13,
+      "pass": 13,
+      "fail": 0
+    },
+    "partial": {
+      "total": 1,
+      "pass": 1,
+      "fail": 0
+    },
+    "empty": {
+      "total": 10,
+      "pass": 10,
+      "fail": 0
+    },
+    "auth_failure": {
+      "total": 2,
+      "pass": 2,
+      "fail": 0
+    },
+    "failure": {
+      "total": 5,
+      "pass": 5,
+      "fail": 0
+    }
+  },
+  "cases": [
+    {
+      "name": "summary_success",
+      "category": "success",
+      "endpoint": "GET /api/v1/dashboard/summary",
+      "status": "pass",
+      "error": null,
+      "details": [
+        null,
+        true,
+        true,
+        null
+      ],
+      "executed_at": "2026-02-23T04:23:09.353681+00:00"
+    },
+    {
+      "name": "map_latest_success",
+      "category": "success",
+      "endpoint": "GET /api/v1/dashboard/map-latest",
+      "status": "pass",
+      "error": null,
+      "details": [
+        true,
+        true,
+        null
+      ],
+      "executed_at": "2026-02-23T04:23:09.359298+00:00"
+    },
+    {
+      "name": "big_matches_success",
+      "category": "success",
+      "endpoint": "GET /api/v1/dashboard/big-matches",
+      "status": "pass",
+      "error": null,
+      "details": [
+        true,
+        true,
+        null
+      ],
+      "executed_at": "2026-02-23T04:23:09.360800+00:00"
+    },
+    {
+      "name": "regions_search_success",
+      "category": "success",
+      "endpoint": "GET /api/v1/regions/search",
+      "status": "pass",
+      "error": null,
+      "details": [
+        true,
+        true,
+        true
+      ],
+      "executed_at": "2026-02-23T04:23:09.362149+00:00"
+    },
+    {
+      "name": "region_elections_success",
+      "category": "success",
+      "endpoint": "GET /api/v1/regions/{region_code}/elections",
+      "status": "pass",
+      "error": null,
+      "details": [
+        true,
+        true,
+        true
+      ],
+      "executed_at": "2026-02-23T04:23:09.363508+00:00"
+    },
+    {
+      "name": "matchup_success",
+      "category": "success",
+      "endpoint": "GET /api/v1/matchups/{matchup_id}",
+      "status": "pass",
+      "error": null,
+      "details": [
+        true,
+        null,
+        true,
+        null,
+        null
+      ],
+      "executed_at": "2026-02-23T04:23:09.364803+00:00"
+    },
+    {
+      "name": "candidate_success",
+      "category": "success",
+      "endpoint": "GET /api/v1/candidates/{candidate_id}",
+      "status": "pass",
+      "error": null,
+      "details": [
+        true,
+        null,
+        true,
+        true
+      ],
+      "executed_at": "2026-02-23T04:23:09.366504+00:00"
+    },
+    {
+      "name": "quality_success",
+      "category": "success",
+      "endpoint": "GET /api/v1/dashboard/quality",
+      "status": "pass",
+      "error": null,
+      "details": [
+        true,
+        null,
+        null,
+        null,
+        null
+      ],
+      "executed_at": "2026-02-23T04:23:09.368527+00:00"
+    },
+    {
+      "name": "review_queue_items_success",
+      "category": "success",
+      "endpoint": "GET /api/v1/review-queue/items",
+      "status": "pass",
+      "error": null,
+      "details": [
+        true,
+        true,
+        true
+      ],
+      "executed_at": "2026-02-23T04:23:09.369964+00:00"
+    },
+    {
+      "name": "ops_coverage_summary_success",
+      "category": "success",
+      "endpoint": "GET /api/v1/ops/coverage/summary",
+      "status": "pass",
+      "error": null,
+      "details": [
+        true,
+        null,
+        true
+      ],
+      "executed_at": "2026-02-23T04:23:09.371371+00:00"
+    },
+    {
+      "name": "ops_coverage_summary_partial",
+      "category": "partial",
+      "endpoint": "GET /api/v1/ops/coverage/summary",
+      "status": "pass",
+      "error": null,
+      "details": [
+        true,
+        true,
+        true
+      ],
+      "executed_at": "2026-02-23T04:23:09.372666+00:00"
+    },
+    {
+      "name": "review_queue_stats_success",
+      "category": "success",
+      "endpoint": "GET /api/v1/review-queue/stats",
+      "status": "pass",
+      "error": null,
+      "details": [
+        true,
+        null
+      ],
+      "executed_at": "2026-02-23T04:23:09.373953+00:00"
+    },
+    {
+      "name": "review_queue_trends_success",
+      "category": "success",
+      "endpoint": "GET /api/v1/review-queue/trends",
+      "status": "pass",
+      "error": null,
+      "details": [
+        true,
+        null
+      ],
+      "executed_at": "2026-02-23T04:23:09.375692+00:00"
+    },
+    {
+      "name": "run_ingest_success",
+      "category": "success",
+      "endpoint": "POST /api/v1/jobs/run-ingest",
+      "status": "pass",
+      "error": null,
+      "details": [
+        true,
+        true
+      ],
+      "executed_at": "2026-02-23T04:23:09.377037+00:00"
+    },
+    {
+      "name": "summary_empty",
+      "category": "empty",
+      "endpoint": "GET /api/v1/dashboard/summary",
+      "status": "pass",
+      "error": null,
+      "details": [
+        true,
+        true,
+        true
+      ],
+      "executed_at": "2026-02-23T04:23:09.379271+00:00"
+    },
+    {
+      "name": "regions_search_empty",
+      "category": "empty",
+      "endpoint": "GET /api/v1/regions/search",
+      "status": "pass",
+      "error": null,
+      "details": [
+        true,
+        true
+      ],
+      "executed_at": "2026-02-23T04:23:09.380459+00:00"
+    },
+    {
+      "name": "map_latest_empty",
+      "category": "empty",
+      "endpoint": "GET /api/v1/dashboard/map-latest",
+      "status": "pass",
+      "error": null,
+      "details": [
+        true,
+        true
+      ],
+      "executed_at": "2026-02-23T04:23:09.381644+00:00"
+    },
+    {
+      "name": "big_matches_empty",
+      "category": "empty",
+      "endpoint": "GET /api/v1/dashboard/big-matches",
+      "status": "pass",
+      "error": null,
+      "details": [
+        true,
+        true
+      ],
+      "executed_at": "2026-02-23T04:23:09.382820+00:00"
+    },
+    {
+      "name": "quality_empty",
+      "category": "empty",
+      "endpoint": "GET /api/v1/dashboard/quality",
+      "status": "pass",
+      "error": null,
+      "details": [
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "executed_at": "2026-02-23T04:23:09.383995+00:00"
+    },
+    {
+      "name": "region_elections_empty",
+      "category": "empty",
+      "endpoint": "GET /api/v1/regions/{region_code}/elections",
+      "status": "pass",
+      "error": null,
+      "details": [
+        true,
+        true
+      ],
+      "executed_at": "2026-02-23T04:23:09.385781+00:00"
+    },
+    {
+      "name": "review_queue_items_empty",
+      "category": "empty",
+      "endpoint": "GET /api/v1/review-queue/items",
+      "status": "pass",
+      "error": null,
+      "details": [
+        true,
+        true
+      ],
+      "executed_at": "2026-02-23T04:23:09.386993+00:00"
+    },
+    {
+      "name": "ops_coverage_summary_empty",
+      "category": "empty",
+      "endpoint": "GET /api/v1/ops/coverage/summary",
+      "status": "pass",
+      "error": null,
+      "details": [
+        true,
+        true,
+        true,
+        true
+      ],
+      "executed_at": "2026-02-23T04:23:09.388150+00:00"
+    },
+    {
+      "name": "review_queue_stats_empty",
+      "category": "empty",
+      "endpoint": "GET /api/v1/review-queue/stats",
+      "status": "pass",
+      "error": null,
+      "details": [
+        true,
+        true
+      ],
+      "executed_at": "2026-02-23T04:23:09.389286+00:00"
+    },
+    {
+      "name": "review_queue_trends_empty",
+      "category": "empty",
+      "endpoint": "GET /api/v1/review-queue/trends",
+      "status": "pass",
+      "error": null,
+      "details": [
+        true,
+        true
+      ],
+      "executed_at": "2026-02-23T04:23:09.390376+00:00"
+    },
+    {
+      "name": "run_ingest_auth_missing",
+      "category": "auth_failure",
+      "endpoint": "POST /api/v1/jobs/run-ingest",
+      "status": "pass",
+      "error": null,
+      "details": [
+        true
+      ],
+      "executed_at": "2026-02-23T04:23:09.391497+00:00"
+    },
+    {
+      "name": "run_ingest_auth_invalid",
+      "category": "auth_failure",
+      "endpoint": "POST /api/v1/jobs/run-ingest",
+      "status": "pass",
+      "error": null,
+      "details": [
+        true
+      ],
+      "executed_at": "2026-02-23T04:23:09.392527+00:00"
+    },
+    {
+      "name": "summary_internal_error_500",
+      "category": "failure",
+      "endpoint": "GET /api/v1/dashboard/summary",
+      "status": "pass",
+      "error": null,
+      "details": [
+        true
+      ],
+      "executed_at": "2026-02-23T04:23:09.393632+00:00"
+    },
+    {
+      "name": "quality_internal_error_500",
+      "category": "failure",
+      "endpoint": "GET /api/v1/dashboard/quality",
+      "status": "pass",
+      "error": null,
+      "details": [
+        true
+      ],
+      "executed_at": "2026-02-23T04:23:09.394915+00:00"
+    },
+    {
+      "name": "candidate_not_found_404",
+      "category": "failure",
+      "endpoint": "GET /api/v1/candidates/{candidate_id}",
+      "status": "pass",
+      "error": null,
+      "details": [
+        true
+      ],
+      "executed_at": "2026-02-23T04:23:09.396309+00:00"
+    },
+    {
+      "name": "matchup_not_found_404",
+      "category": "failure",
+      "endpoint": "GET /api/v1/matchups/{matchup_id}",
+      "status": "pass",
+      "error": null,
+      "details": [
+        true
+      ],
+      "executed_at": "2026-02-23T04:23:09.397478+00:00"
+    },
+    {
+      "name": "run_ingest_invalid_payload_422",
+      "category": "failure",
+      "endpoint": "POST /api/v1/jobs/run-ingest",
+      "status": "pass",
+      "error": null,
+      "details": [
+        true
+      ],
+      "executed_at": "2026-02-23T04:23:09.398521+00:00"
+    }
+  ]
+}

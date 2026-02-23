@@ -1,0 +1,29 @@
+{
+  "generated_at": "2026-02-23T04:24:21.319631Z",
+  "quality_status": "warn",
+  "freshness_p50_hours": 18.5,
+  "freshness_p90_hours": 42.25,
+  "official_confirmed_ratio": 0.6,
+  "needs_manual_review_count": 4,
+  "source_channel_mix": {
+    "article_ratio": 0.8,
+    "nesdc_ratio": 0.6
+  },
+  "freshness": {
+    "p50_hours": 18.5,
+    "p90_hours": 42.25,
+    "over_24h_ratio": 0.25,
+    "over_48h_ratio": 0.05,
+    "status": "warn"
+  },
+  "official_confirmation": {
+    "confirmed_ratio": 0.6,
+    "unconfirmed_count": 4,
+    "status": "warn"
+  },
+  "review_queue": {
+    "pending_count": 3,
+    "in_progress_count": 1,
+    "pending_over_24h_count": 1
+  }
+}

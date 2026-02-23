@@ -1,0 +1,11 @@
+============================= test session starts ==============================
+platform darwin -- Python 3.13.5, pytest-8.4.2, pluggy-1.6.0
+rootdir: /private/tmp/election2026_codex_issue199
+configfile: pyproject.toml
+plugins: anyio-4.12.1
+collected 11 items
+
+tests/test_api_routes.py ..........                                      [ 90%]
+tests/test_web_quality_panel_keywords.py .                               [100%]
+
+============================== 11 passed in 0.29s ==============================
