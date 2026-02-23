@@ -4,6 +4,7 @@ from datetime import date, datetime, timezone
 from urllib.parse import unquote_plus
 
 from fastapi import APIRouter, Depends, HTTPException, Query, Request
+from pydantic import ValidationError
 
 from app.api.dependencies import get_candidate_data_go_service, get_repository, require_internal_job_token
 from app.models.schemas import (
@@ -40,6 +41,7 @@ from app.models.schemas import (
     SummaryPoint,
 )
 from app.services.ingest_service import ingest_payload
+from app.services.ingest_input_normalization import normalize_ingest_payload
 
 router = APIRouter(prefix="/api/v1", tags=["v1"])
 
@@ -506,11 +508,24 @@ def get_review_queue_trends(
 
 
 @router.post("/jobs/run-ingest", response_model=JobRunOut)
-def run_ingest_job(
-    payload: IngestPayload,
+async def run_ingest_job(
+    request: Request,
     _=Depends(require_internal_job_token),
     repo=Depends(get_repository),
 ):
+    try:
+        raw_payload = await request.json()
+    except Exception as exc:  # noqa: BLE001
+        raise HTTPException(status_code=422, detail=f"invalid json payload: {exc}") from exc
+    if not isinstance(raw_payload, dict):
+        raise HTTPException(status_code=422, detail="payload must be a JSON object")
+
+    normalized_payload = normalize_ingest_payload(raw_payload)
+    try:
+        payload = IngestPayload.model_validate(normalized_payload)
+    except ValidationError as exc:
+        raise HTTPException(status_code=422, detail=exc.errors()) from exc
+
     result = ingest_payload(payload, repo)
     return JobRunOut(
         run_id=result.run_id,

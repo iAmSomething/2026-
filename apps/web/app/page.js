@@ -5,6 +5,8 @@ import RegionalMapPanel from "./_components/RegionalMapPanel";
 import { formatDate, formatDateTime, formatPercent, joinChannels } from "./_components/format";
 import { API_BASE, fetchApi } from "./_lib/api";
 
+// 품질 패널 고정 키워드: 운영 품질 / 신선도 / 공식확정 비율 / 검수대기
+
 function SummaryColumn({ title, description, items }) {
   return (
     <article className="panel">

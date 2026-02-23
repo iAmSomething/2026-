@@ -1,0 +1,12 @@
+{
+  "normalized_candidate": {
+    "candidate_id": "cand-220",
+    "name_ko": "홍길동",
+    "party_name": "더불어민주당",
+    "party_inferred": true,
+    "party_inference_source": "manual"
+  },
+  "validation_success": true,
+  "validated_candidate_party_inferred": true,
+  "validated_candidate_party_inference_source": "manual"
+}
