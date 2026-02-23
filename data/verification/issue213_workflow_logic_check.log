@@ -1,5 +1,13 @@
-== lint target selection check ==
-changed_report_md_files=<none>
-contains_png_change=0
+== lint target selection check (origin/main...HEAD) ==
+all_changed_files:
+.github/pull_request_template.md
+.github/workflows/report-file-lint.yml
+.github/workflows/report-governance.yml
+data/verification/issue213_workflow_logic_check.log
+develop_report/2026-02-23_hotfix_report_lint_governance_false_positive_recovery_report.md
+develop_report/2026-02-23_issue213_lint_governance_screenshot_probe.png
+---
+report_md_targets=develop_report/2026-02-23_hotfix_report_lint_governance_false_positive_recovery_report.md
+probe_png_changed=1
 == report-path parser check ==
 parsed_report_path=develop_report/2026-02-23_issue213_report.md
