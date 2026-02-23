@@ -35,8 +35,10 @@ jobs:
 
       - name: Build live coverage payload
         run: |
-          .venv/bin/python scripts/generate_collector_live_coverage_v1_pack.py
+          chmod +x scripts/qa/build_live_coverage_payload.sh
+          scripts/qa/build_live_coverage_payload.sh --python .venv/bin/python
           .venv/bin/python scripts/generate_collector_freshness_hotfix_v1_pack.py
+          test -s data/collector_live_coverage_v1_payload.json
           test -s data/collector_freshness_hotfix_v1_payload.json
 
       - name: Start API server
