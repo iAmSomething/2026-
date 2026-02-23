@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from datetime import datetime, timezone
 
-from scripts.pm.reopen_policy import parse_bool_flag, select_reopen_candidates
+from scripts.pm.reopen_policy import parse_bool_flag, parse_iso_datetime, select_reopen_candidates
 
 
 def test_parse_bool_flag_defaults_false() -> None:
@@ -65,3 +65,27 @@ def test_select_reopen_candidates_filters_recent_done_role_issues() -> None:
         now=datetime(2026, 2, 21, 12, 0, tzinfo=timezone.utc),
     )
     assert result == [1]
+
+
+def test_parse_iso_datetime_handles_z_and_naive_input() -> None:
+    assert parse_iso_datetime("2026-02-21T12:00:00Z") == datetime(2026, 2, 21, 12, 0, tzinfo=timezone.utc)
+    assert parse_iso_datetime("2026-02-21T12:00:00") == datetime(2026, 2, 21, 12, 0, tzinfo=timezone.utc)
+    assert parse_iso_datetime("invalid") is None
+
+
+def test_select_reopen_candidates_keeps_item_without_updated_at() -> None:
+    issues = [
+        {
+            "number": 21,
+            "state": "CLOSED",
+            "updatedAt": None,
+            "labels": [{"name": "status/done"}, {"name": "role/qa"}],
+        },
+    ]
+    result = select_reopen_candidates(
+        issues,
+        allow_reopen_done=True,
+        lookback_days=0,
+        now=datetime(2026, 2, 21, 12, 0, tzinfo=timezone.utc),
+    )
+    assert result == [21]

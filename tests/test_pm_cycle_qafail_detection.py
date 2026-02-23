@@ -44,3 +44,15 @@ def test_detects_status_fail_line() -> None:
     text = "# QA 보고서\n- Status: FAIL\n"
     assert has_qa_fail_report_text(text) is True
     assert run_detector(text) == 0
+
+
+def test_ignores_backtick_qafail_token() -> None:
+    text = "예시 포맷: `[QA FAIL]` 를 그대로 복붙하지 마세요."
+    assert has_qa_fail_report_text(text) is False
+    assert run_detector(text) == 1
+
+
+def test_detects_korean_conclusion_block_line() -> None:
+    text = "# QA 보고서\n- 결론 : Done 처리 불가\n"
+    assert has_qa_fail_report_text(text) is True
+    assert run_detector(text) == 0
