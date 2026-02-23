@@ -8,6 +8,30 @@ const CANDIDATE_ALIAS_BY_NAME = {
   정원오: "cand-jwo"
 };
 
+const REGIONAL_OFFICE_TYPES = new Set([
+  "광역자치단체장",
+  "광역의회",
+  "교육감",
+  "기초자치단체장",
+  "기초의회",
+  "재보궐"
+]);
+
+function resolveScope({ audienceScope, officeType, regionCode }) {
+  if (audienceScope === "national" || audienceScope === "regional" || audienceScope === "local") {
+    return audienceScope;
+  }
+  if (regionCode === "KR-00-000" || regionCode === "00-000") return "national";
+  if (REGIONAL_OFFICE_TYPES.has(officeType)) return "regional";
+  return "local";
+}
+
+function scopeBadge(scope) {
+  if (scope === "national") return { text: "전국 스코프", tone: "ok" };
+  if (scope === "regional") return { text: "지역(광역) 스코프", tone: "info" };
+  return { text: "기초(시군구) 스코프", tone: "warn" };
+}
+
 export default async function MatchupPage({ params, searchParams }) {
   const resolvedParams = await params;
   const resolvedSearch = await searchParams;
@@ -39,6 +63,16 @@ export default async function MatchupPage({ params, searchParams }) {
   const options = Array.isArray(matchup.options) ? [...matchup.options] : [];
   options.sort((a, b) => (b.value_mid || 0) - (a.value_mid || 0));
   const maxValue = Math.max(...options.map((option) => option.value_mid || 0), 1);
+  const resolvedScope = resolveScope({
+    audienceScope: matchup.audience_scope,
+    officeType: matchup.office_type,
+    regionCode: matchup.region_code
+  });
+  const scopeInfo = scopeBadge(resolvedScope);
+  const compareInfo =
+    resolvedScope === "national"
+      ? { text: "전국 vs 전국 비교 가능", tone: "ok" }
+      : { text: "지역/기초 vs 지역/기초 비교 권장", tone: "warn" };
 
   const scenarioBadges = [];
   const isOfficialScenario = confirmDemo === "official" || sourceDemo === "nesdc";
@@ -109,12 +143,17 @@ export default async function MatchupPage({ params, searchParams }) {
         <div className="badge-row">
           <span className="state-badge info">요청 ID(alias): {requestedMatchupId}</span>
           <span className="state-badge ok">표준 ID(canonical): {matchup.matchup_id}</span>
+          <span className={`state-badge ${scopeInfo.tone}`}>{scopeInfo.text}</span>
+          <span className={`state-badge ${compareInfo.tone}`}>{compareInfo.text}</span>
           {scenarioBadges.map((badge) => (
             <span key={badge.text} className={`state-badge ${badge.tone}`}>
               {badge.text}
             </span>
           ))}
         </div>
+        <p className="scenario-copy">
+          스코프 고정: 지역 상세에서는 조사 스코프를 항상 배지로 노출합니다. 전국 지표와 지역/기초 지표의 직접 비교는 금지합니다.
+        </p>
         {scenarioCopy ? <p className="scenario-copy">{scenarioCopy}</p> : null}
       </section>
 
