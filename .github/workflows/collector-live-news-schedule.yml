@@ -37,14 +37,14 @@ jobs:
         run: |
           .venv/bin/python scripts/generate_collector_live_news_v1_pack.py
           .venv/bin/python - <<'PY'
-import json
-from pathlib import Path
-payload = json.loads(Path('data/collector_live_news_v1_payload.json').read_text(encoding='utf-8'))
-records = payload.get('records') or []
-if len(records) < 30:
-    raise SystemExit(f"records below minimum: {len(records)} < 30")
-print('records:', len(records))
-PY
+          import json
+          from pathlib import Path
+          payload = json.loads(Path('data/collector_live_news_v1_payload.json').read_text(encoding='utf-8'))
+          records = payload.get('records') or []
+          if len(records) < 30:
+              raise SystemExit(f"records below minimum: {len(records)} < 30")
+          print('records:', len(records))
+          PY
 
       - name: Start API server
         run: |
