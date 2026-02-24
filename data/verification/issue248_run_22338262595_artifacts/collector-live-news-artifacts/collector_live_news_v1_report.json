@@ -1,0 +1,56 @@
+{
+  "run_type": "collector_live_news_v1",
+  "generated_at": "2026-02-24T05:42:14.269637+00:00",
+  "discovery_metrics": {
+    "query_count": 84,
+    "raw_count": 244,
+    "dedup_count": 80,
+    "fetched_count": 80,
+    "valid_count": 38,
+    "fallback_fetch_count": 63,
+    "duplicate_count": 164,
+    "duplicate_rate": 0.6721,
+    "fetch_fail_count": 0,
+    "fetch_fail_rate": 0.0,
+    "valid_article_rate": 0.475
+  },
+  "counts": {
+    "article_count": 38,
+    "observation_count": 37,
+    "option_count": 80,
+    "review_queue_count": 106,
+    "ingest_record_count": 37,
+    "threshold_miss_count": 37
+  },
+  "legal_required_fields": [
+    "pollster",
+    "sponsor",
+    "survey_period",
+    "sample_size",
+    "response_rate",
+    "margin_of_error"
+  ],
+  "legal_completeness": {
+    "threshold": 0.8,
+    "avg_score": 0.1802,
+    "min_score": 0.1667,
+    "max_score": 0.3333,
+    "missing_field_counts": {
+      "sponsor": 37,
+      "sample_size": 37,
+      "response_rate": 37,
+      "margin_of_error": 37,
+      "survey_period": 34
+    }
+  },
+  "acceptance_checks": {
+    "live_news_candidates_present": true,
+    "ingest_records_ge_30": true,
+    "threshold_miss_review_queue_synced": true
+  },
+  "risk_signals": {
+    "threshold_miss_present": true,
+    "threshold_miss_count": 37,
+    "threshold_miss_rate": 1.0
+  }
+}
