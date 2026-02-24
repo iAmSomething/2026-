@@ -127,3 +127,100 @@ def test_nesdc_live_pack_parse_success_threshold(tmp_path: Path) -> None:
     )
 
     assert out["report"]["acceptance_checks"]["parse_success_ge_20"] is False
+
+
+def test_nesdc_live_pack_best_match_not_first_candidate(tmp_path: Path) -> None:
+    article_path = tmp_path / "article_payload.json"
+    payload = {
+        "records": [
+            {
+                "article": {"url": "https://news.test/wrong"},
+                "observation": {
+                    "observation_key": "obs-wrong",
+                    "matchup_id": "M-SEOUL",
+                    "pollster": "기관A",
+                    "survey_end_date": "2026-02-20",
+                    "sample_size": 900,
+                    "margin_of_error": "±3.0%p",
+                },
+            },
+            {
+                "article": {"url": "https://news.test/exact"},
+                "observation": {
+                    "observation_key": "obs-exact",
+                    "matchup_id": "M-SEOUL",
+                    "pollster": "기관A",
+                    "survey_end_date": "2026-02-20",
+                    "sample_size": 1000,
+                    "margin_of_error": "±3.1%p",
+                },
+            },
+        ]
+    }
+    article_path.write_text(json.dumps(payload, ensure_ascii=False), encoding="utf-8")
+
+    out = build_nesdc_live_v1_pack(
+        article_payload_path=str(article_path),
+        safe_collect_output={
+            **_safe_collect_output(parse_success=22),
+            "data": {
+                "run_type": "collector_nesdc_safe_collect_v1",
+                "records": [_safe_collect_output()["data"]["records"][0]],
+            },
+            "review_queue_candidates": [],
+        },
+    )
+
+    decisions = out["merge_evidence"]["decision_samples"]
+    assert decisions[0]["decision"] == "merge_exact"
+    assert decisions[0]["article_observation_key"] == "obs-exact"
+    assert decisions[0]["selection_basis"]["candidate_count"] == 2
+
+
+def test_nesdc_live_pack_tie_candidates_route_conflict_review(tmp_path: Path) -> None:
+    article_path = tmp_path / "article_payload.json"
+    payload = {
+        "records": [
+            {
+                "article": {"url": "https://news.test/one"},
+                "observation": {
+                    "observation_key": "obs-1",
+                    "matchup_id": "M-SEOUL",
+                    "pollster": "기관A",
+                    "survey_end_date": "2026-02-20",
+                    "sample_size": 1000,
+                    "margin_of_error": "±3.1%p",
+                },
+            },
+            {
+                "article": {"url": "https://news.test/two"},
+                "observation": {
+                    "observation_key": "obs-2",
+                    "matchup_id": "M-SEOUL",
+                    "pollster": "기관A",
+                    "survey_end_date": "2026-02-20",
+                    "sample_size": 1000,
+                    "margin_of_error": "±3.1%p",
+                },
+            },
+        ]
+    }
+    article_path.write_text(json.dumps(payload, ensure_ascii=False), encoding="utf-8")
+
+    out = build_nesdc_live_v1_pack(
+        article_payload_path=str(article_path),
+        safe_collect_output={
+            **_safe_collect_output(parse_success=22),
+            "data": {
+                "run_type": "collector_nesdc_safe_collect_v1",
+                "records": [_safe_collect_output()["data"]["records"][0]],
+            },
+            "review_queue_candidates": [],
+        },
+    )
+
+    assert out["merge_evidence"]["decision_counts"].get("conflict_review") == 1
+    decision = out["merge_evidence"]["decision_samples"][0]
+    assert decision["reason"] == "tie"
+    assert decision["selection_basis"]["tie_with_next"] is True
+    assert any(x.get("error_code") == "ARTICLE_NESDC_CONFLICT" for x in out["review_queue_candidates"])
