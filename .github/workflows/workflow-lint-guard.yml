@@ -20,4 +20,4 @@ jobs:
           bash scripts/qa/validate_workflow_yaml.sh
 
       - name: Validate workflow semantics with actionlint
-        uses: rhysd/actionlint@v1
+        uses: reviewdog/action-actionlint@v1
