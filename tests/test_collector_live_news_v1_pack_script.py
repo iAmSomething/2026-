@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import json
 import pytest
 
 from scripts.generate_collector_live_news_v1_pack import build_collector_live_news_v1_pack
@@ -86,12 +87,22 @@ class FakeCollector:
         return [obs], [opt], []
 
 
+class RichTextCollector(FakeCollector):
+    def extract(self, article: Article):
+        article.raw_text = (
+            article.raw_text
+            + " 의뢰기관 서울신문, 표본수 1,001명, 응답률 12.3%, 오차범위 ±3.1%p."
+        )
+        return super().extract(article)
+
+
 def test_live_news_pack_generates_ingest_payload_and_routes_low_completeness() -> None:
     out = build_collector_live_news_v1_pack(
         pipeline=FakePipeline(35),
         collector=FakeCollector(),
         threshold=0.8,
         target_count=40,
+        nesdc_enrich_path=None,
     )
 
     assert len(out["ingest_payload"]["records"]) == 35
@@ -103,6 +114,11 @@ def test_live_news_pack_generates_ingest_payload_and_routes_low_completeness() -
 
     issue_types = [x["issue_type"] for x in out["review_queue_candidates"]]
     assert "extract_error" in issue_types
+    threshold_items = [
+        x for x in out["review_queue_candidates"] if x.get("error_code") == "LEGAL_COMPLETENESS_BELOW_THRESHOLD"
+    ]
+    assert threshold_items
+    assert "missing_field_reasons" in (threshold_items[0].get("payload") or {})
 
 
 def test_live_news_pack_raises_when_records_below_minimum() -> None:
@@ -112,4 +128,50 @@ def test_live_news_pack_raises_when_records_below_minimum() -> None:
             collector=FakeCollector(),
             threshold=0.8,
             target_count=20,
+            nesdc_enrich_path=None,
         )
+
+
+def test_live_news_pack_article_rule_enrichment_improves_completeness() -> None:
+    out = build_collector_live_news_v1_pack(
+        pipeline=FakePipeline(35),
+        collector=RichTextCollector(),
+        threshold=0.8,
+        target_count=40,
+        nesdc_enrich_path=None,
+    )
+
+    assert out["report"]["counts"]["threshold_miss_count"] == 0
+    assert out["report"]["legal_completeness"]["avg_score"] >= 0.8
+    assert out["report"]["legal_enrichment"]["enriched_observation_count"] == 35
+    assert out["report"]["legal_enrichment"]["enrichment_source_counts"]["article_pattern"] > 0
+
+
+def test_live_news_pack_nesdc_enrichment_fills_numeric_fields(tmp_path) -> None:
+    nesdc_rows = {
+        "records": [
+            {
+                "pollster": "한국갤럽",
+                "legal_meta": {
+                    "survey_datetime": "2026-02-24",
+                    "sample_size": 1000,
+                    "response_rate": 10.2,
+                    "margin_of_error": "95% 신뢰수준 ±3.1%P",
+                },
+            }
+        ]
+    }
+    nesdc_path = tmp_path / "nesdc.json"
+    nesdc_path.write_text(json.dumps(nesdc_rows, ensure_ascii=False), encoding="utf-8")
+
+    out = build_collector_live_news_v1_pack(
+        pipeline=FakePipeline(35),
+        collector=FakeCollector(),
+        threshold=0.8,
+        target_count=40,
+        nesdc_enrich_path=str(nesdc_path),
+    )
+
+    assert out["report"]["counts"]["threshold_miss_count"] == 0
+    assert out["report"]["risk_signals"]["threshold_miss_rate"] == 0.0
+    assert out["report"]["legal_enrichment"]["enrichment_source_counts"]["nesdc_meta"] > 0
