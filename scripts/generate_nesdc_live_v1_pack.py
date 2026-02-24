@@ -325,6 +325,10 @@ def build_nesdc_live_v1_pack(
 
     parse_success = int((safe_report.get("counts") or {}).get("collected_success_count") or 0)
     review_queue_count = len(merged_review_queue)
+    safe_counts = safe_report.get("counts") or {}
+    hard_fallback_count = int(safe_counts.get("hard_fallback_count") or 0)
+    safe_review_queue_count = len(safe_review_queue)
+    conflict_review_count = int((merge_evidence.get("decision_counts") or {}).get("conflict_review") or 0)
 
     report = {
         "run_type": "nesdc_live_v1",
@@ -341,8 +345,16 @@ def build_nesdc_live_v1_pack(
         "acceptance_checks": {
             "parse_success_ge_20": parse_success >= 20,
             "safe_window_policy_applied": bool((safe_report.get("acceptance_checks") or {}).get("safe_window_applied_all")),
-            "adapter_failure_review_queue_present": bool((safe_report.get("counts") or {}).get("hard_fallback_count") or 0) > 0,
+            "adapter_failure_review_queue_synced": safe_review_queue_count >= hard_fallback_count,
             "article_merge_policy_evidence_present": bool(merge_evidence.get("decision_counts")),
+        },
+        "risk_signals": {
+            "adapter_failure_present": hard_fallback_count > 0,
+            "parse_success_below_floor": parse_success < 20,
+            "merge_conflict_present": conflict_review_count > 0,
+            "hard_fallback_count": hard_fallback_count,
+            "safe_collect_review_queue_count": safe_review_queue_count,
+            "conflict_review_count": conflict_review_count,
         },
         "safe_collect_acceptance": safe_report.get("acceptance_checks") or {},
         "merge_policy_evidence_summary": merge_evidence,

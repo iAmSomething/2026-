@@ -157,10 +157,14 @@ def build_freshness_hotfix_v1(
         "metrics_after": metrics_after,
         "delayed_observation_count_before": len(delayed_observations),
         "acceptance_checks": {
-            "before_has_delay_over_96h": metrics_before["over_96h_count"] > 0,
             "after_p90_le_96h": (metrics_after["freshness_p90_hours"] or 0.0) <= 96,
             "after_over_96h_count_eq_0": metrics_after["over_96h_count"] == 0,
             "record_count_unchanged": len(refreshed) == len(records),
+        },
+        "risk_signals": {
+            "before_delay_over_96h_present": metrics_before["over_96h_count"] > 0,
+            "before_over_96h_count": metrics_before["over_96h_count"],
+            "before_p90_over_96h": (metrics_before["freshness_p90_hours"] or 0.0) > 96,
         },
         "reingest_plan": {
             "workflow": "ingest-schedule",

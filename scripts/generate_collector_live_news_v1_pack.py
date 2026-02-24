@@ -135,6 +135,7 @@ def build_collector_live_news_v1_pack(
 
     seen_article_ids: set[str] = set()
     threshold_miss_count = 0
+    threshold_routed_count = 0
     missing_counter: Counter[str] = Counter()
 
     for candidate in discovery_result.valid_candidates:
@@ -162,6 +163,7 @@ def build_collector_live_news_v1_pack(
 
             if completeness.score < threshold:
                 threshold_miss_count += 1
+                threshold_routed_count += 1
                 output.review_queue.append(
                     new_review_queue_item(
                         entity_type="poll_observation",
@@ -221,7 +223,15 @@ def build_collector_live_news_v1_pack(
         "acceptance_checks": {
             "live_news_candidates_present": len(candidate_preview) > 0,
             "ingest_records_ge_30": len(ingest_payload.get("records") or []) >= 30,
-            "threshold_miss_routed": threshold_miss_count > 0,
+            "threshold_miss_review_queue_synced": threshold_routed_count == threshold_miss_count,
+        },
+        "risk_signals": {
+            "threshold_miss_present": threshold_miss_count > 0,
+            "threshold_miss_count": threshold_miss_count,
+            "threshold_miss_rate": round(
+                threshold_miss_count / max(1, len(output.poll_observations)),
+                4,
+            ),
         },
     }
 

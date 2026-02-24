@@ -114,7 +114,10 @@ def test_nesdc_live_pack_merge_policy_and_review_queue(tmp_path: Path) -> None:
     checks = out["report"]["acceptance_checks"]
     assert checks["parse_success_ge_20"] is True
     assert checks["safe_window_policy_applied"] is True
+    assert checks["adapter_failure_review_queue_synced"] is True
     assert checks["article_merge_policy_evidence_present"] is True
+    assert out["report"]["risk_signals"]["adapter_failure_present"] is True
+    assert out["report"]["risk_signals"]["merge_conflict_present"] is True
 
 
 def test_nesdc_live_pack_parse_success_threshold(tmp_path: Path) -> None:
@@ -127,6 +130,7 @@ def test_nesdc_live_pack_parse_success_threshold(tmp_path: Path) -> None:
     )
 
     assert out["report"]["acceptance_checks"]["parse_success_ge_20"] is False
+    assert out["report"]["risk_signals"]["parse_success_below_floor"] is True
 
 
 def test_nesdc_live_pack_best_match_not_first_candidate(tmp_path: Path) -> None:
