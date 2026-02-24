@@ -165,9 +165,9 @@ def run_ingest_with_retry(
     payload: dict[str, Any],
     max_retries: int = 2,
     backoff_seconds: float = 1.0,
-    request_timeout: float = 30.0,
+    request_timeout: float = 180.0,
     timeout_scale_on_timeout: float = 1.5,
-    timeout_max: float = 600.0,
+    timeout_max: float = 360.0,
     request_fn: RequestFn = default_request_fn,
     sleep_fn: Callable[[float], None] = time.sleep,
 ) -> IngestRunnerResult:

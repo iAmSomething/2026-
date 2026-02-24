@@ -24,9 +24,9 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--latest", action="store_true", help="use latest file from dead-letter dir")
     parser.add_argument("--max-retries", type=int, default=2)
     parser.add_argument("--backoff-seconds", type=float, default=1.0)
-    parser.add_argument("--timeout", type=float, default=30.0)
+    parser.add_argument("--timeout", type=float, default=180.0)
     parser.add_argument("--timeout-scale-on-timeout", type=float, default=1.5)
-    parser.add_argument("--timeout-max", type=float, default=600.0)
+    parser.add_argument("--timeout-max", type=float, default=360.0)
     parser.add_argument("--report", default="data/reprocess_ingest_dead_letter_report.json")
     return parser.parse_args()
 
