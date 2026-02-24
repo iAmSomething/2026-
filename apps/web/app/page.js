@@ -7,6 +7,52 @@ import { API_BASE, fetchApi } from "./_lib/api";
 
 // 품질 패널 고정 키워드: 운영 품질 / 신선도 / 공식확정 비율 / 검수대기
 
+function sourceTone(item) {
+  const channels = Array.isArray(item?.source_channels) ? item.source_channels : [];
+  const source = item?.source_channel || channels[0] || "unknown";
+  if (source === "nesdc") return "ok";
+  if (channels.includes("article") && channels.includes("nesdc")) return "info";
+  if (source === "article") return "warn";
+  return "info";
+}
+
+function sourceLabel(item) {
+  const channels = Array.isArray(item?.source_channels) ? item.source_channels : [];
+  const source = item?.source_channel || channels[0] || "unknown";
+  if (source === "nesdc") return "출처 NESDC";
+  if (channels.includes("article") && channels.includes("nesdc")) return "출처 혼합";
+  if (source === "article") return "출처 기사";
+  return "출처 미확인";
+}
+
+function freshnessTone(hours) {
+  const value = Number(hours);
+  if (!Number.isFinite(value)) return "info";
+  if (value <= 48) return "ok";
+  if (value <= 96) return "info";
+  return "warn";
+}
+
+function freshnessLabel(hours) {
+  const value = Number(hours);
+  if (!Number.isFinite(value)) return "신선도 -";
+  return `신선도 ${value.toFixed(1)}h`;
+}
+
+function officialTone(confirmed) {
+  return confirmed ? "ok" : "warn";
+}
+
+function officialLabel(confirmed) {
+  return confirmed ? "공식확정" : "공식확정 대기";
+}
+
+function needsReview(item) {
+  if (item?.needs_manual_review) return true;
+  const freshness = Number(item?.freshness_hours);
+  return item?.is_official_confirmed === false && Number.isFinite(freshness) && freshness > 48;
+}
+
 function SummaryColumn({ title, description, items }) {
   return (
     <article className="panel">
@@ -29,6 +75,12 @@ function SummaryColumn({ title, description, items }) {
               </p>
             </div>
             <div className="summary-value">{formatPercent(item.value_mid)}</div>
+            <div className="badge-row summary-badges">
+              <span className={`state-badge ${sourceTone(item)}`}>{sourceLabel(item)}</span>
+              <span className={`state-badge ${officialTone(item.is_official_confirmed)}`}>{officialLabel(item.is_official_confirmed)}</span>
+              <span className={`state-badge ${freshnessTone(item.freshness_hours)}`}>{freshnessLabel(item.freshness_hours)}</span>
+              {needsReview(item) ? <span className="state-badge warn">검수대기</span> : null}
+            </div>
             <p className="summary-meta">채널: {joinChannels(item.source_channels)}</p>
           </div>
         ))}
@@ -63,6 +115,12 @@ function BigMatchCards({ items }) {
             <strong>{item.title}</strong>
             <p>대표값 {formatPercent(item.value_mid)}</p>
             <p>조사 종료 {formatDate(item.survey_end_date)}</p>
+            <div className="badge-row summary-badges">
+              <span className={`state-badge ${sourceTone(item)}`}>{sourceLabel(item)}</span>
+              <span className={`state-badge ${officialTone(item.is_official_confirmed)}`}>{officialLabel(item.is_official_confirmed)}</span>
+              <span className={`state-badge ${freshnessTone(item.freshness_hours)}`}>{freshnessLabel(item.freshness_hours)}</span>
+              {needsReview(item) ? <span className="state-badge warn">검수대기</span> : null}
+            </div>
           </Link>
         ))}
       </div>
@@ -169,10 +227,26 @@ function overallStatus(statuses) {
 }
 
 function QualityPanel({ quality }) {
+  if (!quality) {
+    return (
+      <section className="panel">
+        <header className="panel-header">
+          <div>
+            <h3>운영 품질 패널 v2</h3>
+            <p>실데이터 품질 지표를 불러오지 못했습니다.</p>
+          </div>
+        </header>
+        <div className="empty-state">데이터 없음: 품질 API 응답 대기 중입니다.</div>
+      </section>
+    );
+  }
+
   const freshnessP90Hours = asNumber(quality?.freshness_p90_hours);
   const completenessRatio = resolveCompletenessRatio(quality);
   const officialPendingCount = resolveOfficialPendingCount(quality);
   const officialPendingRatio = resolveOfficialPendingRatio(quality);
+  const articleRatio = normalizeRatio(readPath(quality, ["source_channel_mix", "article_ratio"]));
+  const nesdcRatio = normalizeRatio(readPath(quality, ["source_channel_mix", "nesdc_ratio"]));
 
   const freshnessStatus = statusFromFreshnessP90(freshnessP90Hours);
   const completenessStatus = statusFromCompleteness(completenessRatio);
@@ -216,6 +290,23 @@ function QualityPanel({ quality }) {
           <p className="quality-copy">공식 확정 전 대기 상태 항목 규모입니다.</p>
         </article>
       </div>
+      <div className="quality-source-mix">
+        <p className="quality-label">실데이터 소스 비중 (기사/NESDC)</p>
+        <div className="source-mix-row">
+          <span>기사</span>
+          <div className="source-meter">
+            <span className="source-fill article" style={{ width: `${Math.round((articleRatio ?? 0) * 100)}%` }} />
+          </div>
+          <strong>{articleRatio === null ? "-" : formatPercent(articleRatio * 100)}</strong>
+        </div>
+        <div className="source-mix-row">
+          <span>NESDC</span>
+          <div className="source-meter">
+            <span className="source-fill nesdc" style={{ width: `${Math.round((nesdcRatio ?? 0) * 100)}%` }} />
+          </div>
+          <strong>{nesdcRatio === null ? "-" : formatPercent(nesdcRatio * 100)}</strong>
+        </div>
+      </div>
       <p className="muted-text quality-footnote">
         기준: generated_at {formatDateTime(quality?.generated_at)} · quality_status {quality?.quality_status || "-"}
       </p>
@@ -227,6 +318,7 @@ export default async function HomePage({ searchParams }) {
   const resolved = await searchParams;
   const scopeMixEnabled = parseOnFlag(resolved?.scope_mix || "");
   const regionScenario = normalizeRegionParam(resolved?.selected_region || "");
+  const stateDemo = (resolved?.state_demo || "").toLowerCase().trim();
 
   const [summaryRes, mapRes, bigMatchRes, qualityRes] = await Promise.all([
     fetchApi("/api/v1/dashboard/summary"),
@@ -239,8 +331,14 @@ export default async function HomePage({ searchParams }) {
   const presidentialItems =
     summaryRes.ok && Array.isArray(summaryRes.body?.presidential_approval) ? summaryRes.body.presidential_approval : [];
   const mapItems = mapRes.ok && Array.isArray(mapRes.body?.items) ? mapRes.body.items : [];
-  const bigMatchItems = bigMatchRes.ok && Array.isArray(bigMatchRes.body?.items) ? bigMatchRes.body.items : [];
+  const bigMatchItemsRaw = bigMatchRes.ok && Array.isArray(bigMatchRes.body?.items) ? bigMatchRes.body.items : [];
   const qualityMetrics = qualityRes.ok && qualityRes.body ? qualityRes.body : null;
+  const bigMatchItems =
+    stateDemo === "review"
+      ? bigMatchItemsRaw.map((item, index) =>
+          index === 0 ? { ...item, needs_manual_review: true, is_official_confirmed: false, freshness_hours: 168 } : item
+        )
+      : bigMatchItemsRaw;
 
   const scenarioBadges = [];
   if (scopeMixEnabled) {
@@ -268,6 +366,7 @@ export default async function HomePage({ searchParams }) {
         <div className="hero-meta">
           <p>운영 API</p>
           <strong>{API_BASE}</strong>
+          <span className="state-badge ok">실데이터 LIVE</span>
           <p className="muted-text">데이터는 운영 API 기준 실시간 조회 결과를 사용합니다.</p>
         </div>
       </section>
@@ -298,12 +397,28 @@ export default async function HomePage({ searchParams }) {
         <SummaryColumn
           title="최신 정당 지지도"
           description="전국 스코프 기준 최신 조사"
-          items={partyItems}
+          items={
+            stateDemo === "empty"
+              ? []
+              : stateDemo === "review"
+                ? partyItems.map((item, index) =>
+                    index === 0 ? { ...item, needs_manual_review: true, is_official_confirmed: false, freshness_hours: 120 } : item
+                  )
+                : partyItems
+          }
         />
         <SummaryColumn
           title="대통령 지지율"
           description="전국 스코프 기준 최신 조사"
-          items={presidentialItems}
+          items={
+            stateDemo === "empty"
+              ? []
+              : stateDemo === "review"
+                ? presidentialItems.map((item, index) =>
+                    index === 0 ? { ...item, needs_manual_review: true, is_official_confirmed: false, freshness_hours: 120 } : item
+                  )
+                : presidentialItems
+          }
         />
       </section>
 
