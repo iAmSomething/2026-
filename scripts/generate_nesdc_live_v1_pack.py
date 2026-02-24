@@ -114,6 +114,52 @@ def _article_fingerprints(article_payload: dict[str, Any]) -> dict[str, list[dic
     return by_pollster
 
 
+def _score_article_candidate(
+    *,
+    candidate: dict[str, Any],
+    nesdc_date: str | None,
+    nesdc_sample: int | None,
+    nesdc_margin: float | None,
+) -> dict[str, Any]:
+    article_sample = _parse_sample_numeric(candidate.get("sample_size"))
+    article_margin = _parse_margin_numeric(candidate.get("margin"))
+    article_date = _parse_date(candidate.get("survey_date"))
+
+    date_exact = bool(nesdc_date and article_date and nesdc_date == article_date)
+    sample_diff = abs(article_sample - nesdc_sample) if article_sample is not None and nesdc_sample is not None else None
+    margin_diff = abs(float(article_margin) - float(nesdc_margin)) if article_margin is not None and nesdc_margin is not None else None
+
+    score_key = (
+        0 if date_exact else 1,
+        1 if sample_diff is None else 0,
+        sample_diff if sample_diff is not None else 10**9,
+        1 if margin_diff is None else 0,
+        margin_diff if margin_diff is not None else 10**6,
+    )
+
+    comparable_signal_count = 0
+    if nesdc_date and article_date:
+        comparable_signal_count += 1
+    if sample_diff is not None:
+        comparable_signal_count += 1
+    if margin_diff is not None:
+        comparable_signal_count += 1
+
+    return {
+        "candidate": candidate,
+        "article_observation_key": candidate.get("observation_key"),
+        "article_matchup_id": candidate.get("matchup_id"),
+        "article_date": article_date,
+        "article_sample_size": article_sample,
+        "article_margin": article_margin,
+        "date_exact": date_exact,
+        "sample_diff": sample_diff,
+        "margin_diff": margin_diff,
+        "score_key": score_key,
+        "comparable_signal_count": comparable_signal_count,
+    }
+
+
 def _merge_policy(
     *,
     nesdc_records: list[dict[str, Any]],
@@ -146,10 +192,35 @@ def _merge_policy(
             )
             continue
 
-        best = article_candidates[0]
-        article_sample = _parse_sample_numeric(best.get("sample_size"))
-        article_margin = best.get("margin")
-        article_date = best.get("survey_date")
+        scored_candidates = sorted(
+            (
+                _score_article_candidate(
+                    candidate=c,
+                    nesdc_date=nesdc_date,
+                    nesdc_sample=nesdc_sample,
+                    nesdc_margin=nesdc_margin,
+                )
+                for c in article_candidates
+            ),
+            key=lambda x: x["score_key"],
+        )
+        best = scored_candidates[0]
+        second = scored_candidates[1] if len(scored_candidates) > 1 else None
+        tie_with_next = bool(second and second.get("score_key") == best.get("score_key"))
+        low_confidence = int(best.get("comparable_signal_count") or 0) < 2
+        selection_basis = {
+            "candidate_count": len(scored_candidates),
+            "score_priority": ["survey_date_exact", "sample_size_diff_min", "margin_diff_min"],
+            "best_score_key": list(best.get("score_key") or ()),
+            "best_date_exact": best.get("date_exact"),
+            "best_sample_diff": best.get("sample_diff"),
+            "best_margin_diff": best.get("margin_diff"),
+            "tie_with_next": tie_with_next,
+            "low_confidence": low_confidence,
+        }
+        article_sample = best.get("article_sample_size")
+        article_margin = best.get("article_margin")
+        article_date = best.get("article_date")
 
         exact_match = (
             article_date
@@ -163,31 +234,39 @@ def _merge_policy(
             and abs(float(article_margin) - float(nesdc_margin)) < 1e-6
         )
 
-        if exact_match:
+        if exact_match and not tie_with_next and not low_confidence:
             decision_counter["merge_exact"] += 1
             decisions.append(
                 {
                     "ntt_id": ntt_id,
                     "pollster": pollster,
                     "decision": "merge_exact",
-                    "article_observation_key": best.get("observation_key"),
-                    "article_matchup_id": best.get("matchup_id"),
+                    "article_observation_key": best.get("article_observation_key"),
+                    "article_matchup_id": best.get("article_matchup_id"),
+                    "selection_basis": selection_basis,
                 }
             )
             continue
 
         decision_counter["conflict_review"] += 1
+        conflict_reason = "mismatch"
+        if tie_with_next:
+            conflict_reason = "tie"
+        elif low_confidence:
+            conflict_reason = "low_confidence"
         decisions.append(
             {
                 "ntt_id": ntt_id,
                 "pollster": pollster,
                 "decision": "conflict_review",
-                "article_observation_key": best.get("observation_key"),
-                "article_matchup_id": best.get("matchup_id"),
+                "reason": conflict_reason,
+                "article_observation_key": best.get("article_observation_key"),
+                "article_matchup_id": best.get("article_matchup_id"),
                 "nesdc_sample_size": nesdc_sample,
                 "article_sample_size": article_sample,
                 "nesdc_margin": nesdc_margin,
                 "article_margin": article_margin,
+                "selection_basis": selection_basis,
             }
         )
         review_queue.append(
@@ -201,12 +280,13 @@ def _merge_policy(
                 source_url=row.get("detail_url"),
                 payload={
                     "pollster": pollster,
-                    "article_observation_key": best.get("observation_key"),
-                    "article_matchup_id": best.get("matchup_id"),
+                    "article_observation_key": best.get("article_observation_key"),
+                    "article_matchup_id": best.get("article_matchup_id"),
                     "nesdc_sample_size": nesdc_sample,
                     "article_sample_size": article_sample,
                     "nesdc_margin": nesdc_margin,
                     "article_margin": article_margin,
+                    "selection_basis": selection_basis,
                 },
             ).to_dict()
         )
