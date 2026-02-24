@@ -1,0 +1,2 @@
+3247c50c34e782db19f552455bce1f096e033aae5010deec64401bb0f5ec19c7  data/verification/issue239_targeted_pytest.log
+64adc23fd2297aae62091be19084878190e2330cc00f38e489b3278dbf9add31  data/verification/issue239_full_pytest.log

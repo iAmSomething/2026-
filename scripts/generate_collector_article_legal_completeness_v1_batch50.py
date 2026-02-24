@@ -260,7 +260,16 @@ def generate_collector_article_legal_completeness_v1_batch50(
         "acceptance_checks": {
             "sample_size_eq_50": sample_size == 50,
             "threshold_miss_review_queue_synced": len(review_queue_candidates) == threshold_miss_count,
-            "has_missing_or_abnormal_cases": threshold_miss_count > 0,
+            "legal_schema_injected_all": len(scored_records) == sample_size
+            and all(
+                isinstance(((r.get("observation") or {}).get("legal_required_schema")), dict)
+                for r in scored_records
+            ),
+        },
+        "risk_signals": {
+            "missing_or_abnormal_cases_present": threshold_miss_count > 0,
+            "threshold_miss_count": threshold_miss_count,
+            "threshold_miss_rate": round(threshold_miss_count / sample_size, 4),
         },
     }
 

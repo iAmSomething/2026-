@@ -92,6 +92,10 @@ def test_completeness_threshold_routes_review_queue(tmp_path: Path) -> None:
     assert out["report"]["completeness"]["threshold_miss_count"] == 1
     assert len(out["review_queue_candidates"]) == 1
     assert out["review_queue_candidates"][0]["error_code"] == "LEGAL_COMPLETENESS_BELOW_THRESHOLD"
+    assert out["report"]["acceptance_checks"]["threshold_miss_review_queue_synced"] is True
+    assert out["report"]["acceptance_checks"]["legal_schema_injected_all"] is True
+    assert out["report"]["risk_signals"]["missing_or_abnormal_cases_present"] is True
+    assert out["report"]["risk_signals"]["threshold_miss_count"] == 1
 
 
 def test_completeness_schema_injection_and_reason_codes(tmp_path: Path) -> None:
