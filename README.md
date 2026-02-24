@@ -102,3 +102,5 @@ python -m app.jobs.bootstrap_ingest \
 - QA 보고서 경로: `QA_reports/`
 - QA 보고서 파일명: `YYYY-MM-DD_qa_<topic>_report.md`
 - 리포트 스캔(4개 트랙): `bash scripts/pm/report_scan.sh`
+- 워크플로 YAML 파싱 가드(로컬): `bash scripts/qa/validate_workflow_yaml.sh`
+- 워크플로 린트 가드(CI): `.github/workflows/workflow-lint-guard.yml` (`actionlint` + YAML 파싱)

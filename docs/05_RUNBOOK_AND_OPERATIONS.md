@@ -33,6 +33,18 @@
 5. 상대시점 정책 플래그:
 - `RELATIVE_DATE_POLICY` (`strict_fail` 기본, `allow_estimated_timestamp` 선택)
 
+## 2.2 Workflow Lint Guard (PR Fail-Fast)
+1. 대상 워크플로: `.github/workflows/workflow-lint-guard.yml`
+2. 트리거: Pull Request에서 `.github/workflows/*.yml|*.yaml` 변경 시 자동 실행
+3. 검사 단계:
+- `bash scripts/qa/validate_workflow_yaml.sh`로 YAML 파싱 오류 즉시 차단
+- `rhysd/actionlint@v1`로 GitHub Actions 문법/표현식 검증
+4. 로컬 사전 점검:
+- `bash scripts/qa/validate_workflow_yaml.sh`
+5. 깨진 샘플 재현(테스트 브랜치):
+- `.github/workflows/` 내 임시 파일에 들여쓰기 오류를 넣고 PR 생성
+- `Workflow Lint Guard`가 실패하는지 확인 후 임시 파일 제거
+
 ## 3. 수동/자동 경계
 ### 자동 처리
 1. 중복 제거
