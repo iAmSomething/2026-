@@ -1,0 +1,2044 @@
+[
+  {
+    "id": "rvq_ac9af2669423cbb3",
+    "entity_type": "article",
+    "entity_id": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE9HamZYd25pRGI3UmxSZGpRRHFHaDF0dDJ2RHJyNG5qaE9ybWFDb0F5OUQ2Mk5EVDU1bk9mZWpEUk84MXk1LU9DT3Rhdm92MTBJbjBOME4zYlVDd9IBX0FVX3lxTE5fd1ZmcUxyQ21BWWRBTnhjUWRfMVkzVnNjamFvbXY3bktLekpjNDNFam5rckZlVHQwQ2xKMlRFSTFvRDZIV2JYY3plTkhVeEd3eEE0MGdISmFuZ0JDNE84",
+    "issue_type": "fetch_error",
+    "stage": "fetch",
+    "error_code": "ROBOTS_BLOCKLIST_BYPASS",
+    "error_message": "blocked domain routed to fallback source",
+    "source_url": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE9HamZYd25pRGI3UmxSZGpRRHFHaDF0dDJ2RHJyNG5qaE9ybWFDb0F5OUQ2Mk5EVDU1bk9mZWpEUk84MXk1LU9DT3Rhdm92MTBJbjBOME4zYlVDd9IBX0FVX3lxTE5fd1ZmcUxyQ21BWWRBTnhjUWRfMVkzVnNjamFvbXY3bktLekpjNDNFam5rckZlVHQwQ2xKMlRFSTFvRDZIV2JYY3plTkhVeEd3eEE0MGdISmFuZ0JDNE84",
+    "payload": {
+      "source_type": "google_rss"
+    },
+    "status": "pending",
+    "created_at": "2026-02-24T04:20:09.060309+00:00"
+  },
+  {
+    "id": "rvq_4d6bb8cbf79389c6",
+    "entity_type": "article",
+    "entity_id": "https://news.google.com/rss/articles/CBMib0FVX3lxTFBJc3BDSGVxWFV6cXZaUXBjdy1ZX3JSODJpbXVlNnhTcFpNZEFITmV6MkFEUHlDZEw4cUtYVGZhVVpUWEN6amVNQ29YMFdjclh0Xy1seV9pbmlIV01mWlduZTE1T08yZ1V1dkExSHRUMA",
+    "issue_type": "fetch_error",
+    "stage": "fetch",
+    "error_code": "ROBOTS_BLOCKLIST_BYPASS",
+    "error_message": "blocked domain routed to fallback source",
+    "source_url": "https://news.google.com/rss/articles/CBMib0FVX3lxTFBJc3BDSGVxWFV6cXZaUXBjdy1ZX3JSODJpbXVlNnhTcFpNZEFITmV6MkFEUHlDZEw4cUtYVGZhVVpUWEN6amVNQ29YMFdjclh0Xy1seV9pbmlIV01mWlduZTE1T08yZ1V1dkExSHRUMA",
+    "payload": {
+      "source_type": "google_rss"
+    },
+    "status": "pending",
+    "created_at": "2026-02-24T04:20:09.060433+00:00"
+  },
+  {
+    "id": "rvq_79e1f4475baba6ef",
+    "entity_type": "article",
+    "entity_id": "https://news.google.com/rss/articles/CBMicEFVX3lxTE5QYU9aVVd5UEt6SHFZcm9TVERHOTBqRE5YbHlpOXR1VTUzcWtNcGR2V1Jhai1fLXk3bUJyWC1lbEw0VUNxcFR0eklxclVHWENudzlZZWtkZEpUTkxvaDE0d0lScV9DYXZ2dFhzbEJlQ3Y",
+    "issue_type": "fetch_error",
+    "stage": "fetch",
+    "error_code": "ROBOTS_BLOCKLIST_BYPASS",
+    "error_message": "blocked domain routed to fallback source",
+    "source_url": "https://news.google.com/rss/articles/CBMicEFVX3lxTE5QYU9aVVd5UEt6SHFZcm9TVERHOTBqRE5YbHlpOXR1VTUzcWtNcGR2V1Jhai1fLXk3bUJyWC1lbEw0VUNxcFR0eklxclVHWENudzlZZWtkZEpUTkxvaDE0d0lScV9DYXZ2dFhzbEJlQ3Y",
+    "payload": {
+      "source_type": "google_rss"
+    },
+    "status": "pending",
+    "created_at": "2026-02-24T04:20:09.060480+00:00"
+  },
+  {
+    "id": "rvq_853af0745bce428c",
+    "entity_type": "article",
+    "entity_id": "https://news.google.com/rss/articles/CBMimwFBVV95cUxPMjFRclBzZnhwdWlFY1l1QU1aRHNzem5UM0kzSW9LQjVldFNHeGg5ajlkZ1MycDYzek5RbWFTLVl5RjFlTlBLSzV4LXR1M1VmdTR3akpvTEp0SkFaR3h3Q0lIdEhDR0VkOFNJRWZEYXYtNEJGcHhuTEJOTG5zSEItZG04UWNUM2JsZUJsLUJnNXZYZExjSjRfQk0wQQ",
+    "issue_type": "fetch_error",
+    "stage": "fetch",
+    "error_code": "ROBOTS_BLOCKLIST_BYPASS",
+    "error_message": "blocked domain routed to fallback source",
+    "source_url": "https://news.google.com/rss/articles/CBMimwFBVV95cUxPMjFRclBzZnhwdWlFY1l1QU1aRHNzem5UM0kzSW9LQjVldFNHeGg5ajlkZ1MycDYzek5RbWFTLVl5RjFlTlBLSzV4LXR1M1VmdTR3akpvTEp0SkFaR3h3Q0lIdEhDR0VkOFNJRWZEYXYtNEJGcHhuTEJOTG5zSEItZG04UWNUM2JsZUJsLUJnNXZYZExjSjRfQk0wQQ",
+    "payload": {
+      "source_type": "google_rss"
+    },
+    "status": "pending",
+    "created_at": "2026-02-24T04:20:09.060529+00:00"
+  },
+  {
+    "id": "rvq_ad4d10a5cc91fe81",
+    "entity_type": "article",
+    "entity_id": "https://news.google.com/rss/articles/CBMieEFVX3lxTE5tTW9iQy1QNXd2ZUU2OE5kZmZWMWlkem9tRDRMZXpVcVRVNXgxSGVicUxKdVBXX2QxeW5NYVBCQUp3NmdVRXF0c3VYZ19DT0F2UGtWVTZSYjdHa0J0SFFCOGM3N3lEM0JQMDJpZU5ybnBnY0ZRV2YwWdIBeEFVX3lxTFBXWWNrY1FkOUNlcWd3Z3hNZ1dkQ3JnbmNKcDFKVUpUN1k3SWt5UThzUVYxaDNMVkRzeDhTZV8yU2VTVHhlNVdFbllQVEl0QXZVYVVTOG85aDNMc0EzVVV4Nk1qZ1lUNVE0eTRIcS1FbTVrbk43RDc1Nw",
+    "issue_type": "fetch_error",
+    "stage": "fetch",
+    "error_code": "ROBOTS_BLOCKLIST_BYPASS",
+    "error_message": "blocked domain routed to fallback source",
+    "source_url": "https://news.google.com/rss/articles/CBMieEFVX3lxTE5tTW9iQy1QNXd2ZUU2OE5kZmZWMWlkem9tRDRMZXpVcVRVNXgxSGVicUxKdVBXX2QxeW5NYVBCQUp3NmdVRXF0c3VYZ19DT0F2UGtWVTZSYjdHa0J0SFFCOGM3N3lEM0JQMDJpZU5ybnBnY0ZRV2YwWdIBeEFVX3lxTFBXWWNrY1FkOUNlcWd3Z3hNZ1dkQ3JnbmNKcDFKVUpUN1k3SWt5UThzUVYxaDNMVkRzeDhTZV8yU2VTVHhlNVdFbllQVEl0QXZVYVVTOG85aDNMc0EzVVV4Nk1qZ1lUNVE0eTRIcS1FbTVrbk43RDc1Nw",
+    "payload": {
+      "source_type": "google_rss"
+    },
+    "status": "pending",
+    "created_at": "2026-02-24T04:20:09.060568+00:00"
+  },
+  {
+    "id": "rvq_642de9a17e35b9a0",
+    "entity_type": "article",
+    "entity_id": "https://news.google.com/rss/articles/CBMiVkFVX3lxTE5mZnp1cU5sXzNkMk52b1Y4bWpsaXhoZUswNEVsaDN4RERfV2RyTFdOY1hackVlbWFwWlBRaFFITkZOeDRiWFo2Sll4UWNaTEt1aFJoYzh30gGGAkFVX3lxTE16ZVBkOUM3T2hYWm5LOEhjNDlFRXNfbWpqbUhqQjBBdlJocTg3dnJXb3VvZ0FTR2lkbjFGMHRPZlBuTVo0Q2w0M3NZVmhZTjdzLWlzdkFKb1RJVmNkMUpFX1lsMDZOa2Z4MmQwTUlxVm1EdGJxUTUxR2hmeUNnU0JBN1h0OXllZXFpZlo4Ry03U3hMN3ZDbExRUklHcUE4cHV6R2hBODdkYnJWd1VYMWEwaGRUcFNnLXNLa3BRd1p5TERzTHVfNkNhQjV1bzFWLTBpcmYzM0RZMnZrQ1M3dzVTNEVicFFxbHB0UFJYQTFTUzNicXNfNEFoaGk2SHFtdXU0b3RTVXc",
+    "issue_type": "fetch_error",
+    "stage": "fetch",
+    "error_code": "ROBOTS_BLOCKLIST_BYPASS",
+    "error_message": "blocked domain routed to fallback source",
+    "source_url": "https://news.google.com/rss/articles/CBMiVkFVX3lxTE5mZnp1cU5sXzNkMk52b1Y4bWpsaXhoZUswNEVsaDN4RERfV2RyTFdOY1hackVlbWFwWlBRaFFITkZOeDRiWFo2Sll4UWNaTEt1aFJoYzh30gGGAkFVX3lxTE16ZVBkOUM3T2hYWm5LOEhjNDlFRXNfbWpqbUhqQjBBdlJocTg3dnJXb3VvZ0FTR2lkbjFGMHRPZlBuTVo0Q2w0M3NZVmhZTjdzLWlzdkFKb1RJVmNkMUpFX1lsMDZOa2Z4MmQwTUlxVm1EdGJxUTUxR2hmeUNnU0JBN1h0OXllZXFpZlo4Ry03U3hMN3ZDbExRUklHcUE4cHV6R2hBODdkYnJWd1VYMWEwaGRUcFNnLXNLa3BRd1p5TERzTHVfNkNhQjV1bzFWLTBpcmYzM0RZMnZrQ1M3dzVTNEVicFFxbHB0UFJYQTFTUzNicXNfNEFoaGk2SHFtdXU0b3RTVXc",
+    "payload": {
+      "source_type": "google_rss"
+    },
+    "status": "pending",
+    "created_at": "2026-02-24T04:20:09.060597+00:00"
+  },
+  {
+    "id": "rvq_0c06559b0f611c9b",
+    "entity_type": "article",
+    "entity_id": "https://news.google.com/rss/articles/CBMidEFVX3lxTE0tR240RHM3eWhpWHhBUmFDZzl1eUFIRjJZN0JGU185MXBaanpESmxwTUREYThKU3h6anpJRklRelduaHR1UjBLSFhlbDhoNkhJN284eS1RS2lmTm5wUTZXWXZLNFBNWm1vOW03YS1wTmdaRjB5",
+    "issue_type": "fetch_error",
+    "stage": "fetch",
+    "error_code": "ROBOTS_BLOCKLIST_BYPASS",
+    "error_message": "blocked domain routed to fallback source",
+    "source_url": "https://news.google.com/rss/articles/CBMidEFVX3lxTE0tR240RHM3eWhpWHhBUmFDZzl1eUFIRjJZN0JGU185MXBaanpESmxwTUREYThKU3h6anpJRklRelduaHR1UjBLSFhlbDhoNkhJN284eS1RS2lmTm5wUTZXWXZLNFBNWm1vOW03YS1wTmdaRjB5",
+    "payload": {
+      "source_type": "google_rss"
+    },
+    "status": "pending",
+    "created_at": "2026-02-24T04:20:09.060624+00:00"
+  },
+  {
+    "id": "rvq_d39550d91ff33a1e",
+    "entity_type": "article",
+    "entity_id": "https://news.google.com/rss/articles/CBMiT0FVX3lxTE1TR0RwR3pLa1lTTXY0XzFmaF81SFA3NXhhcHNLWWhTczVrQUtJcDJtOUxaNGxYdnNueXRBU19VSTAzVGpselZMTXVHWUJfYTg",
+    "issue_type": "fetch_error",
+    "stage": "fetch",
+    "error_code": "ROBOTS_BLOCKLIST_BYPASS",
+    "error_message": "blocked domain routed to fallback source",
+    "source_url": "https://news.google.com/rss/articles/CBMiT0FVX3lxTE1TR0RwR3pLa1lTTXY0XzFmaF81SFA3NXhhcHNLWWhTczVrQUtJcDJtOUxaNGxYdnNueXRBU19VSTAzVGpselZMTXVHWUJfYTg",
+    "payload": {
+      "source_type": "google_rss"
+    },
+    "status": "pending",
+    "created_at": "2026-02-24T04:20:09.060650+00:00"
+  },
+  {
+    "id": "rvq_47560af4271d3434",
+    "entity_type": "article",
+    "entity_id": "https://news.google.com/rss/articles/CBMieEFVX3lxTE5YR2RWdVVLempqS2xCZU9WR083VHZWcEFjRnpqUUJpbWd3YjVINFBsNlU2UVRyNHU0UEg0YnBIRl9MLTkwaldWaDVPeE1XVnVKVWdGNlFXNTR5UFlfakR6bXZ4V0hTcVBrNU9oaEpPdWJjY2tpa1I4UQ",
+    "issue_type": "fetch_error",
+    "stage": "fetch",
+    "error_code": "ROBOTS_BLOCKLIST_BYPASS",
+    "error_message": "blocked domain routed to fallback source",
+    "source_url": "https://news.google.com/rss/articles/CBMieEFVX3lxTE5YR2RWdVVLempqS2xCZU9WR083VHZWcEFjRnpqUUJpbWd3YjVINFBsNlU2UVRyNHU0UEg0YnBIRl9MLTkwaldWaDVPeE1XVnVKVWdGNlFXNTR5UFlfakR6bXZ4V0hTcVBrNU9oaEpPdWJjY2tpa1I4UQ",
+    "payload": {
+      "source_type": "google_rss"
+    },
+    "status": "pending",
+    "created_at": "2026-02-24T04:20:09.060698+00:00"
+  },
+  {
+    "id": "rvq_4a6bed23a0e072eb",
+    "entity_type": "article",
+    "entity_id": "https://news.google.com/rss/articles/CBMiUkFVX3lxTE1lS3hWUFprb0RROTRHT1FzUHo5QmpBOGdLU3RvNnQxQlJjYVBMakk3NmdXaUZpY19aWXY4U1dxMHhjQVlJanB1UHY1QURTVHRWNHc",
+    "issue_type": "fetch_error",
+    "stage": "fetch",
+    "error_code": "ROBOTS_BLOCKLIST_BYPASS",
+    "error_message": "blocked domain routed to fallback source",
+    "source_url": "https://news.google.com/rss/articles/CBMiUkFVX3lxTE1lS3hWUFprb0RROTRHT1FzUHo5QmpBOGdLU3RvNnQxQlJjYVBMakk3NmdXaUZpY19aWXY4U1dxMHhjQVlJanB1UHY1QURTVHRWNHc",
+    "payload": {
+      "source_type": "google_rss"
+    },
+    "status": "pending",
+    "created_at": "2026-02-24T04:20:09.060777+00:00"
+  },
+  {
+    "id": "rvq_477f5351c96103bb",
+    "entity_type": "article",
+    "entity_id": "https://news.google.com/rss/articles/CBMiUkFVX3lxTFBxZHRodk44MXJxVnVlSFRnUkxoQi0yR0tUSmRFdE80LVFmazhtdmdHcjhQQmlXNG92bEZySVpGVG5LaGZNQ2JxUEdTN20zbVhpb3c",
+    "issue_type": "fetch_error",
+    "stage": "fetch",
+    "error_code": "ROBOTS_BLOCKLIST_BYPASS",
+    "error_message": "blocked domain routed to fallback source",
+    "source_url": "https://news.google.com/rss/articles/CBMiUkFVX3lxTFBxZHRodk44MXJxVnVlSFRnUkxoQi0yR0tUSmRFdE80LVFmazhtdmdHcjhQQmlXNG92bEZySVpGVG5LaGZNQ2JxUEdTN20zbVhpb3c",
+    "payload": {
+      "source_type": "google_rss"
+    },
+    "status": "pending",
+    "created_at": "2026-02-24T04:20:09.060813+00:00"
+  },
+  {
+    "id": "rvq_3165ee7583358cac",
+    "entity_type": "article",
+    "entity_id": "https://news.google.com/rss/articles/CBMiUkFVX3lxTE8zQ29Gc1hUUnRvSXNrdjBsbW1VSERKTVJLa3NPZHFETnkyLUVnMHYwVm9OMFMzVUJBeTBtN192eTZXUThkM1U0RkE5Yk1PUk0yNmc",
+    "issue_type": "fetch_error",
+    "stage": "fetch",
+    "error_code": "ROBOTS_BLOCKLIST_BYPASS",
+    "error_message": "blocked domain routed to fallback source",
+    "source_url": "https://news.google.com/rss/articles/CBMiUkFVX3lxTE8zQ29Gc1hUUnRvSXNrdjBsbW1VSERKTVJLa3NPZHFETnkyLUVnMHYwVm9OMFMzVUJBeTBtN192eTZXUThkM1U0RkE5Yk1PUk0yNmc",
+    "payload": {
+      "source_type": "google_rss"
+    },
+    "status": "pending",
+    "created_at": "2026-02-24T04:20:09.060841+00:00"
+  },
+  {
+    "id": "rvq_19212f95e9f61a7b",
+    "entity_type": "article",
+    "entity_id": "https://news.google.com/rss/articles/CBMicEFVX3lxTE1YcVB6eXZOVFo0eVFnbjk1eVQ1RC12VzlDNmZkTGhLQjVsaGhmOVBqSUFZV1dDVll1ZUZlOVg2SkdfSUlsT0syakZzYl9CdnRpY29tTWVhdXdwVnZSOHJGUFp5TEhob3l1NWRZaWpnSnM",
+    "issue_type": "fetch_error",
+    "stage": "fetch",
+    "error_code": "ROBOTS_BLOCKLIST_BYPASS",
+    "error_message": "blocked domain routed to fallback source",
+    "source_url": "https://news.google.com/rss/articles/CBMicEFVX3lxTE1YcVB6eXZOVFo0eVFnbjk1eVQ1RC12VzlDNmZkTGhLQjVsaGhmOVBqSUFZV1dDVll1ZUZlOVg2SkdfSUlsT0syakZzYl9CdnRpY29tTWVhdXdwVnZSOHJGUFp5TEhob3l1NWRZaWpnSnM",
+    "payload": {
+      "source_type": "google_rss"
+    },
+    "status": "pending",
+    "created_at": "2026-02-24T04:20:09.060867+00:00"
+  },
+  {
+    "id": "rvq_0f6840e85c215255",
+    "entity_type": "article",
+    "entity_id": "https://news.google.com/rss/articles/CBMicEFVX3lxTE9TYVNqLXN0aW1lemlIME05b25KX09HNFYydlg1Zk9iaUgyZ2kwcG12b0tTVHRtSEZNVTBoRm1xYS1zMlVCQzZaSnVYZjJlWjNZSkI2cUZlUVZ4TlY1M1BJUUFLd09UV2hiV0taaERtbi0",
+    "issue_type": "fetch_error",
+    "stage": "fetch",
+    "error_code": "ROBOTS_BLOCKLIST_BYPASS",
+    "error_message": "blocked domain routed to fallback source",
+    "source_url": "https://news.google.com/rss/articles/CBMicEFVX3lxTE9TYVNqLXN0aW1lemlIME05b25KX09HNFYydlg1Zk9iaUgyZ2kwcG12b0tTVHRtSEZNVTBoRm1xYS1zMlVCQzZaSnVYZjJlWjNZSkI2cUZlUVZ4TlY1M1BJUUFLd09UV2hiV0taaERtbi0",
+    "payload": {
+      "source_type": "google_rss"
+    },
+    "status": "pending",
+    "created_at": "2026-02-24T04:20:09.060895+00:00"
+  },
+  {
+    "id": "rvq_8565a9dda69647af",
+    "entity_type": "article",
+    "entity_id": "https://news.google.com/rss/articles/CBMiakFVX3lxTE4tNDlfbjdXR3ZMcWlFMFRjUmNuWmhsWE9sYmxjaUszVE5pSnJBUUsyYW54SURTX2RXdnJidDY4OHpPMHRGUzFhM0MzR1FrUGlFekpnSHpzblp1OTM3VEtoUDlSay1uVWRXVHc",
+    "issue_type": "fetch_error",
+    "stage": "fetch",
+    "error_code": "ROBOTS_BLOCKLIST_BYPASS",
+    "error_message": "blocked domain routed to fallback source",
+    "source_url": "https://news.google.com/rss/articles/CBMiakFVX3lxTE4tNDlfbjdXR3ZMcWlFMFRjUmNuWmhsWE9sYmxjaUszVE5pSnJBUUsyYW54SURTX2RXdnJidDY4OHpPMHRGUzFhM0MzR1FrUGlFekpnSHpzblp1OTM3VEtoUDlSay1uVWRXVHc",
+    "payload": {
+      "source_type": "google_rss"
+    },
+    "status": "pending",
+    "created_at": "2026-02-24T04:20:09.060921+00:00"
+  },
+  {
+    "id": "rvq_8bc7600b31972a31",
+    "entity_type": "article",
+    "entity_id": "https://news.google.com/rss/articles/CBMiVEFVX3lxTE5rS0JxZXRJT3piMlN2VW5tWnpDVmtZNmFGRDJUZ0dnb0k2NjFsWTRVZkY4NDNHb0pSendnS0FqVUhpMG9JRkhwYUo5Nk92SnZSQWNacw",
+    "issue_type": "fetch_error",
+    "stage": "fetch",
+    "error_code": "ROBOTS_BLOCKLIST_BYPASS",
+    "error_message": "blocked domain routed to fallback source",
+    "source_url": "https://news.google.com/rss/articles/CBMiVEFVX3lxTE5rS0JxZXRJT3piMlN2VW5tWnpDVmtZNmFGRDJUZ0dnb0k2NjFsWTRVZkY4NDNHb0pSendnS0FqVUhpMG9JRkhwYUo5Nk92SnZSQWNacw",
+    "payload": {
+      "source_type": "google_rss"
+    },
+    "status": "pending",
+    "created_at": "2026-02-24T04:20:09.060949+00:00"
+  },
+  {
+    "id": "rvq_52c3198d0ae71f2f",
+    "entity_type": "article",
+    "entity_id": "https://news.google.com/rss/articles/CBMib0FVX3lxTFBVb1NSZjJ1enV6eDFDLWppUzM4eGlsc2RKRDVxY0pfSmxOUTBLcE1MbGZ0VGdqcVhUMVhHZTBzWk5xanF6Znl4Ym9icFMtX0xweWhsdTlVSzNURjVGUXdsQ1AzTC0xdXJDZDBjaG5TMA",
+    "issue_type": "fetch_error",
+    "stage": "fetch",
+    "error_code": "ROBOTS_BLOCKLIST_BYPASS",
+    "error_message": "blocked domain routed to fallback source",
+    "source_url": "https://news.google.com/rss/articles/CBMib0FVX3lxTFBVb1NSZjJ1enV6eDFDLWppUzM4eGlsc2RKRDVxY0pfSmxOUTBLcE1MbGZ0VGdqcVhUMVhHZTBzWk5xanF6Znl4Ym9icFMtX0xweWhsdTlVSzNURjVGUXdsQ1AzTC0xdXJDZDBjaG5TMA",
+    "payload": {
+      "source_type": "google_rss"
+    },
+    "status": "pending",
+    "created_at": "2026-02-24T04:20:09.060976+00:00"
+  },
+  {
+    "id": "rvq_c75ac50f8bf8b8cb",
+    "entity_type": "article",
+    "entity_id": "https://news.google.com/rss/articles/CBMiZ0FVX3lxTE9VTlluWEJ1dFcydUhIa2M4YlhNSVloa1JmNkdtRHVEbGgxQzl5THhmaEY5Vlk3WTFIQTRUYmdVZjQ1SjRHRGF3YnA0MlFQQVB1UE1MY3lBdlVZM3IyS3FyMGhaelNaWFk",
+    "issue_type": "fetch_error",
+    "stage": "fetch",
+    "error_code": "ROBOTS_BLOCKLIST_BYPASS",
+    "error_message": "blocked domain routed to fallback source",
+    "source_url": "https://news.google.com/rss/articles/CBMiZ0FVX3lxTE9VTlluWEJ1dFcydUhIa2M4YlhNSVloa1JmNkdtRHVEbGgxQzl5THhmaEY5Vlk3WTFIQTRUYmdVZjQ1SjRHRGF3YnA0MlFQQVB1UE1MY3lBdlVZM3IyS3FyMGhaelNaWFk",
+    "payload": {
+      "source_type": "google_rss"
+    },
+    "status": "pending",
+    "created_at": "2026-02-24T04:20:09.061001+00:00"
+  },
+  {
+    "id": "rvq_4bf991be1647e9d7",
+    "entity_type": "article",
+    "entity_id": "https://news.google.com/rss/articles/CBMiT0FVX3lxTE1hbjFpMFNxZGdfSnNlZ1NmTmdyVkpqbUJOMC1YQmp4cV9HWWRVOWZ4VzBTdEVsamdhN21JalI3NWY3eWdTTE5xS0FjT3drQTQ",
+    "issue_type": "fetch_error",
+    "stage": "fetch",
+    "error_code": "ROBOTS_BLOCKLIST_BYPASS",
+    "error_message": "blocked domain routed to fallback source",
+    "source_url": "https://news.google.com/rss/articles/CBMiT0FVX3lxTE1hbjFpMFNxZGdfSnNlZ1NmTmdyVkpqbUJOMC1YQmp4cV9HWWRVOWZ4VzBTdEVsamdhN21JalI3NWY3eWdTTE5xS0FjT3drQTQ",
+    "payload": {
+      "source_type": "google_rss"
+    },
+    "status": "pending",
+    "created_at": "2026-02-24T04:20:09.061027+00:00"
+  },
+  {
+    "id": "rvq_277f58cf62f13986",
+    "entity_type": "article",
+    "entity_id": "https://news.google.com/rss/articles/CBMicEFVX3lxTE5SVTdnNi1DU3hFdmF1S3ZjbHdidU9tOVktNE1TZ095c2hMdmMxODNHckNxd0ZSQjVtYUZHeVg0TExGUU1jUUotdTFRUUJRZldLb1BSeTFueGhSM1p2WURuZnBUa3JHLVh3Q3FCcXJhdnM",
+    "issue_type": "fetch_error",
+    "stage": "fetch",
+    "error_code": "ROBOTS_BLOCKLIST_BYPASS",
+    "error_message": "blocked domain routed to fallback source",
+    "source_url": "https://news.google.com/rss/articles/CBMicEFVX3lxTE5SVTdnNi1DU3hFdmF1S3ZjbHdidU9tOVktNE1TZ095c2hMdmMxODNHckNxd0ZSQjVtYUZHeVg0TExGUU1jUUotdTFRUUJRZldLb1BSeTFueGhSM1p2WURuZnBUa3JHLVh3Q3FCcXJhdnM",
+    "payload": {
+      "source_type": "google_rss"
+    },
+    "status": "pending",
+    "created_at": "2026-02-24T04:20:09.061052+00:00"
+  },
+  {
+    "id": "rvq_d88c50e01067bece",
+    "entity_type": "article",
+    "entity_id": "https://news.google.com/rss/articles/CBMiVEFVX3lxTE94Y2dsVWhMMENURWtmMmNOaGFpWUZBdG1GY3lzYlY3enFsOUthWkFkT0hrb1JnN09iMW5rUzliWFJQU1hXaHllQ1NwY0lSVkFnb1p5TQ",
+    "issue_type": "fetch_error",
+    "stage": "fetch",
+    "error_code": "ROBOTS_BLOCKLIST_BYPASS",
+    "error_message": "blocked domain routed to fallback source",
+    "source_url": "https://news.google.com/rss/articles/CBMiVEFVX3lxTE94Y2dsVWhMMENURWtmMmNOaGFpWUZBdG1GY3lzYlY3enFsOUthWkFkT0hrb1JnN09iMW5rUzliWFJQU1hXaHllQ1NwY0lSVkFnb1p5TQ",
+    "payload": {
+      "source_type": "google_rss"
+    },
+    "status": "pending",
+    "created_at": "2026-02-24T04:20:09.061078+00:00"
+  },
+  {
+    "id": "rvq_3497b68eabc7781a",
+    "entity_type": "article",
+    "entity_id": "https://news.google.com/rss/articles/CBMixAJBVV95cUxOSWl4anpQRkdSb1dRVTFfb01fSE81azZLZU0wWlc0Rzl6TnJNYkQ5THR6MmowMWZGSzFabnBMZmEybWItM05teENwYkhFcVNzSlhMeXBXb3V4dTFjYWNJQ3ZuYTI3bjhHaEdnTUFOcjV2cEx1SnZtUHRkMmx2N0RhSzk5dDI1TzgyT0pmTmdiOTlfRkZ5TDFCcHY4YnhtQnp5M1hUQ1VvM0RpdWlOODVMTHNSYkxvb1dlbU9vUGVvUE80MzYyLWRXd3pGTU12MVpSWml5NU5IQ19VUEd2SFRpODdGTG95alc0eEk4VDE4dTZQUHFlTzduMXNGLVB2QzhHaURBb2RjODFHamJ0WGhBcGs3dnAtd0J2SzVFMUtRcTkzX2JZVS1LOG9fbWpDa2o1SnhkWkhTbXNNSWxEOW5mM0xRcm8",
+    "issue_type": "fetch_error",
+    "stage": "fetch",
+    "error_code": "ROBOTS_BLOCKLIST_BYPASS",
+    "error_message": "blocked domain routed to fallback source",
+    "source_url": "https://news.google.com/rss/articles/CBMixAJBVV95cUxOSWl4anpQRkdSb1dRVTFfb01fSE81azZLZU0wWlc0Rzl6TnJNYkQ5THR6MmowMWZGSzFabnBMZmEybWItM05teENwYkhFcVNzSlhMeXBXb3V4dTFjYWNJQ3ZuYTI3bjhHaEdnTUFOcjV2cEx1SnZtUHRkMmx2N0RhSzk5dDI1TzgyT0pmTmdiOTlfRkZ5TDFCcHY4YnhtQnp5M1hUQ1VvM0RpdWlOODVMTHNSYkxvb1dlbU9vUGVvUE80MzYyLWRXd3pGTU12MVpSWml5NU5IQ19VUEd2SFRpODdGTG95alc0eEk4VDE4dTZQUHFlTzduMXNGLVB2QzhHaURBb2RjODFHamJ0WGhBcGs3dnAtd0J2SzVFMUtRcTkzX2JZVS1LOG9fbWpDa2o1SnhkWkhTbXNNSWxEOW5mM0xRcm8",
+    "payload": {
+      "source_type": "google_rss"
+    },
+    "status": "pending",
+    "created_at": "2026-02-24T04:20:09.061107+00:00"
+  },
+  {
+    "id": "rvq_a4627a08ca0df78c",
+    "entity_type": "article",
+    "entity_id": "https://news.google.com/rss/articles/CBMiWkFVX3lxTFB2YUZpOFMxY2JtNEIwQi1GSTMwd0hkT1pzcDM3WWlKWnB6dE1vRDhDZzB2RVZfQjRQemJ6WkdrSDlIdXNmNm5hSnB0cjdKTEEtOE9JNjdtc3lJdw",
+    "issue_type": "fetch_error",
+    "stage": "fetch",
+    "error_code": "ROBOTS_BLOCKLIST_BYPASS",
+    "error_message": "blocked domain routed to fallback source",
+    "source_url": "https://news.google.com/rss/articles/CBMiWkFVX3lxTFB2YUZpOFMxY2JtNEIwQi1GSTMwd0hkT1pzcDM3WWlKWnB6dE1vRDhDZzB2RVZfQjRQemJ6WkdrSDlIdXNmNm5hSnB0cjdKTEEtOE9JNjdtc3lJdw",
+    "payload": {
+      "source_type": "google_rss"
+    },
+    "status": "pending",
+    "created_at": "2026-02-24T04:20:09.061135+00:00"
+  },
+  {
+    "id": "rvq_c6b5c2c46fb09338",
+    "entity_type": "article",
+    "entity_id": "https://news.google.com/rss/articles/CBMibkFVX3lxTE5VZ1UzR1k0dzJRRGgxdDl4QkR3bzBEUjFpc0hSc1Z5ZFFQWnU0VGg0NHJBeFFJLUE3RHhycFVjaUc2Q0RmQ3lNUkU2cU1lT3d0RlQxNGZuWjhFUVZvYUtWa0JSWE8xbkoxczc3VHFB0gFyQVVfeXFMTVYtemZ5RlluSnhqRklvaEZBdm0zMFh3MlBhN2NYYVFWM1F1MUpBajhsMFZZdHdfZGE1WVJMUHZRdUQ3SEVfWW1JYTJqbXBKN1Vnd1VET016bV9EX0lwZEpmeXFLTUp2b3BZaU9qOUxyTkFR",
+    "issue_type": "fetch_error",
+    "stage": "fetch",
+    "error_code": "ROBOTS_BLOCKLIST_BYPASS",
+    "error_message": "blocked domain routed to fallback source",
+    "source_url": "https://news.google.com/rss/articles/CBMibkFVX3lxTE5VZ1UzR1k0dzJRRGgxdDl4QkR3bzBEUjFpc0hSc1Z5ZFFQWnU0VGg0NHJBeFFJLUE3RHhycFVjaUc2Q0RmQ3lNUkU2cU1lT3d0RlQxNGZuWjhFUVZvYUtWa0JSWE8xbkoxczc3VHFB0gFyQVVfeXFMTVYtemZ5RlluSnhqRklvaEZBdm0zMFh3MlBhN2NYYVFWM1F1MUpBajhsMFZZdHdfZGE1WVJMUHZRdUQ3SEVfWW1JYTJqbXBKN1Vnd1VET016bV9EX0lwZEpmeXFLTUp2b3BZaU9qOUxyTkFR",
+    "payload": {
+      "source_type": "google_rss"
+    },
+    "status": "pending",
+    "created_at": "2026-02-24T04:20:09.061162+00:00"
+  },
+  {
+    "id": "rvq_fe29a50301c9a4e9",
+    "entity_type": "article",
+    "entity_id": "https://news.google.com/rss/articles/CBMiT0FVX3lxTE9nVmxoSnkzMUNfX1V5YTZyYktkSm5WUEk0ZGVyOEZxc3Y2cVF4cko5NjdsUklaLUpROGVRUGh4NFVzY2s0T3JWcjI1ZXgzNVE",
+    "issue_type": "fetch_error",
+    "stage": "fetch",
+    "error_code": "ROBOTS_BLOCKLIST_BYPASS",
+    "error_message": "blocked domain routed to fallback source",
+    "source_url": "https://news.google.com/rss/articles/CBMiT0FVX3lxTE9nVmxoSnkzMUNfX1V5YTZyYktkSm5WUEk0ZGVyOEZxc3Y2cVF4cko5NjdsUklaLUpROGVRUGh4NFVzY2s0T3JWcjI1ZXgzNVE",
+    "payload": {
+      "source_type": "google_rss"
+    },
+    "status": "pending",
+    "created_at": "2026-02-24T04:20:09.061191+00:00"
+  },
+  {
+    "id": "rvq_9d750ccf2f414589",
+    "entity_type": "article",
+    "entity_id": "https://news.google.com/rss/articles/CBMiT0FVX3lxTE54TGg4cF9nTG9rU3M2X0FGWGVKMllQRGMtUmNUNzJTREJCYUxRdFo0ZVBtTEgxc2ZiYnJiWG1yLWM5UXBDZHJFZld2OTl6a1E",
+    "issue_type": "fetch_error",
+    "stage": "fetch",
+    "error_code": "ROBOTS_BLOCKLIST_BYPASS",
+    "error_message": "blocked domain routed to fallback source",
+    "source_url": "https://news.google.com/rss/articles/CBMiT0FVX3lxTE54TGg4cF9nTG9rU3M2X0FGWGVKMllQRGMtUmNUNzJTREJCYUxRdFo0ZVBtTEgxc2ZiYnJiWG1yLWM5UXBDZHJFZld2OTl6a1E",
+    "payload": {
+      "source_type": "google_rss"
+    },
+    "status": "pending",
+    "created_at": "2026-02-24T04:20:09.061216+00:00"
+  },
+  {
+    "id": "rvq_9ba0be4074c253f9",
+    "entity_type": "article",
+    "entity_id": "https://news.google.com/rss/articles/CBMiT0FVX3lxTE9Nc1VkNEhQaDhxVkpJZ1ZfWHl0SXhJeG1DSHZHRnM0bmlZbV9na3hrS2t1V3BBeElBcFYzOEhHTWFLUklNcVU1V3RIdVVVZmM",
+    "issue_type": "fetch_error",
+    "stage": "fetch",
+    "error_code": "ROBOTS_BLOCKLIST_BYPASS",
+    "error_message": "blocked domain routed to fallback source",
+    "source_url": "https://news.google.com/rss/articles/CBMiT0FVX3lxTE9Nc1VkNEhQaDhxVkpJZ1ZfWHl0SXhJeG1DSHZHRnM0bmlZbV9na3hrS2t1V3BBeElBcFYzOEhHTWFLUklNcVU1V3RIdVVVZmM",
+    "payload": {
+      "source_type": "google_rss"
+    },
+    "status": "pending",
+    "created_at": "2026-02-24T04:20:09.061243+00:00"
+  },
+  {
+    "id": "rvq_a9f9863c54d5db4a",
+    "entity_type": "article",
+    "entity_id": "https://news.google.com/rss/articles/CBMia0FVX3lxTE8tUG1uOHA3ZWJCRy1iMVo0REtRemFjLS1BYWdPVmN3emZxSzFJd2x3NTNsdWF3Z0w3THJjdWQ5dDdRb0xiODlPendYRjlRMkc3ejVHN1FGd2hfWUJ0V2tqLU5aMnFsalFxUE1v",
+    "issue_type": "fetch_error",
+    "stage": "fetch",
+    "error_code": "ROBOTS_BLOCKLIST_BYPASS",
+    "error_message": "blocked domain routed to fallback source",
+    "source_url": "https://news.google.com/rss/articles/CBMia0FVX3lxTE8tUG1uOHA3ZWJCRy1iMVo0REtRemFjLS1BYWdPVmN3emZxSzFJd2x3NTNsdWF3Z0w3THJjdWQ5dDdRb0xiODlPendYRjlRMkc3ejVHN1FGd2hfWUJ0V2tqLU5aMnFsalFxUE1v",
+    "payload": {
+      "source_type": "google_rss"
+    },
+    "status": "pending",
+    "created_at": "2026-02-24T04:20:09.061270+00:00"
+  },
+  {
+    "id": "rvq_adaf24c805776b89",
+    "entity_type": "article",
+    "entity_id": "https://news.google.com/rss/articles/CBMicEFVX3lxTE9OdEFiVE5uNUxYMldhT3hzajlId2hyTDlZM1d2WThrQ2hqVnpxa3lLWTJDeHg3ZFkxOWVNZmFvQzROUVEzQ1ZnRk9aRmtCVXZiVWtsY3MzZFJyQXFFNkRpTllKWUw3a21PbFJZV2s3Uks",
+    "issue_type": "fetch_error",
+    "stage": "fetch",
+    "error_code": "ROBOTS_BLOCKLIST_BYPASS",
+    "error_message": "blocked domain routed to fallback source",
+    "source_url": "https://news.google.com/rss/articles/CBMicEFVX3lxTE9OdEFiVE5uNUxYMldhT3hzajlId2hyTDlZM1d2WThrQ2hqVnpxa3lLWTJDeHg3ZFkxOWVNZmFvQzROUVEzQ1ZnRk9aRmtCVXZiVWtsY3MzZFJyQXFFNkRpTllKWUw3a21PbFJZV2s3Uks",
+    "payload": {
+      "source_type": "google_rss"
+    },
+    "status": "pending",
+    "created_at": "2026-02-24T04:20:09.061295+00:00"
+  },
+  {
+    "id": "rvq_48d28672997e752f",
+    "entity_type": "article",
+    "entity_id": "https://news.google.com/rss/articles/CBMid0FVX3lxTE90WTBqQ1BTb1dLYm90TUhacW82V2NxZGNMY1VNRGJmdHZ1MWFfOU0xX2I1LXFUUlZuWlNQWXFWRWl4UXBiVTBJYkNJZjRRUXF5TVpvZkJBaVhmU0lDVWtGalp5aDAxUGhKUGZJaTRRVGxzbXNtWkdR0gFmQVVfeXFMT01DbmstNW4zeEU5Tm9CMnpjeElNdUFRa1JYQmdpaGJGQWJLT2NMMndBYTdxV0VNYmhNa2Fyb0t2a0ZtelV0THlidk9GaEpNNV9lZ1JPLTNTaF9iVmxRQnhGTkItbFln",
+    "issue_type": "fetch_error",
+    "stage": "fetch",
+    "error_code": "ROBOTS_BLOCKLIST_BYPASS",
+    "error_message": "blocked domain routed to fallback source",
+    "source_url": "https://news.google.com/rss/articles/CBMid0FVX3lxTE90WTBqQ1BTb1dLYm90TUhacW82V2NxZGNMY1VNRGJmdHZ1MWFfOU0xX2I1LXFUUlZuWlNQWXFWRWl4UXBiVTBJYkNJZjRRUXF5TVpvZkJBaVhmU0lDVWtGalp5aDAxUGhKUGZJaTRRVGxzbXNtWkdR0gFmQVVfeXFMT01DbmstNW4zeEU5Tm9CMnpjeElNdUFRa1JYQmdpaGJGQWJLT2NMMndBYTdxV0VNYmhNa2Fyb0t2a0ZtelV0THlidk9GaEpNNV9lZ1JPLTNTaF9iVmxRQnhGTkItbFln",
+    "payload": {
+      "source_type": "google_rss"
+    },
+    "status": "pending",
+    "created_at": "2026-02-24T04:20:09.334034+00:00"
+  },
+  {
+    "id": "rvq_50c175348818f026",
+    "entity_type": "article",
+    "entity_id": "https://news.google.com/rss/articles/CBMiY0FVX3lxTE1GYndCMDhHRFV3ZWJvbUpfZkdfandfbTBxT05YTUVVVWdPSGxJeGJLVWUwNGFKNG01R2s5QnBuODgwQjYzX3F5MGYxOTJFblhJNUZ5TUhheHYxRnJDd1dicDR2Yw",
+    "issue_type": "fetch_error",
+    "stage": "fetch",
+    "error_code": "ROBOTS_BLOCKLIST_BYPASS",
+    "error_message": "blocked domain routed to fallback source",
+    "source_url": "https://news.google.com/rss/articles/CBMiY0FVX3lxTE1GYndCMDhHRFV3ZWJvbUpfZkdfandfbTBxT05YTUVVVWdPSGxJeGJLVWUwNGFKNG01R2s5QnBuODgwQjYzX3F5MGYxOTJFblhJNUZ5TUhheHYxRnJDd1dicDR2Yw",
+    "payload": {
+      "source_type": "google_rss"
+    },
+    "status": "pending",
+    "created_at": "2026-02-24T04:20:09.334080+00:00"
+  },
+  {
+    "id": "rvq_e4d43e60606f552c",
+    "entity_type": "article",
+    "entity_id": "https://news.google.com/rss/articles/CBMiZkFVX3lxTE9oNUFjcktRS0p1ZENLRHVJdTdiQlZCVkY1T0dOWU55MjBBOUlKU3ZXWGZrVDBqeTlLMDFUUVJmNzc1anJ5VVJDNHdyUjR3TWhmZi1GRkR6WkczRHVpU01jWldPM3pldw",
+    "issue_type": "fetch_error",
+    "stage": "fetch",
+    "error_code": "ROBOTS_BLOCKLIST_BYPASS",
+    "error_message": "blocked domain routed to fallback source",
+    "source_url": "https://news.google.com/rss/articles/CBMiZkFVX3lxTE9oNUFjcktRS0p1ZENLRHVJdTdiQlZCVkY1T0dOWU55MjBBOUlKU3ZXWGZrVDBqeTlLMDFUUVJmNzc1anJ5VVJDNHdyUjR3TWhmZi1GRkR6WkczRHVpU01jWldPM3pldw",
+    "payload": {
+      "source_type": "google_rss"
+    },
+    "status": "pending",
+    "created_at": "2026-02-24T04:20:09.334114+00:00"
+  },
+  {
+    "id": "rvq_35b76c274a588da6",
+    "entity_type": "article",
+    "entity_id": "https://news.google.com/rss/articles/CBMiUEFVX3lxTE5ZVmw4S0lqNUl2blhORDJNaDhNYXRuOU5YVjEtbDB2X2JnUFRHaUlLamktTVIwRERxRFRvUU8tZUNJN3BSMHVFWHp3Skl4UTVW",
+    "issue_type": "fetch_error",
+    "stage": "fetch",
+    "error_code": "ROBOTS_BLOCKLIST_BYPASS",
+    "error_message": "blocked domain routed to fallback source",
+    "source_url": "https://news.google.com/rss/articles/CBMiUEFVX3lxTE5ZVmw4S0lqNUl2blhORDJNaDhNYXRuOU5YVjEtbDB2X2JnUFRHaUlLamktTVIwRERxRFRvUU8tZUNJN3BSMHVFWHp3Skl4UTVW",
+    "payload": {
+      "source_type": "google_rss"
+    },
+    "status": "pending",
+    "created_at": "2026-02-24T04:20:09.334147+00:00"
+  },
+  {
+    "id": "rvq_460fb8c87b27dbfd",
+    "entity_type": "article",
+    "entity_id": "https://news.google.com/rss/articles/CBMiT0FVX3lxTE1vR3J3MG5kX1BtLTdfUzFaZ0J2M3JtaUtmZnpFMG5fb3pkNHM4ODZTX2JqcjIzQTJPYm8zcTQwSy16ZG9ETzN2eFVrSE9qdnM",
+    "issue_type": "fetch_error",
+    "stage": "fetch",
+    "error_code": "ROBOTS_BLOCKLIST_BYPASS",
+    "error_message": "blocked domain routed to fallback source",
+    "source_url": "https://news.google.com/rss/articles/CBMiT0FVX3lxTE1vR3J3MG5kX1BtLTdfUzFaZ0J2M3JtaUtmZnpFMG5fb3pkNHM4ODZTX2JqcjIzQTJPYm8zcTQwSy16ZG9ETzN2eFVrSE9qdnM",
+    "payload": {
+      "source_type": "google_rss"
+    },
+    "status": "pending",
+    "created_at": "2026-02-24T04:20:09.334176+00:00"
+  },
+  {
+    "id": "rvq_c46a6cc65787b9e8",
+    "entity_type": "article",
+    "entity_id": "https://news.google.com/rss/articles/CBMieEFVX3lxTE1Tdmg3TFdqS3NUN21RSTVtdXU2RG90czEtQmN0MWs1RFpabTYzOFctYXdGYU1DZExRMUZ2S2xfY3gydkJ3VjdyTTAwZ2F1ak5RWHN1d3A2ZXJiYnlnaW1nNm40Z2NJZHhSZUsyaEp5TUhVUGR6bXA4X9IBeEFVX3lxTE5INHczQnc2WlFxcF9iel9LN1doU01jOXJjbm9FS1kwTU9kZ0FTcHkzTzV2OWlLYmJiX1otNnNqTk5xMGMtdm5TNnRnYnlYR3VMaEp5UVZ2aUV3bnUwTVkxLXVhT01oRjJDRmVuNGlDOG80NlZscllVYg",
+    "issue_type": "fetch_error",
+    "stage": "fetch",
+    "error_code": "ROBOTS_BLOCKLIST_BYPASS",
+    "error_message": "blocked domain routed to fallback source",
+    "source_url": "https://news.google.com/rss/articles/CBMieEFVX3lxTE1Tdmg3TFdqS3NUN21RSTVtdXU2RG90czEtQmN0MWs1RFpabTYzOFctYXdGYU1DZExRMUZ2S2xfY3gydkJ3VjdyTTAwZ2F1ak5RWHN1d3A2ZXJiYnlnaW1nNm40Z2NJZHhSZUsyaEp5TUhVUGR6bXA4X9IBeEFVX3lxTE5INHczQnc2WlFxcF9iel9LN1doU01jOXJjbm9FS1kwTU9kZ0FTcHkzTzV2OWlLYmJiX1otNnNqTk5xMGMtdm5TNnRnYnlYR3VMaEp5UVZ2aUV3bnUwTVkxLXVhT01oRjJDRmVuNGlDOG80NlZscllVYg",
+    "payload": {
+      "source_type": "google_rss"
+    },
+    "status": "pending",
+    "created_at": "2026-02-24T04:20:09.334203+00:00"
+  },
+  {
+    "id": "rvq_672298f6b9212197",
+    "entity_type": "article",
+    "entity_id": "https://news.google.com/rss/articles/CBMijgFBVV95cUxPOF9jdUNpcV9fOWl1MnhSQjVXeEdoLWg0VjBzVjZUeFZPeUZaYnA5TUk4OTI5c3JYdFpjbjJnVHJCTU1lTVQyWG5rTkF3cW9vSDE3eEtoZEhaMjZMajZ5VkthUl9OWVQ2X0NVLTVkOGVORnZVM2lQdHFkbWFrb3AtLU1MLVVPNGROUVpHNHdn",
+    "issue_type": "fetch_error",
+    "stage": "fetch",
+    "error_code": "ROBOTS_BLOCKLIST_BYPASS",
+    "error_message": "blocked domain routed to fallback source",
+    "source_url": "https://news.google.com/rss/articles/CBMijgFBVV95cUxPOF9jdUNpcV9fOWl1MnhSQjVXeEdoLWg0VjBzVjZUeFZPeUZaYnA5TUk4OTI5c3JYdFpjbjJnVHJCTU1lTVQyWG5rTkF3cW9vSDE3eEtoZEhaMjZMajZ5VkthUl9OWVQ2X0NVLTVkOGVORnZVM2lQdHFkbWFrb3AtLU1MLVVPNGROUVpHNHdn",
+    "payload": {
+      "source_type": "google_rss"
+    },
+    "status": "pending",
+    "created_at": "2026-02-24T04:20:09.334226+00:00"
+  },
+  {
+    "id": "rvq_775c233165d2d377",
+    "entity_type": "article",
+    "entity_id": "https://news.google.com/rss/articles/CBMiZEFVX3lxTFB6X2VqWlpXYjVNU1U4UE1HV0Z0SXJiQ0FqcmpVdmdicHh6bTUxYlA0b3pCVkZqQ1JUU1NGUXh5Y0pINVJwTTA1bllOb3NZU2ZQOE1lOVZsYzBXQVFvUTRwaHFIeHM",
+    "issue_type": "fetch_error",
+    "stage": "fetch",
+    "error_code": "ROBOTS_BLOCKLIST_BYPASS",
+    "error_message": "blocked domain routed to fallback source",
+    "source_url": "https://news.google.com/rss/articles/CBMiZEFVX3lxTFB6X2VqWlpXYjVNU1U4UE1HV0Z0SXJiQ0FqcmpVdmdicHh6bTUxYlA0b3pCVkZqQ1JUU1NGUXh5Y0pINVJwTTA1bllOb3NZU2ZQOE1lOVZsYzBXQVFvUTRwaHFIeHM",
+    "payload": {
+      "source_type": "google_rss"
+    },
+    "status": "pending",
+    "created_at": "2026-02-24T04:20:09.334256+00:00"
+  },
+  {
+    "id": "rvq_56a124189d986f64",
+    "entity_type": "article",
+    "entity_id": "https://news.google.com/rss/articles/CBMib0FVX3lxTFAzOEhQN196R2ljVXUyM21Bei1aMzk5cHVWbkZXS3BsdXRlUkRHYWxSV3JPRTB2SlRiMW1ZYUt1akZrRzJCOGQxM2VNTDhTUWJuQkRLazM0TG01SXY0bWhaWEJUbjNoUTBrdnBwbGprc9IBb0FVX3lxTFAzOEhQN196R2ljVXUyM21Bei1aMzk5cHVWbkZXS3BsdXRlUkRHYWxSV3JPRTB2SlRiMW1ZYUt1akZrRzJCOGQxM2VNTDhTUWJuQkRLazM0TG01SXY0bWhaWEJUbjNoUTBrdnBwbGprcw",
+    "issue_type": "fetch_error",
+    "stage": "fetch",
+    "error_code": "ROBOTS_BLOCKLIST_BYPASS",
+    "error_message": "blocked domain routed to fallback source",
+    "source_url": "https://news.google.com/rss/articles/CBMib0FVX3lxTFAzOEhQN196R2ljVXUyM21Bei1aMzk5cHVWbkZXS3BsdXRlUkRHYWxSV3JPRTB2SlRiMW1ZYUt1akZrRzJCOGQxM2VNTDhTUWJuQkRLazM0TG01SXY0bWhaWEJUbjNoUTBrdnBwbGprc9IBb0FVX3lxTFAzOEhQN196R2ljVXUyM21Bei1aMzk5cHVWbkZXS3BsdXRlUkRHYWxSV3JPRTB2SlRiMW1ZYUt1akZrRzJCOGQxM2VNTDhTUWJuQkRLazM0TG01SXY0bWhaWEJUbjNoUTBrdnBwbGprcw",
+    "payload": {
+      "source_type": "google_rss"
+    },
+    "status": "pending",
+    "created_at": "2026-02-24T04:20:09.334286+00:00"
+  },
+  {
+    "id": "rvq_ea29ce54a1391402",
+    "entity_type": "article",
+    "entity_id": "https://news.google.com/rss/articles/CBMib0FVX3lxTE5sRDhVVG5DV0xxZTFDbExIM3I0MXdGTnUtY3BCWmdCRndlcmdid1NVX0oxQjNYdGtTeXk4aFlDLVZMbHIwNWZwdnBtdXQxMGFJMnpHaVdjenZNTXp5eWJRMWNQd1d3c1FfVTh4ekhxbw",
+    "issue_type": "fetch_error",
+    "stage": "fetch",
+    "error_code": "ROBOTS_BLOCKLIST_BYPASS",
+    "error_message": "blocked domain routed to fallback source",
+    "source_url": "https://news.google.com/rss/articles/CBMib0FVX3lxTE5sRDhVVG5DV0xxZTFDbExIM3I0MXdGTnUtY3BCWmdCRndlcmdid1NVX0oxQjNYdGtTeXk4aFlDLVZMbHIwNWZwdnBtdXQxMGFJMnpHaVdjenZNTXp5eWJRMWNQd1d3c1FfVTh4ekhxbw",
+    "payload": {
+      "source_type": "google_rss"
+    },
+    "status": "pending",
+    "created_at": "2026-02-24T04:20:09.334318+00:00"
+  },
+  {
+    "id": "rvq_36f09888ff9dd699",
+    "entity_type": "article",
+    "entity_id": "https://news.google.com/rss/articles/CBMiVkFVX3lxTFB2dUV6QTdnbDdJTXp2UGRTRnhZbWlrUjR5Vk9udlZ5ZTVCU2J4SVJrdFY0QThSdUpCckp5RDNaOFBQLWVtbmRvOHFFNmV0NFY2MmJ3ZjdR",
+    "issue_type": "fetch_error",
+    "stage": "fetch",
+    "error_code": "ROBOTS_BLOCKLIST_BYPASS",
+    "error_message": "blocked domain routed to fallback source",
+    "source_url": "https://news.google.com/rss/articles/CBMiVkFVX3lxTFB2dUV6QTdnbDdJTXp2UGRTRnhZbWlrUjR5Vk9udlZ5ZTVCU2J4SVJrdFY0QThSdUpCckp5RDNaOFBQLWVtbmRvOHFFNmV0NFY2MmJ3ZjdR",
+    "payload": {
+      "source_type": "google_rss"
+    },
+    "status": "pending",
+    "created_at": "2026-02-24T04:20:09.334342+00:00"
+  },
+  {
+    "id": "rvq_f7a344d1a69d069f",
+    "entity_type": "article",
+    "entity_id": "https://news.google.com/rss/articles/CBMiZ0FVX3lxTE5QSHRHTU84ejRWemFhbTJMTVFYeXhtcnljV3otMWltOXk1Vk9rX2Jmd29meVo4LXpaa2NCeC02WUg3TTRiUlZwZjVBVjRYemxBNi1IbVFBNmJpaGVHZllRMVNRbTIwTlk",
+    "issue_type": "fetch_error",
+    "stage": "fetch",
+    "error_code": "ROBOTS_BLOCKLIST_BYPASS",
+    "error_message": "blocked domain routed to fallback source",
+    "source_url": "https://news.google.com/rss/articles/CBMiZ0FVX3lxTE5QSHRHTU84ejRWemFhbTJMTVFYeXhtcnljV3otMWltOXk1Vk9rX2Jmd29meVo4LXpaa2NCeC02WUg3TTRiUlZwZjVBVjRYemxBNi1IbVFBNmJpaGVHZllRMVNRbTIwTlk",
+    "payload": {
+      "source_type": "google_rss"
+    },
+    "status": "pending",
+    "created_at": "2026-02-24T04:20:09.334373+00:00"
+  },
+  {
+    "id": "rvq_9b835cfb3bd08a6a",
+    "entity_type": "article",
+    "entity_id": "https://news.google.com/rss/articles/CBMiUkFVX3lxTE1BaU42T0NXektTMGdZOTlQRVVxTXRRRWZpLWh1alN1dkpOaEdHbk5keG56U3dwd2tVTlFrVHJKNDNrMGpoZGowa2UxNTdvWHBJcFE",
+    "issue_type": "fetch_error",
+    "stage": "fetch",
+    "error_code": "ROBOTS_BLOCKLIST_BYPASS",
+    "error_message": "blocked domain routed to fallback source",
+    "source_url": "https://news.google.com/rss/articles/CBMiUkFVX3lxTE1BaU42T0NXektTMGdZOTlQRVVxTXRRRWZpLWh1alN1dkpOaEdHbk5keG56U3dwd2tVTlFrVHJKNDNrMGpoZGowa2UxNTdvWHBJcFE",
+    "payload": {
+      "source_type": "google_rss"
+    },
+    "status": "pending",
+    "created_at": "2026-02-24T04:20:09.334405+00:00"
+  },
+  {
+    "id": "rvq_36ca462f1f40261c",
+    "entity_type": "article",
+    "entity_id": "https://news.google.com/rss/articles/CBMicEFVX3lxTFAwbk1DQXJoTnprbGJSamJFRDFIQUpPYURkODg5TzNHQVF6VTJMbVdjM1JnbnhpVjNnSkVWY1R6UE9VTXBmbzd4czI2OGJqaURTZURxakM1bElFOHEwc2hObThzUUk4cFBRVDlHSGV4TDU",
+    "issue_type": "fetch_error",
+    "stage": "fetch",
+    "error_code": "ROBOTS_BLOCKLIST_BYPASS",
+    "error_message": "blocked domain routed to fallback source",
+    "source_url": "https://news.google.com/rss/articles/CBMicEFVX3lxTFAwbk1DQXJoTnprbGJSamJFRDFIQUpPYURkODg5TzNHQVF6VTJMbVdjM1JnbnhpVjNnSkVWY1R6UE9VTXBmbzd4czI2OGJqaURTZURxakM1bElFOHEwc2hObThzUUk4cFBRVDlHSGV4TDU",
+    "payload": {
+      "source_type": "google_rss"
+    },
+    "status": "pending",
+    "created_at": "2026-02-24T04:20:09.334437+00:00"
+  },
+  {
+    "id": "rvq_27b19de6ef7d453e",
+    "entity_type": "article",
+    "entity_id": "https://news.google.com/rss/articles/CBMiT0FVX3lxTE4wVV9SUHhZbFVNLVZ1dFQ0VC03d3ltMzU3eEFkVjhqWnA1Y2pILUdWbXphMl9rM3RTRzRGN1k4NjJRdk5hWTkyUS1YVDNoSEk",
+    "issue_type": "fetch_error",
+    "stage": "fetch",
+    "error_code": "ROBOTS_BLOCKLIST_BYPASS",
+    "error_message": "blocked domain routed to fallback source",
+    "source_url": "https://news.google.com/rss/articles/CBMiT0FVX3lxTE4wVV9SUHhZbFVNLVZ1dFQ0VC03d3ltMzU3eEFkVjhqWnA1Y2pILUdWbXphMl9rM3RTRzRGN1k4NjJRdk5hWTkyUS1YVDNoSEk",
+    "payload": {
+      "source_type": "google_rss"
+    },
+    "status": "pending",
+    "created_at": "2026-02-24T04:20:09.334462+00:00"
+  },
+  {
+    "id": "rvq_a38e9d32f2c4b765",
+    "entity_type": "article",
+    "entity_id": "https://news.google.com/rss/articles/CBMiUEFVX3lxTE9XUDhsQXlSS2d5SDZXTUJITU9nRnRpa1l3NXNVUENyMkdQZG04T0s5UG9SXzlySXJ2YlZ4ejN4Nmg3TzhJSDFXMWd5U0loM0Mw",
+    "issue_type": "fetch_error",
+    "stage": "fetch",
+    "error_code": "ROBOTS_BLOCKLIST_BYPASS",
+    "error_message": "blocked domain routed to fallback source",
+    "source_url": "https://news.google.com/rss/articles/CBMiUEFVX3lxTE9XUDhsQXlSS2d5SDZXTUJITU9nRnRpa1l3NXNVUENyMkdQZG04T0s5UG9SXzlySXJ2YlZ4ejN4Nmg3TzhJSDFXMWd5U0loM0Mw",
+    "payload": {
+      "source_type": "google_rss"
+    },
+    "status": "pending",
+    "created_at": "2026-02-24T04:20:09.553054+00:00"
+  },
+  {
+    "id": "rvq_f4d6b0134be949c9",
+    "entity_type": "article",
+    "entity_id": "https://news.google.com/rss/articles/CBMiVEFVX3lxTE1IVU9vU0VXNTM3RndSNUpkTzFmVWJCYWNXRzdkNjJoQ19SeEZ6ZzBVenIzUXpBTlFRckVNZVVIQXAzR1dXVmIyY1lJa3JjVHRJYnBUQw",
+    "issue_type": "fetch_error",
+    "stage": "fetch",
+    "error_code": "ROBOTS_BLOCKLIST_BYPASS",
+    "error_message": "blocked domain routed to fallback source",
+    "source_url": "https://news.google.com/rss/articles/CBMiVEFVX3lxTE1IVU9vU0VXNTM3RndSNUpkTzFmVWJCYWNXRzdkNjJoQ19SeEZ6ZzBVenIzUXpBTlFRckVNZVVIQXAzR1dXVmIyY1lJa3JjVHRJYnBUQw",
+    "payload": {
+      "source_type": "google_rss"
+    },
+    "status": "pending",
+    "created_at": "2026-02-24T04:20:09.553107+00:00"
+  },
+  {
+    "id": "rvq_4979e87e1cc147f9",
+    "entity_type": "article",
+    "entity_id": "https://news.google.com/rss/articles/CBMibEFVX3lxTE5QM29ZdVZvWUw2R2NzeEJZaG5XRldERUJpR19nX0xTNWJLaXVMM1JLbDVnYWJseEpRVnNjemZyR2NScEc2RW0tNm1ReDZCVVNYMnpZTXRMSXVPcEJSZTJQdWRJU2Mwa3NRQ0owSA",
+    "issue_type": "fetch_error",
+    "stage": "fetch",
+    "error_code": "ROBOTS_BLOCKLIST_BYPASS",
+    "error_message": "blocked domain routed to fallback source",
+    "source_url": "https://news.google.com/rss/articles/CBMibEFVX3lxTE5QM29ZdVZvWUw2R2NzeEJZaG5XRldERUJpR19nX0xTNWJLaXVMM1JLbDVnYWJseEpRVnNjemZyR2NScEc2RW0tNm1ReDZCVVNYMnpZTXRMSXVPcEJSZTJQdWRJU2Mwa3NRQ0owSA",
+    "payload": {
+      "source_type": "google_rss"
+    },
+    "status": "pending",
+    "created_at": "2026-02-24T04:20:09.553139+00:00"
+  },
+  {
+    "id": "rvq_76b4fab6a103893b",
+    "entity_type": "article",
+    "entity_id": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE43YUpldmVfcHp3QlZFeWNTTFQ2UllWLXFscm91WGdRRVJYNTVxYXdSVlVlLWJjczc5VTZvQ0wzb2VTZlBWTzktc0kyOVkwUi1Wa3dzTlltOFlUakk",
+    "issue_type": "fetch_error",
+    "stage": "fetch",
+    "error_code": "ROBOTS_BLOCKLIST_BYPASS",
+    "error_message": "blocked domain routed to fallback source",
+    "source_url": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE43YUpldmVfcHp3QlZFeWNTTFQ2UllWLXFscm91WGdRRVJYNTVxYXdSVlVlLWJjczc5VTZvQ0wzb2VTZlBWTzktc0kyOVkwUi1Wa3dzTlltOFlUakk",
+    "payload": {
+      "source_type": "google_rss"
+    },
+    "status": "pending",
+    "created_at": "2026-02-24T04:20:09.553168+00:00"
+  },
+  {
+    "id": "rvq_45ab5fac041a839b",
+    "entity_type": "article",
+    "entity_id": "https://news.google.com/rss/articles/CBMibEFVX3lxTE9GM2N1UWtDSTZPUjg0MnhVdjNrZFEybGxsSUFsV0ZfMEtEZjNEQnRJRkM1eUNsVTZqM2pySkZOVXpmRGJSekFiZTlCeUNsdVAxSnJNYmd5UjU4RDVXQ3V1ejU1MHdHQUV3NkVVSg",
+    "issue_type": "fetch_error",
+    "stage": "fetch",
+    "error_code": "ROBOTS_BLOCKLIST_BYPASS",
+    "error_message": "blocked domain routed to fallback source",
+    "source_url": "https://news.google.com/rss/articles/CBMibEFVX3lxTE9GM2N1UWtDSTZPUjg0MnhVdjNrZFEybGxsSUFsV0ZfMEtEZjNEQnRJRkM1eUNsVTZqM2pySkZOVXpmRGJSekFiZTlCeUNsdVAxSnJNYmd5UjU4RDVXQ3V1ejU1MHdHQUV3NkVVSg",
+    "payload": {
+      "source_type": "google_rss"
+    },
+    "status": "pending",
+    "created_at": "2026-02-24T04:20:09.553193+00:00"
+  },
+  {
+    "id": "rvq_62d822d4d9585a1e",
+    "entity_type": "article",
+    "entity_id": "https://news.google.com/rss/articles/CBMibkFVX3lxTE5jcGVzeEhMY09IQV9vbnpITG9Tb0E3SE5DT0tJcldqNkk1bW5XX3ZRbV9TOFlsZFZjU1Ntb3gwTm1sakFCMHR5dUFPZHNkS2JNTlZWV1hiV01zUEl2cVFTR3NlaFptc3lYdjJiWXdR0gFyQVVfeXFMTWVwNmNhQzU2VlI4RlZkWHBCV2JTY2NKTlhqZkVmMzlYcUxIZko3a2dVVnRWa1kzZEE0ajdBRWZDb25YNkZRNEswYUpxcl90RmNoZzNkZWpjZXVBdEg2aFBMZExDY1R6eExyLWZQZUEzeVpn",
+    "issue_type": "fetch_error",
+    "stage": "fetch",
+    "error_code": "ROBOTS_BLOCKLIST_BYPASS",
+    "error_message": "blocked domain routed to fallback source",
+    "source_url": "https://news.google.com/rss/articles/CBMibkFVX3lxTE5jcGVzeEhMY09IQV9vbnpITG9Tb0E3SE5DT0tJcldqNkk1bW5XX3ZRbV9TOFlsZFZjU1Ntb3gwTm1sakFCMHR5dUFPZHNkS2JNTlZWV1hiV01zUEl2cVFTR3NlaFptc3lYdjJiWXdR0gFyQVVfeXFMTWVwNmNhQzU2VlI4RlZkWHBCV2JTY2NKTlhqZkVmMzlYcUxIZko3a2dVVnRWa1kzZEE0ajdBRWZDb25YNkZRNEswYUpxcl90RmNoZzNkZWpjZXVBdEg2aFBMZExDY1R6eExyLWZQZUEzeVpn",
+    "payload": {
+      "source_type": "google_rss"
+    },
+    "status": "pending",
+    "created_at": "2026-02-24T04:20:09.553225+00:00"
+  },
+  {
+    "id": "rvq_eb589e026d50e5f5",
+    "entity_type": "article",
+    "entity_id": "https://news.google.com/rss/articles/CBMiwAJBVV95cUxNaWJYd19jYTlBVUNRbjRyS3ROVVlqTkp4X0NOeXU0Mm9fNWsxNHZkalpMMHB5dXhmOEc4R0tvcUs2Qi1jbjlvbHBzV3lDMy1sc0dLTWNKTGRHWThFZy1EZ0hnWlBEWUx0UEtsVkljVHZVZ1BhWlk5MEZRMU9LQXBDei1DaE5FdnZTVEc3ckpPV1YxV0RMX3dtbXFWbVU0OTMxU1hEVWlzYWhodXFKX1ZtbDVUTUUxcU0yZ2NlYTZHXy1vVGNGNHF6enlsMnVOc1BqdU1QSzBnLVI1WDk5aWhzN2pGdlZFNTdpSjNaOG1DMjlXRHc1RWhjdFk1T2hOMHpQcGc3alRmWW9rWVBWTEVhSURsMHJyODZ2YkM0Rnl3aV9PRFBRZldXUjM1YTIzWXB4bXluMGxNYWtPUDZ4YkxlTQ",
+    "issue_type": "fetch_error",
+    "stage": "fetch",
+    "error_code": "ROBOTS_BLOCKLIST_BYPASS",
+    "error_message": "blocked domain routed to fallback source",
+    "source_url": "https://news.google.com/rss/articles/CBMiwAJBVV95cUxNaWJYd19jYTlBVUNRbjRyS3ROVVlqTkp4X0NOeXU0Mm9fNWsxNHZkalpMMHB5dXhmOEc4R0tvcUs2Qi1jbjlvbHBzV3lDMy1sc0dLTWNKTGRHWThFZy1EZ0hnWlBEWUx0UEtsVkljVHZVZ1BhWlk5MEZRMU9LQXBDei1DaE5FdnZTVEc3ckpPV1YxV0RMX3dtbXFWbVU0OTMxU1hEVWlzYWhodXFKX1ZtbDVUTUUxcU0yZ2NlYTZHXy1vVGNGNHF6enlsMnVOc1BqdU1QSzBnLVI1WDk5aWhzN2pGdlZFNTdpSjNaOG1DMjlXRHc1RWhjdFk1T2hOMHpQcGc3alRmWW9rWVBWTEVhSURsMHJyODZ2YkM0Rnl3aV9PRFBRZldXUjM1YTIzWXB4bXluMGxNYWtPUDZ4YkxlTQ",
+    "payload": {
+      "source_type": "google_rss"
+    },
+    "status": "pending",
+    "created_at": "2026-02-24T04:20:09.553257+00:00"
+  },
+  {
+    "id": "rvq_26f5b0ccf1f26f0a",
+    "entity_type": "article",
+    "entity_id": "https://news.google.com/rss/articles/CBMibkFVX3lxTE44WWJmLS1FTTB0QnB6YlpQQWR2R2xMV2ZTeXFqT1dWVTI2SWVodU1TSnNYang1OVl2NDdZb1YzMFhFa1JqWUFwVWptWW8xdGRDOTBHSUI3djVXZlVodUkxRzNXSzVSR2V2bHB3ZUNn0gFyQVVfeXFMTnhuQUU2dUdtU0hhS1RCbHdJbGQ4elhyTjJEVTJlWVhOQVhydE1yQV9DLXc3ZnJLTXRVSHlJSHFQa0xRWnhSMHpROXZ6bW5JX0xyMGF4YTdobUkzdTNwTk10alBfRmtQeS1RTTU1TXo2X2FR",
+    "issue_type": "fetch_error",
+    "stage": "fetch",
+    "error_code": "ROBOTS_BLOCKLIST_BYPASS",
+    "error_message": "blocked domain routed to fallback source",
+    "source_url": "https://news.google.com/rss/articles/CBMibkFVX3lxTE44WWJmLS1FTTB0QnB6YlpQQWR2R2xMV2ZTeXFqT1dWVTI2SWVodU1TSnNYang1OVl2NDdZb1YzMFhFa1JqWUFwVWptWW8xdGRDOTBHSUI3djVXZlVodUkxRzNXSzVSR2V2bHB3ZUNn0gFyQVVfeXFMTnhuQUU2dUdtU0hhS1RCbHdJbGQ4elhyTjJEVTJlWVhOQVhydE1yQV9DLXc3ZnJLTXRVSHlJSHFQa0xRWnhSMHpROXZ6bW5JX0xyMGF4YTdobUkzdTNwTk10alBfRmtQeS1RTTU1TXo2X2FR",
+    "payload": {
+      "source_type": "google_rss"
+    },
+    "status": "pending",
+    "created_at": "2026-02-24T04:20:09.553284+00:00"
+  },
+  {
+    "id": "rvq_40df83d6e0eba2e6",
+    "entity_type": "article",
+    "entity_id": "https://news.google.com/rss/articles/CBMiUEFVX3lxTE9PUVNqbkNVcUdZZV8xR01KMi0zWlZTUFZUWFRwTFlLTXBqTlYzZlppRkN2RzZjMjl6MDVlUGQ2WTYzUGptWlpKZC1Vem05d00y",
+    "issue_type": "fetch_error",
+    "stage": "fetch",
+    "error_code": "ROBOTS_BLOCKLIST_BYPASS",
+    "error_message": "blocked domain routed to fallback source",
+    "source_url": "https://news.google.com/rss/articles/CBMiUEFVX3lxTE9PUVNqbkNVcUdZZV8xR01KMi0zWlZTUFZUWFRwTFlLTXBqTlYzZlppRkN2RzZjMjl6MDVlUGQ2WTYzUGptWlpKZC1Vem05d00y",
+    "payload": {
+      "source_type": "google_rss"
+    },
+    "status": "pending",
+    "created_at": "2026-02-24T04:20:09.553314+00:00"
+  },
+  {
+    "id": "rvq_f8322fd915a89d62",
+    "entity_type": "article",
+    "entity_id": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE5iM0Z6YzdVTU1hNHZHb0dXRWJxb0dPU2RoQlV1bHQ5Vk93OXlGQW1najU3TEE0UVVSd2RYT0s5Q0VYVnBnR2hscV9ac1pFUng5RjZSUUlpNjdtRHFRV25pMw",
+    "issue_type": "fetch_error",
+    "stage": "fetch",
+    "error_code": "ROBOTS_BLOCKLIST_BYPASS",
+    "error_message": "blocked domain routed to fallback source",
+    "source_url": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE5iM0Z6YzdVTU1hNHZHb0dXRWJxb0dPU2RoQlV1bHQ5Vk93OXlGQW1najU3TEE0UVVSd2RYT0s5Q0VYVnBnR2hscV9ac1pFUng5RjZSUUlpNjdtRHFRV25pMw",
+    "payload": {
+      "source_type": "google_rss"
+    },
+    "status": "pending",
+    "created_at": "2026-02-24T04:20:09.553340+00:00"
+  },
+  {
+    "id": "rvq_952ea8350fe2d711",
+    "entity_type": "article",
+    "entity_id": "https://news.google.com/rss/articles/CBMijwFBVV95cUxORjlEX2hPbFJQM0dsWFpvSFZnY2VEdlZnMTNLeF9hMUtHb3o0YVVtVXpTenJzbEoyRWtobWZJV1hFSnpvMTFkUTJ0RlpwaDNGeXNBalI5NTduQVZSWC1vTnhtVWRqeURmWFNRTU9MSndsMVdQYk11M3NPZExUTzJ5TzdQbW92c1JBUE1VYTN5a9IBowFBVV95cUxPczZrMFRjZlFWYnY3SXZJN3MxaVBnZ0h2c2J1T2tFUnFzOTFBMFc3QTJsMXFxLUtIZHpUNk9iYy1rbHNDMHJLV3BENHJLRFVnNm10NWxhY1Myck45YWhMbENxNllCTzBfOTBGSFhISG4yTktxTEhBa1BaUmpKY2dnZUZSNE1MMFF2aGdkbk1oNWFNalo2TkIyVmtSMG5HYi1lVFpj",
+    "issue_type": "fetch_error",
+    "stage": "fetch",
+    "error_code": "ROBOTS_BLOCKLIST_BYPASS",
+    "error_message": "blocked domain routed to fallback source",
+    "source_url": "https://news.google.com/rss/articles/CBMijwFBVV95cUxORjlEX2hPbFJQM0dsWFpvSFZnY2VEdlZnMTNLeF9hMUtHb3o0YVVtVXpTenJzbEoyRWtobWZJV1hFSnpvMTFkUTJ0RlpwaDNGeXNBalI5NTduQVZSWC1vTnhtVWRqeURmWFNRTU9MSndsMVdQYk11M3NPZExUTzJ5TzdQbW92c1JBUE1VYTN5a9IBowFBVV95cUxPczZrMFRjZlFWYnY3SXZJN3MxaVBnZ0h2c2J1T2tFUnFzOTFBMFc3QTJsMXFxLUtIZHpUNk9iYy1rbHNDMHJLV3BENHJLRFVnNm10NWxhY1Myck45YWhMbENxNllCTzBfOTBGSFhISG4yTktxTEhBa1BaUmpKY2dnZUZSNE1MMFF2aGdkbk1oNWFNalo2TkIyVmtSMG5HYi1lVFpj",
+    "payload": {
+      "source_type": "google_rss"
+    },
+    "status": "pending",
+    "created_at": "2026-02-24T04:20:11.361413+00:00"
+  },
+  {
+    "id": "rvq_1c9a6d5f9013ca11",
+    "entity_type": "article",
+    "entity_id": "https://news.google.com/rss/articles/CBMiVkFVX3lxTE0teE9sTFRDeUR2YVZTVHVOQlR1MWlrR2pQV0JUTC0zMTNaTXJUUXZYTHhYNklvSFNPaGxheUZ4ekt1T2lvRWNvOXg1Z1BUX0piODQ1aXl3",
+    "issue_type": "fetch_error",
+    "stage": "fetch",
+    "error_code": "ROBOTS_BLOCKLIST_BYPASS",
+    "error_message": "blocked domain routed to fallback source",
+    "source_url": "https://news.google.com/rss/articles/CBMiVkFVX3lxTE0teE9sTFRDeUR2YVZTVHVOQlR1MWlrR2pQV0JUTC0zMTNaTXJUUXZYTHhYNklvSFNPaGxheUZ4ekt1T2lvRWNvOXg1Z1BUX0piODQ1aXl3",
+    "payload": {
+      "source_type": "google_rss"
+    },
+    "status": "pending",
+    "created_at": "2026-02-24T04:20:11.361454+00:00"
+  },
+  {
+    "id": "rvq_c8b1b1cd27f745e1",
+    "entity_type": "article",
+    "entity_id": "https://news.google.com/rss/articles/CBMicEFVX3lxTE1MRzd0R1o1aEwwTjRJNU50Vk9wWnRDWjBjR2xnOXdVY1JWaWNra1ZJajRITjFaN3JtUzRCN1pQU0lhdk1NVnh1ZlJjTFN4UDI0NDdTTzFVc0t6RUNBVXBhWkp2Uk5saGdJM21ZN0JlMWk",
+    "issue_type": "fetch_error",
+    "stage": "fetch",
+    "error_code": "ROBOTS_BLOCKLIST_BYPASS",
+    "error_message": "blocked domain routed to fallback source",
+    "source_url": "https://news.google.com/rss/articles/CBMicEFVX3lxTE1MRzd0R1o1aEwwTjRJNU50Vk9wWnRDWjBjR2xnOXdVY1JWaWNra1ZJajRITjFaN3JtUzRCN1pQU0lhdk1NVnh1ZlJjTFN4UDI0NDdTTzFVc0t6RUNBVXBhWkp2Uk5saGdJM21ZN0JlMWk",
+    "payload": {
+      "source_type": "google_rss"
+    },
+    "status": "pending",
+    "created_at": "2026-02-24T04:20:11.361485+00:00"
+  },
+  {
+    "id": "rvq_bdc58fa3fa57b7da",
+    "entity_type": "article",
+    "entity_id": "https://news.google.com/rss/articles/CBMiZkFVX3lxTFBDOXN5MGRrLWo3V0ZtMUhLSzd5LUpPaDZqaFFBRTk5SWxISmZfbU9vRm55TEpfYkF6TDNabGFpazlXVVZzcUFWYXpLMUZ5dFN4LVZxMkNROG1YVkFJYVUyNVA4MXY5Zw",
+    "issue_type": "fetch_error",
+    "stage": "fetch",
+    "error_code": "ROBOTS_BLOCKLIST_BYPASS",
+    "error_message": "blocked domain routed to fallback source",
+    "source_url": "https://news.google.com/rss/articles/CBMiZkFVX3lxTFBDOXN5MGRrLWo3V0ZtMUhLSzd5LUpPaDZqaFFBRTk5SWxISmZfbU9vRm55TEpfYkF6TDNabGFpazlXVVZzcUFWYXpLMUZ5dFN4LVZxMkNROG1YVkFJYVUyNVA4MXY5Zw",
+    "payload": {
+      "source_type": "google_rss"
+    },
+    "status": "pending",
+    "created_at": "2026-02-24T04:20:11.361512+00:00"
+  },
+  {
+    "id": "rvq_c054d59399ba1d3a",
+    "entity_type": "article",
+    "entity_id": "https://news.google.com/rss/articles/CBMibEFVX3lxTE5OYXh1azE5M0NzbmluR1RyNEtia3ZPWnNhbWF2X2o2UDBoZTlYbU5Ud2t1TDdTRVgxb2JfQkFIbDV5MHpBX210bUt6cHVNbkVzOUlYa3F4ZXVpaUU2SDNqWHVUZGZFQ1IwUU1sWA",
+    "issue_type": "fetch_error",
+    "stage": "fetch",
+    "error_code": "ROBOTS_BLOCKLIST_BYPASS",
+    "error_message": "blocked domain routed to fallback source",
+    "source_url": "https://news.google.com/rss/articles/CBMibEFVX3lxTE5OYXh1azE5M0NzbmluR1RyNEtia3ZPWnNhbWF2X2o2UDBoZTlYbU5Ud2t1TDdTRVgxb2JfQkFIbDV5MHpBX210bUt6cHVNbkVzOUlYa3F4ZXVpaUU2SDNqWHVUZGZFQ1IwUU1sWA",
+    "payload": {
+      "source_type": "google_rss"
+    },
+    "status": "pending",
+    "created_at": "2026-02-24T04:20:11.361537+00:00"
+  },
+  {
+    "id": "rvq_6785044fd52ab111",
+    "entity_type": "article",
+    "entity_id": "https://news.google.com/rss/articles/CBMidEFVX3lxTE9Kb3FsWjdQZG1GY0xjTlYzY2YxR3BtVlFGWDA1alpQWjl6SlNqWmRSMFJ6QlBfczY0RTMtdE1mMl83UUpxbElRTEhSS2o2aEtfTnZnZWNGa1MydktqSWNPcHFSbmVRN1BJUWFiLVdfWkYyOTR2",
+    "issue_type": "fetch_error",
+    "stage": "fetch",
+    "error_code": "ROBOTS_BLOCKLIST_BYPASS",
+    "error_message": "blocked domain routed to fallback source",
+    "source_url": "https://news.google.com/rss/articles/CBMidEFVX3lxTE9Kb3FsWjdQZG1GY0xjTlYzY2YxR3BtVlFGWDA1alpQWjl6SlNqWmRSMFJ6QlBfczY0RTMtdE1mMl83UUpxbElRTEhSS2o2aEtfTnZnZWNGa1MydktqSWNPcHFSbmVRN1BJUWFiLVdfWkYyOTR2",
+    "payload": {
+      "source_type": "google_rss"
+    },
+    "status": "pending",
+    "created_at": "2026-02-24T04:20:11.361564+00:00"
+  },
+  {
+    "id": "rvq_11ffb13198aa6f2e",
+    "entity_type": "article",
+    "entity_id": "https://news.google.com/rss/articles/CBMiY0FVX3lxTE1ZdXQwZHN4U0NuWHVoeXJYMU9jQ1F5V1RfTFlydDFPQUlZUU5FUE9GcWRFMHB3OThqbExFOWdDbFZDY3BqM0oydDc5NG9xbjhCSGRXUUxnSHJJcUljalNPa2EzTQ",
+    "issue_type": "fetch_error",
+    "stage": "fetch",
+    "error_code": "ROBOTS_BLOCKLIST_BYPASS",
+    "error_message": "blocked domain routed to fallback source",
+    "source_url": "https://news.google.com/rss/articles/CBMiY0FVX3lxTE1ZdXQwZHN4U0NuWHVoeXJYMU9jQ1F5V1RfTFlydDFPQUlZUU5FUE9GcWRFMHB3OThqbExFOWdDbFZDY3BqM0oydDc5NG9xbjhCSGRXUUxnSHJJcUljalNPa2EzTQ",
+    "payload": {
+      "source_type": "google_rss"
+    },
+    "status": "pending",
+    "created_at": "2026-02-24T04:20:11.361592+00:00"
+  },
+  {
+    "id": "rvq_7a950826d297ef86",
+    "entity_type": "article",
+    "entity_id": "https://news.google.com/rss/articles/CBMiRkFVX3lxTFBJNjJYVFl4cEM1a3ZmaXNFcnlNN3pLNjZtU2ZBcXlSRXZHRUJ2S29MX0hiMjdvbHhfQWVUclZlYmY3NTNYQWc",
+    "issue_type": "fetch_error",
+    "stage": "fetch",
+    "error_code": "ROBOTS_BLOCKLIST_BYPASS",
+    "error_message": "blocked domain routed to fallback source",
+    "source_url": "https://news.google.com/rss/articles/CBMiRkFVX3lxTFBJNjJYVFl4cEM1a3ZmaXNFcnlNN3pLNjZtU2ZBcXlSRXZHRUJ2S29MX0hiMjdvbHhfQWVUclZlYmY3NTNYQWc",
+    "payload": {
+      "source_type": "google_rss"
+    },
+    "status": "pending",
+    "created_at": "2026-02-24T04:20:11.361616+00:00"
+  },
+  {
+    "id": "rvq_b9d9227385baef19",
+    "entity_type": "article",
+    "entity_id": "https://news.google.com/rss/articles/CBMicEFVX3lxTE1CYmpZT0JzZmc0MTktd1ZWQjhXaGdzb2ZHVEtWTGpwaHNnNDBwcXV0eU5Wa0tkVUJyQ3ZNalJLQVV0VHp6Y0RRRmJlYmV1UUJEZTZJMlNsVHJkV25xdUhRMW8tdnJWMkl0MFJBeGt6VlU",
+    "issue_type": "fetch_error",
+    "stage": "fetch",
+    "error_code": "ROBOTS_BLOCKLIST_BYPASS",
+    "error_message": "blocked domain routed to fallback source",
+    "source_url": "https://news.google.com/rss/articles/CBMicEFVX3lxTE1CYmpZT0JzZmc0MTktd1ZWQjhXaGdzb2ZHVEtWTGpwaHNnNDBwcXV0eU5Wa0tkVUJyQ3ZNalJLQVV0VHp6Y0RRRmJlYmV1UUJEZTZJMlNsVHJkV25xdUhRMW8tdnJWMkl0MFJBeGt6VlU",
+    "payload": {
+      "source_type": "google_rss"
+    },
+    "status": "pending",
+    "created_at": "2026-02-24T04:20:11.361640+00:00"
+  },
+  {
+    "id": "rvq_cd51422d9b729ac4",
+    "entity_type": "article",
+    "entity_id": "https://news.google.com/rss/articles/CBMiRkFVX3lxTE5KYjlXaExwZlA0SjF0YjJnWnNJaUMyRzJBQmVEZHJaMjF1OGs2WFhlUFlzeHViVGNyMFhvYm90aXByV1JiUWc",
+    "issue_type": "fetch_error",
+    "stage": "fetch",
+    "error_code": "ROBOTS_BLOCKLIST_BYPASS",
+    "error_message": "blocked domain routed to fallback source",
+    "source_url": "https://news.google.com/rss/articles/CBMiRkFVX3lxTE5KYjlXaExwZlA0SjF0YjJnWnNJaUMyRzJBQmVEZHJaMjF1OGs2WFhlUFlzeHViVGNyMFhvYm90aXByV1JiUWc",
+    "payload": {
+      "source_type": "google_rss"
+    },
+    "status": "pending",
+    "created_at": "2026-02-24T04:20:11.361664+00:00"
+  },
+  {
+    "id": "rvq_0c39bf494b58530e",
+    "entity_type": "article",
+    "entity_id": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE9GZi1ZbkdOOU8xRUxaNFRXUGZxZzZyVXBiZlVybDRfdXExVmZ0TU1UeXd3Y0l3em1IUWg1WG1GZk9QeTlTMEJDeThxSHNyRlhBaUx6enhzTks4Wmc",
+    "issue_type": "fetch_error",
+    "stage": "fetch",
+    "error_code": "ROBOTS_BLOCKLIST_BYPASS",
+    "error_message": "blocked domain routed to fallback source",
+    "source_url": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE9GZi1ZbkdOOU8xRUxaNFRXUGZxZzZyVXBiZlVybDRfdXExVmZ0TU1UeXd3Y0l3em1IUWg1WG1GZk9QeTlTMEJDeThxSHNyRlhBaUx6enhzTks4Wmc",
+    "payload": {
+      "source_type": "google_rss"
+    },
+    "status": "pending",
+    "created_at": "2026-02-24T04:20:11.361690+00:00"
+  },
+  {
+    "id": "rvq_e2fae0b911507062",
+    "entity_type": "article",
+    "entity_id": "https://news.google.com/rss/articles/CBMiT0FVX3lxTE5KNmtGWWhpSG02enFETEZmdVotTVE1NFR1V3AyY2xFWWhHSGVYUElDaVBYbDBERWtYcDNObzd1dS1LdnR6bndqXy01WFpoZjg",
+    "issue_type": "fetch_error",
+    "stage": "fetch",
+    "error_code": "ROBOTS_BLOCKLIST_BYPASS",
+    "error_message": "blocked domain routed to fallback source",
+    "source_url": "https://news.google.com/rss/articles/CBMiT0FVX3lxTE5KNmtGWWhpSG02enFETEZmdVotTVE1NFR1V3AyY2xFWWhHSGVYUElDaVBYbDBERWtYcDNObzd1dS1LdnR6bndqXy01WFpoZjg",
+    "payload": {
+      "source_type": "google_rss"
+    },
+    "status": "pending",
+    "created_at": "2026-02-24T04:20:11.361716+00:00"
+  },
+  {
+    "id": "rvq_365019ee1e5a7433",
+    "entity_type": "article",
+    "entity_id": "https://news.google.com/rss/articles/CBMicEFVX3lxTE5MWHZSV0VZdUZjZ0UwUUY1dEZwR0l2cGFmTHc0SUVySmljWWs1M1o2RW9nRU1RcDItVVY2VkF3ZmNpM3hoTVVuYzlXdkdjX1ZPT1BXYm5iaF9yQjhNb3VIc0tIZzM0M2t1blFQUE5LU24",
+    "issue_type": "fetch_error",
+    "stage": "fetch",
+    "error_code": "ROBOTS_BLOCKLIST_BYPASS",
+    "error_message": "blocked domain routed to fallback source",
+    "source_url": "https://news.google.com/rss/articles/CBMicEFVX3lxTE5MWHZSV0VZdUZjZ0UwUUY1dEZwR0l2cGFmTHc0SUVySmljWWs1M1o2RW9nRU1RcDItVVY2VkF3ZmNpM3hoTVVuYzlXdkdjX1ZPT1BXYm5iaF9yQjhNb3VIc0tIZzM0M2t1blFQUE5LU24",
+    "payload": {
+      "source_type": "google_rss"
+    },
+    "status": "pending",
+    "created_at": "2026-02-24T04:20:11.361743+00:00"
+  },
+  {
+    "id": "rvq_a06aaf4e4d992746",
+    "entity_type": "article",
+    "entity_id": "https://news.google.com/rss/articles/CBMib0FVX3lxTFBWUUdTWUFmOGJCRVNpaHk2dHJHTTd1Qy14bXZEUGtQazM2S29SR2dkaVFHMTBXWVZ1NHRtb0JHcmY4U3JuZWFRV0JzWEhlODlRQWpBUkdSSTE1bzljMTZuM09US19reGpaUlNRMEJKVQ",
+    "issue_type": "fetch_error",
+    "stage": "fetch",
+    "error_code": "ROBOTS_BLOCKLIST_BYPASS",
+    "error_message": "blocked domain routed to fallback source",
+    "source_url": "https://news.google.com/rss/articles/CBMib0FVX3lxTFBWUUdTWUFmOGJCRVNpaHk2dHJHTTd1Qy14bXZEUGtQazM2S29SR2dkaVFHMTBXWVZ1NHRtb0JHcmY4U3JuZWFRV0JzWEhlODlRQWpBUkdSSTE1bzljMTZuM09US19reGpaUlNRMEJKVQ",
+    "payload": {
+      "source_type": "google_rss"
+    },
+    "status": "pending",
+    "created_at": "2026-02-24T04:20:11.361769+00:00"
+  },
+  {
+    "id": "rvq_80f3f8f515b98068",
+    "entity_type": "article",
+    "entity_id": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE9INHVMdDJ4M2FVV1R2U3BmUGNpQzdmZDRHS1Vld1RwTlF0eTNGMjRwcnRqMTY2cDFlSHBWaGxQYllGV3pyLUw2ME9JTXV5RElNOXJBZTQ3VHh2X0FYdTZoWQ",
+    "issue_type": "fetch_error",
+    "stage": "fetch",
+    "error_code": "ROBOTS_BLOCKLIST_BYPASS",
+    "error_message": "blocked domain routed to fallback source",
+    "source_url": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE9INHVMdDJ4M2FVV1R2U3BmUGNpQzdmZDRHS1Vld1RwTlF0eTNGMjRwcnRqMTY2cDFlSHBWaGxQYllGV3pyLUw2ME9JTXV5RElNOXJBZTQ3VHh2X0FYdTZoWQ",
+    "payload": {
+      "source_type": "google_rss"
+    },
+    "status": "pending",
+    "created_at": "2026-02-24T04:20:11.361794+00:00"
+  },
+  {
+    "id": "rvq_10e6e2a7cbee017b",
+    "entity_type": "poll_observation",
+    "entity_id": "obs_3923340f5af55d45",
+    "issue_type": "extract_error",
+    "stage": "live_news_v1_legal",
+    "error_code": "LEGAL_COMPLETENESS_BELOW_THRESHOLD",
+    "error_message": "live news legal completeness below threshold",
+    "source_url": "https://www.khan.co.kr/article/202602231023001/",
+    "payload": {
+      "threshold": 0.8,
+      "completeness_score": 0.3333,
+      "missing_fields": [
+        "sponsor",
+        "sample_size",
+        "response_rate",
+        "margin_of_error"
+      ]
+    },
+    "status": "pending",
+    "created_at": "2026-02-24T04:20:11.479828+00:00"
+  },
+  {
+    "id": "rvq_9a3823eefddd568b",
+    "entity_type": "poll_observation",
+    "entity_id": "obs_1a9d3bc2062fbfd4",
+    "issue_type": "extract_error",
+    "stage": "live_news_v1_legal",
+    "error_code": "LEGAL_COMPLETENESS_BELOW_THRESHOLD",
+    "error_message": "live news legal completeness below threshold",
+    "source_url": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE9HamZYd25pRGI3UmxSZGpRRHFHaDF0dDJ2RHJyNG5qaE9ybWFDb0F5OUQ2Mk5EVDU1bk9mZWpEUk84MXk1LU9DT3Rhdm92MTBJbjBOME4zYlVDd9IBX0FVX3lxTE5fd1ZmcUxyQ21BWWRBTnhjUWRfMVkzVnNjamFvbXY3bktLekpjNDNFam5rckZlVHQwQ2xKMlRFSTFvRDZIV2JYY3plTkhVeEd3eEE0MGdISmFuZ0JDNE84",
+    "payload": {
+      "threshold": 0.8,
+      "completeness_score": 0.1667,
+      "missing_fields": [
+        "sponsor",
+        "survey_period",
+        "sample_size",
+        "response_rate",
+        "margin_of_error"
+      ]
+    },
+    "status": "pending",
+    "created_at": "2026-02-24T04:20:11.479976+00:00"
+  },
+  {
+    "id": "rvq_d77e6a58973edd8e",
+    "entity_type": "poll_observation",
+    "entity_id": "obs_1b476b3c9acf3ed0",
+    "issue_type": "extract_error",
+    "stage": "live_news_v1_legal",
+    "error_code": "LEGAL_COMPLETENESS_BELOW_THRESHOLD",
+    "error_message": "live news legal completeness below threshold",
+    "source_url": "https://news.google.com/rss/articles/CBMib0FVX3lxTFBJc3BDSGVxWFV6cXZaUXBjdy1ZX3JSODJpbXVlNnhTcFpNZEFITmV6MkFEUHlDZEw4cUtYVGZhVVpUWEN6amVNQ29YMFdjclh0Xy1seV9pbmlIV01mWlduZTE1T08yZ1V1dkExSHRUMA",
+    "payload": {
+      "threshold": 0.8,
+      "completeness_score": 0.1667,
+      "missing_fields": [
+        "sponsor",
+        "survey_period",
+        "sample_size",
+        "response_rate",
+        "margin_of_error"
+      ]
+    },
+    "status": "pending",
+    "created_at": "2026-02-24T04:20:11.480074+00:00"
+  },
+  {
+    "id": "rvq_81524222f5d98bd4",
+    "entity_type": "poll_observation",
+    "entity_id": "obs_259e580fdbc42986",
+    "issue_type": "extract_error",
+    "stage": "live_news_v1_legal",
+    "error_code": "LEGAL_COMPLETENESS_BELOW_THRESHOLD",
+    "error_message": "live news legal completeness below threshold",
+    "source_url": "https://news.google.com/rss/articles/CBMicEFVX3lxTE5QYU9aVVd5UEt6SHFZcm9TVERHOTBqRE5YbHlpOXR1VTUzcWtNcGR2V1Jhai1fLXk3bUJyWC1lbEw0VUNxcFR0eklxclVHWENudzlZZWtkZEpUTkxvaDE0d0lScV9DYXZ2dFhzbEJlQ3Y",
+    "payload": {
+      "threshold": 0.8,
+      "completeness_score": 0.1667,
+      "missing_fields": [
+        "sponsor",
+        "survey_period",
+        "sample_size",
+        "response_rate",
+        "margin_of_error"
+      ]
+    },
+    "status": "pending",
+    "created_at": "2026-02-24T04:20:11.480184+00:00"
+  },
+  {
+    "id": "rvq_dbecab8fa501aa3d",
+    "entity_type": "poll_observation",
+    "entity_id": "obs_7f29a3027242a383",
+    "issue_type": "extract_error",
+    "stage": "live_news_v1_legal",
+    "error_code": "LEGAL_COMPLETENESS_BELOW_THRESHOLD",
+    "error_message": "live news legal completeness below threshold",
+    "source_url": "https://news.google.com/rss/articles/CBMimwFBVV95cUxPMjFRclBzZnhwdWlFY1l1QU1aRHNzem5UM0kzSW9LQjVldFNHeGg5ajlkZ1MycDYzek5RbWFTLVl5RjFlTlBLSzV4LXR1M1VmdTR3akpvTEp0SkFaR3h3Q0lIdEhDR0VkOFNJRWZEYXYtNEJGcHhuTEJOTG5zSEItZG04UWNUM2JsZUJsLUJnNXZYZExjSjRfQk0wQQ",
+    "payload": {
+      "threshold": 0.8,
+      "completeness_score": 0.1667,
+      "missing_fields": [
+        "sponsor",
+        "survey_period",
+        "sample_size",
+        "response_rate",
+        "margin_of_error"
+      ]
+    },
+    "status": "pending",
+    "created_at": "2026-02-24T04:20:11.480310+00:00"
+  },
+  {
+    "id": "rvq_0d64d1642de46c89",
+    "entity_type": "poll_observation",
+    "entity_id": "obs_c98ca4f5973f8d49",
+    "issue_type": "extract_error",
+    "stage": "live_news_v1_legal",
+    "error_code": "LEGAL_COMPLETENESS_BELOW_THRESHOLD",
+    "error_message": "live news legal completeness below threshold",
+    "source_url": "https://news.google.com/rss/articles/CBMieEFVX3lxTE5tTW9iQy1QNXd2ZUU2OE5kZmZWMWlkem9tRDRMZXpVcVRVNXgxSGVicUxKdVBXX2QxeW5NYVBCQUp3NmdVRXF0c3VYZ19DT0F2UGtWVTZSYjdHa0J0SFFCOGM3N3lEM0JQMDJpZU5ybnBnY0ZRV2YwWdIBeEFVX3lxTFBXWWNrY1FkOUNlcWd3Z3hNZ1dkQ3JnbmNKcDFKVUpUN1k3SWt5UThzUVYxaDNMVkRzeDhTZV8yU2VTVHhlNVdFbllQVEl0QXZVYVVTOG85aDNMc0EzVVV4Nk1qZ1lUNVE0eTRIcS1FbTVrbk43RDc1Nw",
+    "payload": {
+      "threshold": 0.8,
+      "completeness_score": 0.1667,
+      "missing_fields": [
+        "sponsor",
+        "survey_period",
+        "sample_size",
+        "response_rate",
+        "margin_of_error"
+      ]
+    },
+    "status": "pending",
+    "created_at": "2026-02-24T04:20:11.480411+00:00"
+  },
+  {
+    "id": "rvq_1409387309402a39",
+    "entity_type": "poll_observation",
+    "entity_id": "obs_f5aefbfbb344c0d1",
+    "issue_type": "extract_error",
+    "stage": "live_news_v1_legal",
+    "error_code": "LEGAL_COMPLETENESS_BELOW_THRESHOLD",
+    "error_message": "live news legal completeness below threshold",
+    "source_url": "https://news.google.com/rss/articles/CBMiVkFVX3lxTE5mZnp1cU5sXzNkMk52b1Y4bWpsaXhoZUswNEVsaDN4RERfV2RyTFdOY1hackVlbWFwWlBRaFFITkZOeDRiWFo2Sll4UWNaTEt1aFJoYzh30gGGAkFVX3lxTE16ZVBkOUM3T2hYWm5LOEhjNDlFRXNfbWpqbUhqQjBBdlJocTg3dnJXb3VvZ0FTR2lkbjFGMHRPZlBuTVo0Q2w0M3NZVmhZTjdzLWlzdkFKb1RJVmNkMUpFX1lsMDZOa2Z4MmQwTUlxVm1EdGJxUTUxR2hmeUNnU0JBN1h0OXllZXFpZlo4Ry03U3hMN3ZDbExRUklHcUE4cHV6R2hBODdkYnJWd1VYMWEwaGRUcFNnLXNLa3BRd1p5TERzTHVfNkNhQjV1bzFWLTBpcmYzM0RZMnZrQ1M3dzVTNEVicFFxbHB0UFJYQTFTUzNicXNfNEFoaGk2SHFtdXU0b3RTVXc",
+    "payload": {
+      "threshold": 0.8,
+      "completeness_score": 0.1667,
+      "missing_fields": [
+        "sponsor",
+        "survey_period",
+        "sample_size",
+        "response_rate",
+        "margin_of_error"
+      ]
+    },
+    "status": "pending",
+    "created_at": "2026-02-24T04:20:11.480518+00:00"
+  },
+  {
+    "id": "rvq_c4027deeb264c4a6",
+    "entity_type": "poll_observation",
+    "entity_id": "obs_136dffa93edf3413",
+    "issue_type": "extract_error",
+    "stage": "live_news_v1_legal",
+    "error_code": "LEGAL_COMPLETENESS_BELOW_THRESHOLD",
+    "error_message": "live news legal completeness below threshold",
+    "source_url": "https://news.google.com/rss/articles/CBMidEFVX3lxTE0tR240RHM3eWhpWHhBUmFDZzl1eUFIRjJZN0JGU185MXBaanpESmxwTUREYThKU3h6anpJRklRelduaHR1UjBLSFhlbDhoNkhJN284eS1RS2lmTm5wUTZXWXZLNFBNWm1vOW03YS1wTmdaRjB5",
+    "payload": {
+      "threshold": 0.8,
+      "completeness_score": 0.1667,
+      "missing_fields": [
+        "sponsor",
+        "survey_period",
+        "sample_size",
+        "response_rate",
+        "margin_of_error"
+      ]
+    },
+    "status": "pending",
+    "created_at": "2026-02-24T04:20:11.480639+00:00"
+  },
+  {
+    "id": "rvq_3e75b4c837881363",
+    "entity_type": "poll_observation",
+    "entity_id": "obs_444bed2fb448053a",
+    "issue_type": "extract_error",
+    "stage": "live_news_v1_legal",
+    "error_code": "LEGAL_COMPLETENESS_BELOW_THRESHOLD",
+    "error_message": "live news legal completeness below threshold",
+    "source_url": "https://news.google.com/rss/articles/CBMiT0FVX3lxTE1TR0RwR3pLa1lTTXY0XzFmaF81SFA3NXhhcHNLWWhTczVrQUtJcDJtOUxaNGxYdnNueXRBU19VSTAzVGpselZMTXVHWUJfYTg",
+    "payload": {
+      "threshold": 0.8,
+      "completeness_score": 0.1667,
+      "missing_fields": [
+        "sponsor",
+        "survey_period",
+        "sample_size",
+        "response_rate",
+        "margin_of_error"
+      ]
+    },
+    "status": "pending",
+    "created_at": "2026-02-24T04:20:11.480794+00:00"
+  },
+  {
+    "id": "rvq_6b8d4f74bbfd3e83",
+    "entity_type": "poll_observation",
+    "entity_id": "obs_82f9da3ac3360057",
+    "issue_type": "extract_error",
+    "stage": "live_news_v1_legal",
+    "error_code": "LEGAL_COMPLETENESS_BELOW_THRESHOLD",
+    "error_message": "live news legal completeness below threshold",
+    "source_url": "https://news.google.com/rss/articles/CBMieEFVX3lxTE5YR2RWdVVLempqS2xCZU9WR083VHZWcEFjRnpqUUJpbWd3YjVINFBsNlU2UVRyNHU0UEg0YnBIRl9MLTkwaldWaDVPeE1XVnVKVWdGNlFXNTR5UFlfakR6bXZ4V0hTcVBrNU9oaEpPdWJjY2tpa1I4UQ",
+    "payload": {
+      "threshold": 0.8,
+      "completeness_score": 0.1667,
+      "missing_fields": [
+        "sponsor",
+        "survey_period",
+        "sample_size",
+        "response_rate",
+        "margin_of_error"
+      ]
+    },
+    "status": "pending",
+    "created_at": "2026-02-24T04:20:11.480900+00:00"
+  },
+  {
+    "id": "rvq_89c768962e95da7b",
+    "entity_type": "poll_observation",
+    "entity_id": "obs_6348089eeaf5b9f8",
+    "issue_type": "extract_error",
+    "stage": "extract",
+    "error_code": "NO_TITLE_CANDIDATE_SIGNAL",
+    "error_message": "no candidate/value pair extracted",
+    "source_url": "https://news.google.com/rss/articles/CBMiUkFVX3lxTE1lS3hWUFprb0RROTRHT1FzUHo5QmpBOGdLU3RvNnQxQlJjYVBMakk3NmdXaUZpY19aWXY4U1dxMHhjQVlJanB1UHY1QURTVHRWNHc",
+    "payload": {
+      "article_id": "art-fallback_7c6ab91d35687cc8"
+    },
+    "status": "pending",
+    "created_at": "2026-02-24T04:20:11.481007+00:00"
+  },
+  {
+    "id": "rvq_c9120536b2221ae5",
+    "entity_type": "poll_observation",
+    "entity_id": "obs_6348089eeaf5b9f8",
+    "issue_type": "extract_error",
+    "stage": "live_news_v1_legal",
+    "error_code": "LEGAL_COMPLETENESS_BELOW_THRESHOLD",
+    "error_message": "live news legal completeness below threshold",
+    "source_url": "https://news.google.com/rss/articles/CBMiUkFVX3lxTE1lS3hWUFprb0RROTRHT1FzUHo5QmpBOGdLU3RvNnQxQlJjYVBMakk3NmdXaUZpY19aWXY4U1dxMHhjQVlJanB1UHY1QURTVHRWNHc",
+    "payload": {
+      "threshold": 0.8,
+      "completeness_score": 0.1667,
+      "missing_fields": [
+        "sponsor",
+        "survey_period",
+        "sample_size",
+        "response_rate",
+        "margin_of_error"
+      ]
+    },
+    "status": "pending",
+    "created_at": "2026-02-24T04:20:11.481023+00:00"
+  },
+  {
+    "id": "rvq_c58edcfd1a8b21a3",
+    "entity_type": "poll_observation",
+    "entity_id": "obs_85c4e876cf8b2a2a",
+    "issue_type": "extract_error",
+    "stage": "live_news_v1_legal",
+    "error_code": "LEGAL_COMPLETENESS_BELOW_THRESHOLD",
+    "error_message": "live news legal completeness below threshold",
+    "source_url": "https://news.google.com/rss/articles/CBMiUkFVX3lxTFBxZHRodk44MXJxVnVlSFRnUkxoQi0yR0tUSmRFdE80LVFmazhtdmdHcjhQQmlXNG92bEZySVpGVG5LaGZNQ2JxUEdTN20zbVhpb3c",
+    "payload": {
+      "threshold": 0.8,
+      "completeness_score": 0.1667,
+      "missing_fields": [
+        "sponsor",
+        "survey_period",
+        "sample_size",
+        "response_rate",
+        "margin_of_error"
+      ]
+    },
+    "status": "pending",
+    "created_at": "2026-02-24T04:20:11.481145+00:00"
+  },
+  {
+    "id": "rvq_9cde3446264df838",
+    "entity_type": "poll_observation",
+    "entity_id": "obs_297e45acd1bc8bec",
+    "issue_type": "extract_error",
+    "stage": "live_news_v1_legal",
+    "error_code": "LEGAL_COMPLETENESS_BELOW_THRESHOLD",
+    "error_message": "live news legal completeness below threshold",
+    "source_url": "https://news.google.com/rss/articles/CBMiUkFVX3lxTE8zQ29Gc1hUUnRvSXNrdjBsbW1VSERKTVJLa3NPZHFETnkyLUVnMHYwVm9OMFMzVUJBeTBtN192eTZXUThkM1U0RkE5Yk1PUk0yNmc",
+    "payload": {
+      "threshold": 0.8,
+      "completeness_score": 0.1667,
+      "missing_fields": [
+        "sponsor",
+        "survey_period",
+        "sample_size",
+        "response_rate",
+        "margin_of_error"
+      ]
+    },
+    "status": "pending",
+    "created_at": "2026-02-24T04:20:11.481238+00:00"
+  },
+  {
+    "id": "rvq_6670acb1290f5fbc",
+    "entity_type": "poll_observation",
+    "entity_id": "obs_ff78dcd3a82e1ee0",
+    "issue_type": "extract_error",
+    "stage": "live_news_v1_legal",
+    "error_code": "LEGAL_COMPLETENESS_BELOW_THRESHOLD",
+    "error_message": "live news legal completeness below threshold",
+    "source_url": "https://news.google.com/rss/articles/CBMicEFVX3lxTE9TYVNqLXN0aW1lemlIME05b25KX09HNFYydlg1Zk9iaUgyZ2kwcG12b0tTVHRtSEZNVTBoRm1xYS1zMlVCQzZaSnVYZjJlWjNZSkI2cUZlUVZ4TlY1M1BJUUFLd09UV2hiV0taaERtbi0",
+    "payload": {
+      "threshold": 0.8,
+      "completeness_score": 0.1667,
+      "missing_fields": [
+        "sponsor",
+        "survey_period",
+        "sample_size",
+        "response_rate",
+        "margin_of_error"
+      ]
+    },
+    "status": "pending",
+    "created_at": "2026-02-24T04:20:11.481328+00:00"
+  },
+  {
+    "id": "rvq_f267874fe8d5138f",
+    "entity_type": "poll_observation",
+    "entity_id": "obs_0f585774f2b41565",
+    "issue_type": "extract_error",
+    "stage": "live_news_v1_legal",
+    "error_code": "LEGAL_COMPLETENESS_BELOW_THRESHOLD",
+    "error_message": "live news legal completeness below threshold",
+    "source_url": "https://news.google.com/rss/articles/CBMiVEFVX3lxTE5rS0JxZXRJT3piMlN2VW5tWnpDVmtZNmFGRDJUZ0dnb0k2NjFsWTRVZkY4NDNHb0pSendnS0FqVUhpMG9JRkhwYUo5Nk92SnZSQWNacw",
+    "payload": {
+      "threshold": 0.8,
+      "completeness_score": 0.1667,
+      "missing_fields": [
+        "sponsor",
+        "survey_period",
+        "sample_size",
+        "response_rate",
+        "margin_of_error"
+      ]
+    },
+    "status": "pending",
+    "created_at": "2026-02-24T04:20:11.481419+00:00"
+  },
+  {
+    "id": "rvq_0c714ab9e979a0ae",
+    "entity_type": "poll_observation",
+    "entity_id": "obs_0cc203a71a596743",
+    "issue_type": "extract_error",
+    "stage": "live_news_v1_legal",
+    "error_code": "LEGAL_COMPLETENESS_BELOW_THRESHOLD",
+    "error_message": "live news legal completeness below threshold",
+    "source_url": "https://news.google.com/rss/articles/CBMib0FVX3lxTFBVb1NSZjJ1enV6eDFDLWppUzM4eGlsc2RKRDVxY0pfSmxOUTBLcE1MbGZ0VGdqcVhUMVhHZTBzWk5xanF6Znl4Ym9icFMtX0xweWhsdTlVSzNURjVGUXdsQ1AzTC0xdXJDZDBjaG5TMA",
+    "payload": {
+      "threshold": 0.8,
+      "completeness_score": 0.1667,
+      "missing_fields": [
+        "sponsor",
+        "survey_period",
+        "sample_size",
+        "response_rate",
+        "margin_of_error"
+      ]
+    },
+    "status": "pending",
+    "created_at": "2026-02-24T04:20:11.481492+00:00"
+  },
+  {
+    "id": "rvq_096ebd378f5a8034",
+    "entity_type": "poll_observation",
+    "entity_id": "obs_57d26088f1d9972c",
+    "issue_type": "extract_error",
+    "stage": "live_news_v1_legal",
+    "error_code": "LEGAL_COMPLETENESS_BELOW_THRESHOLD",
+    "error_message": "live news legal completeness below threshold",
+    "source_url": "https://news.google.com/rss/articles/CBMiZ0FVX3lxTE9VTlluWEJ1dFcydUhIa2M4YlhNSVloa1JmNkdtRHVEbGgxQzl5THhmaEY5Vlk3WTFIQTRUYmdVZjQ1SjRHRGF3YnA0MlFQQVB1UE1MY3lBdlVZM3IyS3FyMGhaelNaWFk",
+    "payload": {
+      "threshold": 0.8,
+      "completeness_score": 0.1667,
+      "missing_fields": [
+        "sponsor",
+        "survey_period",
+        "sample_size",
+        "response_rate",
+        "margin_of_error"
+      ]
+    },
+    "status": "pending",
+    "created_at": "2026-02-24T04:20:11.481593+00:00"
+  },
+  {
+    "id": "rvq_6eade1c937005c45",
+    "entity_type": "poll_observation",
+    "entity_id": "obs_a12b7fcd9b903160",
+    "issue_type": "extract_error",
+    "stage": "live_news_v1_legal",
+    "error_code": "LEGAL_COMPLETENESS_BELOW_THRESHOLD",
+    "error_message": "live news legal completeness below threshold",
+    "source_url": "https://news.google.com/rss/articles/CBMiT0FVX3lxTE1hbjFpMFNxZGdfSnNlZ1NmTmdyVkpqbUJOMC1YQmp4cV9HWWRVOWZ4VzBTdEVsamdhN21JalI3NWY3eWdTTE5xS0FjT3drQTQ",
+    "payload": {
+      "threshold": 0.8,
+      "completeness_score": 0.1667,
+      "missing_fields": [
+        "sponsor",
+        "survey_period",
+        "sample_size",
+        "response_rate",
+        "margin_of_error"
+      ]
+    },
+    "status": "pending",
+    "created_at": "2026-02-24T04:20:11.481686+00:00"
+  },
+  {
+    "id": "rvq_448717841b7b4434",
+    "entity_type": "poll_observation",
+    "entity_id": "obs_3937ad1c6457214f",
+    "issue_type": "extract_error",
+    "stage": "live_news_v1_legal",
+    "error_code": "LEGAL_COMPLETENESS_BELOW_THRESHOLD",
+    "error_message": "live news legal completeness below threshold",
+    "source_url": "https://news.google.com/rss/articles/CBMicEFVX3lxTE5SVTdnNi1DU3hFdmF1S3ZjbHdidU9tOVktNE1TZ095c2hMdmMxODNHckNxd0ZSQjVtYUZHeVg0TExGUU1jUUotdTFRUUJRZldLb1BSeTFueGhSM1p2WURuZnBUa3JHLVh3Q3FCcXJhdnM",
+    "payload": {
+      "threshold": 0.8,
+      "completeness_score": 0.1667,
+      "missing_fields": [
+        "sponsor",
+        "survey_period",
+        "sample_size",
+        "response_rate",
+        "margin_of_error"
+      ]
+    },
+    "status": "pending",
+    "created_at": "2026-02-24T04:20:11.481777+00:00"
+  },
+  {
+    "id": "rvq_4557b85231a02ecf",
+    "entity_type": "poll_observation",
+    "entity_id": "obs_056d1438fa2bc3ff",
+    "issue_type": "extract_error",
+    "stage": "extract",
+    "error_code": "POLICY_ONLY_SIGNAL",
+    "error_message": "no candidate/value pair extracted",
+    "source_url": "https://news.google.com/rss/articles/CBMiVEFVX3lxTE94Y2dsVWhMMENURWtmMmNOaGFpWUZBdG1GY3lzYlY3enFsOUthWkFkT0hrb1JnN09iMW5rUzliWFJQU1hXaHllQ1NwY0lSVkFnb1p5TQ",
+    "payload": {
+      "article_id": "art-fallback_1b0ee5af389f3ba8"
+    },
+    "status": "pending",
+    "created_at": "2026-02-24T04:20:11.481911+00:00"
+  },
+  {
+    "id": "rvq_d7df5f25dda5c1b6",
+    "entity_type": "poll_observation",
+    "entity_id": "obs_056d1438fa2bc3ff",
+    "issue_type": "extract_error",
+    "stage": "live_news_v1_legal",
+    "error_code": "LEGAL_COMPLETENESS_BELOW_THRESHOLD",
+    "error_message": "live news legal completeness below threshold",
+    "source_url": "https://news.google.com/rss/articles/CBMiVEFVX3lxTE94Y2dsVWhMMENURWtmMmNOaGFpWUZBdG1GY3lzYlY3enFsOUthWkFkT0hrb1JnN09iMW5rUzliWFJQU1hXaHllQ1NwY0lSVkFnb1p5TQ",
+    "payload": {
+      "threshold": 0.8,
+      "completeness_score": 0.1667,
+      "missing_fields": [
+        "sponsor",
+        "survey_period",
+        "sample_size",
+        "response_rate",
+        "margin_of_error"
+      ]
+    },
+    "status": "pending",
+    "created_at": "2026-02-24T04:20:11.481927+00:00"
+  },
+  {
+    "id": "rvq_0ddab41f508d736b",
+    "entity_type": "poll_observation",
+    "entity_id": "obs_debd6bb9da6779e7",
+    "issue_type": "extract_error",
+    "stage": "live_news_v1_legal",
+    "error_code": "LEGAL_COMPLETENESS_BELOW_THRESHOLD",
+    "error_message": "live news legal completeness below threshold",
+    "source_url": "https://news.google.com/rss/articles/CBMiWkFVX3lxTFB2YUZpOFMxY2JtNEIwQi1GSTMwd0hkT1pzcDM3WWlKWnB6dE1vRDhDZzB2RVZfQjRQemJ6WkdrSDlIdXNmNm5hSnB0cjdKTEEtOE9JNjdtc3lJdw",
+    "payload": {
+      "threshold": 0.8,
+      "completeness_score": 0.1667,
+      "missing_fields": [
+        "sponsor",
+        "survey_period",
+        "sample_size",
+        "response_rate",
+        "margin_of_error"
+      ]
+    },
+    "status": "pending",
+    "created_at": "2026-02-24T04:20:11.482004+00:00"
+  },
+  {
+    "id": "rvq_7fef4bdc56957b93",
+    "entity_type": "poll_observation",
+    "entity_id": "obs_5ab631e8fc7413b4",
+    "issue_type": "extract_error",
+    "stage": "extract",
+    "error_code": "POLICY_ONLY_SIGNAL",
+    "error_message": "no candidate/value pair extracted",
+    "source_url": "https://news.google.com/rss/articles/CBMibkFVX3lxTE5VZ1UzR1k0dzJRRGgxdDl4QkR3bzBEUjFpc0hSc1Z5ZFFQWnU0VGg0NHJBeFFJLUE3RHhycFVjaUc2Q0RmQ3lNUkU2cU1lT3d0RlQxNGZuWjhFUVZvYUtWa0JSWE8xbkoxczc3VHFB0gFyQVVfeXFMTVYtemZ5RlluSnhqRklvaEZBdm0zMFh3MlBhN2NYYVFWM1F1MUpBajhsMFZZdHdfZGE1WVJMUHZRdUQ3SEVfWW1JYTJqbXBKN1Vnd1VET016bV9EX0lwZEpmeXFLTUp2b3BZaU9qOUxyTkFR",
+    "payload": {
+      "article_id": "art-fallback_94ab95000f9ab683"
+    },
+    "status": "pending",
+    "created_at": "2026-02-24T04:20:11.482135+00:00"
+  },
+  {
+    "id": "rvq_abca051beb10bbb9",
+    "entity_type": "poll_observation",
+    "entity_id": "obs_5ab631e8fc7413b4",
+    "issue_type": "extract_error",
+    "stage": "live_news_v1_legal",
+    "error_code": "LEGAL_COMPLETENESS_BELOW_THRESHOLD",
+    "error_message": "live news legal completeness below threshold",
+    "source_url": "https://news.google.com/rss/articles/CBMibkFVX3lxTE5VZ1UzR1k0dzJRRGgxdDl4QkR3bzBEUjFpc0hSc1Z5ZFFQWnU0VGg0NHJBeFFJLUE3RHhycFVjaUc2Q0RmQ3lNUkU2cU1lT3d0RlQxNGZuWjhFUVZvYUtWa0JSWE8xbkoxczc3VHFB0gFyQVVfeXFMTVYtemZ5RlluSnhqRklvaEZBdm0zMFh3MlBhN2NYYVFWM1F1MUpBajhsMFZZdHdfZGE1WVJMUHZRdUQ3SEVfWW1JYTJqbXBKN1Vnd1VET016bV9EX0lwZEpmeXFLTUp2b3BZaU9qOUxyTkFR",
+    "payload": {
+      "threshold": 0.8,
+      "completeness_score": 0.1667,
+      "missing_fields": [
+        "sponsor",
+        "survey_period",
+        "sample_size",
+        "response_rate",
+        "margin_of_error"
+      ]
+    },
+    "status": "pending",
+    "created_at": "2026-02-24T04:20:11.482150+00:00"
+  },
+  {
+    "id": "rvq_c31d8e2e2a406f03",
+    "entity_type": "poll_observation",
+    "entity_id": "obs_bf18847149fb4b56",
+    "issue_type": "extract_error",
+    "stage": "live_news_v1_legal",
+    "error_code": "LEGAL_COMPLETENESS_BELOW_THRESHOLD",
+    "error_message": "live news legal completeness below threshold",
+    "source_url": "https://news.google.com/rss/articles/CBMiT0FVX3lxTE9nVmxoSnkzMUNfX1V5YTZyYktkSm5WUEk0ZGVyOEZxc3Y2cVF4cko5NjdsUklaLUpROGVRUGh4NFVzY2s0T3JWcjI1ZXgzNVE",
+    "payload": {
+      "threshold": 0.8,
+      "completeness_score": 0.1667,
+      "missing_fields": [
+        "sponsor",
+        "survey_period",
+        "sample_size",
+        "response_rate",
+        "margin_of_error"
+      ]
+    },
+    "status": "pending",
+    "created_at": "2026-02-24T04:20:11.482283+00:00"
+  },
+  {
+    "id": "rvq_8d2f01b9d0e4d879",
+    "entity_type": "poll_observation",
+    "entity_id": "obs_09aef8cf8f7252e5",
+    "issue_type": "extract_error",
+    "stage": "live_news_v1_legal",
+    "error_code": "LEGAL_COMPLETENESS_BELOW_THRESHOLD",
+    "error_message": "live news legal completeness below threshold",
+    "source_url": "https://news.google.com/rss/articles/CBMiT0FVX3lxTE54TGg4cF9nTG9rU3M2X0FGWGVKMllQRGMtUmNUNzJTREJCYUxRdFo0ZVBtTEgxc2ZiYnJiWG1yLWM5UXBDZHJFZld2OTl6a1E",
+    "payload": {
+      "threshold": 0.8,
+      "completeness_score": 0.1667,
+      "missing_fields": [
+        "sponsor",
+        "survey_period",
+        "sample_size",
+        "response_rate",
+        "margin_of_error"
+      ]
+    },
+    "status": "pending",
+    "created_at": "2026-02-24T04:20:11.482421+00:00"
+  },
+  {
+    "id": "rvq_63ac4cfb78b08a0f",
+    "entity_type": "poll_observation",
+    "entity_id": "obs_3ac1b89163285638",
+    "issue_type": "extract_error",
+    "stage": "live_news_v1_legal",
+    "error_code": "LEGAL_COMPLETENESS_BELOW_THRESHOLD",
+    "error_message": "live news legal completeness below threshold",
+    "source_url": "https://news.google.com/rss/articles/CBMiT0FVX3lxTE9Nc1VkNEhQaDhxVkpJZ1ZfWHl0SXhJeG1DSHZHRnM0bmlZbV9na3hrS2t1V3BBeElBcFYzOEhHTWFLUklNcVU1V3RIdVVVZmM",
+    "payload": {
+      "threshold": 0.8,
+      "completeness_score": 0.1667,
+      "missing_fields": [
+        "sponsor",
+        "survey_period",
+        "sample_size",
+        "response_rate",
+        "margin_of_error"
+      ]
+    },
+    "status": "pending",
+    "created_at": "2026-02-24T04:20:11.482537+00:00"
+  },
+  {
+    "id": "rvq_d0546b3e65ac99d6",
+    "entity_type": "poll_observation",
+    "entity_id": "obs_f319176068c072a1",
+    "issue_type": "extract_error",
+    "stage": "live_news_v1_legal",
+    "error_code": "LEGAL_COMPLETENESS_BELOW_THRESHOLD",
+    "error_message": "live news legal completeness below threshold",
+    "source_url": "https://news.google.com/rss/articles/CBMia0FVX3lxTE8tUG1uOHA3ZWJCRy1iMVo0REtRemFjLS1BYWdPVmN3emZxSzFJd2x3NTNsdWF3Z0w3THJjdWQ5dDdRb0xiODlPendYRjlRMkc3ejVHN1FGd2hfWUJ0V2tqLU5aMnFsalFxUE1v",
+    "payload": {
+      "threshold": 0.8,
+      "completeness_score": 0.1667,
+      "missing_fields": [
+        "sponsor",
+        "survey_period",
+        "sample_size",
+        "response_rate",
+        "margin_of_error"
+      ]
+    },
+    "status": "pending",
+    "created_at": "2026-02-24T04:20:11.482636+00:00"
+  },
+  {
+    "id": "rvq_fa8ea5af1ce9e1b5",
+    "entity_type": "poll_observation",
+    "entity_id": "obs_906321b1cfa7df2a",
+    "issue_type": "extract_error",
+    "stage": "live_news_v1_legal",
+    "error_code": "LEGAL_COMPLETENESS_BELOW_THRESHOLD",
+    "error_message": "live news legal completeness below threshold",
+    "source_url": "https://www.newsis.com/view/NISX20260224_0003523855",
+    "payload": {
+      "threshold": 0.8,
+      "completeness_score": 0.3333,
+      "missing_fields": [
+        "sponsor",
+        "sample_size",
+        "response_rate",
+        "margin_of_error"
+      ]
+    },
+    "status": "pending",
+    "created_at": "2026-02-24T04:20:11.485264+00:00"
+  },
+  {
+    "id": "rvq_fbc9ab00e92190c5",
+    "entity_type": "poll_observation",
+    "entity_id": "obs_c5fd83f12d656982",
+    "issue_type": "extract_error",
+    "stage": "extract",
+    "error_code": "NO_TITLE_CANDIDATE_SIGNAL",
+    "error_message": "no candidate/value pair extracted",
+    "source_url": "https://news.google.com/rss/articles/CBMid0FVX3lxTE90WTBqQ1BTb1dLYm90TUhacW82V2NxZGNMY1VNRGJmdHZ1MWFfOU0xX2I1LXFUUlZuWlNQWXFWRWl4UXBiVTBJYkNJZjRRUXF5TVpvZkJBaVhmU0lDVWtGalp5aDAxUGhKUGZJaTRRVGxzbXNtWkdR0gFmQVVfeXFMT01DbmstNW4zeEU5Tm9CMnpjeElNdUFRa1JYQmdpaGJGQWJLT2NMMndBYTdxV0VNYmhNa2Fyb0t2a0ZtelV0THlidk9GaEpNNV9lZ1JPLTNTaF9iVmxRQnhGTkItbFln",
+    "payload": {
+      "article_id": "art-fallback_8b6c859ad67480dd"
+    },
+    "status": "pending",
+    "created_at": "2026-02-24T04:20:11.485349+00:00"
+  },
+  {
+    "id": "rvq_699aec0984f2ee4d",
+    "entity_type": "poll_observation",
+    "entity_id": "obs_c5fd83f12d656982",
+    "issue_type": "extract_error",
+    "stage": "live_news_v1_legal",
+    "error_code": "LEGAL_COMPLETENESS_BELOW_THRESHOLD",
+    "error_message": "live news legal completeness below threshold",
+    "source_url": "https://news.google.com/rss/articles/CBMid0FVX3lxTE90WTBqQ1BTb1dLYm90TUhacW82V2NxZGNMY1VNRGJmdHZ1MWFfOU0xX2I1LXFUUlZuWlNQWXFWRWl4UXBiVTBJYkNJZjRRUXF5TVpvZkJBaVhmU0lDVWtGalp5aDAxUGhKUGZJaTRRVGxzbXNtWkdR0gFmQVVfeXFMT01DbmstNW4zeEU5Tm9CMnpjeElNdUFRa1JYQmdpaGJGQWJLT2NMMndBYTdxV0VNYmhNa2Fyb0t2a0ZtelV0THlidk9GaEpNNV9lZ1JPLTNTaF9iVmxRQnhGTkItbFln",
+    "payload": {
+      "threshold": 0.8,
+      "completeness_score": 0.1667,
+      "missing_fields": [
+        "sponsor",
+        "survey_period",
+        "sample_size",
+        "response_rate",
+        "margin_of_error"
+      ]
+    },
+    "status": "pending",
+    "created_at": "2026-02-24T04:20:11.485364+00:00"
+  },
+  {
+    "id": "rvq_979f3c5dfcfc82d1",
+    "entity_type": "poll_observation",
+    "entity_id": "obs_d8cd4d8f6a0f22b8",
+    "issue_type": "extract_error",
+    "stage": "live_news_v1_legal",
+    "error_code": "LEGAL_COMPLETENESS_BELOW_THRESHOLD",
+    "error_message": "live news legal completeness below threshold",
+    "source_url": "https://news.google.com/rss/articles/CBMiZkFVX3lxTE9oNUFjcktRS0p1ZENLRHVJdTdiQlZCVkY1T0dOWU55MjBBOUlKU3ZXWGZrVDBqeTlLMDFUUVJmNzc1anJ5VVJDNHdyUjR3TWhmZi1GRkR6WkczRHVpU01jWldPM3pldw",
+    "payload": {
+      "threshold": 0.8,
+      "completeness_score": 0.1667,
+      "missing_fields": [
+        "sponsor",
+        "survey_period",
+        "sample_size",
+        "response_rate",
+        "margin_of_error"
+      ]
+    },
+    "status": "pending",
+    "created_at": "2026-02-24T04:20:11.485452+00:00"
+  },
+  {
+    "id": "rvq_d77837d89061fbdf",
+    "entity_type": "poll_observation",
+    "entity_id": "obs_9720c0cca1ab37ca",
+    "issue_type": "extract_error",
+    "stage": "live_news_v1_legal",
+    "error_code": "LEGAL_COMPLETENESS_BELOW_THRESHOLD",
+    "error_message": "live news legal completeness below threshold",
+    "source_url": "https://news.google.com/rss/articles/CBMiUEFVX3lxTE5ZVmw4S0lqNUl2blhORDJNaDhNYXRuOU5YVjEtbDB2X2JnUFRHaUlLamktTVIwRERxRFRvUU8tZUNJN3BSMHVFWHp3Skl4UTVW",
+    "payload": {
+      "threshold": 0.8,
+      "completeness_score": 0.1667,
+      "missing_fields": [
+        "sponsor",
+        "survey_period",
+        "sample_size",
+        "response_rate",
+        "margin_of_error"
+      ]
+    },
+    "status": "pending",
+    "created_at": "2026-02-24T04:20:11.485547+00:00"
+  },
+  {
+    "id": "rvq_d08fadaf01427f22",
+    "entity_type": "poll_observation",
+    "entity_id": "obs_1c24b60a3d52a6f4",
+    "issue_type": "extract_error",
+    "stage": "live_news_v1_legal",
+    "error_code": "LEGAL_COMPLETENESS_BELOW_THRESHOLD",
+    "error_message": "live news legal completeness below threshold",
+    "source_url": "https://news.google.com/rss/articles/CBMiT0FVX3lxTE1vR3J3MG5kX1BtLTdfUzFaZ0J2M3JtaUtmZnpFMG5fb3pkNHM4ODZTX2JqcjIzQTJPYm8zcTQwSy16ZG9ETzN2eFVrSE9qdnM",
+    "payload": {
+      "threshold": 0.8,
+      "completeness_score": 0.1667,
+      "missing_fields": [
+        "sponsor",
+        "survey_period",
+        "sample_size",
+        "response_rate",
+        "margin_of_error"
+      ]
+    },
+    "status": "pending",
+    "created_at": "2026-02-24T04:20:11.485634+00:00"
+  },
+  {
+    "id": "rvq_0ce1a0489fff7ff6",
+    "entity_type": "poll_observation",
+    "entity_id": "obs_3b0cf776632dd287",
+    "issue_type": "extract_error",
+    "stage": "live_news_v1_legal",
+    "error_code": "LEGAL_COMPLETENESS_BELOW_THRESHOLD",
+    "error_message": "live news legal completeness below threshold",
+    "source_url": "https://news.google.com/rss/articles/CBMieEFVX3lxTE1Tdmg3TFdqS3NUN21RSTVtdXU2RG90czEtQmN0MWs1RFpabTYzOFctYXdGYU1DZExRMUZ2S2xfY3gydkJ3VjdyTTAwZ2F1ak5RWHN1d3A2ZXJiYnlnaW1nNm40Z2NJZHhSZUsyaEp5TUhVUGR6bXA4X9IBeEFVX3lxTE5INHczQnc2WlFxcF9iel9LN1doU01jOXJjbm9FS1kwTU9kZ0FTcHkzTzV2OWlLYmJiX1otNnNqTk5xMGMtdm5TNnRnYnlYR3VMaEp5UVZ2aUV3bnUwTVkxLXVhT01oRjJDRmVuNGlDOG80NlZscllVYg",
+    "payload": {
+      "threshold": 0.8,
+      "completeness_score": 0.1667,
+      "missing_fields": [
+        "sponsor",
+        "survey_period",
+        "sample_size",
+        "response_rate",
+        "margin_of_error"
+      ]
+    },
+    "status": "pending",
+    "created_at": "2026-02-24T04:20:11.485708+00:00"
+  },
+  {
+    "id": "rvq_c6b95a1626499bf7",
+    "entity_type": "poll_observation",
+    "entity_id": "obs_d513d499f4698d34",
+    "issue_type": "extract_error",
+    "stage": "live_news_v1_legal",
+    "error_code": "LEGAL_COMPLETENESS_BELOW_THRESHOLD",
+    "error_message": "live news legal completeness below threshold",
+    "source_url": "https://news.google.com/rss/articles/CBMib0FVX3lxTE5sRDhVVG5DV0xxZTFDbExIM3I0MXdGTnUtY3BCWmdCRndlcmdid1NVX0oxQjNYdGtTeXk4aFlDLVZMbHIwNWZwdnBtdXQxMGFJMnpHaVdjenZNTXp5eWJRMWNQd1d3c1FfVTh4ekhxbw",
+    "payload": {
+      "threshold": 0.8,
+      "completeness_score": 0.1667,
+      "missing_fields": [
+        "sponsor",
+        "survey_period",
+        "sample_size",
+        "response_rate",
+        "margin_of_error"
+      ]
+    },
+    "status": "pending",
+    "created_at": "2026-02-24T04:20:11.485813+00:00"
+  },
+  {
+    "id": "rvq_ddade06a59906d85",
+    "entity_type": "poll_observation",
+    "entity_id": "obs_7a093d267de2d6f7",
+    "issue_type": "extract_error",
+    "stage": "live_news_v1_legal",
+    "error_code": "LEGAL_COMPLETENESS_BELOW_THRESHOLD",
+    "error_message": "live news legal completeness below threshold",
+    "source_url": "https://news.google.com/rss/articles/CBMiZ0FVX3lxTE5QSHRHTU84ejRWemFhbTJMTVFYeXhtcnljV3otMWltOXk1Vk9rX2Jmd29meVo4LXpaa2NCeC02WUg3TTRiUlZwZjVBVjRYemxBNi1IbVFBNmJpaGVHZllRMVNRbTIwTlk",
+    "payload": {
+      "threshold": 0.8,
+      "completeness_score": 0.1667,
+      "missing_fields": [
+        "sponsor",
+        "survey_period",
+        "sample_size",
+        "response_rate",
+        "margin_of_error"
+      ]
+    },
+    "status": "pending",
+    "created_at": "2026-02-24T04:20:11.485916+00:00"
+  },
+  {
+    "id": "rvq_82a09b65a4d8823b",
+    "entity_type": "poll_observation",
+    "entity_id": "obs_73e9db6baf85b5d3",
+    "issue_type": "extract_error",
+    "stage": "live_news_v1_legal",
+    "error_code": "LEGAL_COMPLETENESS_BELOW_THRESHOLD",
+    "error_message": "live news legal completeness below threshold",
+    "source_url": "https://news.google.com/rss/articles/CBMiUkFVX3lxTE1BaU42T0NXektTMGdZOTlQRVVxTXRRRWZpLWh1alN1dkpOaEdHbk5keG56U3dwd2tVTlFrVHJKNDNrMGpoZGowa2UxNTdvWHBJcFE",
+    "payload": {
+      "threshold": 0.8,
+      "completeness_score": 0.1667,
+      "missing_fields": [
+        "sponsor",
+        "survey_period",
+        "sample_size",
+        "response_rate",
+        "margin_of_error"
+      ]
+    },
+    "status": "pending",
+    "created_at": "2026-02-24T04:20:11.486016+00:00"
+  },
+  {
+    "id": "rvq_f414caa562004cde",
+    "entity_type": "poll_observation",
+    "entity_id": "obs_04f52b0dbb2a3f38",
+    "issue_type": "extract_error",
+    "stage": "live_news_v1_legal",
+    "error_code": "LEGAL_COMPLETENESS_BELOW_THRESHOLD",
+    "error_message": "live news legal completeness below threshold",
+    "source_url": "https://news.google.com/rss/articles/CBMiUEFVX3lxTE9XUDhsQXlSS2d5SDZXTUJITU9nRnRpa1l3NXNVUENyMkdQZG04T0s5UG9SXzlySXJ2YlZ4ejN4Nmg3TzhJSDFXMWd5U0loM0Mw",
+    "payload": {
+      "threshold": 0.8,
+      "completeness_score": 0.1667,
+      "missing_fields": [
+        "sponsor",
+        "survey_period",
+        "sample_size",
+        "response_rate",
+        "margin_of_error"
+      ]
+    },
+    "status": "pending",
+    "created_at": "2026-02-24T04:20:11.486108+00:00"
+  },
+  {
+    "id": "rvq_fbba42c9c420e386",
+    "entity_type": "poll_observation",
+    "entity_id": "obs_7e3a173859cf577d",
+    "issue_type": "extract_error",
+    "stage": "live_news_v1_legal",
+    "error_code": "LEGAL_COMPLETENESS_BELOW_THRESHOLD",
+    "error_message": "live news legal completeness below threshold",
+    "source_url": "https://news.google.com/rss/articles/CBMiVEFVX3lxTE1IVU9vU0VXNTM3RndSNUpkTzFmVWJCYWNXRzdkNjJoQ19SeEZ6ZzBVenIzUXpBTlFRckVNZVVIQXAzR1dXVmIyY1lJa3JjVHRJYnBUQw",
+    "payload": {
+      "threshold": 0.8,
+      "completeness_score": 0.1667,
+      "missing_fields": [
+        "sponsor",
+        "survey_period",
+        "sample_size",
+        "response_rate",
+        "margin_of_error"
+      ]
+    },
+    "status": "pending",
+    "created_at": "2026-02-24T04:20:11.486197+00:00"
+  },
+  {
+    "id": "rvq_7f5bff9daf12b6cd",
+    "entity_type": "poll_observation",
+    "entity_id": "obs_3f6ca2ed23cdeb99",
+    "issue_type": "extract_error",
+    "stage": "extract",
+    "error_code": "NO_TITLE_CANDIDATE_SIGNAL",
+    "error_message": "no candidate/value pair extracted",
+    "source_url": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE43YUpldmVfcHp3QlZFeWNTTFQ2UllWLXFscm91WGdRRVJYNTVxYXdSVlVlLWJjczc5VTZvQ0wzb2VTZlBWTzktc0kyOVkwUi1Wa3dzTlltOFlUakk",
+    "payload": {
+      "article_id": "art-fallback_728caae6c54f13ba"
+    },
+    "status": "pending",
+    "created_at": "2026-02-24T04:20:11.486280+00:00"
+  },
+  {
+    "id": "rvq_64b07c0b659f4742",
+    "entity_type": "poll_observation",
+    "entity_id": "obs_3f6ca2ed23cdeb99",
+    "issue_type": "extract_error",
+    "stage": "live_news_v1_legal",
+    "error_code": "LEGAL_COMPLETENESS_BELOW_THRESHOLD",
+    "error_message": "live news legal completeness below threshold",
+    "source_url": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE43YUpldmVfcHp3QlZFeWNTTFQ2UllWLXFscm91WGdRRVJYNTVxYXdSVlVlLWJjczc5VTZvQ0wzb2VTZlBWTzktc0kyOVkwUi1Wa3dzTlltOFlUakk",
+    "payload": {
+      "threshold": 0.8,
+      "completeness_score": 0.1667,
+      "missing_fields": [
+        "sponsor",
+        "survey_period",
+        "sample_size",
+        "response_rate",
+        "margin_of_error"
+      ]
+    },
+    "status": "pending",
+    "created_at": "2026-02-24T04:20:11.486293+00:00"
+  },
+  {
+    "id": "rvq_666ff646a51690e0",
+    "entity_type": "poll_observation",
+    "entity_id": "obs_2a69111033285a20",
+    "issue_type": "extract_error",
+    "stage": "extract",
+    "error_code": "NO_TITLE_CANDIDATE_SIGNAL",
+    "error_message": "no candidate/value pair extracted",
+    "source_url": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE5iM0Z6YzdVTU1hNHZHb0dXRWJxb0dPU2RoQlV1bHQ5Vk93OXlGQW1najU3TEE0UVVSd2RYT0s5Q0VYVnBnR2hscV9ac1pFUng5RjZSUUlpNjdtRHFRV25pMw",
+    "payload": {
+      "article_id": "art-fallback_2dc9ce7301e19e54"
+    },
+    "status": "pending",
+    "created_at": "2026-02-24T04:20:11.486406+00:00"
+  },
+  {
+    "id": "rvq_3185e4fbef559080",
+    "entity_type": "poll_observation",
+    "entity_id": "obs_2a69111033285a20",
+    "issue_type": "extract_error",
+    "stage": "live_news_v1_legal",
+    "error_code": "LEGAL_COMPLETENESS_BELOW_THRESHOLD",
+    "error_message": "live news legal completeness below threshold",
+    "source_url": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE5iM0Z6YzdVTU1hNHZHb0dXRWJxb0dPU2RoQlV1bHQ5Vk93OXlGQW1najU3TEE0UVVSd2RYT0s5Q0VYVnBnR2hscV9ac1pFUng5RjZSUUlpNjdtRHFRV25pMw",
+    "payload": {
+      "threshold": 0.8,
+      "completeness_score": 0.1667,
+      "missing_fields": [
+        "sponsor",
+        "survey_period",
+        "sample_size",
+        "response_rate",
+        "margin_of_error"
+      ]
+    },
+    "status": "pending",
+    "created_at": "2026-02-24T04:20:11.486419+00:00"
+  },
+  {
+    "id": "rvq_5bc4de02b334a539",
+    "entity_type": "poll_observation",
+    "entity_id": "obs_db88a55995b5334d",
+    "issue_type": "extract_error",
+    "stage": "live_news_v1_legal",
+    "error_code": "LEGAL_COMPLETENESS_BELOW_THRESHOLD",
+    "error_message": "live news legal completeness below threshold",
+    "source_url": "https://www.newsis.com/view/NISX20260224_0003524095",
+    "payload": {
+      "threshold": 0.8,
+      "completeness_score": 0.3333,
+      "missing_fields": [
+        "sponsor",
+        "sample_size",
+        "response_rate",
+        "margin_of_error"
+      ]
+    },
+    "status": "pending",
+    "created_at": "2026-02-24T04:20:11.489306+00:00"
+  }
+]

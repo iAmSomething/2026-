@@ -1,0 +1,51 @@
+{
+  "run_type": "collector_live_news_v1",
+  "generated_at": "2026-02-24T04:20:11.489761+00:00",
+  "discovery_metrics": {
+    "query_count": 84,
+    "raw_count": 245,
+    "dedup_count": 80,
+    "fetched_count": 80,
+    "valid_count": 40,
+    "fallback_fetch_count": 69,
+    "duplicate_count": 165,
+    "duplicate_rate": 0.6735,
+    "fetch_fail_count": 0,
+    "fetch_fail_rate": 0.0,
+    "valid_article_rate": 0.5
+  },
+  "counts": {
+    "article_count": 40,
+    "observation_count": 40,
+    "option_count": 86,
+    "review_queue_count": 115,
+    "ingest_record_count": 40,
+    "threshold_miss_count": 40
+  },
+  "legal_required_fields": [
+    "pollster",
+    "sponsor",
+    "survey_period",
+    "sample_size",
+    "response_rate",
+    "margin_of_error"
+  ],
+  "legal_completeness": {
+    "threshold": 0.8,
+    "avg_score": 0.1792,
+    "min_score": 0.1667,
+    "max_score": 0.3333,
+    "missing_field_counts": {
+      "sponsor": 40,
+      "sample_size": 40,
+      "response_rate": 40,
+      "margin_of_error": 40,
+      "survey_period": 37
+    }
+  },
+  "acceptance_checks": {
+    "live_news_candidates_present": true,
+    "ingest_records_ge_30": true,
+    "threshold_miss_routed": true
+  }
+}
