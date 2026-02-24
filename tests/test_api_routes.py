@@ -884,10 +884,15 @@ def test_run_ingest_normalizes_candidate_payload_before_validation(monkeypatch: 
         def __init__(self):
             super().__init__()
             self.captured_candidates: list[dict] = []
+            self.captured_observations: list[dict] = []
 
         def upsert_candidate(self, candidate):
             self.captured_candidates.append(candidate)
             return None
+
+        def upsert_poll_observation(self, observation, article_id, ingestion_run_id):
+            self.captured_observations.append(observation)
+            return 1
 
     repo = CaptureCandidateRepo()
 
@@ -926,6 +931,9 @@ def test_run_ingest_normalizes_candidate_payload_before_validation(monkeypatch: 
                     "region_code": "11-000",
                     "office_type": "광역자치단체장",
                     "matchup_id": "20260603|광역자치단체장|11-000",
+                    "audience_scope": "nationwide",
+                    "audience_region_code": "11-000",
+                    "margin_of_error": "±3.1%p",
                 },
                 "options": [
                     {"option_type": "candidate", "option_name": "홍길동", "value_raw": "51%"}
@@ -946,6 +954,10 @@ def test_run_ingest_normalizes_candidate_payload_before_validation(monkeypatch: 
     assert repo.captured_candidates[0]["party_inferred"] is True
     assert repo.captured_candidates[0]["party_name"] == "더불어민주당"
     assert repo.captured_candidates[0]["party_inference_source"] == "manual"
+    assert repo.captured_observations
+    assert repo.captured_observations[0]["audience_scope"] == "national"
+    assert repo.captured_observations[0]["audience_region_code"] is None
+    assert repo.captured_observations[0]["margin_of_error"] == 3.1
 
     app.dependency_overrides.clear()
     get_settings.cache_clear()
