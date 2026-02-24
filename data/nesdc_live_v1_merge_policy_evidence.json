@@ -1,0 +1,206 @@
+{
+  "merge_policy": {
+    "priority": [
+      "merge_exact",
+      "conflict_review",
+      "insert_new"
+    ],
+    "fingerprint_fields": [
+      "pollster",
+      "survey_date",
+      "sample_size",
+      "margin"
+    ]
+  },
+  "decision_counts": {
+    "insert_new": 89,
+    "conflict_review": 3
+  },
+  "decision_samples": [
+    {
+      "ntt_id": "17457",
+      "pollster": "KOPRA",
+      "decision": "insert_new",
+      "reason": "no_article_pollster_overlap"
+    },
+    {
+      "ntt_id": "17456",
+      "pollster": "(주)리얼미터",
+      "decision": "insert_new",
+      "reason": "no_article_pollster_overlap"
+    },
+    {
+      "ntt_id": "17399",
+      "pollster": "(주)엠브레인퍼블릭",
+      "decision": "insert_new",
+      "reason": "no_article_pollster_overlap"
+    },
+    {
+      "ntt_id": "17453",
+      "pollster": "(주)리서치뷰",
+      "decision": "insert_new",
+      "reason": "no_article_pollster_overlap"
+    },
+    {
+      "ntt_id": "17451",
+      "pollster": "입소스 주식회사",
+      "decision": "insert_new",
+      "reason": "no_article_pollster_overlap"
+    },
+    {
+      "ntt_id": "17449",
+      "pollster": "입소스 주식회사",
+      "decision": "insert_new",
+      "reason": "no_article_pollster_overlap"
+    },
+    {
+      "ntt_id": "17448",
+      "pollster": "입소스 주식회사",
+      "decision": "insert_new",
+      "reason": "no_article_pollster_overlap"
+    },
+    {
+      "ntt_id": "17450",
+      "pollster": "한길리서치",
+      "decision": "insert_new",
+      "reason": "no_article_pollster_overlap"
+    },
+    {
+      "ntt_id": "17445",
+      "pollster": "(주)비전코리아",
+      "decision": "insert_new",
+      "reason": "no_article_pollster_overlap"
+    },
+    {
+      "ntt_id": "17446",
+      "pollster": "(주)코리아리서치인터내셔널",
+      "decision": "insert_new",
+      "reason": "no_article_pollster_overlap"
+    },
+    {
+      "ntt_id": "17444",
+      "pollster": "(주)코리아리서치인터내셔널",
+      "decision": "insert_new",
+      "reason": "no_article_pollster_overlap"
+    },
+    {
+      "ntt_id": "17443",
+      "pollster": "(주)코리아리서치인터내셔널",
+      "decision": "insert_new",
+      "reason": "no_article_pollster_overlap"
+    },
+    {
+      "ntt_id": "17442",
+      "pollster": "조원씨앤아이",
+      "decision": "conflict_review",
+      "article_observation_key": "obs_9720c0cca1ab37ca",
+      "article_matchup_id": "20260603|광역자치단체장|11-000",
+      "nesdc_sample_size": 803,
+      "article_sample_size": null,
+      "nesdc_margin": 3.5,
+      "article_margin": null
+    },
+    {
+      "ntt_id": "17437",
+      "pollster": "모노커뮤니케이션즈(모노리서치)",
+      "decision": "insert_new",
+      "reason": "no_article_pollster_overlap"
+    },
+    {
+      "ntt_id": "17439",
+      "pollster": "(주)코리아정보리서치",
+      "decision": "insert_new",
+      "reason": "no_article_pollster_overlap"
+    },
+    {
+      "ntt_id": "17436",
+      "pollster": "(주)리얼미터",
+      "decision": "insert_new",
+      "reason": "no_article_pollster_overlap"
+    },
+    {
+      "ntt_id": "17435",
+      "pollster": "케이스탯리서치",
+      "decision": "insert_new",
+      "reason": "no_article_pollster_overlap"
+    },
+    {
+      "ntt_id": "17375",
+      "pollster": "케이스탯리서치",
+      "decision": "insert_new",
+      "reason": "no_article_pollster_overlap"
+    },
+    {
+      "ntt_id": "17374",
+      "pollster": "케이스탯리서치",
+      "decision": "insert_new",
+      "reason": "no_article_pollster_overlap"
+    },
+    {
+      "ntt_id": "17373",
+      "pollster": "케이스탯리서치",
+      "decision": "insert_new",
+      "reason": "no_article_pollster_overlap"
+    },
+    {
+      "ntt_id": "17371",
+      "pollster": "케이스탯리서치",
+      "decision": "insert_new",
+      "reason": "no_article_pollster_overlap"
+    },
+    {
+      "ntt_id": "17370",
+      "pollster": "케이스탯리서치",
+      "decision": "insert_new",
+      "reason": "no_article_pollster_overlap"
+    },
+    {
+      "ntt_id": "17369",
+      "pollster": "케이스탯리서치",
+      "decision": "insert_new",
+      "reason": "no_article_pollster_overlap"
+    },
+    {
+      "ntt_id": "17368",
+      "pollster": "케이스탯리서치",
+      "decision": "insert_new",
+      "reason": "no_article_pollster_overlap"
+    },
+    {
+      "ntt_id": "17396",
+      "pollster": "(주)엠브레인퍼블릭",
+      "decision": "insert_new",
+      "reason": "no_article_pollster_overlap"
+    },
+    {
+      "ntt_id": "17391",
+      "pollster": "(주)엠브레인퍼블릭",
+      "decision": "insert_new",
+      "reason": "no_article_pollster_overlap"
+    },
+    {
+      "ntt_id": "17382",
+      "pollster": "(주)엠브레인퍼블릭",
+      "decision": "insert_new",
+      "reason": "no_article_pollster_overlap"
+    },
+    {
+      "ntt_id": "17392",
+      "pollster": "(주)엠브레인퍼블릭",
+      "decision": "insert_new",
+      "reason": "no_article_pollster_overlap"
+    },
+    {
+      "ntt_id": "17397",
+      "pollster": "(주)엠브레인퍼블릭",
+      "decision": "insert_new",
+      "reason": "no_article_pollster_overlap"
+    },
+    {
+      "ntt_id": "17395",
+      "pollster": "(주)엠브레인퍼블릭",
+      "decision": "insert_new",
+      "reason": "no_article_pollster_overlap"
+    }
+  ]
+}
