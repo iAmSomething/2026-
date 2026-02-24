@@ -1,7 +1,7 @@
 # 운영 런북 및 체크리스트
 
 - 문서 버전: v0.2
-- 최종 수정일: 2026-02-19
+- 최종 수정일: 2026-02-24
 - 수정자: Codex
 
 ## 1. 운영 목표
@@ -38,12 +38,27 @@
 2. 트리거: Pull Request에서 `.github/workflows/*.yml|*.yaml` 변경 시 자동 실행
 3. 검사 단계:
 - `bash scripts/qa/validate_workflow_yaml.sh`로 YAML 파싱 오류 즉시 차단
-- `rhysd/actionlint@v1`로 GitHub Actions 문법/표현식 검증
+- `reviewdog/action-actionlint@v1`로 GitHub Actions 문법/표현식 검증
 4. 로컬 사전 점검:
 - `bash scripts/qa/validate_workflow_yaml.sh`
 5. 깨진 샘플 재현(테스트 브랜치):
 - `.github/workflows/` 내 임시 파일에 들여쓰기 오류를 넣고 PR 생성
 - `Workflow Lint Guard`가 실패하는지 확인 후 임시 파일 제거
+
+## 2.3 Ingest Retry Canonical Policy (S6)
+1. 공통 기본값 (`scripts/qa/run_ingest_with_retry.py`)
+- `max_retries=2`
+- `backoff_seconds=1`
+- `timeout=180`
+- `timeout_scale_on_timeout=1.5`
+- `timeout_max=360`
+2. 적용 범위:
+- `Ingest Schedule`: `.github/workflows/ingest-schedule.yml` (`Run scheduled ingest with retry`)
+- `Collector Live News Schedule`: `.github/workflows/collector-live-news-schedule.yml` (`Run ingest with retry`)
+3. 근거 (2026-02-24, `main` 최근 성공 런 기준):
+- `Ingest Schedule` total runtime p95: `227s` (n=26, max=387s)
+- `Collector Live News Schedule` total runtime p95: `856s` (n=2, max=856s)
+- timeout 재시도 상한(`180 -> 270 -> 360` + timeout backoff 최소 5초)은 장시간 지연 구간을 커버하면서 무한 대기를 방지
 
 ## 3. 수동/자동 경계
 ### 자동 처리
@@ -102,8 +117,11 @@
 
 ## 6.1 재시도 운영 규칙
 1. 내부 배치 호출 실패(네트워크/5xx/partial_success) 시 최대 2회 재시도
-2. 재시도 간 backoff: 1초, 2초
-3. 최종 실패 시:
+2. 운영 기본값:
+- `max_retries=2`, `backoff_seconds=1`
+- `timeout=180`, `timeout_scale_on_timeout=1.5`, `timeout_max=360`
+3. timeout 계열 실패 시 backoff는 최소 5초로 상승(`app/jobs/ingest_runner.py` 정책)
+4. 최종 실패 시:
 - 실행 리포트(`ingest_schedule_report.json`) 확인
 - `review_queue` 적재 여부 확인
 - `ingestion_runs`에서 `partial_success`/오류 카운트 확인
