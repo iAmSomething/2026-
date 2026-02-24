@@ -3,6 +3,7 @@ from __future__ import annotations
 import json
 from datetime import datetime
 from pathlib import Path
+from typing import Any
 from zoneinfo import ZoneInfo
 
 from scripts.generate_nesdc_safe_collect_v1 import generate_nesdc_safe_collect_v1
@@ -14,13 +15,14 @@ def _registry_row(
     *,
     ntt_id: str,
     pollster: str,
-    eligible: bool,
+    eligible: Any,
+    registered_at: str = "2026-02-20 09:00",
 ) -> dict:
     return {
         "ntt_id": ntt_id,
         "detail_url": f"https://nesdc.test/{ntt_id}",
         "pollster": pollster,
-        "registered_at": "2026-02-20 09:00",
+        "registered_at": registered_at,
         "first_publish_at_kst": "2026-02-20 09:30",
         "survey_datetime_text": "2026-02-19",
         "survey_population": "전국 만 18세 이상",
@@ -141,3 +143,90 @@ def test_safe_collect_pollster_coverage_regression_ge_5(tmp_path: Path) -> None:
     )
 
     assert out["report"]["acceptance_checks"]["pollster_coverage_ge_5"] is True
+
+
+def test_safe_collect_parses_explicit_false_values_as_not_eligible(tmp_path: Path) -> None:
+    registry = {
+        "records": [
+            _registry_row(ntt_id="1", pollster="A", eligible="false"),
+            _registry_row(ntt_id="2", pollster="B", eligible="0"),
+            _registry_row(ntt_id="3", pollster="C", eligible=False),
+            _registry_row(ntt_id="4", pollster="D", eligible=True),
+        ]
+    }
+    adapter = {"records": [_adapter_row(ntt_id="4")]}
+
+    reg_path = tmp_path / "registry.json"
+    adp_path = tmp_path / "adapter.json"
+    reg_path.write_text(json.dumps(registry, ensure_ascii=False), encoding="utf-8")
+    adp_path.write_text(json.dumps(adapter, ensure_ascii=False), encoding="utf-8")
+
+    out = generate_nesdc_safe_collect_v1(
+        registry_path=str(reg_path),
+        adapter_path=str(adp_path),
+        as_of_kst=datetime(2026, 2, 23, 12, 0, tzinfo=KST),
+    )
+
+    assert out["report"]["counts"]["eligible_48h_total"] == 1
+    assert [x["ntt_id"] for x in out["data"]["records"]] == ["4"]
+    assert out["report"]["counts"]["review_queue_candidate_count"] == 0
+
+
+def test_safe_collect_invalid_explicit_value_routes_mapping_error_and_skips(tmp_path: Path) -> None:
+    registry = {
+        "records": [
+            _registry_row(ntt_id="1", pollster="A", eligible="maybe"),
+            _registry_row(ntt_id="2", pollster="B", eligible=True),
+        ]
+    }
+    adapter = {"records": [_adapter_row(ntt_id="2")]}
+
+    reg_path = tmp_path / "registry.json"
+    adp_path = tmp_path / "adapter.json"
+    reg_path.write_text(json.dumps(registry, ensure_ascii=False), encoding="utf-8")
+    adp_path.write_text(json.dumps(adapter, ensure_ascii=False), encoding="utf-8")
+
+    out = generate_nesdc_safe_collect_v1(
+        registry_path=str(reg_path),
+        adapter_path=str(adp_path),
+        as_of_kst=datetime(2026, 2, 23, 12, 0, tzinfo=KST),
+    )
+
+    assert [x["ntt_id"] for x in out["data"]["records"]] == ["2"]
+    assert out["report"]["counts"]["eligibility_parse_error_count"] == 1
+    assert out["report"]["counts"]["review_queue_candidate_count"] == 1
+    rq = out["review_queue_candidates"][0]
+    assert rq["issue_type"] == "mapping_error"
+    assert rq["error_code"] == "INVALID_AUTO_COLLECT_ELIGIBLE_48H"
+
+
+def test_safe_collect_blocks_explicit_true_within_48h_guard(tmp_path: Path) -> None:
+    registry = {
+        "records": [
+            _registry_row(
+                ntt_id="1",
+                pollster="A",
+                eligible="true",
+                registered_at="2026-02-22 12:30",
+            )
+        ]
+    }
+    adapter = {"records": [_adapter_row(ntt_id="1")]}
+
+    reg_path = tmp_path / "registry.json"
+    adp_path = tmp_path / "adapter.json"
+    reg_path.write_text(json.dumps(registry, ensure_ascii=False), encoding="utf-8")
+    adp_path.write_text(json.dumps(adapter, ensure_ascii=False), encoding="utf-8")
+
+    out = generate_nesdc_safe_collect_v1(
+        registry_path=str(reg_path),
+        adapter_path=str(adp_path),
+        as_of_kst=datetime(2026, 2, 23, 12, 0, tzinfo=KST),
+    )
+
+    assert out["report"]["counts"]["eligible_48h_total"] == 0
+    assert out["report"]["counts"]["safe_window_guard_block_count"] == 1
+    assert out["report"]["counts"]["review_queue_candidate_count"] == 1
+    rq = out["review_queue_candidates"][0]
+    assert rq["issue_type"] == "mapping_error"
+    assert rq["error_code"] == "SAFE_WINDOW_GUARD_BLOCKED"
