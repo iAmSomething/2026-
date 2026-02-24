@@ -1,0 +1,7 @@
+{
+  "source_mode": "collector_live_v2",
+  "canonical_payload": "data/collector_live_payload.json",
+  "record_count": 30,
+  "run_type": "collector_live_coverage_v2",
+  "extractor_version": "collector-live-coverage-v2"
+}

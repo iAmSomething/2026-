@@ -4,7 +4,10 @@ from __future__ import annotations
 import argparse
 import json
 import os
+import re
 import sys
+from datetime import datetime, timezone
+from hashlib import sha256
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -24,7 +27,60 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--timeout-scale-on-timeout", type=float, default=1.5)
     parser.add_argument("--timeout-max", type=float, default=600.0)
     parser.add_argument("--report", default="data/ingest_retry_report.json")
+    parser.add_argument("--dead-letter-dir", default="data/dead_letter")
+    parser.add_argument("--disable-dead-letter", action="store_true")
+    parser.add_argument("--allow-partial-success", action="store_true")
     return parser.parse_args()
+
+
+def _utc_timestamp_compact() -> str:
+    return datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
+
+
+def _safe_filename_fragment(value: str | None) -> str:
+    token = (value or "unknown").strip().lower()
+    token = re.sub(r"[^a-z0-9]+", "_", token)
+    return token.strip("_") or "unknown"
+
+
+def _payload_digest(payload: dict) -> str:
+    raw = json.dumps(payload, ensure_ascii=False, sort_keys=True)
+    return sha256(raw.encode("utf-8")).hexdigest()
+
+
+def write_dead_letter_record(
+    *,
+    dead_letter_dir: str | Path,
+    source_input_path: str,
+    payload: dict,
+    result,
+    report_path: str,
+) -> Path:
+    out_dir = Path(dead_letter_dir)
+    out_dir.mkdir(parents=True, exist_ok=True)
+    failure_fragment = _safe_filename_fragment(result.failure_type or result.failure_class)
+    output_path = out_dir / f"ingest_dead_letter_{_utc_timestamp_compact()}_{failure_fragment}.json"
+    record = {
+        "created_at": datetime.now(timezone.utc).isoformat(),
+        "source_input_path": source_input_path,
+        "report_path": report_path,
+        "failure_class": result.failure_class,
+        "failure_type": result.failure_type,
+        "failure_reason": result.failure_reason,
+        "payload_digest": _payload_digest(payload),
+        "payload": payload,
+        "status": "pending",
+    }
+    output_path.write_text(json.dumps(record, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    return output_path
+
+
+def is_effective_success(result, *, allow_partial_success: bool) -> bool:
+    if result.success:
+        return True
+    if allow_partial_success and result.failure_class == "job_partial_success":
+        return True
+    return False
 
 
 def main() -> int:
@@ -45,8 +101,10 @@ def main() -> int:
         timeout_max=args.timeout_max,
     )
     write_runner_report(args.report, result)
+    success = is_effective_success(result, allow_partial_success=args.allow_partial_success)
     output = {
-        "success": result.success,
+        "success": success,
+        "raw_success": result.success,
         "report": args.report,
         "attempt_count": len(result.attempts),
         "failure_class": result.failure_class,
@@ -62,8 +120,20 @@ def main() -> int:
             "error": last.error,
             "detail": last.detail,
         }
+    if success and not result.success:
+        output["accepted_partial_success"] = True
+
+    if not success and not args.disable_dead_letter:
+        dead_letter_path = write_dead_letter_record(
+            dead_letter_dir=args.dead_letter_dir,
+            source_input_path=args.input,
+            payload=payload,
+            result=result,
+            report_path=args.report,
+        )
+        output["dead_letter_path"] = str(dead_letter_path)
     print(json.dumps(output, ensure_ascii=False))
-    return 0 if result.success else 1
+    return 0 if success else 1
 
 
 if __name__ == "__main__":

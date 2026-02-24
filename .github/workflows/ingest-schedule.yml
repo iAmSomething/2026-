@@ -15,6 +15,7 @@ jobs:
       DATABASE_URL: ${{ secrets.DATABASE_URL }}
       INTERNAL_JOB_TOKEN: ${{ secrets.INTERNAL_JOB_TOKEN }}
       API_BASE_URL: http://127.0.0.1:8100
+      INGEST_SCHEDULE_PAYLOAD: data/collector_live_payload.json
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -36,10 +37,13 @@ jobs:
       - name: Build live coverage payload
         run: |
           chmod +x scripts/qa/build_live_coverage_payload.sh
-          scripts/qa/build_live_coverage_payload.sh --python .venv/bin/python
-          .venv/bin/python scripts/generate_collector_freshness_hotfix_v1_pack.py
-          test -s data/collector_live_coverage_v1_payload.json
-          test -s data/collector_freshness_hotfix_v1_payload.json
+          scripts/qa/build_live_coverage_payload.sh \
+            --python .venv/bin/python \
+            --canonical-payload "$INGEST_SCHEDULE_PAYLOAD" \
+            --route-report data/ingest_schedule_payload_route_report.json
+          test -s "$INGEST_SCHEDULE_PAYLOAD"
+          test -s data/ingest_schedule_payload_route_report.json
+          cat data/ingest_schedule_payload_route_report.json
 
       - name: Start API server
         run: |
@@ -57,17 +61,28 @@ jobs:
         run: |
           .venv/bin/python scripts/qa/run_ingest_with_retry.py \
             --api-base "$API_BASE_URL" \
-            --input data/collector_freshness_hotfix_v1_payload.json \
+            --input "$INGEST_SCHEDULE_PAYLOAD" \
             --max-retries 1 \
             --backoff-seconds 3 \
             --timeout 240 \
             --timeout-scale-on-timeout 1.5 \
             --timeout-max 420 \
+            --allow-partial-success \
+            --dead-letter-dir data/dead_letter \
             --report data/ingest_schedule_report.json
 
       - name: Upload ingest report artifact
         uses: actions/upload-artifact@v4
         with:
           name: ingest-schedule-report
-          path: data/ingest_schedule_report.json
+          path: |
+            data/ingest_schedule_report.json
+            data/ingest_schedule_payload_route_report.json
           if-no-files-found: error
+
+      - name: Upload dead-letter artifact (optional)
+        uses: actions/upload-artifact@v4
+        with:
+          name: ingest-schedule-dead-letter
+          path: data/dead_letter/*.json
+          if-no-files-found: ignore
