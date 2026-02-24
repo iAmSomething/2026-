@@ -67,6 +67,7 @@ jobs:
             --timeout 240 \
             --timeout-scale-on-timeout 1.5 \
             --timeout-max 420 \
+            --allow-partial-success \
             --dead-letter-dir data/dead_letter \
             --report data/ingest_schedule_report.json
 

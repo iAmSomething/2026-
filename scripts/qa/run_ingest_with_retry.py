@@ -29,6 +29,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--report", default="data/ingest_retry_report.json")
     parser.add_argument("--dead-letter-dir", default="data/dead_letter")
     parser.add_argument("--disable-dead-letter", action="store_true")
+    parser.add_argument("--allow-partial-success", action="store_true")
     return parser.parse_args()
 
 
@@ -74,6 +75,14 @@ def write_dead_letter_record(
     return output_path
 
 
+def is_effective_success(result, *, allow_partial_success: bool) -> bool:
+    if result.success:
+        return True
+    if allow_partial_success and result.failure_class == "job_partial_success":
+        return True
+    return False
+
+
 def main() -> int:
     args = parse_args()
     token = os.getenv("INTERNAL_JOB_TOKEN")
@@ -92,8 +101,10 @@ def main() -> int:
         timeout_max=args.timeout_max,
     )
     write_runner_report(args.report, result)
+    success = is_effective_success(result, allow_partial_success=args.allow_partial_success)
     output = {
-        "success": result.success,
+        "success": success,
+        "raw_success": result.success,
         "report": args.report,
         "attempt_count": len(result.attempts),
         "failure_class": result.failure_class,
@@ -109,7 +120,10 @@ def main() -> int:
             "error": last.error,
             "detail": last.detail,
         }
-    if not result.success and not args.disable_dead_letter:
+    if success and not result.success:
+        output["accepted_partial_success"] = True
+
+    if not success and not args.disable_dead_letter:
         dead_letter_path = write_dead_letter_record(
             dead_letter_dir=args.dead_letter_dir,
             source_input_path=args.input,
@@ -119,7 +133,7 @@ def main() -> int:
         )
         output["dead_letter_path"] = str(dead_letter_path)
     print(json.dumps(output, ensure_ascii=False))
-    return 0 if result.success else 1
+    return 0 if success else 1
 
 
 if __name__ == "__main__":
