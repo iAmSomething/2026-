@@ -1,0 +1,23 @@
+name: Workflow Lint Guard
+
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/*.yml"
+      - ".github/workflows/*.yaml"
+      - "scripts/qa/validate_workflow_yaml.sh"
+  workflow_dispatch:
+
+jobs:
+  workflow-lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate workflow YAML syntax
+        run: |
+          bash scripts/qa/validate_workflow_yaml.sh
+
+      - name: Validate workflow semantics with actionlint
+        uses: reviewdog/action-actionlint@v1
