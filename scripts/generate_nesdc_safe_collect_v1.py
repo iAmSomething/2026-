@@ -43,15 +43,29 @@ def _parse_kst(value: str | None) -> datetime | None:
     return None
 
 
-def _is_safe_window_eligible(row: dict[str, Any], *, as_of_kst: datetime, safe_hours: int) -> bool:
-    explicit = row.get("auto_collect_eligible_48h")
-    if explicit is not None:
-        return bool(explicit)
-
+def _is_registered_at_eligible(row: dict[str, Any], *, as_of_kst: datetime, safe_hours: int) -> bool:
     reg_dt = _parse_kst(row.get("registered_at"))
     if reg_dt is None:
         return False
     return reg_dt <= (as_of_kst - timedelta(hours=safe_hours))
+
+
+def _parse_explicit_bool(value: Any) -> bool | None:
+    if isinstance(value, bool):
+        return value
+    if isinstance(value, (int, float)):
+        if value == 1:
+            return True
+        if value == 0:
+            return False
+        return None
+    if isinstance(value, str):
+        text = value.strip().lower()
+        if text in {"true", "1", "yes"}:
+            return True
+        if text in {"false", "0", "no"}:
+            return False
+    return None
 
 
 def _extract_option_items(adapter_row: dict[str, Any]) -> list[dict[str, Any]]:
@@ -97,24 +111,80 @@ def generate_nesdc_safe_collect_v1(
         if row.get("result_items"):
             adapter_pollster_map[pollster] = row
 
-    eligible_rows = [
-        row
-        for row in registry_rows
-        if _is_safe_window_eligible(row, as_of_kst=as_of, safe_hours=safe_window_hours)
-    ]
-
     output_records: list[dict[str, Any]] = []
     review_queue_candidates: list[dict[str, Any]] = []
+    eligible_rows: list[dict[str, Any]] = []
 
     fallback_count = 0
     template_fallback_count = 0
     hard_fallback_count = 0
+    eligibility_parse_error_count = 0
+    safe_window_guard_block_count = 0
     success_count = 0
     exact_success_count = 0
     normalization_ok_option_count = 0
     total_option_count = 0
 
     pollster_counter: Counter[str] = Counter()
+
+    for row in registry_rows:
+        ntt_id = str(row.get("ntt_id") or "")
+        pollster = str(row.get("pollster") or "미상조사기관")
+        registered_eligible = _is_registered_at_eligible(row, as_of_kst=as_of, safe_hours=safe_window_hours)
+        explicit = row.get("auto_collect_eligible_48h")
+
+        if explicit is None:
+            if registered_eligible:
+                eligible_rows.append(row)
+            continue
+
+        parsed = _parse_explicit_bool(explicit)
+        if parsed is None:
+            eligibility_parse_error_count += 1
+            review_queue_candidates.append(
+                new_review_queue_item(
+                    entity_type="poll_observation",
+                    entity_id=ntt_id or f"invalid-eligibility-{eligibility_parse_error_count}",
+                    issue_type="mapping_error",
+                    stage="nesdc_safe_collect_v1",
+                    error_code="INVALID_AUTO_COLLECT_ELIGIBLE_48H",
+                    error_message="unsupported explicit eligibility value; row skipped",
+                    source_url=row.get("detail_url"),
+                    payload={
+                        "ntt_id": ntt_id,
+                        "pollster": pollster,
+                        "auto_collect_eligible_48h": explicit,
+                    },
+                ).to_dict()
+            )
+            continue
+
+        if parsed is False:
+            continue
+
+        if not registered_eligible:
+            safe_window_guard_block_count += 1
+            review_queue_candidates.append(
+                new_review_queue_item(
+                    entity_type="poll_observation",
+                    entity_id=ntt_id or f"safe-window-guard-{safe_window_guard_block_count}",
+                    issue_type="mapping_error",
+                    stage="nesdc_safe_collect_v1",
+                    error_code="SAFE_WINDOW_GUARD_BLOCKED",
+                    error_message="explicit eligibility=true blocked by strict 48h safe window guard",
+                    source_url=row.get("detail_url"),
+                    payload={
+                        "ntt_id": ntt_id,
+                        "pollster": pollster,
+                        "auto_collect_eligible_48h": explicit,
+                        "registered_at": row.get("registered_at"),
+                        "safe_window_hours": safe_window_hours,
+                    },
+                ).to_dict()
+            )
+            continue
+
+        eligible_rows.append(row)
 
     for row in eligible_rows:
         ntt_id = str(row.get("ntt_id") or "")
@@ -227,6 +297,8 @@ def generate_nesdc_safe_collect_v1(
             "fallback_count": fallback_count,
             "template_fallback_count": template_fallback_count,
             "hard_fallback_count": hard_fallback_count,
+            "eligibility_parse_error_count": eligibility_parse_error_count,
+            "safe_window_guard_block_count": safe_window_guard_block_count,
             "review_queue_candidate_count": len(review_queue_candidates),
             "unique_pollster_count": unique_pollsters,
             "total_option_count": total_option_count,
@@ -239,7 +311,10 @@ def generate_nesdc_safe_collect_v1(
             "safe_window_applied_all": len(output_records) == len(eligible_rows),
             "eligible_collection_success_present": success_count > 0,
             "pollster_coverage_ge_5": unique_pollsters >= 5,
-            "fallback_review_queue_synced": fallback_count == len(review_queue_candidates),
+            "fallback_review_queue_synced": (
+                fallback_count + eligibility_parse_error_count + safe_window_guard_block_count
+                == len(review_queue_candidates)
+            ),
             "value_raw_and_normalized_present": normalization_ok_option_count > 0,
         },
     }
