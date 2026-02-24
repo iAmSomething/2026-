@@ -1,0 +1,29 @@
+{
+  "run_id": 22338262595,
+  "baseline": {
+    "threshold_miss_count": 37,
+    "threshold_miss_rate": 1.0,
+    "avg_legal_completeness": 0.1802
+  },
+  "recomputed_with_issue252_rules": {
+    "threshold": 0.8,
+    "observation_count": 37,
+    "threshold_miss_count": 34,
+    "threshold_miss_rate": 0.9189,
+    "avg_legal_completeness": 0.2388,
+    "min_legal_completeness": 0.1667,
+    "max_legal_completeness": 0.8333,
+    "missing_field_counts": {
+      "sponsor": 34,
+      "survey_period": 32,
+      "sample_size": 34,
+      "response_rate": 34,
+      "margin_of_error": 32
+    },
+    "enriched_observation_count": 5,
+    "enrichment_source_counts": {
+      "article_pattern": 5,
+      "nesdc_meta": 8
+    }
+  }
+}
