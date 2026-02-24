@@ -1,0 +1,45 @@
+{
+  "success": true,
+  "attempts": [
+    {
+      "attempt": 1,
+      "http_status": null,
+      "job_status": null,
+      "failure_class": "timeout",
+      "failure_type": "timeout",
+      "retryable": true,
+      "request_timeout_seconds": 180.0,
+      "error": "ReadTimeout: timed out",
+      "detail": null
+    },
+    {
+      "attempt": 2,
+      "http_status": null,
+      "job_status": null,
+      "failure_class": "timeout",
+      "failure_type": "timeout",
+      "retryable": true,
+      "request_timeout_seconds": 270.0,
+      "error": "ReadTimeout: timed out",
+      "detail": null
+    },
+    {
+      "attempt": 3,
+      "http_status": 200,
+      "job_status": "success",
+      "failure_class": null,
+      "failure_type": null,
+      "retryable": false,
+      "request_timeout_seconds": 360.0,
+      "error": null,
+      "detail": null
+    }
+  ],
+  "run_ids": [
+    362
+  ],
+  "finished_at": "2026-02-24T05:54:20.298261+00:00",
+  "failure_class": null,
+  "failure_type": null,
+  "failure_reason": null
+}

@@ -1,0 +1,68 @@
+{
+  "run_id": 22338262595,
+  "artifact_dir": "/Users/gimtaehun/election2026_codex__issue248/data/verification/issue248_run_22338262595_artifacts/collector-live-news-artifacts",
+  "metric_table": {
+    "ingest_count": 37,
+    "threshold_miss_rate": 1.0,
+    "fallback_fetch_count": 63,
+    "review_queue_mix": {
+      "extract_error": {
+        "count": 42,
+        "ratio": 0.3962
+      },
+      "fetch_error": {
+        "count": 63,
+        "ratio": 0.5943
+      },
+      "mapping_error": {
+        "count": 1,
+        "ratio": 0.0094
+      }
+    }
+  },
+  "legal_completeness": {
+    "threshold": 0.8,
+    "avg_score": 0.1802,
+    "min_score": 0.1667,
+    "max_score": 0.3333,
+    "score_value_distribution": {
+      "0.1667": 34,
+      "0.3333": 3
+    },
+    "score_bucket_distribution": {
+      "0_2_to_lt_0_4": 3,
+      "lt_0_2": 34
+    },
+    "threshold_miss_count": 37,
+    "threshold_miss_rate": 1.0,
+    "missing_field_counts": {
+      "sponsor": 37,
+      "sample_size": 37,
+      "response_rate": 37,
+      "margin_of_error": 37,
+      "survey_period": 34
+    }
+  },
+  "review_queue": {
+    "total_count": 106,
+    "issue_type_counts": {
+      "extract_error": 42,
+      "fetch_error": 63,
+      "mapping_error": 1
+    },
+    "error_code_top10": {
+      "ROBOTS_BLOCKLIST_BYPASS": 63,
+      "LEGAL_COMPLETENESS_BELOW_THRESHOLD": 37,
+      "NO_TITLE_CANDIDATE_SIGNAL": 4,
+      "POLICY_ONLY_SIGNAL": 1,
+      "REGION_OFFICE_NOT_MAPPED": 1
+    }
+  },
+  "ingest_runner": {
+    "success": true,
+    "attempt_count": 3,
+    "timeout_attempt_count": 2,
+    "final_http_status": 200,
+    "final_job_status": "success"
+  }
+}
