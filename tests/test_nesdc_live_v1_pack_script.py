@@ -228,3 +228,25 @@ def test_nesdc_live_pack_tie_candidates_route_conflict_review(tmp_path: Path) ->
     assert decision["reason"] == "tie"
     assert decision["selection_basis"]["tie_with_next"] is True
     assert any(x.get("error_code") == "ARTICLE_NESDC_CONFLICT" for x in out["review_queue_candidates"])
+
+
+def test_nesdc_live_pack_without_article_payload_file(tmp_path: Path) -> None:
+    missing_path = tmp_path / "missing_article_payload.json"
+
+    out = build_nesdc_live_v1_pack(
+        article_payload_path=str(missing_path),
+        safe_collect_output={
+            **_safe_collect_output(parse_success=22),
+            "data": {
+                "run_type": "collector_nesdc_safe_collect_v1",
+                "records": [_safe_collect_output()["data"]["records"][0]],
+            },
+            "review_queue_candidates": [],
+        },
+    )
+
+    source = out["report"]["source"]
+    assert source["article_payload_present"] is False
+    assert source["article_fingerprint_count"] == 0
+    assert out["merge_evidence"]["decision_counts"].get("insert_new") == 1
+    assert len(out["review_queue_candidates"]) == 0
