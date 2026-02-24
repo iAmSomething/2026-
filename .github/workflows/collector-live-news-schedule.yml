@@ -35,16 +35,16 @@ jobs:
 
       - name: Build live news payload
         run: |
-          .venv/bin/python scripts/generate_collector_live_news_v1_pack.py
-          .venv/bin/python - <<'PY'
-import json
-from pathlib import Path
-payload = json.loads(Path('data/collector_live_news_v1_payload.json').read_text(encoding='utf-8'))
-records = payload.get('records') or []
-if len(records) < 30:
-    raise SystemExit(f"records below minimum: {len(records)} < 30")
-print('records:', len(records))
-PY
+          PYTHONPATH=. .venv/bin/python scripts/generate_collector_live_news_v1_pack.py
+          PYTHONPATH=. .venv/bin/python - <<'PY'
+          import json
+          from pathlib import Path
+          payload = json.loads(Path('data/collector_live_news_v1_payload.json').read_text(encoding='utf-8'))
+          records = payload.get('records') or []
+          if len(records) < 30:
+              raise SystemExit(f"records below minimum: {len(records)} < 30")
+          print('records:', len(records))
+          PY
 
       - name: Start API server
         run: |
@@ -65,6 +65,9 @@ PY
             --input data/collector_live_news_v1_payload.json \
             --max-retries 2 \
             --backoff-seconds 1 \
+            --timeout 180 \
+            --timeout-scale-on-timeout 1.5 \
+            --timeout-max 360 \
             --report data/collector_live_news_v1_ingest_runner_report.json
 
       - name: Upload artifacts
