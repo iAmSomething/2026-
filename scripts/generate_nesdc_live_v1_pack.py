@@ -22,6 +22,13 @@ def _parse_json(path: str) -> dict[str, Any]:
     return json.loads(Path(path).read_text(encoding="utf-8"))
 
 
+def _load_optional_article_payload(path: str) -> tuple[dict[str, Any], bool]:
+    file_path = Path(path)
+    if not file_path.exists():
+        return {"records": []}, False
+    return _parse_json(path), True
+
+
 def _parse_date(value: str | None) -> str | None:
     if not value:
         return None
@@ -312,8 +319,9 @@ def build_nesdc_live_v1_pack(
     safe_report = safe.get("report") or {}
     safe_review_queue = list(safe.get("review_queue_candidates") or [])
 
-    article_payload = _parse_json(article_payload_path)
+    article_payload, article_payload_present = _load_optional_article_payload(article_payload_path)
     article_fp = _article_fingerprints(article_payload)
+    article_fingerprint_count = sum(len(v) for v in article_fp.values())
 
     nesdc_records = list(safe_data.get("records") or [])
     merge_evidence, merge_review_queue = _merge_policy(
@@ -335,6 +343,9 @@ def build_nesdc_live_v1_pack(
         "source": {
             "safe_collect_run_type": safe_data.get("run_type"),
             "article_payload_path": article_payload_path,
+            "article_payload_present": article_payload_present,
+            "article_fingerprint_count": article_fingerprint_count,
+            "article_pollster_count": len(article_fp),
         },
         "counts": {
             "nesdc_record_count": len(nesdc_records),
