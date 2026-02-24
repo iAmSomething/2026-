@@ -97,6 +97,9 @@ def test_live_news_pack_generates_ingest_payload_and_routes_low_completeness() -
     assert len(out["ingest_payload"]["records"]) == 35
     assert out["report"]["counts"]["threshold_miss_count"] == 35
     assert out["report"]["acceptance_checks"]["ingest_records_ge_30"] is True
+    assert out["report"]["acceptance_checks"]["threshold_miss_review_queue_synced"] is True
+    assert out["report"]["risk_signals"]["threshold_miss_present"] is True
+    assert out["report"]["risk_signals"]["threshold_miss_count"] == 35
 
     issue_types = [x["issue_type"] for x in out["review_queue_candidates"]]
     assert "extract_error" in issue_types

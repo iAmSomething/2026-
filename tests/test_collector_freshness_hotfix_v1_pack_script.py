@@ -73,10 +73,13 @@ def test_build_freshness_hotfix_v1_reduces_p90_and_preserves_ids(tmp_path: Path)
     )
 
     checks = out["report"]["acceptance_checks"]
-    assert checks["before_has_delay_over_96h"] is True
     assert checks["after_p90_le_96h"] is True
     assert checks["after_over_96h_count_eq_0"] is True
     assert checks["record_count_unchanged"] is True
+    risk = out["report"]["risk_signals"]
+    assert risk["before_delay_over_96h_present"] is True
+    assert risk["before_over_96h_count"] >= 1
+    assert risk["before_p90_over_96h"] is True
 
     before_keys = [r["observation"]["observation_key"] for r in payload["records"]]
     after_keys = [r["observation"]["observation_key"] for r in out["payload"]["records"]]

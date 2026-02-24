@@ -1,7 +1,7 @@
 # 수집기 최소 계약 명세
 
-- 문서 버전: v0.4
-- 최종 수정일: 2026-02-19
+- 문서 버전: v0.5
+- 최종 수정일: 2026-02-24
 - 수정자: Codex
 
 ## 1. 입력 계약(JSON 스키마)
@@ -204,3 +204,32 @@ PYTHONPATH=. .venv/bin/python scripts/analyze_domain_extraction_quality.py
 - `data/collector_domain_extraction_quality_report.json`
 3. 주간 템플릿:
 - `Collector_reports/collector_weekly_domain_quality_template.md`
+
+## 11. 수집기 리포트 health/risk 분리 계약
+리포트 JSON에서 `acceptance_checks`와 `risk_signals`(또는 `anomaly_signals`)는 의미를 분리한다.
+
+1. `acceptance_checks`
+- 의미: 성공/정상 조건 검증 결과
+- 규칙: `true`가 바람직한 상태
+- 예시:
+  - `ingest_records_ge_30`
+  - `safe_window_policy_applied`
+  - `threshold_miss_review_queue_synced`
+
+2. `risk_signals` (또는 `anomaly_signals`)
+- 의미: 문제/경고 이벤트 존재 여부
+- 규칙: `true`는 경고 신호(즉, 위험 존재)
+- 예시:
+  - `threshold_miss_present`
+  - `adapter_failure_present`
+  - `before_delay_over_96h_present`
+
+3. 역의미 금지 규칙
+- `acceptance_checks`에 "문제 발생 여부" 플래그를 두지 않는다.
+- 문제 발생 여부는 `risk_signals`/`anomaly_signals`로만 표현한다.
+
+4. 하위호환 권고
+- 구버전 소비자가 있을 경우 필드 삭제 대신 아래 순서로 전환한다.
+  1) 역의미 필드를 `risk_signals`로 이관
+  2) `acceptance_checks`에는 동기화/정합성 조건만 유지
+  3) 문서/테스트를 같은 PR에서 함께 갱신
