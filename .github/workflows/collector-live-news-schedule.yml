@@ -35,8 +35,8 @@ jobs:
 
       - name: Build live news payload
         run: |
-          .venv/bin/python scripts/generate_collector_live_news_v1_pack.py
-          .venv/bin/python - <<'PY'
+          PYTHONPATH=. .venv/bin/python scripts/generate_collector_live_news_v1_pack.py
+          PYTHONPATH=. .venv/bin/python - <<'PY'
           import json
           from pathlib import Path
           payload = json.loads(Path('data/collector_live_news_v1_payload.json').read_text(encoding='utf-8'))
