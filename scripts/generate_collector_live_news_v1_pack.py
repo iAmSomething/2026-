@@ -7,10 +7,11 @@ import json
 from pathlib import Path
 import re
 from typing import Any
+from urllib.parse import urlparse
 
 from src.pipeline.collector import CollectorOutput, PollCollector
 from src.pipeline.contracts import Article, new_review_queue_item
-from src.pipeline.discovery_v11 import DiscoveryPipelineV11, DiscoveryResultV11
+from src.pipeline.discovery_v11 import DiscoveryCandidateV11, DiscoveryPipelineV11, DiscoveryResultV11
 from src.pipeline.ingest_adapter import collector_output_to_ingest_payload
 
 OUT_CANDIDATES = "data/collector_live_news_v1_candidates.json"
@@ -19,6 +20,21 @@ OUT_PAYLOAD = "data/collector_live_news_v1_payload.json"
 OUT_REPORT = "data/collector_live_news_v1_report.json"
 OUT_REVIEW_QUEUE = "data/collector_live_news_v1_review_queue_candidates.json"
 DEFAULT_NESDC_ENRICH_PATH = "data/collector_nesdc_safe_collect_v1.json"
+SOURCE_ALLOWLIST_DOMAINS: tuple[str, ...] = (
+    "yna.co.kr",
+    "khan.co.kr",
+    "chosun.com",
+    "newsis.com",
+    "hankyung.com",
+    "mk.co.kr",
+    "segye.com",
+    "mbn.co.kr",
+)
+SOURCE_QUALITY_MIN_SCORE = 0.35
+FALLBACK_FETCH_RATIO_WARN_THRESHOLD = 0.7
+MIN_INGEST_RECORDS = 30
+DEFAULT_TARGET_COUNT = 140
+AUTO_ESCALATE_TARGET_COUNT = 160
 
 REQUIRED_FIELDS: tuple[str, ...] = (
     "pollster",
@@ -355,21 +371,114 @@ def _article_to_dict(article: Article) -> dict[str, Any]:
     }
 
 
-def build_collector_live_news_v1_pack(
-    *,
-    target_count: int = 80,
-    per_query_limit: int = 8,
-    per_feed_limit: int = 30,
-    threshold: float = DEFAULT_THRESHOLD,
-    nesdc_enrich_path: str | None = DEFAULT_NESDC_ENRICH_PATH,
-    election_id: str = "20260603",
-    pipeline: Any = None,
-    collector: PollCollector | None = None,
-) -> dict[str, Any]:
-    pipeline_runner = pipeline or _PipelineAdapter()
-    extractor = collector or PollCollector(election_id=election_id)
-    nesdc_index = _load_nesdc_enrichment_index(nesdc_enrich_path)
+def _domain_from_url(url: str | None) -> str:
+    if not url:
+        return ""
+    return (urlparse(url).netloc or "").lower()
 
+
+def _is_allowlisted_domain(domain: str, allowlist: tuple[str, ...]) -> bool:
+    normalized = domain.lower()
+    for base in allowlist:
+        if normalized == base or normalized.endswith("." + base):
+            return True
+    return False
+
+
+def _body_quality_score(text: str) -> float:
+    cleaned = re.sub(r"\s+", " ", text or "").strip()
+    if not cleaned:
+        return 0.0
+
+    length_score = min(len(cleaned) / 1200.0, 1.0) * 0.45
+    keyword_hits = sum(1 for k in ("여론조사", "지지율", "가상대결", "오차범위", "응답률", "표본") if k in cleaned)
+    keyword_score = min(keyword_hits / 4.0, 1.0) * 0.35
+    percent_score = 0.2 if re.search(r"\d{1,3}(?:\.\d+)?%", cleaned) else 0.0
+    noise_penalty = 0.0
+    if "기자 =" in cleaned or "무단전재" in cleaned:
+        noise_penalty += 0.05
+    score = max(0.0, min(1.0, length_score + keyword_score + percent_score - noise_penalty))
+    return round(score, 4)
+
+
+def _apply_source_quality_gate(
+    *,
+    candidates: list[DiscoveryCandidateV11],
+    allowlist: tuple[str, ...],
+    min_body_score: float,
+) -> tuple[list[DiscoveryCandidateV11], dict[str, Any]]:
+    passed: list[DiscoveryCandidateV11] = []
+    blocked: list[dict[str, Any]] = []
+    fallback_in = 0
+    fallback_out = 0
+    body_scores: list[float] = []
+
+    for c in candidates:
+        domain = _domain_from_url((c.article.url if c.article else None) or c.url)
+        allowlisted = _is_allowlisted_domain(domain, allowlist)
+        text = ""
+        if c.article is not None:
+            text = c.article.raw_text or c.article.snippet or ""
+        if not text:
+            text = " ".join(filter(None, [c.title, c.summary or "", c.query or ""]))
+        body_score = _body_quality_score(text)
+        body_scores.append(body_score)
+
+        if c.used_fallback:
+            fallback_in += 1
+
+        passed_gate = allowlisted or body_score >= min_body_score
+        if passed_gate:
+            passed.append(c)
+            if c.used_fallback:
+                fallback_out += 1
+            continue
+
+        blocked.append(
+            {
+                "url": (c.article.url if c.article else None) or c.url,
+                "source_type": c.source_type,
+                "used_fallback": c.used_fallback,
+                "domain": domain,
+                "allowlisted": allowlisted,
+                "body_quality_score": body_score,
+            }
+        )
+
+    blocked_domain_count = sum(1 for x in blocked if not x.get("allowlisted"))
+    blocked_quality_count = sum(1 for x in blocked if float(x.get("body_quality_score") or 0.0) < min_body_score)
+    in_count = len(candidates)
+    out_count = len(passed)
+    metrics = {
+        "allowlist_domain_count": len(allowlist),
+        "min_body_quality_score": min_body_score,
+        "candidate_in_count": in_count,
+        "candidate_pass_count": out_count,
+        "candidate_block_count": len(blocked),
+        "blocked_by_domain_count": blocked_domain_count,
+        "blocked_by_quality_count": blocked_quality_count,
+        "fallback_in_count": fallback_in,
+        "fallback_pass_count": fallback_out,
+        "fallback_ratio_in": round(fallback_in / max(1, in_count), 4),
+        "fallback_ratio_pass": round(fallback_out / max(1, out_count), 4) if out_count else 0.0,
+        "avg_body_quality_score": round(sum(body_scores) / len(body_scores), 4) if body_scores else 0.0,
+        "blocked_samples": blocked[:30],
+    }
+    return passed, metrics
+
+
+def _run_live_news_pack_pass(
+    *,
+    target_count: int,
+    per_query_limit: int,
+    per_feed_limit: int,
+    threshold: float,
+    source_allowlist_domains: tuple[str, ...],
+    source_quality_min_score: float,
+    pipeline_runner: Any,
+    extractor: PollCollector,
+    nesdc_index: dict[str, list[dict[str, Any]]],
+) -> dict[str, Any]:
     discovery_result: DiscoveryResultV11 = pipeline_runner.run(
         target_count=target_count,
         per_query_limit=per_query_limit,
@@ -378,6 +487,12 @@ def build_collector_live_news_v1_pack(
 
     output = CollectorOutput()
     output.review_queue.extend(discovery_result.review_queue)
+    discovery_metrics = discovery_result.metrics()
+    gated_candidates, gate_metrics = _apply_source_quality_gate(
+        candidates=list(discovery_result.valid_candidates),
+        allowlist=source_allowlist_domains,
+        min_body_score=source_quality_min_score,
+    )
 
     seen_article_ids: set[str] = set()
     threshold_miss_count = 0
@@ -387,7 +502,7 @@ def build_collector_live_news_v1_pack(
     enrichment_source_counter: Counter[str] = Counter()
     enriched_observation_count = 0
 
-    for candidate in discovery_result.valid_candidates:
+    for candidate in gated_candidates:
         article = candidate.article
         if article is None:
             continue
@@ -456,24 +571,132 @@ def build_collector_live_news_v1_pack(
         run_type="collector_live_news_v1",
         extractor_version="collector-live-news-v1",
     )
-
-    if len(ingest_payload.get("records") or []) < 30:
-        raise RuntimeError(
-            f"insufficient live ingest records: got={len(ingest_payload.get('records') or [])}, required>=30"
-        )
-
-    candidate_preview = [c.classify_input() for c in discovery_result.valid_candidates[:100]]
-
+    candidate_preview = [c.classify_input() for c in gated_candidates[:100]]
     completeness_scores = [
         float(obs.legal_completeness_score or 0.0)
         for obs in output.poll_observations
     ]
-    avg_score = round(sum(completeness_scores) / len(completeness_scores), 4) if completeness_scores else 0.0
+
+    return {
+        "target_count": target_count,
+        "output": output,
+        "ingest_payload": ingest_payload,
+        "candidate_preview": candidate_preview,
+        "discovery_metrics": discovery_metrics,
+        "gate_metrics": gate_metrics,
+        "threshold_miss_count": threshold_miss_count,
+        "threshold_routed_count": threshold_routed_count,
+        "missing_counter": missing_counter,
+        "enriched_field_counter": enriched_field_counter,
+        "enrichment_source_counter": enrichment_source_counter,
+        "enriched_observation_count": enriched_observation_count,
+        "completeness_scores": completeness_scores,
+        "avg_score": round(sum(completeness_scores) / len(completeness_scores), 4) if completeness_scores else 0.0,
+    }
+
+
+def build_collector_live_news_v1_pack(
+    *,
+    target_count: int = DEFAULT_TARGET_COUNT,
+    per_query_limit: int = 12,
+    per_feed_limit: int = 40,
+    threshold: float = DEFAULT_THRESHOLD,
+    nesdc_enrich_path: str | None = DEFAULT_NESDC_ENRICH_PATH,
+    source_allowlist_domains: tuple[str, ...] = SOURCE_ALLOWLIST_DOMAINS,
+    source_quality_min_score: float = SOURCE_QUALITY_MIN_SCORE,
+    fallback_warn_threshold: float = FALLBACK_FETCH_RATIO_WARN_THRESHOLD,
+    election_id: str = "20260603",
+    pipeline: Any = None,
+    collector: PollCollector | None = None,
+) -> dict[str, Any]:
+    pipeline_runner = pipeline or _PipelineAdapter()
+    extractor = collector or PollCollector(election_id=election_id)
+    nesdc_index = _load_nesdc_enrichment_index(nesdc_enrich_path)
+
+    attempt_target_counts: list[int] = [target_count]
+    if target_count < AUTO_ESCALATE_TARGET_COUNT:
+        attempt_target_counts.append(AUTO_ESCALATE_TARGET_COUNT)
+
+    attempt_metrics: list[dict[str, Any]] = []
+    run_result: dict[str, Any] | None = None
+    for attempt_target_count in attempt_target_counts:
+        run_result = _run_live_news_pack_pass(
+            target_count=attempt_target_count,
+            per_query_limit=per_query_limit,
+            per_feed_limit=per_feed_limit,
+            threshold=threshold,
+            source_allowlist_domains=source_allowlist_domains,
+            source_quality_min_score=source_quality_min_score,
+            pipeline_runner=pipeline_runner,
+            extractor=extractor,
+            nesdc_index=nesdc_index,
+        )
+        discovery_metrics = run_result["discovery_metrics"]
+        gate_metrics = run_result["gate_metrics"]
+        ingest_record_count = len(run_result["ingest_payload"].get("records") or [])
+        fallback_fetch_ratio_raw = round(
+            float(discovery_metrics.get("fallback_fetch_count") or 0) / max(1, int(discovery_metrics.get("fetched_count") or 0)),
+            4,
+        )
+        attempt_metrics.append(
+            {
+                "target_count": attempt_target_count,
+                "ingest_record_count": ingest_record_count,
+                "fallback_fetch_ratio_raw": fallback_fetch_ratio_raw,
+                "fallback_fetch_ratio_post_gate": float(gate_metrics.get("fallback_ratio_pass") or 0.0),
+            }
+        )
+        if ingest_record_count >= MIN_INGEST_RECORDS:
+            break
+
+    if run_result is None:
+        raise RuntimeError("live news pack run not executed")
+
+    ingest_payload = run_result["ingest_payload"]
+    if len(ingest_payload.get("records") or []) < MIN_INGEST_RECORDS:
+        raise RuntimeError(
+            f"insufficient live ingest records after attempts: got={len(ingest_payload.get('records') or [])}, required>={MIN_INGEST_RECORDS}, attempts={attempt_metrics}"
+        )
+
+    output = run_result["output"]
+    candidate_preview = run_result["candidate_preview"]
+    discovery_metrics = run_result["discovery_metrics"]
+    gate_metrics = run_result["gate_metrics"]
+    threshold_miss_count = int(run_result["threshold_miss_count"])
+    threshold_routed_count = int(run_result["threshold_routed_count"])
+    missing_counter = run_result["missing_counter"]
+    enriched_field_counter = run_result["enriched_field_counter"]
+    enrichment_source_counter = run_result["enrichment_source_counter"]
+    enriched_observation_count = int(run_result["enriched_observation_count"])
+    completeness_scores = run_result["completeness_scores"]
+    avg_score = float(run_result["avg_score"])
+    effective_target_count = int(run_result["target_count"])
+    auto_escalation_applied = effective_target_count != target_count
+
+    fallback_fetch_ratio_raw = round(
+        float(discovery_metrics.get("fallback_fetch_count") or 0) / max(1, int(discovery_metrics.get("fetched_count") or 0)),
+        4,
+    )
+    fallback_ratio_post_gate = float(gate_metrics.get("fallback_ratio_pass") or 0.0)
+    fallback_ratio_raw_over = fallback_fetch_ratio_raw > fallback_warn_threshold
+    fallback_ratio_post_gate_over = fallback_ratio_post_gate > fallback_warn_threshold
 
     report = {
         "run_type": "collector_live_news_v1",
         "generated_at": datetime.now(timezone.utc).isoformat(),
-        "discovery_metrics": discovery_result.metrics(),
+        "discovery_metrics": {
+            **discovery_metrics,
+            "fallback_fetch_ratio_raw": fallback_fetch_ratio_raw,
+            "fallback_fetch_ratio_post_gate": fallback_ratio_post_gate,
+        },
+        "source_quality_gate": gate_metrics,
+        "execution_tuning": {
+            "requested_target_count": target_count,
+            "effective_target_count": effective_target_count,
+            "auto_escalation_applied": auto_escalation_applied,
+            "auto_escalate_target_count": AUTO_ESCALATE_TARGET_COUNT,
+            "attempts": attempt_metrics,
+        },
         "counts": {
             "article_count": len(output.articles),
             "observation_count": len(output.poll_observations),
@@ -509,6 +732,12 @@ def build_collector_live_news_v1_pack(
                 threshold_miss_count / max(1, len(output.poll_observations)),
                 4,
             ),
+            "fallback_fetch_ratio_raw": fallback_fetch_ratio_raw,
+            "fallback_fetch_ratio_post_gate": fallback_ratio_post_gate,
+            "fallback_fetch_ratio_threshold": fallback_warn_threshold,
+            "fallback_fetch_ratio_raw_over_threshold": fallback_ratio_raw_over,
+            "fallback_fetch_ratio_post_gate_over_threshold": fallback_ratio_post_gate_over,
+            "fallback_fetch_ratio_warn": fallback_ratio_raw_over or fallback_ratio_post_gate_over,
         },
     }
 
