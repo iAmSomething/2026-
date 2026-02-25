@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import threading
 import time
 from dataclasses import asdict, dataclass
 from datetime import datetime, timezone
@@ -25,6 +26,10 @@ class AttemptLog:
     request_timeout_seconds: float
     error: str | None = None
     detail: str | None = None
+    started_at: str | None = None
+    finished_at: str | None = None
+    duration_seconds: float | None = None
+    next_backoff_seconds: float | None = None
 
 
 @dataclass
@@ -33,6 +38,8 @@ class IngestRunnerResult:
     attempts: list[AttemptLog]
     run_ids: list[int]
     finished_at: str
+    started_at: str | None = None
+    elapsed_seconds: float | None = None
     failure_class: str | None = None
     failure_type: str | None = None
     failure_reason: str | None = None
@@ -42,7 +49,9 @@ class IngestRunnerResult:
             "success": self.success,
             "attempts": [asdict(item) for item in self.attempts],
             "run_ids": self.run_ids,
+            "started_at": self.started_at,
             "finished_at": self.finished_at,
+            "elapsed_seconds": self.elapsed_seconds,
             "failure_class": self.failure_class,
             "failure_type": self.failure_type,
             "failure_reason": self.failure_reason,
@@ -50,6 +59,7 @@ class IngestRunnerResult:
 
 
 RequestFn = Callable[[str, dict[str, str], dict[str, Any], float], httpx.Response]
+EventLogFn = Callable[[dict[str, Any]], None]
 
 
 def default_request_fn(
@@ -158,6 +168,56 @@ def _derive_failure_reason(attempts: list[AttemptLog]) -> str:
     return "unknown_failure"
 
 
+def _emit_event(event_log_fn: EventLogFn | None, *, event: str, **fields: Any) -> None:
+    if event_log_fn is None:
+        return
+    payload = {"ts": utc_now(), "event": event, **fields}
+    try:
+        event_log_fn(payload)
+    except Exception:  # noqa: BLE001
+        return
+
+
+def _request_with_optional_heartbeat(
+    *,
+    request_fn: RequestFn,
+    url: str,
+    headers: dict[str, str],
+    payload: dict[str, Any],
+    timeout: float,
+    event_log_fn: EventLogFn | None,
+    heartbeat_interval_seconds: float,
+    attempt: int,
+) -> httpx.Response:
+    if event_log_fn is None or heartbeat_interval_seconds <= 0:
+        return request_fn(url, headers, payload, timeout)
+
+    started = time.monotonic()
+    stop_event = threading.Event()
+
+    def _heartbeat() -> None:
+        tick = 1
+        while not stop_event.wait(heartbeat_interval_seconds):
+            elapsed = round(time.monotonic() - started, 3)
+            _emit_event(
+                event_log_fn,
+                event="attempt_waiting",
+                attempt=attempt,
+                heartbeat_tick=tick,
+                elapsed_seconds=elapsed,
+                request_timeout_seconds=timeout,
+            )
+            tick += 1
+
+    thread = threading.Thread(target=_heartbeat, daemon=True)
+    thread.start()
+    try:
+        return request_fn(url, headers, payload, timeout)
+    finally:
+        stop_event.set()
+        thread.join(timeout=0.1)
+
+
 def run_ingest_with_retry(
     *,
     api_base_url: str,
@@ -168,9 +228,13 @@ def run_ingest_with_retry(
     request_timeout: float = 180.0,
     timeout_scale_on_timeout: float = 1.5,
     timeout_max: float = 360.0,
+    heartbeat_interval_seconds: float = 30.0,
     request_fn: RequestFn = default_request_fn,
     sleep_fn: Callable[[float], None] = time.sleep,
+    event_log_fn: EventLogFn | None = None,
 ) -> IngestRunnerResult:
+    run_started_at = utc_now()
+    run_started_monotonic = time.monotonic()
     max_attempts = max(1, max_retries + 1)
     url = api_base_url.rstrip("/") + "/api/v1/jobs/run-ingest"
     headers = {"Authorization": f"Bearer {token}"}
@@ -179,14 +243,41 @@ def run_ingest_with_retry(
     current_timeout = max(1.0, request_timeout)
     timeout_scale = max(1.0, timeout_scale_on_timeout)
     timeout_ceiling = max(current_timeout, timeout_max)
+    _emit_event(
+        event_log_fn,
+        event="run_start",
+        api_base_url=api_base_url,
+        max_attempts=max_attempts,
+        max_retries=max_retries,
+        initial_request_timeout_seconds=current_timeout,
+        timeout_max_seconds=timeout_ceiling,
+    )
 
     for attempt in range(1, max_attempts + 1):
+        attempt_started_at = utc_now()
+        attempt_started_monotonic = time.monotonic()
         http_status: int | None = None
         job_status: str | None = None
         error: str | None = None
         detail: str | None = None
+        _emit_event(
+            event_log_fn,
+            event="attempt_start",
+            attempt=attempt,
+            max_attempts=max_attempts,
+            request_timeout_seconds=current_timeout,
+        )
         try:
-            response = request_fn(url, headers, payload, current_timeout)
+            response = _request_with_optional_heartbeat(
+                request_fn=request_fn,
+                url=url,
+                headers=headers,
+                payload=payload,
+                timeout=current_timeout,
+                event_log_fn=event_log_fn,
+                heartbeat_interval_seconds=heartbeat_interval_seconds,
+                attempt=attempt,
+            )
             http_status = response.status_code
             try:
                 body = response.json()
@@ -200,8 +291,15 @@ def run_ingest_with_retry(
         except Exception as exc:  # noqa: BLE001
             error = f"{exc.__class__.__name__}: {exc}"
 
+        attempt_finished_at = utc_now()
+        attempt_duration = round(time.monotonic() - attempt_started_monotonic, 3)
         failure_class = _classify_failure(http_status, job_status, error)
         retryable = _is_retryable_failure_class(failure_class)
+        next_backoff_seconds = (
+            _next_backoff_seconds(failure_class, backoff_seconds, attempt)
+            if attempt < max_attempts and retryable
+            else None
+        )
         attempts.append(
             AttemptLog(
                 attempt=attempt,
@@ -213,15 +311,43 @@ def run_ingest_with_retry(
                 request_timeout_seconds=current_timeout,
                 error=error,
                 detail=detail,
+                started_at=attempt_started_at,
+                finished_at=attempt_finished_at,
+                duration_seconds=attempt_duration,
+                next_backoff_seconds=next_backoff_seconds,
             )
+        )
+        _emit_event(
+            event_log_fn,
+            event="attempt_result",
+            attempt=attempt,
+            http_status=http_status,
+            job_status=job_status,
+            failure_class=failure_class,
+            failure_type=_to_failure_type(failure_class),
+            retryable=retryable,
+            duration_seconds=attempt_duration,
+            next_backoff_seconds=next_backoff_seconds,
+            error=error,
+            detail=detail,
         )
 
         if error is None and http_status == 200 and job_status == "success":
+            elapsed_seconds = round(time.monotonic() - run_started_monotonic, 3)
+            _emit_event(
+                event_log_fn,
+                event="run_end",
+                success=True,
+                elapsed_seconds=elapsed_seconds,
+                attempt_count=len(attempts),
+            )
             return IngestRunnerResult(
                 success=True,
                 attempts=attempts,
                 run_ids=run_ids,
+                started_at=run_started_at,
                 finished_at=utc_now(),
+                elapsed_seconds=elapsed_seconds,
                 failure_class=None,
                 failure_type=None,
                 failure_reason=None,
@@ -231,18 +357,48 @@ def run_ingest_with_retry(
             break
 
         if attempt < max_attempts and retryable:
-            sleep_fn(_next_backoff_seconds(failure_class, backoff_seconds, attempt))
+            backoff_wait = _next_backoff_seconds(failure_class, backoff_seconds, attempt)
+            _emit_event(
+                event_log_fn,
+                event="retry_wait",
+                attempt=attempt,
+                backoff_seconds=backoff_wait,
+                next_attempt=attempt + 1,
+            )
+            sleep_fn(backoff_wait)
             if failure_class == "timeout":
+                prev_timeout = current_timeout
                 current_timeout = min(current_timeout * timeout_scale, timeout_ceiling)
+                _emit_event(
+                    event_log_fn,
+                    event="timeout_scaled",
+                    attempt=attempt + 1,
+                    previous_request_timeout_seconds=prev_timeout,
+                    next_request_timeout_seconds=current_timeout,
+                )
 
+    elapsed_seconds = round(time.monotonic() - run_started_monotonic, 3)
+    failure_reason = _derive_failure_reason(attempts)
+    _emit_event(
+        event_log_fn,
+        event="run_end",
+        success=False,
+        elapsed_seconds=elapsed_seconds,
+        attempt_count=len(attempts),
+        failure_class=attempts[-1].failure_class if attempts else None,
+        failure_type=attempts[-1].failure_type if attempts else None,
+        failure_reason=failure_reason,
+    )
     return IngestRunnerResult(
         success=False,
         attempts=attempts,
         run_ids=run_ids,
+        started_at=run_started_at,
         finished_at=utc_now(),
+        elapsed_seconds=elapsed_seconds,
         failure_class=attempts[-1].failure_class if attempts else None,
         failure_type=attempts[-1].failure_type if attempts else None,
-        failure_reason=_derive_failure_reason(attempts),
+        failure_reason=failure_reason,
     )
 
 

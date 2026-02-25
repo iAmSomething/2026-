@@ -1,7 +1,10 @@
 from __future__ import annotations
 
+import json
+from pathlib import Path
+
 from app.jobs.ingest_runner import AttemptLog, IngestRunnerResult
-from scripts.qa.run_ingest_with_retry import is_effective_success
+from scripts.qa.run_ingest_with_retry import is_effective_success, write_failure_classification_artifact
 
 
 def _result(*, success: bool, failure_class: str | None) -> IngestRunnerResult:
@@ -39,3 +42,23 @@ def test_effective_success_true_when_partial_allowed() -> None:
 def test_effective_success_false_when_partial_not_allowed() -> None:
     result = _result(success=False, failure_class="job_partial_success")
     assert is_effective_success(result, allow_partial_success=False) is False
+
+
+def test_write_failure_classification_artifact(tmp_path: Path) -> None:
+    result = _result(success=False, failure_class="timeout")
+    out = write_failure_classification_artifact(
+        path=tmp_path / "classification.json",
+        source_input_path="data/collector_live_news_v1_payload.json",
+        payload={"run_type": "collector_live_news_v1", "records": [1, 2, 3]},
+        result=result,
+        success=False,
+        raw_success=False,
+        dead_letter_path="data/dead_letter/file.json",
+    )
+
+    saved = json.loads(out.read_text(encoding="utf-8"))
+    assert saved["schema_version"] == "collector_ingest_failure_classification.v1"
+    assert saved["runner"]["failure_class"] == "timeout"
+    assert saved["runner"]["attempt_count"] == 1
+    assert saved["payload_record_count"] == 3
+    assert saved["dead_letter_path"] == "data/dead_letter/file.json"
