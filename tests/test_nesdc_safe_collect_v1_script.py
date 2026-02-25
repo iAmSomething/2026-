@@ -17,19 +17,22 @@ def _registry_row(
     pollster: str,
     eligible: Any,
     registered_at: str = "2026-02-20 09:00",
+    first_publish_at_kst: str = "2026-02-20 09:30",
+    media_type: str = "방송(인터넷)신문∙뉴스통신",
 ) -> dict:
     return {
         "ntt_id": ntt_id,
         "detail_url": f"https://nesdc.test/{ntt_id}",
         "pollster": pollster,
         "registered_at": registered_at,
-        "first_publish_at_kst": "2026-02-20 09:30",
+        "first_publish_at_kst": first_publish_at_kst,
         "survey_datetime_text": "2026-02-19",
         "survey_population": "전국 만 18세 이상",
         "sample_size": 1000,
         "response_rate": 12.3,
         "margin_of_error_text": "95% 신뢰수준 ±3.1%p",
         "method": "전화면접",
+        "media_type": media_type,
         "auto_collect_eligible_48h": eligible,
     }
 
@@ -208,6 +211,7 @@ def test_safe_collect_blocks_explicit_true_within_48h_guard(tmp_path: Path) -> N
                 pollster="A",
                 eligible="true",
                 registered_at="2026-02-22 12:30",
+                first_publish_at_kst="2026-02-22 12:30",
             )
         ]
     }
@@ -230,3 +234,33 @@ def test_safe_collect_blocks_explicit_true_within_48h_guard(tmp_path: Path) -> N
     rq = out["review_queue_candidates"][0]
     assert rq["issue_type"] == "mapping_error"
     assert rq["error_code"] == "SAFE_WINDOW_GUARD_BLOCKED"
+
+
+def test_safe_collect_periodical_uses_48h_release_gate(tmp_path: Path) -> None:
+    registry = {
+        "records": [
+            _registry_row(
+                ntt_id="1",
+                pollster="A",
+                eligible=True,
+                first_publish_at_kst="2026-02-22 12:30",
+                media_type="잡지 등 정기간행물",
+            )
+        ]
+    }
+    adapter = {"records": [_adapter_row(ntt_id="1")]}
+
+    reg_path = tmp_path / "registry.json"
+    adp_path = tmp_path / "adapter.json"
+    reg_path.write_text(json.dumps(registry, ensure_ascii=False), encoding="utf-8")
+    adp_path.write_text(json.dumps(adapter, ensure_ascii=False), encoding="utf-8")
+
+    out = generate_nesdc_safe_collect_v1(
+        registry_path=str(reg_path),
+        adapter_path=str(adp_path),
+        as_of_kst=datetime(2026, 2, 23, 12, 0, tzinfo=KST),
+    )
+
+    assert out["report"]["counts"]["eligible_48h_total"] == 0
+    assert out["report"]["counts"]["pending_official_release_count"] == 1
+    assert out["data"]["pending_records"][0]["collect_status"] == "pending_official_release"

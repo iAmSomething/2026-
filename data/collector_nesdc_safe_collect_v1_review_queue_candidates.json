@@ -1,6 +1,6 @@
 [
   {
-    "id": "rvq_6b19d677fa4951ea",
+    "id": "rvq_7e8e22bae8236c5a",
     "entity_type": "poll_observation",
     "entity_id": "17456",
     "issue_type": "mapping_error",
@@ -12,13 +12,13 @@
       "ntt_id": "17456",
       "pollster": "(주)리얼미터",
       "template_ntt_id": "17470",
-      "safe_window_hours": 48
+      "release_policy_hours": 24
     },
     "status": "pending",
-    "created_at": "2026-02-23T10:20:09.968902+00:00"
+    "created_at": "2026-02-25T22:33:01.558382+00:00"
   },
   {
-    "id": "rvq_cb3fa5fb2c920e03",
+    "id": "rvq_c46cc74b455f8f28",
     "entity_type": "poll_observation",
     "entity_id": "17399",
     "issue_type": "mapping_error",
@@ -30,13 +30,13 @@
       "ntt_id": "17399",
       "pollster": "(주)엠브레인퍼블릭",
       "template_ntt_id": "17469",
-      "safe_window_hours": 48
+      "release_policy_hours": 24
     },
     "status": "pending",
-    "created_at": "2026-02-23T10:20:09.968957+00:00"
+    "created_at": "2026-02-25T22:33:01.558476+00:00"
   },
   {
-    "id": "rvq_b0792dfb5ca186d4",
+    "id": "rvq_8f9e92394f30adfb",
     "entity_type": "poll_observation",
     "entity_id": "17453",
     "issue_type": "extract_error",
@@ -47,13 +47,13 @@
     "payload": {
       "ntt_id": "17453",
       "pollster": "(주)리서치뷰",
-      "safe_window_hours": 48
+      "release_policy_hours": 24
     },
     "status": "pending",
-    "created_at": "2026-02-23T10:20:09.968969+00:00"
+    "created_at": "2026-02-25T22:33:01.558494+00:00"
   },
   {
-    "id": "rvq_a776b0512cf929e0",
+    "id": "rvq_c764ff236e4c1b48",
     "entity_type": "poll_observation",
     "entity_id": "17451",
     "issue_type": "extract_error",
@@ -64,13 +64,13 @@
     "payload": {
       "ntt_id": "17451",
       "pollster": "입소스 주식회사",
-      "safe_window_hours": 48
+      "release_policy_hours": 24
     },
     "status": "pending",
-    "created_at": "2026-02-23T10:20:09.968979+00:00"
+    "created_at": "2026-02-25T22:33:01.558504+00:00"
   },
   {
-    "id": "rvq_2d7a525e0d5502b6",
+    "id": "rvq_7e4640320d10d671",
     "entity_type": "poll_observation",
     "entity_id": "17449",
     "issue_type": "extract_error",
@@ -81,13 +81,13 @@
     "payload": {
       "ntt_id": "17449",
       "pollster": "입소스 주식회사",
-      "safe_window_hours": 48
+      "release_policy_hours": 24
     },
     "status": "pending",
-    "created_at": "2026-02-23T10:20:09.968985+00:00"
+    "created_at": "2026-02-25T22:33:01.558512+00:00"
   },
   {
-    "id": "rvq_661d6d9481ff59cc",
+    "id": "rvq_57f25942789029d5",
     "entity_type": "poll_observation",
     "entity_id": "17448",
     "issue_type": "extract_error",
@@ -98,13 +98,13 @@
     "payload": {
       "ntt_id": "17448",
       "pollster": "입소스 주식회사",
-      "safe_window_hours": 48
+      "release_policy_hours": 24
     },
     "status": "pending",
-    "created_at": "2026-02-23T10:20:09.968991+00:00"
+    "created_at": "2026-02-25T22:33:01.558519+00:00"
   },
   {
-    "id": "rvq_72e2e4bd931ef341",
+    "id": "rvq_486d8b0bb401a337",
     "entity_type": "poll_observation",
     "entity_id": "17450",
     "issue_type": "extract_error",
@@ -115,13 +115,13 @@
     "payload": {
       "ntt_id": "17450",
       "pollster": "한길리서치",
-      "safe_window_hours": 48
+      "release_policy_hours": 24
     },
     "status": "pending",
-    "created_at": "2026-02-23T10:20:09.968996+00:00"
+    "created_at": "2026-02-25T22:33:01.558527+00:00"
   },
   {
-    "id": "rvq_68af90faf3cd37dd",
+    "id": "rvq_08267088b9d754e7",
     "entity_type": "poll_observation",
     "entity_id": "17445",
     "issue_type": "extract_error",
@@ -132,13 +132,13 @@
     "payload": {
       "ntt_id": "17445",
       "pollster": "(주)비전코리아",
-      "safe_window_hours": 48
+      "release_policy_hours": 24
     },
     "status": "pending",
-    "created_at": "2026-02-23T10:20:09.969001+00:00"
+    "created_at": "2026-02-25T22:33:01.558539+00:00"
   },
   {
-    "id": "rvq_93db39f1e1064199",
+    "id": "rvq_845539bd88983b37",
     "entity_type": "poll_observation",
     "entity_id": "17444",
     "issue_type": "mapping_error",
@@ -150,13 +150,13 @@
       "ntt_id": "17444",
       "pollster": "(주)코리아리서치인터내셔널",
       "template_ntt_id": "17446",
-      "safe_window_hours": 48
+      "release_policy_hours": 24
     },
     "status": "pending",
-    "created_at": "2026-02-23T10:20:09.969059+00:00"
+    "created_at": "2026-02-25T22:33:01.558740+00:00"
   },
   {
-    "id": "rvq_8e223441e9444771",
+    "id": "rvq_2a4ca2d11f28b4bf",
     "entity_type": "poll_observation",
     "entity_id": "17443",
     "issue_type": "mapping_error",
@@ -168,13 +168,13 @@
       "ntt_id": "17443",
       "pollster": "(주)코리아리서치인터내셔널",
       "template_ntt_id": "17446",
-      "safe_window_hours": 48
+      "release_policy_hours": 24
     },
     "status": "pending",
-    "created_at": "2026-02-23T10:20:09.969089+00:00"
+    "created_at": "2026-02-25T22:33:01.558863+00:00"
   },
   {
-    "id": "rvq_dfe65729887b8380",
+    "id": "rvq_5e3d6c926369d7cf",
     "entity_type": "poll_observation",
     "entity_id": "17442",
     "issue_type": "extract_error",
@@ -185,13 +185,13 @@
     "payload": {
       "ntt_id": "17442",
       "pollster": "조원씨앤아이",
-      "safe_window_hours": 48
+      "release_policy_hours": 24
     },
     "status": "pending",
-    "created_at": "2026-02-23T10:20:09.969095+00:00"
+    "created_at": "2026-02-25T22:33:01.558888+00:00"
   },
   {
-    "id": "rvq_300e6f33c7e25d24",
+    "id": "rvq_a82873b2c60f8b0f",
     "entity_type": "poll_observation",
     "entity_id": "17437",
     "issue_type": "extract_error",
@@ -202,13 +202,13 @@
     "payload": {
       "ntt_id": "17437",
       "pollster": "모노커뮤니케이션즈(모노리서치)",
-      "safe_window_hours": 48
+      "release_policy_hours": 24
     },
     "status": "pending",
-    "created_at": "2026-02-23T10:20:09.969100+00:00"
+    "created_at": "2026-02-25T22:33:01.558916+00:00"
   },
   {
-    "id": "rvq_e4c6c5aa462244e8",
+    "id": "rvq_4b4a82506b339062",
     "entity_type": "poll_observation",
     "entity_id": "17439",
     "issue_type": "extract_error",
@@ -219,13 +219,13 @@
     "payload": {
       "ntt_id": "17439",
       "pollster": "(주)코리아정보리서치",
-      "safe_window_hours": 48
+      "release_policy_hours": 24
     },
     "status": "pending",
-    "created_at": "2026-02-23T10:20:09.969106+00:00"
+    "created_at": "2026-02-25T22:33:01.558935+00:00"
   },
   {
-    "id": "rvq_0cd83b7c274c72ec",
+    "id": "rvq_7333a0474c49498c",
     "entity_type": "poll_observation",
     "entity_id": "17436",
     "issue_type": "mapping_error",
@@ -237,13 +237,13 @@
       "ntt_id": "17436",
       "pollster": "(주)리얼미터",
       "template_ntt_id": "17470",
-      "safe_window_hours": 48
+      "release_policy_hours": 24
     },
     "status": "pending",
-    "created_at": "2026-02-23T10:20:09.969136+00:00"
+    "created_at": "2026-02-25T22:33:01.559025+00:00"
   },
   {
-    "id": "rvq_ed63139f473738e5",
+    "id": "rvq_83dcfa875940fd2f",
     "entity_type": "poll_observation",
     "entity_id": "17375",
     "issue_type": "mapping_error",
@@ -255,13 +255,13 @@
       "ntt_id": "17375",
       "pollster": "케이스탯리서치",
       "template_ntt_id": "17435",
-      "safe_window_hours": 48
+      "release_policy_hours": 24
     },
     "status": "pending",
-    "created_at": "2026-02-23T10:20:09.969192+00:00"
+    "created_at": "2026-02-25T22:33:01.559276+00:00"
   },
   {
-    "id": "rvq_ed4cd97dae836f6c",
+    "id": "rvq_2680f90383a2da77",
     "entity_type": "poll_observation",
     "entity_id": "17374",
     "issue_type": "mapping_error",
@@ -273,13 +273,13 @@
       "ntt_id": "17374",
       "pollster": "케이스탯리서치",
       "template_ntt_id": "17435",
-      "safe_window_hours": 48
+      "release_policy_hours": 24
     },
     "status": "pending",
-    "created_at": "2026-02-23T10:20:09.969223+00:00"
+    "created_at": "2026-02-25T22:33:01.559331+00:00"
   },
   {
-    "id": "rvq_ed5ea348eedf3114",
+    "id": "rvq_2aae91ef58451792",
     "entity_type": "poll_observation",
     "entity_id": "17373",
     "issue_type": "mapping_error",
@@ -291,13 +291,13 @@
       "ntt_id": "17373",
       "pollster": "케이스탯리서치",
       "template_ntt_id": "17435",
-      "safe_window_hours": 48
+      "release_policy_hours": 24
     },
     "status": "pending",
-    "created_at": "2026-02-23T10:20:09.969255+00:00"
+    "created_at": "2026-02-25T22:33:01.559367+00:00"
   },
   {
-    "id": "rvq_2308240882ffd5a9",
+    "id": "rvq_b8af8be715a370d9",
     "entity_type": "poll_observation",
     "entity_id": "17371",
     "issue_type": "mapping_error",
@@ -309,13 +309,13 @@
       "ntt_id": "17371",
       "pollster": "케이스탯리서치",
       "template_ntt_id": "17435",
-      "safe_window_hours": 48
+      "release_policy_hours": 24
     },
     "status": "pending",
-    "created_at": "2026-02-23T10:20:09.969284+00:00"
+    "created_at": "2026-02-25T22:33:01.559400+00:00"
   },
   {
-    "id": "rvq_6ad8bab17b49f9f8",
+    "id": "rvq_59e1f66670806cac",
     "entity_type": "poll_observation",
     "entity_id": "17370",
     "issue_type": "mapping_error",
@@ -327,13 +327,13 @@
       "ntt_id": "17370",
       "pollster": "케이스탯리서치",
       "template_ntt_id": "17435",
-      "safe_window_hours": 48
+      "release_policy_hours": 24
     },
     "status": "pending",
-    "created_at": "2026-02-23T10:20:09.969312+00:00"
+    "created_at": "2026-02-25T22:33:01.559436+00:00"
   },
   {
-    "id": "rvq_3242f934767fc7d4",
+    "id": "rvq_031dcdb45dfeb6d9",
     "entity_type": "poll_observation",
     "entity_id": "17369",
     "issue_type": "mapping_error",
@@ -345,13 +345,13 @@
       "ntt_id": "17369",
       "pollster": "케이스탯리서치",
       "template_ntt_id": "17435",
-      "safe_window_hours": 48
+      "release_policy_hours": 24
     },
     "status": "pending",
-    "created_at": "2026-02-23T10:20:09.969341+00:00"
+    "created_at": "2026-02-25T22:33:01.559469+00:00"
   },
   {
-    "id": "rvq_47684997aa288517",
+    "id": "rvq_869c00c033c9badc",
     "entity_type": "poll_observation",
     "entity_id": "17368",
     "issue_type": "mapping_error",
@@ -363,13 +363,13 @@
       "ntt_id": "17368",
       "pollster": "케이스탯리서치",
       "template_ntt_id": "17435",
-      "safe_window_hours": 48
+      "release_policy_hours": 24
     },
     "status": "pending",
-    "created_at": "2026-02-23T10:20:09.969371+00:00"
+    "created_at": "2026-02-25T22:33:01.559500+00:00"
   },
   {
-    "id": "rvq_8a835c4aaf3ab937",
+    "id": "rvq_c8a0e976676a709f",
     "entity_type": "poll_observation",
     "entity_id": "17396",
     "issue_type": "mapping_error",
@@ -381,13 +381,13 @@
       "ntt_id": "17396",
       "pollster": "(주)엠브레인퍼블릭",
       "template_ntt_id": "17469",
-      "safe_window_hours": 48
+      "release_policy_hours": 24
     },
     "status": "pending",
-    "created_at": "2026-02-23T10:20:09.969401+00:00"
+    "created_at": "2026-02-25T22:33:01.559532+00:00"
   },
   {
-    "id": "rvq_51a185f9038626f0",
+    "id": "rvq_779323af32399a4e",
     "entity_type": "poll_observation",
     "entity_id": "17391",
     "issue_type": "mapping_error",
@@ -399,13 +399,13 @@
       "ntt_id": "17391",
       "pollster": "(주)엠브레인퍼블릭",
       "template_ntt_id": "17469",
-      "safe_window_hours": 48
+      "release_policy_hours": 24
     },
     "status": "pending",
-    "created_at": "2026-02-23T10:20:09.969430+00:00"
+    "created_at": "2026-02-25T22:33:01.559563+00:00"
   },
   {
-    "id": "rvq_9c6085f5889bce59",
+    "id": "rvq_0964209a81494266",
     "entity_type": "poll_observation",
     "entity_id": "17382",
     "issue_type": "mapping_error",
@@ -417,13 +417,13 @@
       "ntt_id": "17382",
       "pollster": "(주)엠브레인퍼블릭",
       "template_ntt_id": "17469",
-      "safe_window_hours": 48
+      "release_policy_hours": 24
     },
     "status": "pending",
-    "created_at": "2026-02-23T10:20:09.969460+00:00"
+    "created_at": "2026-02-25T22:33:01.559599+00:00"
   },
   {
-    "id": "rvq_1c9b9f80f927ce91",
+    "id": "rvq_bb7b311c1f1b6ba4",
     "entity_type": "poll_observation",
     "entity_id": "17392",
     "issue_type": "mapping_error",
@@ -435,13 +435,13 @@
       "ntt_id": "17392",
       "pollster": "(주)엠브레인퍼블릭",
       "template_ntt_id": "17469",
-      "safe_window_hours": 48
+      "release_policy_hours": 24
     },
     "status": "pending",
-    "created_at": "2026-02-23T10:20:09.969491+00:00"
+    "created_at": "2026-02-25T22:33:01.559630+00:00"
   },
   {
-    "id": "rvq_a4dddfee118735b4",
+    "id": "rvq_c56c196abd5f1d74",
     "entity_type": "poll_observation",
     "entity_id": "17397",
     "issue_type": "mapping_error",
@@ -453,13 +453,13 @@
       "ntt_id": "17397",
       "pollster": "(주)엠브레인퍼블릭",
       "template_ntt_id": "17469",
-      "safe_window_hours": 48
+      "release_policy_hours": 24
     },
     "status": "pending",
-    "created_at": "2026-02-23T10:20:09.969520+00:00"
+    "created_at": "2026-02-25T22:33:01.559661+00:00"
   },
   {
-    "id": "rvq_86c5b51c679033e4",
+    "id": "rvq_cdbac5946d672b9d",
     "entity_type": "poll_observation",
     "entity_id": "17395",
     "issue_type": "mapping_error",
@@ -471,13 +471,13 @@
       "ntt_id": "17395",
       "pollster": "(주)엠브레인퍼블릭",
       "template_ntt_id": "17469",
-      "safe_window_hours": 48
+      "release_policy_hours": 24
     },
     "status": "pending",
-    "created_at": "2026-02-23T10:20:09.969548+00:00"
+    "created_at": "2026-02-25T22:33:01.559691+00:00"
   },
   {
-    "id": "rvq_3c6f3f4740db9e76",
+    "id": "rvq_513af633432bff3b",
     "entity_type": "poll_observation",
     "entity_id": "17393",
     "issue_type": "mapping_error",
@@ -489,13 +489,13 @@
       "ntt_id": "17393",
       "pollster": "(주)엠브레인퍼블릭",
       "template_ntt_id": "17469",
-      "safe_window_hours": 48
+      "release_policy_hours": 24
     },
     "status": "pending",
-    "created_at": "2026-02-23T10:20:09.969579+00:00"
+    "created_at": "2026-02-25T22:33:01.559722+00:00"
   },
   {
-    "id": "rvq_8306b3f37b4d96a0",
+    "id": "rvq_415b9b464b31518d",
     "entity_type": "poll_observation",
     "entity_id": "17394",
     "issue_type": "mapping_error",
@@ -507,13 +507,13 @@
       "ntt_id": "17394",
       "pollster": "(주)엠브레인퍼블릭",
       "template_ntt_id": "17469",
-      "safe_window_hours": 48
+      "release_policy_hours": 24
     },
     "status": "pending",
-    "created_at": "2026-02-23T10:20:09.969610+00:00"
+    "created_at": "2026-02-25T22:33:01.559759+00:00"
   },
   {
-    "id": "rvq_72e0e50f049d6160",
+    "id": "rvq_d07b0a4c9bdb79c5",
     "entity_type": "poll_observation",
     "entity_id": "17398",
     "issue_type": "mapping_error",
@@ -525,13 +525,13 @@
       "ntt_id": "17398",
       "pollster": "(주)엠브레인퍼블릭",
       "template_ntt_id": "17469",
-      "safe_window_hours": 48
+      "release_policy_hours": 24
     },
     "status": "pending",
-    "created_at": "2026-02-23T10:20:09.969640+00:00"
+    "created_at": "2026-02-25T22:33:01.559801+00:00"
   },
   {
-    "id": "rvq_f9cbad1ac78594b8",
+    "id": "rvq_9adfc65147671452",
     "entity_type": "poll_observation",
     "entity_id": "17419",
     "issue_type": "extract_error",
@@ -542,13 +542,13 @@
     "payload": {
       "ntt_id": "17419",
       "pollster": "(주)피앰아이",
-      "safe_window_hours": 48
+      "release_policy_hours": 24
     },
     "status": "pending",
-    "created_at": "2026-02-23T10:20:09.969646+00:00"
+    "created_at": "2026-02-25T22:33:01.559814+00:00"
   },
   {
-    "id": "rvq_6db48904f917b29e",
+    "id": "rvq_79ab7218bb303174",
     "entity_type": "poll_observation",
     "entity_id": "17417",
     "issue_type": "mapping_error",
@@ -560,13 +560,13 @@
       "ntt_id": "17417",
       "pollster": "(주)리얼미터",
       "template_ntt_id": "17470",
-      "safe_window_hours": 48
+      "release_policy_hours": 24
     },
     "status": "pending",
-    "created_at": "2026-02-23T10:20:09.969675+00:00"
+    "created_at": "2026-02-25T22:33:01.559852+00:00"
   },
   {
-    "id": "rvq_3bcc004d4c361608",
+    "id": "rvq_fe4a8e33ebc84b78",
     "entity_type": "poll_observation",
     "entity_id": "17416",
     "issue_type": "extract_error",
@@ -577,13 +577,13 @@
     "payload": {
       "ntt_id": "17416",
       "pollster": "모노커뮤니케이션즈(모노리서치)",
-      "safe_window_hours": 48
+      "release_policy_hours": 24
     },
     "status": "pending",
-    "created_at": "2026-02-23T10:20:09.969680+00:00"
+    "created_at": "2026-02-25T22:33:01.559863+00:00"
   },
   {
-    "id": "rvq_66a1a4aa28fcb9c8",
+    "id": "rvq_fbb2a635c8d98f2f",
     "entity_type": "poll_observation",
     "entity_id": "17407",
     "issue_type": "extract_error",
@@ -594,13 +594,13 @@
     "payload": {
       "ntt_id": "17407",
       "pollster": "(주)한국리서치",
-      "safe_window_hours": 48
+      "release_policy_hours": 24
     },
     "status": "pending",
-    "created_at": "2026-02-23T10:20:09.969686+00:00"
+    "created_at": "2026-02-25T22:33:01.559873+00:00"
   },
   {
-    "id": "rvq_fb86ac2af12b1d01",
+    "id": "rvq_403e78abfeb2d7e6",
     "entity_type": "poll_observation",
     "entity_id": "17405",
     "issue_type": "extract_error",
@@ -611,13 +611,13 @@
     "payload": {
       "ntt_id": "17405",
       "pollster": "(주)한국리서치",
-      "safe_window_hours": 48
+      "release_policy_hours": 24
     },
     "status": "pending",
-    "created_at": "2026-02-23T10:20:09.969692+00:00"
+    "created_at": "2026-02-25T22:33:01.559881+00:00"
   },
   {
-    "id": "rvq_b9969ba31078df8a",
+    "id": "rvq_6ee63e6aace527d5",
     "entity_type": "poll_observation",
     "entity_id": "17404",
     "issue_type": "extract_error",
@@ -628,13 +628,13 @@
     "payload": {
       "ntt_id": "17404",
       "pollster": "한국갤럽조사연구소",
-      "safe_window_hours": 48
+      "release_policy_hours": 24
     },
     "status": "pending",
-    "created_at": "2026-02-23T10:20:09.969697+00:00"
+    "created_at": "2026-02-25T22:33:01.559890+00:00"
   },
   {
-    "id": "rvq_dd54dd69accb5c7d",
+    "id": "rvq_7740f9c25edd878e",
     "entity_type": "poll_observation",
     "entity_id": "17403",
     "issue_type": "extract_error",
@@ -645,13 +645,13 @@
     "payload": {
       "ntt_id": "17403",
       "pollster": "(주)에브리리서치",
-      "safe_window_hours": 48
+      "release_policy_hours": 24
     },
     "status": "pending",
-    "created_at": "2026-02-23T10:20:09.969702+00:00"
+    "created_at": "2026-02-25T22:33:01.559899+00:00"
   },
   {
-    "id": "rvq_35c4a22084f70ead",
+    "id": "rvq_5baf3fcf5780103e",
     "entity_type": "poll_observation",
     "entity_id": "17402",
     "issue_type": "mapping_error",
@@ -663,13 +663,13 @@
       "ntt_id": "17402",
       "pollster": "(주)리얼미터",
       "template_ntt_id": "17470",
-      "safe_window_hours": 48
+      "release_policy_hours": 24
     },
     "status": "pending",
-    "created_at": "2026-02-23T10:20:09.969730+00:00"
+    "created_at": "2026-02-25T22:33:01.559943+00:00"
   },
   {
-    "id": "rvq_521326968677928b",
+    "id": "rvq_6a74f255067bb8b7",
     "entity_type": "poll_observation",
     "entity_id": "17401",
     "issue_type": "extract_error",
@@ -680,13 +680,13 @@
     "payload": {
       "ntt_id": "17401",
       "pollster": "한국정책연구원",
-      "safe_window_hours": 48
+      "release_policy_hours": 24
     },
     "status": "pending",
-    "created_at": "2026-02-23T10:20:09.969735+00:00"
+    "created_at": "2026-02-25T22:33:01.559954+00:00"
   },
   {
-    "id": "rvq_057e6ca16d7af8e9",
+    "id": "rvq_43aa8436ce58761b",
     "entity_type": "poll_observation",
     "entity_id": "17400",
     "issue_type": "extract_error",
@@ -697,13 +697,13 @@
     "payload": {
       "ntt_id": "17400",
       "pollster": "(주)리서치앤리서치",
-      "safe_window_hours": 48
+      "release_policy_hours": 24
     },
     "status": "pending",
-    "created_at": "2026-02-23T10:20:09.969740+00:00"
+    "created_at": "2026-02-25T22:33:01.559964+00:00"
   },
   {
-    "id": "rvq_f2c78364a89a9b61",
+    "id": "rvq_ffe95ca09ecdca45",
     "entity_type": "poll_observation",
     "entity_id": "17390",
     "issue_type": "extract_error",
@@ -714,13 +714,13 @@
     "payload": {
       "ntt_id": "17390",
       "pollster": "(주)코리아정보리서치",
-      "safe_window_hours": 48
+      "release_policy_hours": 24
     },
     "status": "pending",
-    "created_at": "2026-02-23T10:20:09.969745+00:00"
+    "created_at": "2026-02-25T22:33:01.559972+00:00"
   },
   {
-    "id": "rvq_6f208ee009cffed2",
+    "id": "rvq_9c53ea5f1e7bf2ee",
     "entity_type": "poll_observation",
     "entity_id": "17388",
     "issue_type": "extract_error",
@@ -731,13 +731,13 @@
     "payload": {
       "ntt_id": "17388",
       "pollster": "(주)코리아정보리서치",
-      "safe_window_hours": 48
+      "release_policy_hours": 24
     },
     "status": "pending",
-    "created_at": "2026-02-23T10:20:09.969750+00:00"
+    "created_at": "2026-02-25T22:33:01.559982+00:00"
   },
   {
-    "id": "rvq_e5ec0f9ce8b2d01d",
+    "id": "rvq_239d4103f095088c",
     "entity_type": "poll_observation",
     "entity_id": "17381",
     "issue_type": "extract_error",
@@ -748,13 +748,13 @@
     "payload": {
       "ntt_id": "17381",
       "pollster": "리서치웰",
-      "safe_window_hours": 48
+      "release_policy_hours": 24
     },
     "status": "pending",
-    "created_at": "2026-02-23T10:20:09.969755+00:00"
+    "created_at": "2026-02-25T22:33:01.559993+00:00"
   },
   {
-    "id": "rvq_162edcd95b9527a3",
+    "id": "rvq_fdeb4c7f9c806e99",
     "entity_type": "poll_observation",
     "entity_id": "17379",
     "issue_type": "extract_error",
@@ -765,13 +765,13 @@
     "payload": {
       "ntt_id": "17379",
       "pollster": "(주)시그널앤펄스",
-      "safe_window_hours": 48
+      "release_policy_hours": 24
     },
     "status": "pending",
-    "created_at": "2026-02-23T10:20:09.969760+00:00"
+    "created_at": "2026-02-25T22:33:01.560002+00:00"
   },
   {
-    "id": "rvq_edb4a48df957ef2a",
+    "id": "rvq_52e45a17e86c44c4",
     "entity_type": "poll_observation",
     "entity_id": "17378",
     "issue_type": "mapping_error",
@@ -783,13 +783,13 @@
       "ntt_id": "17378",
       "pollster": "(주)리얼미터",
       "template_ntt_id": "17470",
-      "safe_window_hours": 48
+      "release_policy_hours": 24
     },
     "status": "pending",
-    "created_at": "2026-02-23T10:20:09.969789+00:00"
+    "created_at": "2026-02-25T22:33:01.560042+00:00"
   },
   {
-    "id": "rvq_3e0ab26ddd1cd60c",
+    "id": "rvq_59a397362a071343",
     "entity_type": "poll_observation",
     "entity_id": "17376",
     "issue_type": "mapping_error",
@@ -801,13 +801,13 @@
       "ntt_id": "17376",
       "pollster": "(주)리얼미터",
       "template_ntt_id": "17470",
-      "safe_window_hours": 48
+      "release_policy_hours": 24
     },
     "status": "pending",
-    "created_at": "2026-02-23T10:20:09.969833+00:00"
+    "created_at": "2026-02-25T22:33:01.560080+00:00"
   },
   {
-    "id": "rvq_c2856527b10ea060",
+    "id": "rvq_6ad19b6bfd8d8292",
     "entity_type": "poll_observation",
     "entity_id": "17372",
     "issue_type": "extract_error",
@@ -818,13 +818,13 @@
     "payload": {
       "ntt_id": "17372",
       "pollster": "한길리서치",
-      "safe_window_hours": 48
+      "release_policy_hours": 24
     },
     "status": "pending",
-    "created_at": "2026-02-23T10:20:09.969850+00:00"
+    "created_at": "2026-02-25T22:33:01.560089+00:00"
   },
   {
-    "id": "rvq_290eea17fb10a4aa",
+    "id": "rvq_09a7862daf4c6486",
     "entity_type": "poll_observation",
     "entity_id": "17367",
     "issue_type": "extract_error",
@@ -835,13 +835,13 @@
     "payload": {
       "ntt_id": "17367",
       "pollster": "(주)비전코리아",
-      "safe_window_hours": 48
+      "release_policy_hours": 24
     },
     "status": "pending",
-    "created_at": "2026-02-23T10:20:09.969857+00:00"
+    "created_at": "2026-02-25T22:33:01.560098+00:00"
   },
   {
-    "id": "rvq_c99d9f4601b577e8",
+    "id": "rvq_2611a72ade5f8e9c",
     "entity_type": "poll_observation",
     "entity_id": "17366",
     "issue_type": "extract_error",
@@ -852,13 +852,13 @@
     "payload": {
       "ntt_id": "17366",
       "pollster": "(주)비전코리아",
-      "safe_window_hours": 48
+      "release_policy_hours": 24
     },
     "status": "pending",
-    "created_at": "2026-02-23T10:20:09.969865+00:00"
+    "created_at": "2026-02-25T22:33:01.560109+00:00"
   },
   {
-    "id": "rvq_91aae320d2491365",
+    "id": "rvq_85b47c75ebee58d7",
     "entity_type": "poll_observation",
     "entity_id": "17365",
     "issue_type": "extract_error",
@@ -869,13 +869,13 @@
     "payload": {
       "ntt_id": "17365",
       "pollster": "(주)여론조사꽃",
-      "safe_window_hours": 48
+      "release_policy_hours": 24
     },
     "status": "pending",
-    "created_at": "2026-02-23T10:20:09.969871+00:00"
+    "created_at": "2026-02-25T22:33:01.560118+00:00"
   },
   {
-    "id": "rvq_b2997c3f5fcdfb56",
+    "id": "rvq_ec319d57d44b1540",
     "entity_type": "poll_observation",
     "entity_id": "17364",
     "issue_type": "extract_error",
@@ -886,13 +886,13 @@
     "payload": {
       "ntt_id": "17364",
       "pollster": "(주)이너텍시스템즈",
-      "safe_window_hours": 48
+      "release_policy_hours": 24
     },
     "status": "pending",
-    "created_at": "2026-02-23T10:20:09.969876+00:00"
+    "created_at": "2026-02-25T22:33:01.560127+00:00"
   },
   {
-    "id": "rvq_c4dd84992aa1e5d4",
+    "id": "rvq_322542cbf36979af",
     "entity_type": "poll_observation",
     "entity_id": "17362",
     "issue_type": "extract_error",
@@ -903,13 +903,13 @@
     "payload": {
       "ntt_id": "17362",
       "pollster": "(주)코리아정보리서치",
-      "safe_window_hours": 48
+      "release_policy_hours": 24
     },
     "status": "pending",
-    "created_at": "2026-02-23T10:20:09.969882+00:00"
+    "created_at": "2026-02-25T22:33:01.560135+00:00"
   },
   {
-    "id": "rvq_75e004aa612ed087",
+    "id": "rvq_9c47a2ee49454ba9",
     "entity_type": "poll_observation",
     "entity_id": "17354",
     "issue_type": "extract_error",
@@ -920,13 +920,13 @@
     "payload": {
       "ntt_id": "17354",
       "pollster": "메타보이스(주)",
-      "safe_window_hours": 48
+      "release_policy_hours": 48
     },
     "status": "pending",
-    "created_at": "2026-02-23T10:20:09.969887+00:00"
+    "created_at": "2026-02-25T22:33:01.560144+00:00"
   },
   {
-    "id": "rvq_c2323348142067eb",
+    "id": "rvq_4b0f6fc0ebeaf0e8",
     "entity_type": "poll_observation",
     "entity_id": "17361",
     "issue_type": "extract_error",
@@ -937,13 +937,13 @@
     "payload": {
       "ntt_id": "17361",
       "pollster": "미디어토마토",
-      "safe_window_hours": 48
+      "release_policy_hours": 24
     },
     "status": "pending",
-    "created_at": "2026-02-23T10:20:09.969925+00:00"
+    "created_at": "2026-02-25T22:33:01.560152+00:00"
   },
   {
-    "id": "rvq_dacd1b33c08310af",
+    "id": "rvq_217d0a0fbdf6ae56",
     "entity_type": "poll_observation",
     "entity_id": "17360",
     "issue_type": "extract_error",
@@ -954,13 +954,13 @@
     "payload": {
       "ntt_id": "17360",
       "pollster": "(주)코리아정보리서치",
-      "safe_window_hours": 48
+      "release_policy_hours": 24
     },
     "status": "pending",
-    "created_at": "2026-02-23T10:20:09.969940+00:00"
+    "created_at": "2026-02-25T22:33:01.560161+00:00"
   },
   {
-    "id": "rvq_da3c5a669c83f943",
+    "id": "rvq_a5fce45b025d7f79",
     "entity_type": "poll_observation",
     "entity_id": "17358",
     "issue_type": "extract_error",
@@ -971,13 +971,13 @@
     "payload": {
       "ntt_id": "17358",
       "pollster": "(주)비전코리아",
-      "safe_window_hours": 48
+      "release_policy_hours": 24
     },
     "status": "pending",
-    "created_at": "2026-02-23T10:20:09.969947+00:00"
+    "created_at": "2026-02-25T22:33:01.560169+00:00"
   },
   {
-    "id": "rvq_9cda6db077588497",
+    "id": "rvq_9ebcac75700796e3",
     "entity_type": "poll_observation",
     "entity_id": "17355",
     "issue_type": "extract_error",
@@ -988,13 +988,13 @@
     "payload": {
       "ntt_id": "17355",
       "pollster": "케이에스오아이 주식회사(한국사회여론연구소)",
-      "safe_window_hours": 48
+      "release_policy_hours": 24
     },
     "status": "pending",
-    "created_at": "2026-02-23T10:20:09.969953+00:00"
+    "created_at": "2026-02-25T22:33:01.560178+00:00"
   },
   {
-    "id": "rvq_3009c61794643e39",
+    "id": "rvq_f9c2b74a59a9cbfd",
     "entity_type": "poll_observation",
     "entity_id": "17347",
     "issue_type": "extract_error",
@@ -1005,13 +1005,13 @@
     "payload": {
       "ntt_id": "17347",
       "pollster": "케이에스오아이 주식회사(한국사회여론연구소)",
-      "safe_window_hours": 48
+      "release_policy_hours": 24
     },
     "status": "pending",
-    "created_at": "2026-02-23T10:20:09.969958+00:00"
+    "created_at": "2026-02-25T22:33:01.560188+00:00"
   },
   {
-    "id": "rvq_beaf1d1d183069bf",
+    "id": "rvq_b732305fbb6a4a40",
     "entity_type": "poll_observation",
     "entity_id": "17349",
     "issue_type": "extract_error",
@@ -1022,13 +1022,13 @@
     "payload": {
       "ntt_id": "17349",
       "pollster": "케이에스오아이 주식회사(한국사회여론연구소)",
-      "safe_window_hours": 48
+      "release_policy_hours": 24
     },
     "status": "pending",
-    "created_at": "2026-02-23T10:20:09.969964+00:00"
+    "created_at": "2026-02-25T22:33:01.560197+00:00"
   },
   {
-    "id": "rvq_aa5e1a68dc104860",
+    "id": "rvq_7aa86a637a889c4f",
     "entity_type": "poll_observation",
     "entity_id": "17348",
     "issue_type": "extract_error",
@@ -1039,13 +1039,13 @@
     "payload": {
       "ntt_id": "17348",
       "pollster": "케이에스오아이 주식회사(한국사회여론연구소)",
-      "safe_window_hours": 48
+      "release_policy_hours": 24
     },
     "status": "pending",
-    "created_at": "2026-02-23T10:20:09.969969+00:00"
+    "created_at": "2026-02-25T22:33:01.560205+00:00"
   },
   {
-    "id": "rvq_3d0ffa0793ba7e03",
+    "id": "rvq_834e44231d18a663",
     "entity_type": "poll_observation",
     "entity_id": "17352",
     "issue_type": "mapping_error",
@@ -1057,13 +1057,13 @@
       "ntt_id": "17352",
       "pollster": "(주)리얼미터",
       "template_ntt_id": "17470",
-      "safe_window_hours": 48
+      "release_policy_hours": 24
     },
     "status": "pending",
-    "created_at": "2026-02-23T10:20:09.970176+00:00"
+    "created_at": "2026-02-25T22:33:01.560247+00:00"
   },
   {
-    "id": "rvq_fcb395343651a7e6",
+    "id": "rvq_e941b2746c8eceaa",
     "entity_type": "poll_observation",
     "entity_id": "17351",
     "issue_type": "mapping_error",
@@ -1075,13 +1075,13 @@
       "ntt_id": "17351",
       "pollster": "(주)리얼미터",
       "template_ntt_id": "17470",
-      "safe_window_hours": 48
+      "release_policy_hours": 24
     },
     "status": "pending",
-    "created_at": "2026-02-23T10:20:09.970209+00:00"
+    "created_at": "2026-02-25T22:33:01.560286+00:00"
   },
   {
-    "id": "rvq_4f441285ac1b531f",
+    "id": "rvq_f8c3c57405ba94cd",
     "entity_type": "poll_observation",
     "entity_id": "17350",
     "issue_type": "extract_error",
@@ -1092,13 +1092,13 @@
     "payload": {
       "ntt_id": "17350",
       "pollster": "(주)이너텍시스템즈",
-      "safe_window_hours": 48
+      "release_policy_hours": 24
     },
     "status": "pending",
-    "created_at": "2026-02-23T10:20:09.970215+00:00"
+    "created_at": "2026-02-25T22:33:01.560295+00:00"
   },
   {
-    "id": "rvq_1c966cb1049126a6",
+    "id": "rvq_875ff762573211f6",
     "entity_type": "poll_observation",
     "entity_id": "17346",
     "issue_type": "extract_error",
@@ -1109,13 +1109,13 @@
     "payload": {
       "ntt_id": "17346",
       "pollster": "(주)코리아정보리서치",
-      "safe_window_hours": 48
+      "release_policy_hours": 24
     },
     "status": "pending",
-    "created_at": "2026-02-23T10:20:09.970220+00:00"
+    "created_at": "2026-02-25T22:33:01.560302+00:00"
   },
   {
-    "id": "rvq_97611002f114cda0",
+    "id": "rvq_f039cecfb26e2403",
     "entity_type": "poll_observation",
     "entity_id": "17345",
     "issue_type": "extract_error",
@@ -1126,13 +1126,13 @@
     "payload": {
       "ntt_id": "17345",
       "pollster": "(주)에브리리서치",
-      "safe_window_hours": 48
+      "release_policy_hours": 24
     },
     "status": "pending",
-    "created_at": "2026-02-23T10:20:09.970225+00:00"
+    "created_at": "2026-02-25T22:33:01.560309+00:00"
   },
   {
-    "id": "rvq_58b8a5d0d9ab3253",
+    "id": "rvq_0afa429767f42fb4",
     "entity_type": "poll_observation",
     "entity_id": "17344",
     "issue_type": "extract_error",
@@ -1143,13 +1143,13 @@
     "payload": {
       "ntt_id": "17344",
       "pollster": "(주)에브리리서치",
-      "safe_window_hours": 48
+      "release_policy_hours": 24
     },
     "status": "pending",
-    "created_at": "2026-02-23T10:20:09.970266+00:00"
+    "created_at": "2026-02-25T22:33:01.560315+00:00"
   },
   {
-    "id": "rvq_44de7045433bd143",
+    "id": "rvq_d5216ec8a979714c",
     "entity_type": "poll_observation",
     "entity_id": "17342",
     "issue_type": "extract_error",
@@ -1160,13 +1160,13 @@
     "payload": {
       "ntt_id": "17342",
       "pollster": "한길리서치",
-      "safe_window_hours": 48
+      "release_policy_hours": 24
     },
     "status": "pending",
-    "created_at": "2026-02-23T10:20:09.970272+00:00"
+    "created_at": "2026-02-25T22:33:01.560323+00:00"
   },
   {
-    "id": "rvq_aa0364763eef286c",
+    "id": "rvq_6f2c0d290ce43c89",
     "entity_type": "poll_observation",
     "entity_id": "17298",
     "issue_type": "extract_error",
@@ -1177,13 +1177,13 @@
     "payload": {
       "ntt_id": "17298",
       "pollster": "(주)데일리리서치",
-      "safe_window_hours": 48
+      "release_policy_hours": 24
     },
     "status": "pending",
-    "created_at": "2026-02-23T10:20:09.970277+00:00"
+    "created_at": "2026-02-25T22:33:01.560330+00:00"
   },
   {
-    "id": "rvq_ed05847225dba55c",
+    "id": "rvq_c3c5572a5b6d32f2",
     "entity_type": "poll_observation",
     "entity_id": "17340",
     "issue_type": "extract_error",
@@ -1194,13 +1194,13 @@
     "payload": {
       "ntt_id": "17340",
       "pollster": "한국갤럽조사연구소",
-      "safe_window_hours": 48
+      "release_policy_hours": 24
     },
     "status": "pending",
-    "created_at": "2026-02-23T10:20:09.970282+00:00"
+    "created_at": "2026-02-25T22:33:01.560339+00:00"
   },
   {
-    "id": "rvq_ca214328359c6c54",
+    "id": "rvq_7f46fde51003f85f",
     "entity_type": "poll_observation",
     "entity_id": "17339",
     "issue_type": "extract_error",
@@ -1211,13 +1211,13 @@
     "payload": {
       "ntt_id": "17339",
       "pollster": "한국갤럽조사연구소",
-      "safe_window_hours": 48
+      "release_policy_hours": 24
     },
     "status": "pending",
-    "created_at": "2026-02-23T10:20:09.970287+00:00"
+    "created_at": "2026-02-25T22:33:01.560346+00:00"
   },
   {
-    "id": "rvq_588e250aae26b58c",
+    "id": "rvq_59e2fae471049635",
     "entity_type": "poll_observation",
     "entity_id": "17311",
     "issue_type": "extract_error",
@@ -1228,13 +1228,13 @@
     "payload": {
       "ntt_id": "17311",
       "pollster": "조원씨앤아이",
-      "safe_window_hours": 48
+      "release_policy_hours": 24
     },
     "status": "pending",
-    "created_at": "2026-02-23T10:20:09.970301+00:00"
+    "created_at": "2026-02-25T22:33:01.560352+00:00"
   },
   {
-    "id": "rvq_72a6045f238b405a",
+    "id": "rvq_63682e356fd5a5f7",
     "entity_type": "poll_observation",
     "entity_id": "17338",
     "issue_type": "extract_error",
@@ -1245,13 +1245,13 @@
     "payload": {
       "ntt_id": "17338",
       "pollster": "한국갤럽조사연구소",
-      "safe_window_hours": 48
+      "release_policy_hours": 24
     },
     "status": "pending",
-    "created_at": "2026-02-23T10:20:09.970310+00:00"
+    "created_at": "2026-02-25T22:33:01.560359+00:00"
   },
   {
-    "id": "rvq_26362dd0172d31fa",
+    "id": "rvq_3a2a0d88f2e34ef5",
     "entity_type": "poll_observation",
     "entity_id": "17337",
     "issue_type": "extract_error",
@@ -1262,13 +1262,13 @@
     "payload": {
       "ntt_id": "17337",
       "pollster": "한국갤럽조사연구소",
-      "safe_window_hours": 48
+      "release_policy_hours": 24
     },
     "status": "pending",
-    "created_at": "2026-02-23T10:20:09.970315+00:00"
+    "created_at": "2026-02-25T22:33:01.560370+00:00"
   },
   {
-    "id": "rvq_74a6f7aea7cf4879",
+    "id": "rvq_36fe3820608d99d8",
     "entity_type": "poll_observation",
     "entity_id": "17336",
     "issue_type": "extract_error",
@@ -1279,13 +1279,13 @@
     "payload": {
       "ntt_id": "17336",
       "pollster": "주식회사 한민리서치",
-      "safe_window_hours": 48
+      "release_policy_hours": 24
     },
     "status": "pending",
-    "created_at": "2026-02-23T10:20:09.970320+00:00"
+    "created_at": "2026-02-25T22:33:01.560377+00:00"
   },
   {
-    "id": "rvq_cf2b1d249ed856c0",
+    "id": "rvq_16c2c1c0e6f06d58",
     "entity_type": "poll_observation",
     "entity_id": "17322",
     "issue_type": "extract_error",
@@ -1296,13 +1296,13 @@
     "payload": {
       "ntt_id": "17322",
       "pollster": "(주)시그널앤펄스",
-      "safe_window_hours": 48
+      "release_policy_hours": 24
     },
     "status": "pending",
-    "created_at": "2026-02-23T10:20:09.970326+00:00"
+    "created_at": "2026-02-25T22:33:01.560384+00:00"
   },
   {
-    "id": "rvq_b3791d41dec9b29b",
+    "id": "rvq_62cccbc2b7055d73",
     "entity_type": "poll_observation",
     "entity_id": "17321",
     "issue_type": "extract_error",
@@ -1313,13 +1313,13 @@
     "payload": {
       "ntt_id": "17321",
       "pollster": "KPO리서치",
-      "safe_window_hours": 48
+      "release_policy_hours": 24
     },
     "status": "pending",
-    "created_at": "2026-02-23T10:20:09.970331+00:00"
+    "created_at": "2026-02-25T22:33:01.560390+00:00"
   },
   {
-    "id": "rvq_682b81aa78903d05",
+    "id": "rvq_456001cab8783cbe",
     "entity_type": "poll_observation",
     "entity_id": "17319",
     "issue_type": "extract_error",
@@ -1330,13 +1330,13 @@
     "payload": {
       "ntt_id": "17319",
       "pollster": "KPO리서치",
-      "safe_window_hours": 48
+      "release_policy_hours": 24
     },
     "status": "pending",
-    "created_at": "2026-02-23T10:20:09.970336+00:00"
+    "created_at": "2026-02-25T22:33:01.560397+00:00"
   },
   {
-    "id": "rvq_36a7b2346195b159",
+    "id": "rvq_0b0cff374e239384",
     "entity_type": "poll_observation",
     "entity_id": "17335",
     "issue_type": "extract_error",
@@ -1347,13 +1347,13 @@
     "payload": {
       "ntt_id": "17335",
       "pollster": "윈지코리아컨설팅",
-      "safe_window_hours": 48
+      "release_policy_hours": 24
     },
     "status": "pending",
-    "created_at": "2026-02-23T10:20:09.970341+00:00"
+    "created_at": "2026-02-25T22:33:01.560404+00:00"
   },
   {
-    "id": "rvq_c46aff621d744267",
+    "id": "rvq_1559e126f19e41ee",
     "entity_type": "poll_observation",
     "entity_id": "17334",
     "issue_type": "mapping_error",
@@ -1365,13 +1365,13 @@
       "ntt_id": "17334",
       "pollster": "(주)리얼미터",
       "template_ntt_id": "17470",
-      "safe_window_hours": 48
+      "release_policy_hours": 24
     },
     "status": "pending",
-    "created_at": "2026-02-23T10:20:09.970399+00:00"
+    "created_at": "2026-02-25T22:33:01.560435+00:00"
   },
   {
-    "id": "rvq_4b5faad4db8a1a30",
+    "id": "rvq_4bc982a3537e534e",
     "entity_type": "poll_observation",
     "entity_id": "17333",
     "issue_type": "mapping_error",
@@ -1383,13 +1383,13 @@
       "ntt_id": "17333",
       "pollster": "(주)리얼미터",
       "template_ntt_id": "17470",
-      "safe_window_hours": 48
+      "release_policy_hours": 24
     },
     "status": "pending",
-    "created_at": "2026-02-23T10:20:09.970434+00:00"
+    "created_at": "2026-02-25T22:33:01.560466+00:00"
   },
   {
-    "id": "rvq_5ab0fbdfd1f3cdcd",
+    "id": "rvq_5ac11a8da5530fd1",
     "entity_type": "poll_observation",
     "entity_id": "17332",
     "issue_type": "mapping_error",
@@ -1401,13 +1401,13 @@
       "ntt_id": "17332",
       "pollster": "(주)리얼미터",
       "template_ntt_id": "17470",
-      "safe_window_hours": 48
+      "release_policy_hours": 24
     },
     "status": "pending",
-    "created_at": "2026-02-23T10:20:09.970505+00:00"
+    "created_at": "2026-02-25T22:33:01.560496+00:00"
   },
   {
-    "id": "rvq_e6bcd77be03273de",
+    "id": "rvq_685c0b4aeb2ba46c",
     "entity_type": "poll_observation",
     "entity_id": "17329",
     "issue_type": "extract_error",
@@ -1418,13 +1418,13 @@
     "payload": {
       "ntt_id": "17329",
       "pollster": "조원씨앤아이",
-      "safe_window_hours": 48
+      "release_policy_hours": 24
     },
     "status": "pending",
-    "created_at": "2026-02-23T10:20:09.970511+00:00"
+    "created_at": "2026-02-25T22:33:01.560504+00:00"
   },
   {
-    "id": "rvq_6b3fb40c4dc10f2c",
+    "id": "rvq_4cef9515b8b364ff",
     "entity_type": "poll_observation",
     "entity_id": "17323",
     "issue_type": "extract_error",
@@ -1435,13 +1435,13 @@
     "payload": {
       "ntt_id": "17323",
       "pollster": "여론조사공정(주)",
-      "safe_window_hours": 48
+      "release_policy_hours": 24
     },
     "status": "pending",
-    "created_at": "2026-02-23T10:20:09.970517+00:00"
+    "created_at": "2026-02-25T22:33:01.560511+00:00"
   },
   {
-    "id": "rvq_3730d8845e2298ff",
+    "id": "rvq_c76df613b38c0fe5",
     "entity_type": "poll_observation",
     "entity_id": "17328",
     "issue_type": "mapping_error",
@@ -1453,13 +1453,13 @@
       "ntt_id": "17328",
       "pollster": "(주)리얼미터",
       "template_ntt_id": "17470",
-      "safe_window_hours": 48
+      "release_policy_hours": 24
     },
     "status": "pending",
-    "created_at": "2026-02-23T10:20:09.970546+00:00"
+    "created_at": "2026-02-25T22:33:01.560543+00:00"
   },
   {
-    "id": "rvq_93ff08024a40c2d0",
+    "id": "rvq_2d69bddeb6b8047b",
     "entity_type": "poll_observation",
     "entity_id": "17325",
     "issue_type": "extract_error",
@@ -1470,13 +1470,13 @@
     "payload": {
       "ntt_id": "17325",
       "pollster": "(주)알앤써치",
-      "safe_window_hours": 48
+      "release_policy_hours": 24
     },
     "status": "pending",
-    "created_at": "2026-02-23T10:20:09.970551+00:00"
+    "created_at": "2026-02-25T22:33:01.560550+00:00"
   },
   {
-    "id": "rvq_f23643a47593380a",
+    "id": "rvq_50c3b52a5401cf32",
     "entity_type": "poll_observation",
     "entity_id": "17324",
     "issue_type": "extract_error",
@@ -1487,13 +1487,13 @@
     "payload": {
       "ntt_id": "17324",
       "pollster": "(주)알앤써치",
-      "safe_window_hours": 48
+      "release_policy_hours": 24
     },
     "status": "pending",
-    "created_at": "2026-02-23T10:20:09.970559+00:00"
+    "created_at": "2026-02-25T22:33:01.560559+00:00"
   },
   {
-    "id": "rvq_ff56fd4d70ae2c91",
+    "id": "rvq_0dee8eaa261c72aa",
     "entity_type": "poll_observation",
     "entity_id": "17318",
     "issue_type": "extract_error",
@@ -1504,13 +1504,13 @@
     "payload": {
       "ntt_id": "17318",
       "pollster": "(주)시그널앤펄스",
-      "safe_window_hours": 48
+      "release_policy_hours": 24
     },
     "status": "pending",
-    "created_at": "2026-02-23T10:20:09.970564+00:00"
+    "created_at": "2026-02-25T22:33:01.560570+00:00"
   },
   {
-    "id": "rvq_df70618a4a536d57",
+    "id": "rvq_89a332e60a157e5f",
     "entity_type": "poll_observation",
     "entity_id": "17320",
     "issue_type": "extract_error",
@@ -1521,13 +1521,13 @@
     "payload": {
       "ntt_id": "17320",
       "pollster": "(주)리서치뷰",
-      "safe_window_hours": 48
+      "release_policy_hours": 24
     },
     "status": "pending",
-    "created_at": "2026-02-23T10:20:09.970569+00:00"
+    "created_at": "2026-02-25T22:33:01.560582+00:00"
   },
   {
-    "id": "rvq_15305dbfe0ee8003",
+    "id": "rvq_5eae549c757ffec5",
     "entity_type": "poll_observation",
     "entity_id": "17316",
     "issue_type": "extract_error",
@@ -1538,9 +1538,9 @@
     "payload": {
       "ntt_id": "17316",
       "pollster": "한국갤럽조사연구소",
-      "safe_window_hours": 48
+      "release_policy_hours": 24
     },
     "status": "pending",
-    "created_at": "2026-02-23T10:20:09.970574+00:00"
+    "created_at": "2026-02-25T22:33:01.560593+00:00"
   }
 ]
