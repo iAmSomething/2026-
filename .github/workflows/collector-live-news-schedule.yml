@@ -83,6 +83,70 @@ jobs:
             cp /tmp/collector-live-news-api.log data/collector_live_news_api.log
           fi
 
+      - name: Ensure failure classification artifact exists
+        if: always()
+        run: |
+          .venv/bin/python - <<'PY'
+          import json
+          from datetime import datetime, timezone
+          from pathlib import Path
+
+          classification_path = Path("data/collector_live_news_v1_failure_classification.json")
+          if classification_path.exists():
+              raise SystemExit(0)
+
+          payload_path = Path("data/collector_live_news_v1_payload.json")
+          report_path = Path("data/collector_live_news_v1_ingest_runner_report.json")
+
+          payload = {}
+          if payload_path.exists():
+              payload = json.loads(payload_path.read_text(encoding="utf-8"))
+          report = {}
+          if report_path.exists():
+              report = json.loads(report_path.read_text(encoding="utf-8"))
+
+          artifact = {
+              "schema_version": "collector_ingest_failure_classification.v1",
+              "generated_at": datetime.now(timezone.utc).isoformat(),
+              "source_input_path": str(payload_path),
+              "payload_run_type": payload.get("run_type"),
+              "payload_record_count": len(payload.get("records") or []),
+              "runner": {
+                  "success": bool(report.get("success")),
+                  "raw_success": bool(report.get("success")),
+                  "attempt_count": len(report.get("attempts") or []),
+                  "run_ids": report.get("run_ids") or [],
+                  "started_at": report.get("started_at"),
+                  "finished_at": report.get("finished_at"),
+                  "elapsed_seconds": report.get("elapsed_seconds"),
+                  "failure_class": report.get("failure_class") or "workflow_step_interrupted",
+                  "failure_type": report.get("failure_type") or "workflow_interrupted",
+                  "failure_reason": report.get("failure_reason")
+                  or "collector ingest step interrupted before runner classification persisted",
+                  "timeout_attempts": sum(
+                      1 for item in (report.get("attempts") or [])
+                      if item.get("failure_class") == "timeout"
+                  ),
+                  "failure_class_counts": {},
+              },
+              "dead_letter_path": None,
+              "attempt_timeline": report.get("attempts") or [],
+          }
+
+          failure_counts = {}
+          for item in artifact["attempt_timeline"]:
+              key = item.get("failure_class") or "none"
+              failure_counts[key] = failure_counts.get(key, 0) + 1
+          artifact["runner"]["failure_class_counts"] = failure_counts
+
+          classification_path.parent.mkdir(parents=True, exist_ok=True)
+          classification_path.write_text(
+              json.dumps(artifact, ensure_ascii=False, indent=2) + "\n",
+              encoding="utf-8",
+          )
+          print("generated fallback classification artifact:", classification_path)
+          PY
+
       - name: Upload artifacts
         if: always()
         uses: actions/upload-artifact@v4
