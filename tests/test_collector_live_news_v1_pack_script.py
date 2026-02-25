@@ -227,3 +227,37 @@ def test_live_news_pack_source_quality_gate_blocks_low_quality_fallbacks() -> No
     assert out["report"]["discovery_metrics"]["fallback_fetch_ratio_raw"] == 0.25
     assert out["report"]["discovery_metrics"]["fallback_fetch_ratio_post_gate"] == 0.0
     assert out["report"]["risk_signals"]["fallback_fetch_ratio_warn"] is True
+
+
+def test_live_news_pack_auto_escalates_target_count_when_ingest_short() -> None:
+    class AdaptivePipeline:
+        def __init__(self) -> None:
+            self.calls: list[int] = []
+
+        def run(self, *, target_count: int, per_query_limit: int, per_feed_limit: int) -> DiscoveryResultV11:  # noqa: ARG002
+            self.calls.append(target_count)
+            count = 25 if target_count < 160 else 35
+            result = DiscoveryResultV11()
+            result.valid_candidates = [_candidate(i, used_fallback=(i % 2 == 0)) for i in range(count)]
+            result.fetched_candidates = list(result.valid_candidates)
+            result.deduped_candidates = list(result.valid_candidates)
+            result.raw_candidates = list(result.valid_candidates)
+            return result
+
+    pipeline = AdaptivePipeline()
+    out = build_collector_live_news_v1_pack(
+        pipeline=pipeline,
+        collector=FakeCollector(),
+        threshold=0.8,
+        target_count=140,
+        nesdc_enrich_path=None,
+        source_allowlist_domains=("example.test",),
+    )
+
+    assert pipeline.calls == [140, 160]
+    assert len(out["ingest_payload"]["records"]) == 35
+    tuning = out["report"]["execution_tuning"]
+    assert tuning["requested_target_count"] == 140
+    assert tuning["effective_target_count"] == 160
+    assert tuning["auto_escalation_applied"] is True
+    assert len(tuning["attempts"]) == 2
