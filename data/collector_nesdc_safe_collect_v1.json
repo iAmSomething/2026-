@@ -7,7 +7,10 @@
       "pollster": "KOPRA",
       "registered_at": "2026-02-15",
       "first_publish_at_kst": "2026-02-16 08:00",
-      "safe_window_hours": 48,
+      "release_policy_hours": 24,
+      "release_at_kst": "2026-02-18T08:00:00+09:00",
+      "release_gate_passed": true,
+      "collect_status": "collected",
       "safe_window_eligible": true,
       "source_channel": "nesdc",
       "detail_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17457&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=1",
@@ -262,6 +265,10 @@
         }
       ],
       "adapter_mode": "adapter_exact",
+      "adapter_profile": {
+        "profile_key": "ntt:17457",
+        "pollster": "KOPRA"
+      },
       "fallback_applied": false
     },
     {
@@ -269,7 +276,10 @@
       "pollster": "(주)리얼미터",
       "registered_at": "2026-02-15",
       "first_publish_at_kst": "2026-02-16 00:00",
-      "safe_window_hours": 48,
+      "release_policy_hours": 24,
+      "release_at_kst": "2026-02-18T00:00:00+09:00",
+      "release_gate_passed": true,
+      "collect_status": "collected_template_fallback",
       "safe_window_eligible": true,
       "source_channel": "nesdc",
       "detail_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17456&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=1",
@@ -524,6 +534,10 @@
         }
       ],
       "adapter_mode": "adapter_pollster_template_fallback",
+      "adapter_profile": {
+        "profile_key": "pollster:(주)리얼미터",
+        "pollster": "(주)리얼미터"
+      },
       "fallback_applied": true
     },
     {
@@ -531,7 +545,10 @@
       "pollster": "(주)엠브레인퍼블릭",
       "registered_at": "2026-02-15",
       "first_publish_at_kst": "2026-02-15 20:00",
-      "safe_window_hours": 48,
+      "release_policy_hours": 24,
+      "release_at_kst": "2026-02-17T20:00:00+09:00",
+      "release_gate_passed": true,
+      "collect_status": "collected_template_fallback",
       "safe_window_eligible": true,
       "source_channel": "nesdc",
       "detail_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17399&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=1",
@@ -786,6 +803,10 @@
         }
       ],
       "adapter_mode": "adapter_pollster_template_fallback",
+      "adapter_profile": {
+        "profile_key": "pollster:(주)엠브레인퍼블릭",
+        "pollster": "(주)엠브레인퍼블릭"
+      },
       "fallback_applied": true
     },
     {
@@ -793,7 +814,10 @@
       "pollster": "(주)리서치뷰",
       "registered_at": "2026-02-15",
       "first_publish_at_kst": "2026-02-15 12:00",
-      "safe_window_hours": 48,
+      "release_policy_hours": 24,
+      "release_at_kst": "2026-02-17T12:00:00+09:00",
+      "release_gate_passed": true,
+      "collect_status": "fallback_collected",
       "safe_window_eligible": true,
       "source_channel": "nesdc",
       "detail_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17453&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=1",
@@ -807,6 +831,10 @@
       },
       "result_options": [],
       "adapter_mode": "fallback",
+      "adapter_profile": {
+        "profile_key": "ntt:17453",
+        "pollster": "(주)리서치뷰"
+      },
       "fallback_applied": true
     },
     {
@@ -814,7 +842,10 @@
       "pollster": "입소스 주식회사",
       "registered_at": "2026-02-15",
       "first_publish_at_kst": "2026-02-16 16:00",
-      "safe_window_hours": 48,
+      "release_policy_hours": 24,
+      "release_at_kst": "2026-02-18T16:00:00+09:00",
+      "release_gate_passed": true,
+      "collect_status": "fallback_collected",
       "safe_window_eligible": true,
       "source_channel": "nesdc",
       "detail_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17451&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=1",
@@ -828,6 +859,10 @@
       },
       "result_options": [],
       "adapter_mode": "fallback",
+      "adapter_profile": {
+        "profile_key": "ntt:17451",
+        "pollster": "입소스 주식회사"
+      },
       "fallback_applied": true
     },
     {
@@ -835,7 +870,10 @@
       "pollster": "입소스 주식회사",
       "registered_at": "2026-02-15",
       "first_publish_at_kst": "2026-02-15 16:00",
-      "safe_window_hours": 48,
+      "release_policy_hours": 24,
+      "release_at_kst": "2026-02-17T16:00:00+09:00",
+      "release_gate_passed": true,
+      "collect_status": "fallback_collected",
       "safe_window_eligible": true,
       "source_channel": "nesdc",
       "detail_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17449&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=2",
@@ -849,6 +887,10 @@
       },
       "result_options": [],
       "adapter_mode": "fallback",
+      "adapter_profile": {
+        "profile_key": "ntt:17449",
+        "pollster": "입소스 주식회사"
+      },
       "fallback_applied": true
     },
     {
@@ -856,7 +898,10 @@
       "pollster": "입소스 주식회사",
       "registered_at": "2026-02-15",
       "first_publish_at_kst": "2026-02-15 16:00",
-      "safe_window_hours": 48,
+      "release_policy_hours": 24,
+      "release_at_kst": "2026-02-17T16:00:00+09:00",
+      "release_gate_passed": true,
+      "collect_status": "fallback_collected",
       "safe_window_eligible": true,
       "source_channel": "nesdc",
       "detail_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17448&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=2",
@@ -870,6 +915,10 @@
       },
       "result_options": [],
       "adapter_mode": "fallback",
+      "adapter_profile": {
+        "profile_key": "ntt:17448",
+        "pollster": "입소스 주식회사"
+      },
       "fallback_applied": true
     },
     {
@@ -877,7 +926,10 @@
       "pollster": "한길리서치",
       "registered_at": "2026-02-14",
       "first_publish_at_kst": "2026-02-15 20:00",
-      "safe_window_hours": 48,
+      "release_policy_hours": 24,
+      "release_at_kst": "2026-02-17T20:00:00+09:00",
+      "release_gate_passed": true,
+      "collect_status": "fallback_collected",
       "safe_window_eligible": true,
       "source_channel": "nesdc",
       "detail_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17450&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=2",
@@ -891,6 +943,10 @@
       },
       "result_options": [],
       "adapter_mode": "fallback",
+      "adapter_profile": {
+        "profile_key": "ntt:17450",
+        "pollster": "한길리서치"
+      },
       "fallback_applied": true
     },
     {
@@ -898,7 +954,10 @@
       "pollster": "(주)비전코리아",
       "registered_at": "2026-02-14",
       "first_publish_at_kst": "2026-02-15 14:00",
-      "safe_window_hours": 48,
+      "release_policy_hours": 24,
+      "release_at_kst": "2026-02-17T14:00:00+09:00",
+      "release_gate_passed": true,
+      "collect_status": "fallback_collected",
       "safe_window_eligible": true,
       "source_channel": "nesdc",
       "detail_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17445&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=2",
@@ -912,6 +971,10 @@
       },
       "result_options": [],
       "adapter_mode": "fallback",
+      "adapter_profile": {
+        "profile_key": "ntt:17445",
+        "pollster": "(주)비전코리아"
+      },
       "fallback_applied": true
     },
     {
@@ -919,7 +982,10 @@
       "pollster": "(주)코리아리서치인터내셔널",
       "registered_at": "2026-02-14",
       "first_publish_at_kst": "2026-02-16 16:00",
-      "safe_window_hours": 48,
+      "release_policy_hours": 24,
+      "release_at_kst": "2026-02-18T16:00:00+09:00",
+      "release_gate_passed": true,
+      "collect_status": "collected",
       "safe_window_eligible": true,
       "source_channel": "nesdc",
       "detail_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17446&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=2",
@@ -1174,6 +1240,10 @@
         }
       ],
       "adapter_mode": "adapter_exact",
+      "adapter_profile": {
+        "profile_key": "ntt:17446",
+        "pollster": "(주)코리아리서치인터내셔널"
+      },
       "fallback_applied": false
     },
     {
@@ -1181,7 +1251,10 @@
       "pollster": "(주)코리아리서치인터내셔널",
       "registered_at": "2026-02-14",
       "first_publish_at_kst": "2026-02-15 16:00",
-      "safe_window_hours": 48,
+      "release_policy_hours": 24,
+      "release_at_kst": "2026-02-17T16:00:00+09:00",
+      "release_gate_passed": true,
+      "collect_status": "collected_template_fallback",
       "safe_window_eligible": true,
       "source_channel": "nesdc",
       "detail_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17444&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=2",
@@ -1436,6 +1509,10 @@
         }
       ],
       "adapter_mode": "adapter_pollster_template_fallback",
+      "adapter_profile": {
+        "profile_key": "pollster:(주)코리아리서치인터내셔널",
+        "pollster": "(주)코리아리서치인터내셔널"
+      },
       "fallback_applied": true
     },
     {
@@ -1443,7 +1520,10 @@
       "pollster": "(주)코리아리서치인터내셔널",
       "registered_at": "2026-02-14",
       "first_publish_at_kst": "2026-02-14 16:00",
-      "safe_window_hours": 48,
+      "release_policy_hours": 24,
+      "release_at_kst": "2026-02-16T16:00:00+09:00",
+      "release_gate_passed": true,
+      "collect_status": "collected_template_fallback",
       "safe_window_eligible": true,
       "source_channel": "nesdc",
       "detail_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17443&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=2",
@@ -1698,6 +1778,10 @@
         }
       ],
       "adapter_mode": "adapter_pollster_template_fallback",
+      "adapter_profile": {
+        "profile_key": "pollster:(주)코리아리서치인터내셔널",
+        "pollster": "(주)코리아리서치인터내셔널"
+      },
       "fallback_applied": true
     },
     {
@@ -1705,7 +1789,10 @@
       "pollster": "조원씨앤아이",
       "registered_at": "2026-02-14",
       "first_publish_at_kst": "2026-02-15 05:00",
-      "safe_window_hours": 48,
+      "release_policy_hours": 24,
+      "release_at_kst": "2026-02-17T05:00:00+09:00",
+      "release_gate_passed": true,
+      "collect_status": "fallback_collected",
       "safe_window_eligible": true,
       "source_channel": "nesdc",
       "detail_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17442&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=2",
@@ -1719,6 +1806,10 @@
       },
       "result_options": [],
       "adapter_mode": "fallback",
+      "adapter_profile": {
+        "profile_key": "ntt:17442",
+        "pollster": "조원씨앤아이"
+      },
       "fallback_applied": true
     },
     {
@@ -1726,7 +1817,10 @@
       "pollster": "모노커뮤니케이션즈(모노리서치)",
       "registered_at": "2026-02-14",
       "first_publish_at_kst": "2026-02-15 09:00",
-      "safe_window_hours": 48,
+      "release_policy_hours": 24,
+      "release_at_kst": "2026-02-17T09:00:00+09:00",
+      "release_gate_passed": true,
+      "collect_status": "fallback_collected",
       "safe_window_eligible": true,
       "source_channel": "nesdc",
       "detail_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17437&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=2",
@@ -1740,6 +1834,10 @@
       },
       "result_options": [],
       "adapter_mode": "fallback",
+      "adapter_profile": {
+        "profile_key": "ntt:17437",
+        "pollster": "모노커뮤니케이션즈(모노리서치)"
+      },
       "fallback_applied": true
     },
     {
@@ -1747,7 +1845,10 @@
       "pollster": "(주)코리아정보리서치",
       "registered_at": "2026-02-13",
       "first_publish_at_kst": "2026-02-14 13:00",
-      "safe_window_hours": 48,
+      "release_policy_hours": 24,
+      "release_at_kst": "2026-02-16T13:00:00+09:00",
+      "release_gate_passed": true,
+      "collect_status": "fallback_collected",
       "safe_window_eligible": true,
       "source_channel": "nesdc",
       "detail_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17439&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=2",
@@ -1761,6 +1862,10 @@
       },
       "result_options": [],
       "adapter_mode": "fallback",
+      "adapter_profile": {
+        "profile_key": "ntt:17439",
+        "pollster": "(주)코리아정보리서치"
+      },
       "fallback_applied": true
     },
     {
@@ -1768,7 +1873,10 @@
       "pollster": "(주)리얼미터",
       "registered_at": "2026-02-13",
       "first_publish_at_kst": "2026-02-15 14:00",
-      "safe_window_hours": 48,
+      "release_policy_hours": 24,
+      "release_at_kst": "2026-02-17T14:00:00+09:00",
+      "release_gate_passed": true,
+      "collect_status": "collected_template_fallback",
       "safe_window_eligible": true,
       "source_channel": "nesdc",
       "detail_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17436&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=3",
@@ -2023,6 +2131,10 @@
         }
       ],
       "adapter_mode": "adapter_pollster_template_fallback",
+      "adapter_profile": {
+        "profile_key": "pollster:(주)리얼미터",
+        "pollster": "(주)리얼미터"
+      },
       "fallback_applied": true
     },
     {
@@ -2030,7 +2142,10 @@
       "pollster": "케이스탯리서치",
       "registered_at": "2026-02-13",
       "first_publish_at_kst": "2026-02-13 19:00",
-      "safe_window_hours": 48,
+      "release_policy_hours": 24,
+      "release_at_kst": "2026-02-15T19:00:00+09:00",
+      "release_gate_passed": true,
+      "collect_status": "collected",
       "safe_window_eligible": true,
       "source_channel": "nesdc",
       "detail_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17435&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=3",
@@ -2285,6 +2400,10 @@
         }
       ],
       "adapter_mode": "adapter_exact",
+      "adapter_profile": {
+        "profile_key": "ntt:17435",
+        "pollster": "케이스탯리서치"
+      },
       "fallback_applied": false
     },
     {
@@ -2292,7 +2411,10 @@
       "pollster": "케이스탯리서치",
       "registered_at": "2026-02-13",
       "first_publish_at_kst": "2026-02-13 19:00",
-      "safe_window_hours": 48,
+      "release_policy_hours": 24,
+      "release_at_kst": "2026-02-15T19:00:00+09:00",
+      "release_gate_passed": true,
+      "collect_status": "collected_template_fallback",
       "safe_window_eligible": true,
       "source_channel": "nesdc",
       "detail_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17375&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=3",
@@ -2547,6 +2669,10 @@
         }
       ],
       "adapter_mode": "adapter_pollster_template_fallback",
+      "adapter_profile": {
+        "profile_key": "pollster:케이스탯리서치",
+        "pollster": "케이스탯리서치"
+      },
       "fallback_applied": true
     },
     {
@@ -2554,7 +2680,10 @@
       "pollster": "케이스탯리서치",
       "registered_at": "2026-02-13",
       "first_publish_at_kst": "2026-02-13 19:00",
-      "safe_window_hours": 48,
+      "release_policy_hours": 24,
+      "release_at_kst": "2026-02-15T19:00:00+09:00",
+      "release_gate_passed": true,
+      "collect_status": "collected_template_fallback",
       "safe_window_eligible": true,
       "source_channel": "nesdc",
       "detail_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17374&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=3",
@@ -2809,6 +2938,10 @@
         }
       ],
       "adapter_mode": "adapter_pollster_template_fallback",
+      "adapter_profile": {
+        "profile_key": "pollster:케이스탯리서치",
+        "pollster": "케이스탯리서치"
+      },
       "fallback_applied": true
     },
     {
@@ -2816,7 +2949,10 @@
       "pollster": "케이스탯리서치",
       "registered_at": "2026-02-13",
       "first_publish_at_kst": "2026-02-13 19:00",
-      "safe_window_hours": 48,
+      "release_policy_hours": 24,
+      "release_at_kst": "2026-02-15T19:00:00+09:00",
+      "release_gate_passed": true,
+      "collect_status": "collected_template_fallback",
       "safe_window_eligible": true,
       "source_channel": "nesdc",
       "detail_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17373&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=3",
@@ -3071,6 +3207,10 @@
         }
       ],
       "adapter_mode": "adapter_pollster_template_fallback",
+      "adapter_profile": {
+        "profile_key": "pollster:케이스탯리서치",
+        "pollster": "케이스탯리서치"
+      },
       "fallback_applied": true
     },
     {
@@ -3078,7 +3218,10 @@
       "pollster": "케이스탯리서치",
       "registered_at": "2026-02-13",
       "first_publish_at_kst": "2026-02-13 19:00",
-      "safe_window_hours": 48,
+      "release_policy_hours": 24,
+      "release_at_kst": "2026-02-15T19:00:00+09:00",
+      "release_gate_passed": true,
+      "collect_status": "collected_template_fallback",
       "safe_window_eligible": true,
       "source_channel": "nesdc",
       "detail_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17371&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=3",
@@ -3333,6 +3476,10 @@
         }
       ],
       "adapter_mode": "adapter_pollster_template_fallback",
+      "adapter_profile": {
+        "profile_key": "pollster:케이스탯리서치",
+        "pollster": "케이스탯리서치"
+      },
       "fallback_applied": true
     },
     {
@@ -3340,7 +3487,10 @@
       "pollster": "케이스탯리서치",
       "registered_at": "2026-02-13",
       "first_publish_at_kst": "2026-02-13 19:00",
-      "safe_window_hours": 48,
+      "release_policy_hours": 24,
+      "release_at_kst": "2026-02-15T19:00:00+09:00",
+      "release_gate_passed": true,
+      "collect_status": "collected_template_fallback",
       "safe_window_eligible": true,
       "source_channel": "nesdc",
       "detail_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17370&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=3",
@@ -3595,6 +3745,10 @@
         }
       ],
       "adapter_mode": "adapter_pollster_template_fallback",
+      "adapter_profile": {
+        "profile_key": "pollster:케이스탯리서치",
+        "pollster": "케이스탯리서치"
+      },
       "fallback_applied": true
     },
     {
@@ -3602,7 +3756,10 @@
       "pollster": "케이스탯리서치",
       "registered_at": "2026-02-13",
       "first_publish_at_kst": "2026-02-13 19:00",
-      "safe_window_hours": 48,
+      "release_policy_hours": 24,
+      "release_at_kst": "2026-02-15T19:00:00+09:00",
+      "release_gate_passed": true,
+      "collect_status": "collected_template_fallback",
       "safe_window_eligible": true,
       "source_channel": "nesdc",
       "detail_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17369&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=3",
@@ -3857,6 +4014,10 @@
         }
       ],
       "adapter_mode": "adapter_pollster_template_fallback",
+      "adapter_profile": {
+        "profile_key": "pollster:케이스탯리서치",
+        "pollster": "케이스탯리서치"
+      },
       "fallback_applied": true
     },
     {
@@ -3864,7 +4025,10 @@
       "pollster": "케이스탯리서치",
       "registered_at": "2026-02-13",
       "first_publish_at_kst": "2026-02-13 19:00",
-      "safe_window_hours": 48,
+      "release_policy_hours": 24,
+      "release_at_kst": "2026-02-15T19:00:00+09:00",
+      "release_gate_passed": true,
+      "collect_status": "collected_template_fallback",
       "safe_window_eligible": true,
       "source_channel": "nesdc",
       "detail_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17368&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=3",
@@ -4119,6 +4283,10 @@
         }
       ],
       "adapter_mode": "adapter_pollster_template_fallback",
+      "adapter_profile": {
+        "profile_key": "pollster:케이스탯리서치",
+        "pollster": "케이스탯리서치"
+      },
       "fallback_applied": true
     },
     {
@@ -4126,7 +4294,10 @@
       "pollster": "(주)엠브레인퍼블릭",
       "registered_at": "2026-02-13",
       "first_publish_at_kst": "2026-02-16 20:00",
-      "safe_window_hours": 48,
+      "release_policy_hours": 24,
+      "release_at_kst": "2026-02-18T20:00:00+09:00",
+      "release_gate_passed": true,
+      "collect_status": "collected_template_fallback",
       "safe_window_eligible": true,
       "source_channel": "nesdc",
       "detail_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17396&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=4",
@@ -4381,6 +4552,10 @@
         }
       ],
       "adapter_mode": "adapter_pollster_template_fallback",
+      "adapter_profile": {
+        "profile_key": "pollster:(주)엠브레인퍼블릭",
+        "pollster": "(주)엠브레인퍼블릭"
+      },
       "fallback_applied": true
     },
     {
@@ -4388,7 +4563,10 @@
       "pollster": "(주)엠브레인퍼블릭",
       "registered_at": "2026-02-13",
       "first_publish_at_kst": "2026-02-16 20:00",
-      "safe_window_hours": 48,
+      "release_policy_hours": 24,
+      "release_at_kst": "2026-02-18T20:00:00+09:00",
+      "release_gate_passed": true,
+      "collect_status": "collected_template_fallback",
       "safe_window_eligible": true,
       "source_channel": "nesdc",
       "detail_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17391&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=4",
@@ -4643,6 +4821,10 @@
         }
       ],
       "adapter_mode": "adapter_pollster_template_fallback",
+      "adapter_profile": {
+        "profile_key": "pollster:(주)엠브레인퍼블릭",
+        "pollster": "(주)엠브레인퍼블릭"
+      },
       "fallback_applied": true
     },
     {
@@ -4650,7 +4832,10 @@
       "pollster": "(주)엠브레인퍼블릭",
       "registered_at": "2026-02-13",
       "first_publish_at_kst": "2026-02-16 20:00",
-      "safe_window_hours": 48,
+      "release_policy_hours": 24,
+      "release_at_kst": "2026-02-18T20:00:00+09:00",
+      "release_gate_passed": true,
+      "collect_status": "collected_template_fallback",
       "safe_window_eligible": true,
       "source_channel": "nesdc",
       "detail_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17382&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=5",
@@ -4905,6 +5090,10 @@
         }
       ],
       "adapter_mode": "adapter_pollster_template_fallback",
+      "adapter_profile": {
+        "profile_key": "pollster:(주)엠브레인퍼블릭",
+        "pollster": "(주)엠브레인퍼블릭"
+      },
       "fallback_applied": true
     },
     {
@@ -4912,7 +5101,10 @@
       "pollster": "(주)엠브레인퍼블릭",
       "registered_at": "2026-02-13",
       "first_publish_at_kst": "2026-02-16 20:00",
-      "safe_window_hours": 48,
+      "release_policy_hours": 24,
+      "release_at_kst": "2026-02-18T20:00:00+09:00",
+      "release_gate_passed": true,
+      "collect_status": "collected_template_fallback",
       "safe_window_eligible": true,
       "source_channel": "nesdc",
       "detail_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17392&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=5",
@@ -5167,6 +5359,10 @@
         }
       ],
       "adapter_mode": "adapter_pollster_template_fallback",
+      "adapter_profile": {
+        "profile_key": "pollster:(주)엠브레인퍼블릭",
+        "pollster": "(주)엠브레인퍼블릭"
+      },
       "fallback_applied": true
     },
     {
@@ -5174,7 +5370,10 @@
       "pollster": "(주)엠브레인퍼블릭",
       "registered_at": "2026-02-13",
       "first_publish_at_kst": "2026-02-16 20:00",
-      "safe_window_hours": 48,
+      "release_policy_hours": 24,
+      "release_at_kst": "2026-02-18T20:00:00+09:00",
+      "release_gate_passed": true,
+      "collect_status": "collected_template_fallback",
       "safe_window_eligible": true,
       "source_channel": "nesdc",
       "detail_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17397&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=5",
@@ -5429,6 +5628,10 @@
         }
       ],
       "adapter_mode": "adapter_pollster_template_fallback",
+      "adapter_profile": {
+        "profile_key": "pollster:(주)엠브레인퍼블릭",
+        "pollster": "(주)엠브레인퍼블릭"
+      },
       "fallback_applied": true
     },
     {
@@ -5436,7 +5639,10 @@
       "pollster": "(주)엠브레인퍼블릭",
       "registered_at": "2026-02-13",
       "first_publish_at_kst": "2026-02-16 20:00",
-      "safe_window_hours": 48,
+      "release_policy_hours": 24,
+      "release_at_kst": "2026-02-18T20:00:00+09:00",
+      "release_gate_passed": true,
+      "collect_status": "collected_template_fallback",
       "safe_window_eligible": true,
       "source_channel": "nesdc",
       "detail_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17395&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=5",
@@ -5691,6 +5897,10 @@
         }
       ],
       "adapter_mode": "adapter_pollster_template_fallback",
+      "adapter_profile": {
+        "profile_key": "pollster:(주)엠브레인퍼블릭",
+        "pollster": "(주)엠브레인퍼블릭"
+      },
       "fallback_applied": true
     },
     {
@@ -5698,7 +5908,10 @@
       "pollster": "(주)엠브레인퍼블릭",
       "registered_at": "2026-02-13",
       "first_publish_at_kst": "2026-02-15 20:00",
-      "safe_window_hours": 48,
+      "release_policy_hours": 24,
+      "release_at_kst": "2026-02-17T20:00:00+09:00",
+      "release_gate_passed": true,
+      "collect_status": "collected_template_fallback",
       "safe_window_eligible": true,
       "source_channel": "nesdc",
       "detail_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17393&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=5",
@@ -5953,6 +6166,10 @@
         }
       ],
       "adapter_mode": "adapter_pollster_template_fallback",
+      "adapter_profile": {
+        "profile_key": "pollster:(주)엠브레인퍼블릭",
+        "pollster": "(주)엠브레인퍼블릭"
+      },
       "fallback_applied": true
     },
     {
@@ -5960,7 +6177,10 @@
       "pollster": "(주)엠브레인퍼블릭",
       "registered_at": "2026-02-13",
       "first_publish_at_kst": "2026-02-15 20:00",
-      "safe_window_hours": 48,
+      "release_policy_hours": 24,
+      "release_at_kst": "2026-02-17T20:00:00+09:00",
+      "release_gate_passed": true,
+      "collect_status": "collected_template_fallback",
       "safe_window_eligible": true,
       "source_channel": "nesdc",
       "detail_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17394&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=5",
@@ -6215,6 +6435,10 @@
         }
       ],
       "adapter_mode": "adapter_pollster_template_fallback",
+      "adapter_profile": {
+        "profile_key": "pollster:(주)엠브레인퍼블릭",
+        "pollster": "(주)엠브레인퍼블릭"
+      },
       "fallback_applied": true
     },
     {
@@ -6222,7 +6446,10 @@
       "pollster": "(주)엠브레인퍼블릭",
       "registered_at": "2026-02-13",
       "first_publish_at_kst": "2026-02-15 20:00",
-      "safe_window_hours": 48,
+      "release_policy_hours": 24,
+      "release_at_kst": "2026-02-17T20:00:00+09:00",
+      "release_gate_passed": true,
+      "collect_status": "collected_template_fallback",
       "safe_window_eligible": true,
       "source_channel": "nesdc",
       "detail_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17398&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=5",
@@ -6477,6 +6704,10 @@
         }
       ],
       "adapter_mode": "adapter_pollster_template_fallback",
+      "adapter_profile": {
+        "profile_key": "pollster:(주)엠브레인퍼블릭",
+        "pollster": "(주)엠브레인퍼블릭"
+      },
       "fallback_applied": true
     },
     {
@@ -6484,7 +6715,10 @@
       "pollster": "(주)피앰아이",
       "registered_at": "2026-02-13",
       "first_publish_at_kst": "2026-02-13 05:33",
-      "safe_window_hours": 48,
+      "release_policy_hours": 24,
+      "release_at_kst": "2026-02-15T05:33:00+09:00",
+      "release_gate_passed": true,
+      "collect_status": "fallback_collected",
       "safe_window_eligible": true,
       "source_channel": "nesdc",
       "detail_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17419&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=5",
@@ -6498,6 +6732,10 @@
       },
       "result_options": [],
       "adapter_mode": "fallback",
+      "adapter_profile": {
+        "profile_key": "ntt:17419",
+        "pollster": "(주)피앰아이"
+      },
       "fallback_applied": true
     },
     {
@@ -6505,7 +6743,10 @@
       "pollster": "(주)리얼미터",
       "registered_at": "2026-02-13",
       "first_publish_at_kst": "2026-02-17 05:00",
-      "safe_window_hours": 48,
+      "release_policy_hours": 24,
+      "release_at_kst": "2026-02-19T05:00:00+09:00",
+      "release_gate_passed": true,
+      "collect_status": "collected_template_fallback",
       "safe_window_eligible": true,
       "source_channel": "nesdc",
       "detail_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17417&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=5",
@@ -6760,6 +7001,10 @@
         }
       ],
       "adapter_mode": "adapter_pollster_template_fallback",
+      "adapter_profile": {
+        "profile_key": "pollster:(주)리얼미터",
+        "pollster": "(주)리얼미터"
+      },
       "fallback_applied": true
     },
     {
@@ -6767,7 +7012,10 @@
       "pollster": "모노커뮤니케이션즈(모노리서치)",
       "registered_at": "2026-02-13",
       "first_publish_at_kst": "2026-02-13 17:00",
-      "safe_window_hours": 48,
+      "release_policy_hours": 24,
+      "release_at_kst": "2026-02-15T17:00:00+09:00",
+      "release_gate_passed": true,
+      "collect_status": "fallback_collected",
       "safe_window_eligible": true,
       "source_channel": "nesdc",
       "detail_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17416&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=5",
@@ -6781,6 +7029,10 @@
       },
       "result_options": [],
       "adapter_mode": "fallback",
+      "adapter_profile": {
+        "profile_key": "ntt:17416",
+        "pollster": "모노커뮤니케이션즈(모노리서치)"
+      },
       "fallback_applied": true
     },
     {
@@ -6788,7 +7040,10 @@
       "pollster": "(주)한국리서치",
       "registered_at": "2026-02-12",
       "first_publish_at_kst": "2026-02-16 21:00",
-      "safe_window_hours": 48,
+      "release_policy_hours": 24,
+      "release_at_kst": "2026-02-18T21:00:00+09:00",
+      "release_gate_passed": true,
+      "collect_status": "fallback_collected",
       "safe_window_eligible": true,
       "source_channel": "nesdc",
       "detail_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17407&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=6",
@@ -6802,6 +7057,10 @@
       },
       "result_options": [],
       "adapter_mode": "fallback",
+      "adapter_profile": {
+        "profile_key": "ntt:17407",
+        "pollster": "(주)한국리서치"
+      },
       "fallback_applied": true
     },
     {
@@ -6809,7 +7068,10 @@
       "pollster": "(주)한국리서치",
       "registered_at": "2026-02-12",
       "first_publish_at_kst": "2026-02-15 21:00",
-      "safe_window_hours": 48,
+      "release_policy_hours": 24,
+      "release_at_kst": "2026-02-17T21:00:00+09:00",
+      "release_gate_passed": true,
+      "collect_status": "fallback_collected",
       "safe_window_eligible": true,
       "source_channel": "nesdc",
       "detail_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17405&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=6",
@@ -6823,6 +7085,10 @@
       },
       "result_options": [],
       "adapter_mode": "fallback",
+      "adapter_profile": {
+        "profile_key": "ntt:17405",
+        "pollster": "(주)한국리서치"
+      },
       "fallback_applied": true
     },
     {
@@ -6830,7 +7096,10 @@
       "pollster": "한국갤럽조사연구소",
       "registered_at": "2026-02-12",
       "first_publish_at_kst": "2026-02-13 10:00",
-      "safe_window_hours": 48,
+      "release_policy_hours": 24,
+      "release_at_kst": "2026-02-15T10:00:00+09:00",
+      "release_gate_passed": true,
+      "collect_status": "fallback_collected",
       "safe_window_eligible": true,
       "source_channel": "nesdc",
       "detail_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17404&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=6",
@@ -6844,6 +7113,10 @@
       },
       "result_options": [],
       "adapter_mode": "fallback",
+      "adapter_profile": {
+        "profile_key": "ntt:17404",
+        "pollster": "한국갤럽조사연구소"
+      },
       "fallback_applied": true
     },
     {
@@ -6851,7 +7124,10 @@
       "pollster": "(주)에브리리서치",
       "registered_at": "2026-02-12",
       "first_publish_at_kst": "2026-02-14 14:00",
-      "safe_window_hours": 48,
+      "release_policy_hours": 24,
+      "release_at_kst": "2026-02-16T14:00:00+09:00",
+      "release_gate_passed": true,
+      "collect_status": "fallback_collected",
       "safe_window_eligible": true,
       "source_channel": "nesdc",
       "detail_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17403&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=6",
@@ -6865,6 +7141,10 @@
       },
       "result_options": [],
       "adapter_mode": "fallback",
+      "adapter_profile": {
+        "profile_key": "ntt:17403",
+        "pollster": "(주)에브리리서치"
+      },
       "fallback_applied": true
     },
     {
@@ -6872,7 +7152,10 @@
       "pollster": "(주)리얼미터",
       "registered_at": "2026-02-12",
       "first_publish_at_kst": "2026-02-13 14:00",
-      "safe_window_hours": 48,
+      "release_policy_hours": 24,
+      "release_at_kst": "2026-02-15T14:00:00+09:00",
+      "release_gate_passed": true,
+      "collect_status": "collected_template_fallback",
       "safe_window_eligible": true,
       "source_channel": "nesdc",
       "detail_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17402&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=6",
@@ -7127,6 +7410,10 @@
         }
       ],
       "adapter_mode": "adapter_pollster_template_fallback",
+      "adapter_profile": {
+        "profile_key": "pollster:(주)리얼미터",
+        "pollster": "(주)리얼미터"
+      },
       "fallback_applied": true
     },
     {
@@ -7134,7 +7421,10 @@
       "pollster": "한국정책연구원",
       "registered_at": "2026-02-12",
       "first_publish_at_kst": "2026-02-13 02:00",
-      "safe_window_hours": 48,
+      "release_policy_hours": 24,
+      "release_at_kst": "2026-02-15T02:00:00+09:00",
+      "release_gate_passed": true,
+      "collect_status": "fallback_collected",
       "safe_window_eligible": true,
       "source_channel": "nesdc",
       "detail_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17401&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=6",
@@ -7148,6 +7438,10 @@
       },
       "result_options": [],
       "adapter_mode": "fallback",
+      "adapter_profile": {
+        "profile_key": "ntt:17401",
+        "pollster": "한국정책연구원"
+      },
       "fallback_applied": true
     },
     {
@@ -7155,7 +7449,10 @@
       "pollster": "(주)리서치앤리서치",
       "registered_at": "2026-02-12",
       "first_publish_at_kst": "2026-02-13 07:00",
-      "safe_window_hours": 48,
+      "release_policy_hours": 24,
+      "release_at_kst": "2026-02-15T07:00:00+09:00",
+      "release_gate_passed": true,
+      "collect_status": "fallback_collected",
       "safe_window_eligible": true,
       "source_channel": "nesdc",
       "detail_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17400&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=6",
@@ -7169,6 +7466,10 @@
       },
       "result_options": [],
       "adapter_mode": "fallback",
+      "adapter_profile": {
+        "profile_key": "ntt:17400",
+        "pollster": "(주)리서치앤리서치"
+      },
       "fallback_applied": true
     },
     {
@@ -7176,7 +7477,10 @@
       "pollster": "(주)코리아정보리서치",
       "registered_at": "2026-02-12",
       "first_publish_at_kst": "2026-02-13 12:01",
-      "safe_window_hours": 48,
+      "release_policy_hours": 24,
+      "release_at_kst": "2026-02-15T12:01:00+09:00",
+      "release_gate_passed": true,
+      "collect_status": "fallback_collected",
       "safe_window_eligible": true,
       "source_channel": "nesdc",
       "detail_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17390&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=6",
@@ -7190,6 +7494,10 @@
       },
       "result_options": [],
       "adapter_mode": "fallback",
+      "adapter_profile": {
+        "profile_key": "ntt:17390",
+        "pollster": "(주)코리아정보리서치"
+      },
       "fallback_applied": true
     },
     {
@@ -7197,7 +7505,10 @@
       "pollster": "(주)코리아정보리서치",
       "registered_at": "2026-02-12",
       "first_publish_at_kst": "2026-02-13 12:01",
-      "safe_window_hours": 48,
+      "release_policy_hours": 24,
+      "release_at_kst": "2026-02-15T12:01:00+09:00",
+      "release_gate_passed": true,
+      "collect_status": "fallback_collected",
       "safe_window_eligible": true,
       "source_channel": "nesdc",
       "detail_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17388&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=7",
@@ -7211,6 +7522,10 @@
       },
       "result_options": [],
       "adapter_mode": "fallback",
+      "adapter_profile": {
+        "profile_key": "ntt:17388",
+        "pollster": "(주)코리아정보리서치"
+      },
       "fallback_applied": true
     },
     {
@@ -7218,7 +7533,10 @@
       "pollster": "리서치웰",
       "registered_at": "2026-02-12",
       "first_publish_at_kst": "2026-02-13 14:00",
-      "safe_window_hours": 48,
+      "release_policy_hours": 24,
+      "release_at_kst": "2026-02-15T14:00:00+09:00",
+      "release_gate_passed": true,
+      "collect_status": "fallback_collected",
       "safe_window_eligible": true,
       "source_channel": "nesdc",
       "detail_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17381&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=7",
@@ -7232,6 +7550,10 @@
       },
       "result_options": [],
       "adapter_mode": "fallback",
+      "adapter_profile": {
+        "profile_key": "ntt:17381",
+        "pollster": "리서치웰"
+      },
       "fallback_applied": true
     },
     {
@@ -7239,7 +7561,10 @@
       "pollster": "(주)시그널앤펄스",
       "registered_at": "2026-02-12",
       "first_publish_at_kst": "2026-02-13 11:00",
-      "safe_window_hours": 48,
+      "release_policy_hours": 24,
+      "release_at_kst": "2026-02-15T11:00:00+09:00",
+      "release_gate_passed": true,
+      "collect_status": "fallback_collected",
       "safe_window_eligible": true,
       "source_channel": "nesdc",
       "detail_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17379&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=7",
@@ -7253,6 +7578,10 @@
       },
       "result_options": [],
       "adapter_mode": "fallback",
+      "adapter_profile": {
+        "profile_key": "ntt:17379",
+        "pollster": "(주)시그널앤펄스"
+      },
       "fallback_applied": true
     },
     {
@@ -7260,7 +7589,10 @@
       "pollster": "(주)리얼미터",
       "registered_at": "2026-02-12",
       "first_publish_at_kst": "2026-02-13 00:00",
-      "safe_window_hours": 48,
+      "release_policy_hours": 24,
+      "release_at_kst": "2026-02-15T00:00:00+09:00",
+      "release_gate_passed": true,
+      "collect_status": "collected_template_fallback",
       "safe_window_eligible": true,
       "source_channel": "nesdc",
       "detail_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17378&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=7",
@@ -7515,6 +7847,10 @@
         }
       ],
       "adapter_mode": "adapter_pollster_template_fallback",
+      "adapter_profile": {
+        "profile_key": "pollster:(주)리얼미터",
+        "pollster": "(주)리얼미터"
+      },
       "fallback_applied": true
     },
     {
@@ -7522,7 +7858,10 @@
       "pollster": "(주)리얼미터",
       "registered_at": "2026-02-12",
       "first_publish_at_kst": "2026-02-13 04:00",
-      "safe_window_hours": 48,
+      "release_policy_hours": 24,
+      "release_at_kst": "2026-02-15T04:00:00+09:00",
+      "release_gate_passed": true,
+      "collect_status": "collected_template_fallback",
       "safe_window_eligible": true,
       "source_channel": "nesdc",
       "detail_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17376&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=7",
@@ -7777,6 +8116,10 @@
         }
       ],
       "adapter_mode": "adapter_pollster_template_fallback",
+      "adapter_profile": {
+        "profile_key": "pollster:(주)리얼미터",
+        "pollster": "(주)리얼미터"
+      },
       "fallback_applied": true
     },
     {
@@ -7784,7 +8127,10 @@
       "pollster": "한길리서치",
       "registered_at": "2026-02-12",
       "first_publish_at_kst": "2026-02-12 20:00",
-      "safe_window_hours": 48,
+      "release_policy_hours": 24,
+      "release_at_kst": "2026-02-14T20:00:00+09:00",
+      "release_gate_passed": true,
+      "collect_status": "fallback_collected",
       "safe_window_eligible": true,
       "source_channel": "nesdc",
       "detail_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17372&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=7",
@@ -7798,6 +8144,10 @@
       },
       "result_options": [],
       "adapter_mode": "fallback",
+      "adapter_profile": {
+        "profile_key": "ntt:17372",
+        "pollster": "한길리서치"
+      },
       "fallback_applied": true
     },
     {
@@ -7805,7 +8155,10 @@
       "pollster": "(주)비전코리아",
       "registered_at": "2026-02-12",
       "first_publish_at_kst": "2026-02-12 13:00",
-      "safe_window_hours": 48,
+      "release_policy_hours": 24,
+      "release_at_kst": "2026-02-14T13:00:00+09:00",
+      "release_gate_passed": true,
+      "collect_status": "fallback_collected",
       "safe_window_eligible": true,
       "source_channel": "nesdc",
       "detail_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17367&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=7",
@@ -7819,6 +8172,10 @@
       },
       "result_options": [],
       "adapter_mode": "fallback",
+      "adapter_profile": {
+        "profile_key": "ntt:17367",
+        "pollster": "(주)비전코리아"
+      },
       "fallback_applied": true
     },
     {
@@ -7826,7 +8183,10 @@
       "pollster": "(주)비전코리아",
       "registered_at": "2026-02-12",
       "first_publish_at_kst": "2026-02-12 11:59",
-      "safe_window_hours": 48,
+      "release_policy_hours": 24,
+      "release_at_kst": "2026-02-14T11:59:00+09:00",
+      "release_gate_passed": true,
+      "collect_status": "fallback_collected",
       "safe_window_eligible": true,
       "source_channel": "nesdc",
       "detail_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17366&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=7",
@@ -7840,6 +8200,10 @@
       },
       "result_options": [],
       "adapter_mode": "fallback",
+      "adapter_profile": {
+        "profile_key": "ntt:17366",
+        "pollster": "(주)비전코리아"
+      },
       "fallback_applied": true
     },
     {
@@ -7847,7 +8211,10 @@
       "pollster": "(주)여론조사꽃",
       "registered_at": "2026-02-11",
       "first_publish_at_kst": "2026-02-13 06:00",
-      "safe_window_hours": 48,
+      "release_policy_hours": 24,
+      "release_at_kst": "2026-02-15T06:00:00+09:00",
+      "release_gate_passed": true,
+      "collect_status": "fallback_collected",
       "safe_window_eligible": true,
       "source_channel": "nesdc",
       "detail_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17365&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=7",
@@ -7861,6 +8228,10 @@
       },
       "result_options": [],
       "adapter_mode": "fallback",
+      "adapter_profile": {
+        "profile_key": "ntt:17365",
+        "pollster": "(주)여론조사꽃"
+      },
       "fallback_applied": true
     },
     {
@@ -7868,7 +8239,10 @@
       "pollster": "(주)이너텍시스템즈",
       "registered_at": "2026-02-11",
       "first_publish_at_kst": "2026-02-13 01:00",
-      "safe_window_hours": 48,
+      "release_policy_hours": 24,
+      "release_at_kst": "2026-02-15T01:00:00+09:00",
+      "release_gate_passed": true,
+      "collect_status": "fallback_collected",
       "safe_window_eligible": true,
       "source_channel": "nesdc",
       "detail_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17364&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=7",
@@ -7882,6 +8256,10 @@
       },
       "result_options": [],
       "adapter_mode": "fallback",
+      "adapter_profile": {
+        "profile_key": "ntt:17364",
+        "pollster": "(주)이너텍시스템즈"
+      },
       "fallback_applied": true
     },
     {
@@ -7889,7 +8267,10 @@
       "pollster": "(주)코리아정보리서치",
       "registered_at": "2026-02-11",
       "first_publish_at_kst": "2026-02-12 09:00",
-      "safe_window_hours": 48,
+      "release_policy_hours": 24,
+      "release_at_kst": "2026-02-14T09:00:00+09:00",
+      "release_gate_passed": true,
+      "collect_status": "fallback_collected",
       "safe_window_eligible": true,
       "source_channel": "nesdc",
       "detail_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17362&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=8",
@@ -7903,6 +8284,10 @@
       },
       "result_options": [],
       "adapter_mode": "fallback",
+      "adapter_profile": {
+        "profile_key": "ntt:17362",
+        "pollster": "(주)코리아정보리서치"
+      },
       "fallback_applied": true
     },
     {
@@ -7910,7 +8295,10 @@
       "pollster": "메타보이스(주)",
       "registered_at": "2026-02-11",
       "first_publish_at_kst": "2026-02-12 09:00",
-      "safe_window_hours": 48,
+      "release_policy_hours": 48,
+      "release_at_kst": "2026-02-14T09:00:00+09:00",
+      "release_gate_passed": true,
+      "collect_status": "fallback_collected",
       "safe_window_eligible": true,
       "source_channel": "nesdc",
       "detail_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17354&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=8",
@@ -7924,6 +8312,10 @@
       },
       "result_options": [],
       "adapter_mode": "fallback",
+      "adapter_profile": {
+        "profile_key": "ntt:17354",
+        "pollster": "메타보이스(주)"
+      },
       "fallback_applied": true
     },
     {
@@ -7931,7 +8323,10 @@
       "pollster": "미디어토마토",
       "registered_at": "2026-02-11",
       "first_publish_at_kst": "2026-02-12 06:00",
-      "safe_window_hours": 48,
+      "release_policy_hours": 24,
+      "release_at_kst": "2026-02-14T06:00:00+09:00",
+      "release_gate_passed": true,
+      "collect_status": "fallback_collected",
       "safe_window_eligible": true,
       "source_channel": "nesdc",
       "detail_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17361&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=8",
@@ -7945,6 +8340,10 @@
       },
       "result_options": [],
       "adapter_mode": "fallback",
+      "adapter_profile": {
+        "profile_key": "ntt:17361",
+        "pollster": "미디어토마토"
+      },
       "fallback_applied": true
     },
     {
@@ -7952,7 +8351,10 @@
       "pollster": "(주)코리아정보리서치",
       "registered_at": "2026-02-11",
       "first_publish_at_kst": "2026-02-12 15:00",
-      "safe_window_hours": 48,
+      "release_policy_hours": 24,
+      "release_at_kst": "2026-02-14T15:00:00+09:00",
+      "release_gate_passed": true,
+      "collect_status": "fallback_collected",
       "safe_window_eligible": true,
       "source_channel": "nesdc",
       "detail_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17360&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=8",
@@ -7966,6 +8368,10 @@
       },
       "result_options": [],
       "adapter_mode": "fallback",
+      "adapter_profile": {
+        "profile_key": "ntt:17360",
+        "pollster": "(주)코리아정보리서치"
+      },
       "fallback_applied": true
     },
     {
@@ -7973,7 +8379,10 @@
       "pollster": "(주)비전코리아",
       "registered_at": "2026-02-11",
       "first_publish_at_kst": "2026-02-11 13:00",
-      "safe_window_hours": 48,
+      "release_policy_hours": 24,
+      "release_at_kst": "2026-02-13T13:00:00+09:00",
+      "release_gate_passed": true,
+      "collect_status": "fallback_collected",
       "safe_window_eligible": true,
       "source_channel": "nesdc",
       "detail_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17358&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=8",
@@ -7987,6 +8396,10 @@
       },
       "result_options": [],
       "adapter_mode": "fallback",
+      "adapter_profile": {
+        "profile_key": "ntt:17358",
+        "pollster": "(주)비전코리아"
+      },
       "fallback_applied": true
     },
     {
@@ -7994,7 +8407,10 @@
       "pollster": "케이에스오아이 주식회사(한국사회여론연구소)",
       "registered_at": "2026-02-11",
       "first_publish_at_kst": "2026-02-11 11:00",
-      "safe_window_hours": 48,
+      "release_policy_hours": 24,
+      "release_at_kst": "2026-02-13T11:00:00+09:00",
+      "release_gate_passed": true,
+      "collect_status": "fallback_collected",
       "safe_window_eligible": true,
       "source_channel": "nesdc",
       "detail_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17355&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=8",
@@ -8008,6 +8424,10 @@
       },
       "result_options": [],
       "adapter_mode": "fallback",
+      "adapter_profile": {
+        "profile_key": "ntt:17355",
+        "pollster": "케이에스오아이 주식회사(한국사회여론연구소)"
+      },
       "fallback_applied": true
     },
     {
@@ -8015,7 +8435,10 @@
       "pollster": "케이에스오아이 주식회사(한국사회여론연구소)",
       "registered_at": "2026-02-11",
       "first_publish_at_kst": "2026-02-12 05:00",
-      "safe_window_hours": 48,
+      "release_policy_hours": 24,
+      "release_at_kst": "2026-02-14T05:00:00+09:00",
+      "release_gate_passed": true,
+      "collect_status": "fallback_collected",
       "safe_window_eligible": true,
       "source_channel": "nesdc",
       "detail_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17347&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=8",
@@ -8029,6 +8452,10 @@
       },
       "result_options": [],
       "adapter_mode": "fallback",
+      "adapter_profile": {
+        "profile_key": "ntt:17347",
+        "pollster": "케이에스오아이 주식회사(한국사회여론연구소)"
+      },
       "fallback_applied": true
     },
     {
@@ -8036,7 +8463,10 @@
       "pollster": "케이에스오아이 주식회사(한국사회여론연구소)",
       "registered_at": "2026-02-11",
       "first_publish_at_kst": "2026-02-11 13:00",
-      "safe_window_hours": 48,
+      "release_policy_hours": 24,
+      "release_at_kst": "2026-02-13T13:00:00+09:00",
+      "release_gate_passed": true,
+      "collect_status": "fallback_collected",
       "safe_window_eligible": true,
       "source_channel": "nesdc",
       "detail_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17349&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=8",
@@ -8050,6 +8480,10 @@
       },
       "result_options": [],
       "adapter_mode": "fallback",
+      "adapter_profile": {
+        "profile_key": "ntt:17349",
+        "pollster": "케이에스오아이 주식회사(한국사회여론연구소)"
+      },
       "fallback_applied": true
     },
     {
@@ -8057,7 +8491,10 @@
       "pollster": "케이에스오아이 주식회사(한국사회여론연구소)",
       "registered_at": "2026-02-11",
       "first_publish_at_kst": "2026-02-11 13:00",
-      "safe_window_hours": 48,
+      "release_policy_hours": 24,
+      "release_at_kst": "2026-02-13T13:00:00+09:00",
+      "release_gate_passed": true,
+      "collect_status": "fallback_collected",
       "safe_window_eligible": true,
       "source_channel": "nesdc",
       "detail_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17348&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=8",
@@ -8071,6 +8508,10 @@
       },
       "result_options": [],
       "adapter_mode": "fallback",
+      "adapter_profile": {
+        "profile_key": "ntt:17348",
+        "pollster": "케이에스오아이 주식회사(한국사회여론연구소)"
+      },
       "fallback_applied": true
     },
     {
@@ -8078,7 +8519,10 @@
       "pollster": "(주)리얼미터",
       "registered_at": "2026-02-10",
       "first_publish_at_kst": "2026-02-12 13:00",
-      "safe_window_hours": 48,
+      "release_policy_hours": 24,
+      "release_at_kst": "2026-02-14T13:00:00+09:00",
+      "release_gate_passed": true,
+      "collect_status": "collected_template_fallback",
       "safe_window_eligible": true,
       "source_channel": "nesdc",
       "detail_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17352&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=9",
@@ -8333,6 +8777,10 @@
         }
       ],
       "adapter_mode": "adapter_pollster_template_fallback",
+      "adapter_profile": {
+        "profile_key": "pollster:(주)리얼미터",
+        "pollster": "(주)리얼미터"
+      },
       "fallback_applied": true
     },
     {
@@ -8340,7 +8788,10 @@
       "pollster": "(주)리얼미터",
       "registered_at": "2026-02-10",
       "first_publish_at_kst": "2026-02-12 13:00",
-      "safe_window_hours": 48,
+      "release_policy_hours": 24,
+      "release_at_kst": "2026-02-14T13:00:00+09:00",
+      "release_gate_passed": true,
+      "collect_status": "collected_template_fallback",
       "safe_window_eligible": true,
       "source_channel": "nesdc",
       "detail_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17351&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=9",
@@ -8595,6 +9046,10 @@
         }
       ],
       "adapter_mode": "adapter_pollster_template_fallback",
+      "adapter_profile": {
+        "profile_key": "pollster:(주)리얼미터",
+        "pollster": "(주)리얼미터"
+      },
       "fallback_applied": true
     },
     {
@@ -8602,7 +9057,10 @@
       "pollster": "(주)이너텍시스템즈",
       "registered_at": "2026-02-10",
       "first_publish_at_kst": "2026-02-12 04:00",
-      "safe_window_hours": 48,
+      "release_policy_hours": 24,
+      "release_at_kst": "2026-02-14T04:00:00+09:00",
+      "release_gate_passed": true,
+      "collect_status": "fallback_collected",
       "safe_window_eligible": true,
       "source_channel": "nesdc",
       "detail_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17350&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=9",
@@ -8616,6 +9074,10 @@
       },
       "result_options": [],
       "adapter_mode": "fallback",
+      "adapter_profile": {
+        "profile_key": "ntt:17350",
+        "pollster": "(주)이너텍시스템즈"
+      },
       "fallback_applied": true
     },
     {
@@ -8623,7 +9085,10 @@
       "pollster": "(주)코리아정보리서치",
       "registered_at": "2026-02-10",
       "first_publish_at_kst": "2026-02-12 05:00",
-      "safe_window_hours": 48,
+      "release_policy_hours": 24,
+      "release_at_kst": "2026-02-14T05:00:00+09:00",
+      "release_gate_passed": true,
+      "collect_status": "fallback_collected",
       "safe_window_eligible": true,
       "source_channel": "nesdc",
       "detail_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17346&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=9",
@@ -8637,6 +9102,10 @@
       },
       "result_options": [],
       "adapter_mode": "fallback",
+      "adapter_profile": {
+        "profile_key": "ntt:17346",
+        "pollster": "(주)코리아정보리서치"
+      },
       "fallback_applied": true
     },
     {
@@ -8644,7 +9113,10 @@
       "pollster": "(주)에브리리서치",
       "registered_at": "2026-02-10",
       "first_publish_at_kst": "2026-02-11 17:00",
-      "safe_window_hours": 48,
+      "release_policy_hours": 24,
+      "release_at_kst": "2026-02-13T17:00:00+09:00",
+      "release_gate_passed": true,
+      "collect_status": "fallback_collected",
       "safe_window_eligible": true,
       "source_channel": "nesdc",
       "detail_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17345&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=9",
@@ -8658,6 +9130,10 @@
       },
       "result_options": [],
       "adapter_mode": "fallback",
+      "adapter_profile": {
+        "profile_key": "ntt:17345",
+        "pollster": "(주)에브리리서치"
+      },
       "fallback_applied": true
     },
     {
@@ -8665,7 +9141,10 @@
       "pollster": "(주)에브리리서치",
       "registered_at": "2026-02-10",
       "first_publish_at_kst": "2026-02-12 17:00",
-      "safe_window_hours": 48,
+      "release_policy_hours": 24,
+      "release_at_kst": "2026-02-14T17:00:00+09:00",
+      "release_gate_passed": true,
+      "collect_status": "fallback_collected",
       "safe_window_eligible": true,
       "source_channel": "nesdc",
       "detail_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17344&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=9",
@@ -8679,6 +9158,10 @@
       },
       "result_options": [],
       "adapter_mode": "fallback",
+      "adapter_profile": {
+        "profile_key": "ntt:17344",
+        "pollster": "(주)에브리리서치"
+      },
       "fallback_applied": true
     },
     {
@@ -8686,7 +9169,10 @@
       "pollster": "한길리서치",
       "registered_at": "2026-02-10",
       "first_publish_at_kst": "2026-02-11 05:00",
-      "safe_window_hours": 48,
+      "release_policy_hours": 24,
+      "release_at_kst": "2026-02-13T05:00:00+09:00",
+      "release_gate_passed": true,
+      "collect_status": "fallback_collected",
       "safe_window_eligible": true,
       "source_channel": "nesdc",
       "detail_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17342&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=9",
@@ -8700,6 +9186,10 @@
       },
       "result_options": [],
       "adapter_mode": "fallback",
+      "adapter_profile": {
+        "profile_key": "ntt:17342",
+        "pollster": "한길리서치"
+      },
       "fallback_applied": true
     },
     {
@@ -8707,7 +9197,10 @@
       "pollster": "(주)데일리리서치",
       "registered_at": "2026-02-10",
       "first_publish_at_kst": "2026-02-13 09:00",
-      "safe_window_hours": 48,
+      "release_policy_hours": 24,
+      "release_at_kst": "2026-02-15T09:00:00+09:00",
+      "release_gate_passed": true,
+      "collect_status": "fallback_collected",
       "safe_window_eligible": true,
       "source_channel": "nesdc",
       "detail_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17298&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=9",
@@ -8721,6 +9214,10 @@
       },
       "result_options": [],
       "adapter_mode": "fallback",
+      "adapter_profile": {
+        "profile_key": "ntt:17298",
+        "pollster": "(주)데일리리서치"
+      },
       "fallback_applied": true
     },
     {
@@ -8728,7 +9225,10 @@
       "pollster": "한국갤럽조사연구소",
       "registered_at": "2026-02-10",
       "first_publish_at_kst": "2026-02-12 17:00",
-      "safe_window_hours": 48,
+      "release_policy_hours": 24,
+      "release_at_kst": "2026-02-14T17:00:00+09:00",
+      "release_gate_passed": true,
+      "collect_status": "fallback_collected",
       "safe_window_eligible": true,
       "source_channel": "nesdc",
       "detail_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17340&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=9",
@@ -8742,6 +9242,10 @@
       },
       "result_options": [],
       "adapter_mode": "fallback",
+      "adapter_profile": {
+        "profile_key": "ntt:17340",
+        "pollster": "한국갤럽조사연구소"
+      },
       "fallback_applied": true
     },
     {
@@ -8749,7 +9253,10 @@
       "pollster": "한국갤럽조사연구소",
       "registered_at": "2026-02-10",
       "first_publish_at_kst": "2026-02-12 17:00",
-      "safe_window_hours": 48,
+      "release_policy_hours": 24,
+      "release_at_kst": "2026-02-14T17:00:00+09:00",
+      "release_gate_passed": true,
+      "collect_status": "fallback_collected",
       "safe_window_eligible": true,
       "source_channel": "nesdc",
       "detail_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17339&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=10",
@@ -8763,6 +9270,10 @@
       },
       "result_options": [],
       "adapter_mode": "fallback",
+      "adapter_profile": {
+        "profile_key": "ntt:17339",
+        "pollster": "한국갤럽조사연구소"
+      },
       "fallback_applied": true
     },
     {
@@ -8770,7 +9281,10 @@
       "pollster": "조원씨앤아이",
       "registered_at": "2026-02-10",
       "first_publish_at_kst": "2026-02-11 05:00",
-      "safe_window_hours": 48,
+      "release_policy_hours": 24,
+      "release_at_kst": "2026-02-13T05:00:00+09:00",
+      "release_gate_passed": true,
+      "collect_status": "fallback_collected",
       "safe_window_eligible": true,
       "source_channel": "nesdc",
       "detail_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17311&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=10",
@@ -8784,6 +9298,10 @@
       },
       "result_options": [],
       "adapter_mode": "fallback",
+      "adapter_profile": {
+        "profile_key": "ntt:17311",
+        "pollster": "조원씨앤아이"
+      },
       "fallback_applied": true
     },
     {
@@ -8791,7 +9309,10 @@
       "pollster": "한국갤럽조사연구소",
       "registered_at": "2026-02-10",
       "first_publish_at_kst": "2026-02-11 17:00",
-      "safe_window_hours": 48,
+      "release_policy_hours": 24,
+      "release_at_kst": "2026-02-13T17:00:00+09:00",
+      "release_gate_passed": true,
+      "collect_status": "fallback_collected",
       "safe_window_eligible": true,
       "source_channel": "nesdc",
       "detail_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17338&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=10",
@@ -8805,6 +9326,10 @@
       },
       "result_options": [],
       "adapter_mode": "fallback",
+      "adapter_profile": {
+        "profile_key": "ntt:17338",
+        "pollster": "한국갤럽조사연구소"
+      },
       "fallback_applied": true
     },
     {
@@ -8812,7 +9337,10 @@
       "pollster": "한국갤럽조사연구소",
       "registered_at": "2026-02-10",
       "first_publish_at_kst": "2026-02-11 17:00",
-      "safe_window_hours": 48,
+      "release_policy_hours": 24,
+      "release_at_kst": "2026-02-13T17:00:00+09:00",
+      "release_gate_passed": true,
+      "collect_status": "fallback_collected",
       "safe_window_eligible": true,
       "source_channel": "nesdc",
       "detail_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17337&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=10",
@@ -8826,6 +9354,10 @@
       },
       "result_options": [],
       "adapter_mode": "fallback",
+      "adapter_profile": {
+        "profile_key": "ntt:17337",
+        "pollster": "한국갤럽조사연구소"
+      },
       "fallback_applied": true
     },
     {
@@ -8833,7 +9365,10 @@
       "pollster": "주식회사 한민리서치",
       "registered_at": "2026-02-10",
       "first_publish_at_kst": "2026-02-11 14:00",
-      "safe_window_hours": 48,
+      "release_policy_hours": 24,
+      "release_at_kst": "2026-02-13T14:00:00+09:00",
+      "release_gate_passed": true,
+      "collect_status": "fallback_collected",
       "safe_window_eligible": true,
       "source_channel": "nesdc",
       "detail_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17336&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=10",
@@ -8847,6 +9382,10 @@
       },
       "result_options": [],
       "adapter_mode": "fallback",
+      "adapter_profile": {
+        "profile_key": "ntt:17336",
+        "pollster": "주식회사 한민리서치"
+      },
       "fallback_applied": true
     },
     {
@@ -8854,7 +9393,10 @@
       "pollster": "(주)시그널앤펄스",
       "registered_at": "2026-02-10",
       "first_publish_at_kst": "2026-02-11 11:00",
-      "safe_window_hours": 48,
+      "release_policy_hours": 24,
+      "release_at_kst": "2026-02-13T11:00:00+09:00",
+      "release_gate_passed": true,
+      "collect_status": "fallback_collected",
       "safe_window_eligible": true,
       "source_channel": "nesdc",
       "detail_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17322&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=10",
@@ -8868,6 +9410,10 @@
       },
       "result_options": [],
       "adapter_mode": "fallback",
+      "adapter_profile": {
+        "profile_key": "ntt:17322",
+        "pollster": "(주)시그널앤펄스"
+      },
       "fallback_applied": true
     },
     {
@@ -8875,7 +9421,10 @@
       "pollster": "KPO리서치",
       "registered_at": "2026-02-10",
       "first_publish_at_kst": "2026-02-11 18:00",
-      "safe_window_hours": 48,
+      "release_policy_hours": 24,
+      "release_at_kst": "2026-02-13T18:00:00+09:00",
+      "release_gate_passed": true,
+      "collect_status": "fallback_collected",
       "safe_window_eligible": true,
       "source_channel": "nesdc",
       "detail_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17321&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=10",
@@ -8889,6 +9438,10 @@
       },
       "result_options": [],
       "adapter_mode": "fallback",
+      "adapter_profile": {
+        "profile_key": "ntt:17321",
+        "pollster": "KPO리서치"
+      },
       "fallback_applied": true
     },
     {
@@ -8896,7 +9449,10 @@
       "pollster": "KPO리서치",
       "registered_at": "2026-02-10",
       "first_publish_at_kst": "2026-02-11 18:00",
-      "safe_window_hours": 48,
+      "release_policy_hours": 24,
+      "release_at_kst": "2026-02-13T18:00:00+09:00",
+      "release_gate_passed": true,
+      "collect_status": "fallback_collected",
       "safe_window_eligible": true,
       "source_channel": "nesdc",
       "detail_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17319&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=10",
@@ -8910,6 +9466,10 @@
       },
       "result_options": [],
       "adapter_mode": "fallback",
+      "adapter_profile": {
+        "profile_key": "ntt:17319",
+        "pollster": "KPO리서치"
+      },
       "fallback_applied": true
     },
     {
@@ -8917,7 +9477,10 @@
       "pollster": "윈지코리아컨설팅",
       "registered_at": "2026-02-10",
       "first_publish_at_kst": "2026-02-12 15:00",
-      "safe_window_hours": 48,
+      "release_policy_hours": 24,
+      "release_at_kst": "2026-02-14T15:00:00+09:00",
+      "release_gate_passed": true,
+      "collect_status": "fallback_collected",
       "safe_window_eligible": true,
       "source_channel": "nesdc",
       "detail_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17335&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=10",
@@ -8931,6 +9494,10 @@
       },
       "result_options": [],
       "adapter_mode": "fallback",
+      "adapter_profile": {
+        "profile_key": "ntt:17335",
+        "pollster": "윈지코리아컨설팅"
+      },
       "fallback_applied": true
     },
     {
@@ -8938,7 +9505,10 @@
       "pollster": "(주)리얼미터",
       "registered_at": "2026-02-10",
       "first_publish_at_kst": "2026-02-11 04:00",
-      "safe_window_hours": 48,
+      "release_policy_hours": 24,
+      "release_at_kst": "2026-02-13T04:00:00+09:00",
+      "release_gate_passed": true,
+      "collect_status": "collected_template_fallback",
       "safe_window_eligible": true,
       "source_channel": "nesdc",
       "detail_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17334&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=10",
@@ -9193,6 +9763,10 @@
         }
       ],
       "adapter_mode": "adapter_pollster_template_fallback",
+      "adapter_profile": {
+        "profile_key": "pollster:(주)리얼미터",
+        "pollster": "(주)리얼미터"
+      },
       "fallback_applied": true
     },
     {
@@ -9200,7 +9774,10 @@
       "pollster": "(주)리얼미터",
       "registered_at": "2026-02-10",
       "first_publish_at_kst": "2026-02-11 00:00",
-      "safe_window_hours": 48,
+      "release_policy_hours": 24,
+      "release_at_kst": "2026-02-13T00:00:00+09:00",
+      "release_gate_passed": true,
+      "collect_status": "collected_template_fallback",
       "safe_window_eligible": true,
       "source_channel": "nesdc",
       "detail_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17333&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=11",
@@ -9455,6 +10032,10 @@
         }
       ],
       "adapter_mode": "adapter_pollster_template_fallback",
+      "adapter_profile": {
+        "profile_key": "pollster:(주)리얼미터",
+        "pollster": "(주)리얼미터"
+      },
       "fallback_applied": true
     },
     {
@@ -9462,7 +10043,10 @@
       "pollster": "(주)리얼미터",
       "registered_at": "2026-02-10",
       "first_publish_at_kst": "2026-02-11 00:00",
-      "safe_window_hours": 48,
+      "release_policy_hours": 24,
+      "release_at_kst": "2026-02-13T00:00:00+09:00",
+      "release_gate_passed": true,
+      "collect_status": "collected_template_fallback",
       "safe_window_eligible": true,
       "source_channel": "nesdc",
       "detail_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17332&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=11",
@@ -9717,6 +10301,10 @@
         }
       ],
       "adapter_mode": "adapter_pollster_template_fallback",
+      "adapter_profile": {
+        "profile_key": "pollster:(주)리얼미터",
+        "pollster": "(주)리얼미터"
+      },
       "fallback_applied": true
     },
     {
@@ -9724,7 +10312,10 @@
       "pollster": "조원씨앤아이",
       "registered_at": "2026-02-10",
       "first_publish_at_kst": "2026-02-11 11:00",
-      "safe_window_hours": 48,
+      "release_policy_hours": 24,
+      "release_at_kst": "2026-02-13T11:00:00+09:00",
+      "release_gate_passed": true,
+      "collect_status": "fallback_collected",
       "safe_window_eligible": true,
       "source_channel": "nesdc",
       "detail_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17329&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=11",
@@ -9738,6 +10329,10 @@
       },
       "result_options": [],
       "adapter_mode": "fallback",
+      "adapter_profile": {
+        "profile_key": "ntt:17329",
+        "pollster": "조원씨앤아이"
+      },
       "fallback_applied": true
     },
     {
@@ -9745,7 +10340,10 @@
       "pollster": "여론조사공정(주)",
       "registered_at": "2026-02-10",
       "first_publish_at_kst": "2026-02-10 17:00",
-      "safe_window_hours": 48,
+      "release_policy_hours": 24,
+      "release_at_kst": "2026-02-12T17:00:00+09:00",
+      "release_gate_passed": true,
+      "collect_status": "fallback_collected",
       "safe_window_eligible": true,
       "source_channel": "nesdc",
       "detail_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17323&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=11",
@@ -9759,6 +10357,10 @@
       },
       "result_options": [],
       "adapter_mode": "fallback",
+      "adapter_profile": {
+        "profile_key": "ntt:17323",
+        "pollster": "여론조사공정(주)"
+      },
       "fallback_applied": true
     },
     {
@@ -9766,7 +10368,10 @@
       "pollster": "(주)리얼미터",
       "registered_at": "2026-02-10",
       "first_publish_at_kst": "2026-02-13 08:00",
-      "safe_window_hours": 48,
+      "release_policy_hours": 24,
+      "release_at_kst": "2026-02-15T08:00:00+09:00",
+      "release_gate_passed": true,
+      "collect_status": "collected_template_fallback",
       "safe_window_eligible": true,
       "source_channel": "nesdc",
       "detail_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17328&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=11",
@@ -10021,6 +10626,10 @@
         }
       ],
       "adapter_mode": "adapter_pollster_template_fallback",
+      "adapter_profile": {
+        "profile_key": "pollster:(주)리얼미터",
+        "pollster": "(주)리얼미터"
+      },
       "fallback_applied": true
     },
     {
@@ -10028,7 +10637,10 @@
       "pollster": "(주)알앤써치",
       "registered_at": "2026-02-10",
       "first_publish_at_kst": "2026-02-10 18:00",
-      "safe_window_hours": 48,
+      "release_policy_hours": 24,
+      "release_at_kst": "2026-02-12T18:00:00+09:00",
+      "release_gate_passed": true,
+      "collect_status": "fallback_collected",
       "safe_window_eligible": true,
       "source_channel": "nesdc",
       "detail_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17325&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=11",
@@ -10042,6 +10654,10 @@
       },
       "result_options": [],
       "adapter_mode": "fallback",
+      "adapter_profile": {
+        "profile_key": "ntt:17325",
+        "pollster": "(주)알앤써치"
+      },
       "fallback_applied": true
     },
     {
@@ -10049,7 +10665,10 @@
       "pollster": "(주)알앤써치",
       "registered_at": "2026-02-10",
       "first_publish_at_kst": "2026-02-10 18:00",
-      "safe_window_hours": 48,
+      "release_policy_hours": 24,
+      "release_at_kst": "2026-02-12T18:00:00+09:00",
+      "release_gate_passed": true,
+      "collect_status": "fallback_collected",
       "safe_window_eligible": true,
       "source_channel": "nesdc",
       "detail_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17324&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=11",
@@ -10063,6 +10682,10 @@
       },
       "result_options": [],
       "adapter_mode": "fallback",
+      "adapter_profile": {
+        "profile_key": "ntt:17324",
+        "pollster": "(주)알앤써치"
+      },
       "fallback_applied": true
     },
     {
@@ -10070,7 +10693,10 @@
       "pollster": "(주)시그널앤펄스",
       "registered_at": "2026-02-10",
       "first_publish_at_kst": "2026-02-10 06:00",
-      "safe_window_hours": 48,
+      "release_policy_hours": 24,
+      "release_at_kst": "2026-02-12T06:00:00+09:00",
+      "release_gate_passed": true,
+      "collect_status": "fallback_collected",
       "safe_window_eligible": true,
       "source_channel": "nesdc",
       "detail_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17318&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=11",
@@ -10084,6 +10710,10 @@
       },
       "result_options": [],
       "adapter_mode": "fallback",
+      "adapter_profile": {
+        "profile_key": "ntt:17318",
+        "pollster": "(주)시그널앤펄스"
+      },
       "fallback_applied": true
     },
     {
@@ -10091,7 +10721,10 @@
       "pollster": "(주)리서치뷰",
       "registered_at": "2026-02-09",
       "first_publish_at_kst": "2026-02-09 22:00",
-      "safe_window_hours": 48,
+      "release_policy_hours": 24,
+      "release_at_kst": "2026-02-11T22:00:00+09:00",
+      "release_gate_passed": true,
+      "collect_status": "fallback_collected",
       "safe_window_eligible": true,
       "source_channel": "nesdc",
       "detail_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17320&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=11",
@@ -10105,6 +10738,10 @@
       },
       "result_options": [],
       "adapter_mode": "fallback",
+      "adapter_profile": {
+        "profile_key": "ntt:17320",
+        "pollster": "(주)리서치뷰"
+      },
       "fallback_applied": true
     },
     {
@@ -10112,7 +10749,10 @@
       "pollster": "한국갤럽조사연구소",
       "registered_at": "2026-02-09",
       "first_publish_at_kst": "2026-02-10 17:00",
-      "safe_window_hours": 48,
+      "release_policy_hours": 24,
+      "release_at_kst": "2026-02-12T17:00:00+09:00",
+      "release_gate_passed": true,
+      "collect_status": "fallback_collected",
       "safe_window_eligible": true,
       "source_channel": "nesdc",
       "detail_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17316&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=11",
@@ -10126,7 +10766,12 @@
       },
       "result_options": [],
       "adapter_mode": "fallback",
+      "adapter_profile": {
+        "profile_key": "ntt:17316",
+        "pollster": "한국갤럽조사연구소"
+      },
       "fallback_applied": true
     }
-  ]
+  ],
+  "pending_records": []
 }

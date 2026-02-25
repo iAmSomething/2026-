@@ -1,0 +1,368 @@
+{
+  "run_type": "collector_nesdc_release_gate_v1_eval",
+  "policy": {
+    "general_hours": 24,
+    "periodical_hours": 48
+  },
+  "as_of_now": "2026-02-26T07:33:00+09:00",
+  "as_of_early": "2026-02-18T00:00:00+09:00",
+  "now_counts": {
+    "registry_total": 110,
+    "eligible_48h_total": 92,
+    "release_gate_eligible_total": 92,
+    "pending_official_release_count": 0,
+    "collected_success_count": 34,
+    "adapter_exact_success_count": 3,
+    "adapter_template_success_count": 31,
+    "fallback_count": 89,
+    "template_fallback_count": 31,
+    "hard_fallback_count": 58,
+    "manual_opt_out_count": 18,
+    "eligibility_parse_error_count": 0,
+    "safe_window_guard_block_count": 0,
+    "review_queue_candidate_count": 89,
+    "unique_pollster_count": 5,
+    "total_option_count": 544,
+    "recent20_pending_official_release_count": 0,
+    "recent20_release_policy_violation_count": 0
+  },
+  "now_acceptance_checks": {
+    "safe_window_applied_all": true,
+    "release_gate_applied_all": true,
+    "pending_nonpublic_state_preserved": true,
+    "recent20_policy_violation_zero": true,
+    "eligible_collection_success_present": true,
+    "pollster_coverage_ge_5": true,
+    "fallback_review_queue_synced": true,
+    "value_raw_and_normalized_present": true
+  },
+  "early_counts": {
+    "registry_total": 110,
+    "eligible_48h_total": 81,
+    "release_gate_eligible_total": 81,
+    "pending_official_release_count": 11,
+    "collected_success_count": 25,
+    "adapter_exact_success_count": 1,
+    "adapter_template_success_count": 24,
+    "fallback_count": 80,
+    "template_fallback_count": 24,
+    "hard_fallback_count": 56,
+    "manual_opt_out_count": 18,
+    "eligibility_parse_error_count": 0,
+    "safe_window_guard_block_count": 11,
+    "review_queue_candidate_count": 91,
+    "unique_pollster_count": 4,
+    "total_option_count": 400,
+    "recent20_pending_official_release_count": 11,
+    "recent20_release_policy_violation_count": 0
+  },
+  "early_acceptance_checks": {
+    "safe_window_applied_all": true,
+    "release_gate_applied_all": true,
+    "pending_nonpublic_state_preserved": true,
+    "recent20_policy_violation_zero": true,
+    "eligible_collection_success_present": true,
+    "pollster_coverage_ge_5": false,
+    "fallback_review_queue_synced": true,
+    "value_raw_and_normalized_present": true
+  },
+  "early_pending_samples": [
+    {
+      "ntt_id": "17457",
+      "pollster": "KOPRA",
+      "registered_at": "2026-02-15",
+      "first_publish_at_kst": "2026-02-16 08:00",
+      "release_policy_hours": 24,
+      "release_at_kst": "2026-02-18T08:00:00+09:00",
+      "release_gate_passed": false,
+      "collect_status": "pending_official_release",
+      "source_channel": "nesdc",
+      "detail_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17457&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=1",
+      "legal_meta": {
+        "survey_datetime": "2026-02-14 12 시 45 분 ~ 21 시 50 분 2026-02-15 11 시 10 분 ~ 15 시 05 분",
+        "survey_population": "전국 만 18세 이상 남녀",
+        "sample_size": 1001,
+        "response_rate": 4.0,
+        "margin_of_error": "95% 신뢰수준에 ±3.1%P",
+        "method": "무선 ARS"
+      },
+      "result_options": [],
+      "adapter_mode": "pending_release",
+      "adapter_profile": {
+        "profile_key": "pending_release",
+        "pollster": "KOPRA"
+      },
+      "fallback_applied": false
+    },
+    {
+      "ntt_id": "17451",
+      "pollster": "입소스 주식회사",
+      "registered_at": "2026-02-15",
+      "first_publish_at_kst": "2026-02-16 16:00",
+      "release_policy_hours": 24,
+      "release_at_kst": "2026-02-18T16:00:00+09:00",
+      "release_gate_passed": false,
+      "collect_status": "pending_official_release",
+      "source_channel": "nesdc",
+      "detail_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17451&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=1",
+      "legal_meta": {
+        "survey_datetime": "2026-02-12 13 시 00 분 ~ 15 시 50 분 2026-02-13 09 시 50 분 ~ 21 시 10 분 2026-02-14 09 시 50 분 ~ 16 시 50 분",
+        "survey_population": "전국에 거주하는 만 18세 이상 남녀",
+        "sample_size": 1004,
+        "response_rate": 11.3,
+        "margin_of_error": "95% 신뢰수준에 ±3.1%P",
+        "method": "무선전화면접"
+      },
+      "result_options": [],
+      "adapter_mode": "pending_release",
+      "adapter_profile": {
+        "profile_key": "pending_release",
+        "pollster": "입소스 주식회사"
+      },
+      "fallback_applied": false
+    },
+    {
+      "ntt_id": "17446",
+      "pollster": "(주)코리아리서치인터내셔널",
+      "registered_at": "2026-02-14",
+      "first_publish_at_kst": "2026-02-16 16:00",
+      "release_policy_hours": 24,
+      "release_at_kst": "2026-02-18T16:00:00+09:00",
+      "release_gate_passed": false,
+      "collect_status": "pending_official_release",
+      "source_channel": "nesdc",
+      "detail_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17446&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=2",
+      "legal_meta": {
+        "survey_datetime": "2026-02-11 13 시 00 분 ~ 21 시 10 분 2026-02-12 10 시 00 분 ~ 21 시 00 분 2026-02-13 09 시 30 분 ~ 12 시 00 분",
+        "survey_population": "전국에 거주하는 만 18세 이상 남녀",
+        "sample_size": 1000,
+        "response_rate": 12.0,
+        "margin_of_error": "95% 신뢰수준에 ±3.1%P",
+        "method": "무선전화면접"
+      },
+      "result_options": [],
+      "adapter_mode": "pending_release",
+      "adapter_profile": {
+        "profile_key": "pending_release",
+        "pollster": "(주)코리아리서치인터내셔널"
+      },
+      "fallback_applied": false
+    },
+    {
+      "ntt_id": "17396",
+      "pollster": "(주)엠브레인퍼블릭",
+      "registered_at": "2026-02-13",
+      "first_publish_at_kst": "2026-02-16 20:00",
+      "release_policy_hours": 24,
+      "release_at_kst": "2026-02-18T20:00:00+09:00",
+      "release_gate_passed": false,
+      "collect_status": "pending_official_release",
+      "source_channel": "nesdc",
+      "detail_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17396&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=4",
+      "legal_meta": {
+        "survey_datetime": "2026-02-08 10 시 01 분 ~ 17 시 09 분 2026-02-09 10 시 02 분 ~ 11 시 38 분",
+        "survey_population": "전라남도 장흥군에 거주하는 만 18세 이상 남녀",
+        "sample_size": 500,
+        "response_rate": 41.5,
+        "margin_of_error": "95% 신뢰수준에 ±4.4%P",
+        "method": "무선전화면접"
+      },
+      "result_options": [],
+      "adapter_mode": "pending_release",
+      "adapter_profile": {
+        "profile_key": "pending_release",
+        "pollster": "(주)엠브레인퍼블릭"
+      },
+      "fallback_applied": false
+    },
+    {
+      "ntt_id": "17391",
+      "pollster": "(주)엠브레인퍼블릭",
+      "registered_at": "2026-02-13",
+      "first_publish_at_kst": "2026-02-16 20:00",
+      "release_policy_hours": 24,
+      "release_at_kst": "2026-02-18T20:00:00+09:00",
+      "release_gate_passed": false,
+      "collect_status": "pending_official_release",
+      "source_channel": "nesdc",
+      "detail_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17391&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=4",
+      "legal_meta": {
+        "survey_datetime": "2026-02-07 10 시 01 분 ~ 19 시 28 분 2026-02-08 10 시 12 분 ~ 18 시 13 분",
+        "survey_population": "전라남도 진도군에 거주하는 만 18세 이상 남녀",
+        "sample_size": 501,
+        "response_rate": 35.0,
+        "margin_of_error": "95% 신뢰수준에 ±4.4%P",
+        "method": "무선전화면접"
+      },
+      "result_options": [],
+      "adapter_mode": "pending_release",
+      "adapter_profile": {
+        "profile_key": "pending_release",
+        "pollster": "(주)엠브레인퍼블릭"
+      },
+      "fallback_applied": false
+    },
+    {
+      "ntt_id": "17382",
+      "pollster": "(주)엠브레인퍼블릭",
+      "registered_at": "2026-02-13",
+      "first_publish_at_kst": "2026-02-16 20:00",
+      "release_policy_hours": 24,
+      "release_at_kst": "2026-02-18T20:00:00+09:00",
+      "release_gate_passed": false,
+      "collect_status": "pending_official_release",
+      "source_channel": "nesdc",
+      "detail_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17382&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=5",
+      "legal_meta": {
+        "survey_datetime": "2026-02-07 10 시 01 분 ~ 19 시 21 분 2026-02-08 10 시 05 분 ~ 13 시 27 분",
+        "survey_population": "전라남도 완도군에 거주하는 만 18세 이상 남녀",
+        "sample_size": 500,
+        "response_rate": 42.3,
+        "margin_of_error": "95% 신뢰수준에 ±4.4%P",
+        "method": "무선전화면접"
+      },
+      "result_options": [],
+      "adapter_mode": "pending_release",
+      "adapter_profile": {
+        "profile_key": "pending_release",
+        "pollster": "(주)엠브레인퍼블릭"
+      },
+      "fallback_applied": false
+    },
+    {
+      "ntt_id": "17392",
+      "pollster": "(주)엠브레인퍼블릭",
+      "registered_at": "2026-02-13",
+      "first_publish_at_kst": "2026-02-16 20:00",
+      "release_policy_hours": 24,
+      "release_at_kst": "2026-02-18T20:00:00+09:00",
+      "release_gate_passed": false,
+      "collect_status": "pending_official_release",
+      "source_channel": "nesdc",
+      "detail_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17392&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=5",
+      "legal_meta": {
+        "survey_datetime": "2026-02-07 10 시 01 분 ~ 19 시 31 분 2026-02-08 10 시 06 분 ~ 15 시 19 분",
+        "survey_population": "전라남도 해남군에 거주하는 만 18세 이상 남녀",
+        "sample_size": 502,
+        "response_rate": 22.7,
+        "margin_of_error": "95% 신뢰수준에 ±4.4%P",
+        "method": "무선전화면접"
+      },
+      "result_options": [],
+      "adapter_mode": "pending_release",
+      "adapter_profile": {
+        "profile_key": "pending_release",
+        "pollster": "(주)엠브레인퍼블릭"
+      },
+      "fallback_applied": false
+    },
+    {
+      "ntt_id": "17397",
+      "pollster": "(주)엠브레인퍼블릭",
+      "registered_at": "2026-02-13",
+      "first_publish_at_kst": "2026-02-16 20:00",
+      "release_policy_hours": 24,
+      "release_at_kst": "2026-02-18T20:00:00+09:00",
+      "release_gate_passed": false,
+      "collect_status": "pending_official_release",
+      "source_channel": "nesdc",
+      "detail_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17397&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=5",
+      "legal_meta": {
+        "survey_datetime": "2026-02-09 10 시 01 분 ~ 20 시 20 분 2026-02-10 10 시 01 분 ~ 10 시 51 분",
+        "survey_population": "전라남도 영암군에 거주하는 만 18세 이상 남녀",
+        "sample_size": 502,
+        "response_rate": 41.0,
+        "margin_of_error": "95% 신뢰수준에 ±4.4%P",
+        "method": "무선전화면접"
+      },
+      "result_options": [],
+      "adapter_mode": "pending_release",
+      "adapter_profile": {
+        "profile_key": "pending_release",
+        "pollster": "(주)엠브레인퍼블릭"
+      },
+      "fallback_applied": false
+    },
+    {
+      "ntt_id": "17395",
+      "pollster": "(주)엠브레인퍼블릭",
+      "registered_at": "2026-02-13",
+      "first_publish_at_kst": "2026-02-16 20:00",
+      "release_policy_hours": 24,
+      "release_at_kst": "2026-02-18T20:00:00+09:00",
+      "release_gate_passed": false,
+      "collect_status": "pending_official_release",
+      "source_channel": "nesdc",
+      "detail_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17395&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=5",
+      "legal_meta": {
+        "survey_datetime": "2026-02-08 10 시 02 분 ~ 17 시 31 분 2026-02-09 10 시 03 분 ~ 11 시 19 분",
+        "survey_population": "전라남도 강진군에 거주하는 만 18세 이상 남녀",
+        "sample_size": 501,
+        "response_rate": 47.6,
+        "margin_of_error": "95% 신뢰수준에 ±4.4%P",
+        "method": "무선전화면접"
+      },
+      "result_options": [],
+      "adapter_mode": "pending_release",
+      "adapter_profile": {
+        "profile_key": "pending_release",
+        "pollster": "(주)엠브레인퍼블릭"
+      },
+      "fallback_applied": false
+    },
+    {
+      "ntt_id": "17417",
+      "pollster": "(주)리얼미터",
+      "registered_at": "2026-02-13",
+      "first_publish_at_kst": "2026-02-17 05:00",
+      "release_policy_hours": 24,
+      "release_at_kst": "2026-02-19T05:00:00+09:00",
+      "release_gate_passed": false,
+      "collect_status": "pending_official_release",
+      "source_channel": "nesdc",
+      "detail_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17417&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=5",
+      "legal_meta": {
+        "survey_datetime": "2026-02-09 12 시 35 분 ~ 17 시 45 분 2026-02-10 10 시 45 분 ~ 16 시 00 분",
+        "survey_population": "경상북도 울진군에 거주하는 만 18세 이상 남녀",
+        "sample_size": 503,
+        "response_rate": 11.5,
+        "margin_of_error": "95% 신뢰수준에 ±4.4%P",
+        "method": "무선 ARS"
+      },
+      "result_options": [],
+      "adapter_mode": "pending_release",
+      "adapter_profile": {
+        "profile_key": "pending_release",
+        "pollster": "(주)리얼미터"
+      },
+      "fallback_applied": false
+    },
+    {
+      "ntt_id": "17407",
+      "pollster": "(주)한국리서치",
+      "registered_at": "2026-02-12",
+      "first_publish_at_kst": "2026-02-16 21:00",
+      "release_policy_hours": 24,
+      "release_at_kst": "2026-02-18T21:00:00+09:00",
+      "release_gate_passed": false,
+      "collect_status": "pending_official_release",
+      "source_channel": "nesdc",
+      "detail_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17407&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=6",
+      "legal_meta": {
+        "survey_datetime": "2026-02-11 10 시 12 분 ~ 20 시 32 분 2026-02-12 09 시 35 분 ~ 21 시 23 분",
+        "survey_population": "제주특별자치도에 거주하는 만 18세 이상 남녀",
+        "sample_size": 1000,
+        "response_rate": 15.8,
+        "margin_of_error": "95% 신뢰수준에 ±3.1%P",
+        "method": "무선전화면접"
+      },
+      "result_options": [],
+      "adapter_mode": "pending_release",
+      "adapter_profile": {
+        "profile_key": "pending_release",
+        "pollster": "(주)한국리서치"
+      },
+      "fallback_applied": false
+    }
+  ]
+}
