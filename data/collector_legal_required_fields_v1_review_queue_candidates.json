@@ -1,0 +1,3301 @@
+[
+  {
+    "id": "rvq_e046438305d09615",
+    "entity_type": "poll_observation",
+    "entity_id": "obs_3923340f5af55d45",
+    "issue_type": "extract_error",
+    "stage": "legal_required_fields_v1",
+    "error_code": "LEGAL_REQUIRED_FIELDS_NEEDS_REVIEW",
+    "error_message": "missing/invalid/conflicting legal required fields detected",
+    "source_url": "https://www.khan.co.kr/article/202602231023001/",
+    "payload": {
+      "completeness_score": 0.75,
+      "threshold": 0.9,
+      "reason_code": "CONFLICT_REQUIRED_FIELD_VALUE",
+      "missing_fields": [
+        "sample_size"
+      ],
+      "invalid_fields": [],
+      "conflict_fields": [
+        "survey_period"
+      ],
+      "field_schema": {
+        "pollster": {
+          "value": "미상조사기관",
+          "source": "observation",
+          "is_present": true,
+          "is_valid": true,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 1.0,
+          "missing_reason": null
+        },
+        "sponsor": {
+          "value": "20일 한국리서치에",
+          "source": "article_pattern",
+          "is_present": true,
+          "is_valid": true,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.78,
+          "missing_reason": null
+        },
+        "survey_period": {
+          "value": {
+            "survey_start_date": null,
+            "survey_end_date": "2026-02-23"
+          },
+          "source": "observation",
+          "is_present": true,
+          "is_valid": true,
+          "is_conflict": true,
+          "conflict_reason": "survey_period_mismatch",
+          "extraction_confidence": 1.0,
+          "missing_reason": "observation_article_conflict"
+        },
+        "sample_size": {
+          "value": null,
+          "source": "none",
+          "is_present": false,
+          "is_valid": false,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.0,
+          "missing_reason": "statistical_meta_not_found"
+        },
+        "method": {
+          "value": "면접원",
+          "source": "article_pattern",
+          "is_present": true,
+          "is_valid": true,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.78,
+          "missing_reason": null
+        },
+        "response_rate": {
+          "value": 54.0,
+          "source": "article_pattern",
+          "is_present": true,
+          "is_valid": true,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.78,
+          "missing_reason": null
+        },
+        "margin_of_error": {
+          "value": 3.1,
+          "source": "article_pattern",
+          "is_present": true,
+          "is_valid": true,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.78,
+          "missing_reason": null
+        },
+        "confidence_level": {
+          "value": 95.0,
+          "source": "article_pattern",
+          "is_present": true,
+          "is_valid": true,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.78,
+          "missing_reason": null
+        }
+      }
+    },
+    "status": "pending",
+    "created_at": "2026-02-25T22:28:03.282106+00:00"
+  },
+  {
+    "id": "rvq_3d6e444223179ad8",
+    "entity_type": "poll_observation",
+    "entity_id": "obs_1a9d3bc2062fbfd4",
+    "issue_type": "extract_error",
+    "stage": "legal_required_fields_v1",
+    "error_code": "LEGAL_REQUIRED_FIELDS_NEEDS_REVIEW",
+    "error_message": "missing/invalid/conflicting legal required fields detected",
+    "source_url": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE9HamZYd25pRGI3UmxSZGpRRHFHaDF0dDJ2RHJyNG5qaE9ybWFDb0F5OUQ2Mk5EVDU1bk9mZWpEUk84MXk1LU9DT3Rhdm92MTBJbjBOME4zYlVDd9IBX0FVX3lxTE5fd1ZmcUxyQ21BWWRBTnhjUWRfMVkzVnNjamFvbXY3bktLekpjNDNFam5rckZlVHQwQ2xKMlRFSTFvRDZIV2JYY3plTkhVeEd3eEE0MGdISmFuZ0JDNE84",
+    "payload": {
+      "completeness_score": 0.125,
+      "threshold": 0.9,
+      "reason_code": "MISSING_SURVEY_PERIOD",
+      "missing_fields": [
+        "sponsor",
+        "survey_period",
+        "sample_size",
+        "method",
+        "response_rate",
+        "margin_of_error",
+        "confidence_level"
+      ],
+      "invalid_fields": [],
+      "conflict_fields": [],
+      "field_schema": {
+        "pollster": {
+          "value": "미상조사기관",
+          "source": "observation",
+          "is_present": true,
+          "is_valid": true,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 1.0,
+          "missing_reason": null
+        },
+        "sponsor": {
+          "value": null,
+          "source": "none",
+          "is_present": false,
+          "is_valid": false,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.0,
+          "missing_reason": "actor_not_found"
+        },
+        "survey_period": {
+          "value": null,
+          "source": "none",
+          "is_present": false,
+          "is_valid": false,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.0,
+          "missing_reason": "survey_date_not_found"
+        },
+        "sample_size": {
+          "value": null,
+          "source": "none",
+          "is_present": false,
+          "is_valid": false,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.0,
+          "missing_reason": "statistical_meta_not_found"
+        },
+        "method": {
+          "value": null,
+          "source": "none",
+          "is_present": false,
+          "is_valid": false,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.0,
+          "missing_reason": "method_not_found"
+        },
+        "response_rate": {
+          "value": null,
+          "source": "none",
+          "is_present": false,
+          "is_valid": false,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.0,
+          "missing_reason": "statistical_meta_not_found"
+        },
+        "margin_of_error": {
+          "value": null,
+          "source": "none",
+          "is_present": false,
+          "is_valid": false,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.0,
+          "missing_reason": "statistical_meta_not_found"
+        },
+        "confidence_level": {
+          "value": null,
+          "source": "none",
+          "is_present": false,
+          "is_valid": false,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.0,
+          "missing_reason": "confidence_level_not_found"
+        }
+      }
+    },
+    "status": "pending",
+    "created_at": "2026-02-25T22:28:03.282722+00:00"
+  },
+  {
+    "id": "rvq_765141dc382ae026",
+    "entity_type": "poll_observation",
+    "entity_id": "obs_1b476b3c9acf3ed0",
+    "issue_type": "extract_error",
+    "stage": "legal_required_fields_v1",
+    "error_code": "LEGAL_REQUIRED_FIELDS_NEEDS_REVIEW",
+    "error_message": "missing/invalid/conflicting legal required fields detected",
+    "source_url": "https://news.google.com/rss/articles/CBMib0FVX3lxTFBJc3BDSGVxWFV6cXZaUXBjdy1ZX3JSODJpbXVlNnhTcFpNZEFITmV6MkFEUHlDZEw4cUtYVGZhVVpUWEN6amVNQ29YMFdjclh0Xy1seV9pbmlIV01mWlduZTE1T08yZ1V1dkExSHRUMA",
+    "payload": {
+      "completeness_score": 0.125,
+      "threshold": 0.9,
+      "reason_code": "MISSING_SURVEY_PERIOD",
+      "missing_fields": [
+        "sponsor",
+        "survey_period",
+        "sample_size",
+        "method",
+        "response_rate",
+        "margin_of_error",
+        "confidence_level"
+      ],
+      "invalid_fields": [],
+      "conflict_fields": [],
+      "field_schema": {
+        "pollster": {
+          "value": "미상조사기관",
+          "source": "observation",
+          "is_present": true,
+          "is_valid": true,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 1.0,
+          "missing_reason": null
+        },
+        "sponsor": {
+          "value": null,
+          "source": "none",
+          "is_present": false,
+          "is_valid": false,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.0,
+          "missing_reason": "actor_not_found"
+        },
+        "survey_period": {
+          "value": null,
+          "source": "none",
+          "is_present": false,
+          "is_valid": false,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.0,
+          "missing_reason": "survey_date_not_found"
+        },
+        "sample_size": {
+          "value": null,
+          "source": "none",
+          "is_present": false,
+          "is_valid": false,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.0,
+          "missing_reason": "statistical_meta_not_found"
+        },
+        "method": {
+          "value": null,
+          "source": "none",
+          "is_present": false,
+          "is_valid": false,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.0,
+          "missing_reason": "method_not_found"
+        },
+        "response_rate": {
+          "value": null,
+          "source": "none",
+          "is_present": false,
+          "is_valid": false,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.0,
+          "missing_reason": "statistical_meta_not_found"
+        },
+        "margin_of_error": {
+          "value": null,
+          "source": "none",
+          "is_present": false,
+          "is_valid": false,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.0,
+          "missing_reason": "statistical_meta_not_found"
+        },
+        "confidence_level": {
+          "value": null,
+          "source": "none",
+          "is_present": false,
+          "is_valid": false,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.0,
+          "missing_reason": "confidence_level_not_found"
+        }
+      }
+    },
+    "status": "pending",
+    "created_at": "2026-02-25T22:28:03.282810+00:00"
+  },
+  {
+    "id": "rvq_2861368581304dc4",
+    "entity_type": "poll_observation",
+    "entity_id": "obs_259e580fdbc42986",
+    "issue_type": "extract_error",
+    "stage": "legal_required_fields_v1",
+    "error_code": "LEGAL_REQUIRED_FIELDS_NEEDS_REVIEW",
+    "error_message": "missing/invalid/conflicting legal required fields detected",
+    "source_url": "https://news.google.com/rss/articles/CBMicEFVX3lxTE5QYU9aVVd5UEt6SHFZcm9TVERHOTBqRE5YbHlpOXR1VTUzcWtNcGR2V1Jhai1fLXk3bUJyWC1lbEw0VUNxcFR0eklxclVHWENudzlZZWtkZEpUTkxvaDE0d0lScV9DYXZ2dFhzbEJlQ3Y",
+    "payload": {
+      "completeness_score": 0.125,
+      "threshold": 0.9,
+      "reason_code": "MISSING_SURVEY_PERIOD",
+      "missing_fields": [
+        "sponsor",
+        "survey_period",
+        "sample_size",
+        "method",
+        "response_rate",
+        "margin_of_error",
+        "confidence_level"
+      ],
+      "invalid_fields": [],
+      "conflict_fields": [],
+      "field_schema": {
+        "pollster": {
+          "value": "미상조사기관",
+          "source": "observation",
+          "is_present": true,
+          "is_valid": true,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 1.0,
+          "missing_reason": null
+        },
+        "sponsor": {
+          "value": null,
+          "source": "none",
+          "is_present": false,
+          "is_valid": false,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.0,
+          "missing_reason": "actor_not_found"
+        },
+        "survey_period": {
+          "value": null,
+          "source": "none",
+          "is_present": false,
+          "is_valid": false,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.0,
+          "missing_reason": "survey_date_not_found"
+        },
+        "sample_size": {
+          "value": null,
+          "source": "none",
+          "is_present": false,
+          "is_valid": false,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.0,
+          "missing_reason": "statistical_meta_not_found"
+        },
+        "method": {
+          "value": null,
+          "source": "none",
+          "is_present": false,
+          "is_valid": false,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.0,
+          "missing_reason": "method_not_found"
+        },
+        "response_rate": {
+          "value": null,
+          "source": "none",
+          "is_present": false,
+          "is_valid": false,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.0,
+          "missing_reason": "statistical_meta_not_found"
+        },
+        "margin_of_error": {
+          "value": null,
+          "source": "none",
+          "is_present": false,
+          "is_valid": false,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.0,
+          "missing_reason": "statistical_meta_not_found"
+        },
+        "confidence_level": {
+          "value": null,
+          "source": "none",
+          "is_present": false,
+          "is_valid": false,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.0,
+          "missing_reason": "confidence_level_not_found"
+        }
+      }
+    },
+    "status": "pending",
+    "created_at": "2026-02-25T22:28:03.282901+00:00"
+  },
+  {
+    "id": "rvq_236a466df4109336",
+    "entity_type": "poll_observation",
+    "entity_id": "obs_7f29a3027242a383",
+    "issue_type": "extract_error",
+    "stage": "legal_required_fields_v1",
+    "error_code": "LEGAL_REQUIRED_FIELDS_NEEDS_REVIEW",
+    "error_message": "missing/invalid/conflicting legal required fields detected",
+    "source_url": "https://news.google.com/rss/articles/CBMimwFBVV95cUxPMjFRclBzZnhwdWlFY1l1QU1aRHNzem5UM0kzSW9LQjVldFNHeGg5ajlkZ1MycDYzek5RbWFTLVl5RjFlTlBLSzV4LXR1M1VmdTR3akpvTEp0SkFaR3h3Q0lIdEhDR0VkOFNJRWZEYXYtNEJGcHhuTEJOTG5zSEItZG04UWNUM2JsZUJsLUJnNXZYZExjSjRfQk0wQQ",
+    "payload": {
+      "completeness_score": 0.125,
+      "threshold": 0.9,
+      "reason_code": "MISSING_SURVEY_PERIOD",
+      "missing_fields": [
+        "sponsor",
+        "survey_period",
+        "sample_size",
+        "method",
+        "response_rate",
+        "margin_of_error",
+        "confidence_level"
+      ],
+      "invalid_fields": [],
+      "conflict_fields": [],
+      "field_schema": {
+        "pollster": {
+          "value": "미상조사기관",
+          "source": "observation",
+          "is_present": true,
+          "is_valid": true,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 1.0,
+          "missing_reason": null
+        },
+        "sponsor": {
+          "value": null,
+          "source": "none",
+          "is_present": false,
+          "is_valid": false,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.0,
+          "missing_reason": "actor_not_found"
+        },
+        "survey_period": {
+          "value": null,
+          "source": "none",
+          "is_present": false,
+          "is_valid": false,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.0,
+          "missing_reason": "survey_date_not_found"
+        },
+        "sample_size": {
+          "value": null,
+          "source": "none",
+          "is_present": false,
+          "is_valid": false,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.0,
+          "missing_reason": "statistical_meta_not_found"
+        },
+        "method": {
+          "value": null,
+          "source": "none",
+          "is_present": false,
+          "is_valid": false,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.0,
+          "missing_reason": "method_not_found"
+        },
+        "response_rate": {
+          "value": null,
+          "source": "none",
+          "is_present": false,
+          "is_valid": false,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.0,
+          "missing_reason": "statistical_meta_not_found"
+        },
+        "margin_of_error": {
+          "value": null,
+          "source": "none",
+          "is_present": false,
+          "is_valid": false,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.0,
+          "missing_reason": "statistical_meta_not_found"
+        },
+        "confidence_level": {
+          "value": null,
+          "source": "none",
+          "is_present": false,
+          "is_valid": false,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.0,
+          "missing_reason": "confidence_level_not_found"
+        }
+      }
+    },
+    "status": "pending",
+    "created_at": "2026-02-25T22:28:03.282973+00:00"
+  },
+  {
+    "id": "rvq_d272e4b0a72d634b",
+    "entity_type": "poll_observation",
+    "entity_id": "obs_c98ca4f5973f8d49",
+    "issue_type": "extract_error",
+    "stage": "legal_required_fields_v1",
+    "error_code": "LEGAL_REQUIRED_FIELDS_NEEDS_REVIEW",
+    "error_message": "missing/invalid/conflicting legal required fields detected",
+    "source_url": "https://news.google.com/rss/articles/CBMieEFVX3lxTE5tTW9iQy1QNXd2ZUU2OE5kZmZWMWlkem9tRDRMZXpVcVRVNXgxSGVicUxKdVBXX2QxeW5NYVBCQUp3NmdVRXF0c3VYZ19DT0F2UGtWVTZSYjdHa0J0SFFCOGM3N3lEM0JQMDJpZU5ybnBnY0ZRV2YwWdIBeEFVX3lxTFBXWWNrY1FkOUNlcWd3Z3hNZ1dkQ3JnbmNKcDFKVUpUN1k3SWt5UThzUVYxaDNMVkRzeDhTZV8yU2VTVHhlNVdFbllQVEl0QXZVYVVTOG85aDNMc0EzVVV4Nk1qZ1lUNVE0eTRIcS1FbTVrbk43RDc1Nw",
+    "payload": {
+      "completeness_score": 0.125,
+      "threshold": 0.9,
+      "reason_code": "MISSING_SURVEY_PERIOD",
+      "missing_fields": [
+        "sponsor",
+        "survey_period",
+        "sample_size",
+        "method",
+        "response_rate",
+        "margin_of_error",
+        "confidence_level"
+      ],
+      "invalid_fields": [],
+      "conflict_fields": [],
+      "field_schema": {
+        "pollster": {
+          "value": "MBC",
+          "source": "observation",
+          "is_present": true,
+          "is_valid": true,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 1.0,
+          "missing_reason": null
+        },
+        "sponsor": {
+          "value": null,
+          "source": "none",
+          "is_present": false,
+          "is_valid": false,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.0,
+          "missing_reason": "actor_not_found"
+        },
+        "survey_period": {
+          "value": null,
+          "source": "none",
+          "is_present": false,
+          "is_valid": false,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.0,
+          "missing_reason": "survey_date_not_found"
+        },
+        "sample_size": {
+          "value": null,
+          "source": "none",
+          "is_present": false,
+          "is_valid": false,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.0,
+          "missing_reason": "statistical_meta_not_found"
+        },
+        "method": {
+          "value": null,
+          "source": "none",
+          "is_present": false,
+          "is_valid": false,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.0,
+          "missing_reason": "method_not_found"
+        },
+        "response_rate": {
+          "value": null,
+          "source": "none",
+          "is_present": false,
+          "is_valid": false,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.0,
+          "missing_reason": "statistical_meta_not_found"
+        },
+        "margin_of_error": {
+          "value": null,
+          "source": "none",
+          "is_present": false,
+          "is_valid": false,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.0,
+          "missing_reason": "statistical_meta_not_found"
+        },
+        "confidence_level": {
+          "value": null,
+          "source": "none",
+          "is_present": false,
+          "is_valid": false,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.0,
+          "missing_reason": "confidence_level_not_found"
+        }
+      }
+    },
+    "status": "pending",
+    "created_at": "2026-02-25T22:28:03.283039+00:00"
+  },
+  {
+    "id": "rvq_7ede13f190bf1a90",
+    "entity_type": "poll_observation",
+    "entity_id": "obs_f5aefbfbb344c0d1",
+    "issue_type": "extract_error",
+    "stage": "legal_required_fields_v1",
+    "error_code": "LEGAL_REQUIRED_FIELDS_NEEDS_REVIEW",
+    "error_message": "missing/invalid/conflicting legal required fields detected",
+    "source_url": "https://news.google.com/rss/articles/CBMiVkFVX3lxTE5mZnp1cU5sXzNkMk52b1Y4bWpsaXhoZUswNEVsaDN4RERfV2RyTFdOY1hackVlbWFwWlBRaFFITkZOeDRiWFo2Sll4UWNaTEt1aFJoYzh30gGGAkFVX3lxTE16ZVBkOUM3T2hYWm5LOEhjNDlFRXNfbWpqbUhqQjBBdlJocTg3dnJXb3VvZ0FTR2lkbjFGMHRPZlBuTVo0Q2w0M3NZVmhZTjdzLWlzdkFKb1RJVmNkMUpFX1lsMDZOa2Z4MmQwTUlxVm1EdGJxUTUxR2hmeUNnU0JBN1h0OXllZXFpZlo4Ry03U3hMN3ZDbExRUklHcUE4cHV6R2hBODdkYnJWd1VYMWEwaGRUcFNnLXNLa3BRd1p5TERzTHVfNkNhQjV1bzFWLTBpcmYzM0RZMnZrQ1M3dzVTNEVicFFxbHB0UFJYQTFTUzNicXNfNEFoaGk2SHFtdXU0b3RTVXc",
+    "payload": {
+      "completeness_score": 0.125,
+      "threshold": 0.9,
+      "reason_code": "MISSING_SURVEY_PERIOD",
+      "missing_fields": [
+        "sponsor",
+        "survey_period",
+        "sample_size",
+        "method",
+        "response_rate",
+        "margin_of_error",
+        "confidence_level"
+      ],
+      "invalid_fields": [],
+      "conflict_fields": [],
+      "field_schema": {
+        "pollster": {
+          "value": "미상조사기관",
+          "source": "observation",
+          "is_present": true,
+          "is_valid": true,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 1.0,
+          "missing_reason": null
+        },
+        "sponsor": {
+          "value": null,
+          "source": "none",
+          "is_present": false,
+          "is_valid": false,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.0,
+          "missing_reason": "actor_not_found"
+        },
+        "survey_period": {
+          "value": null,
+          "source": "none",
+          "is_present": false,
+          "is_valid": false,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.0,
+          "missing_reason": "survey_date_not_found"
+        },
+        "sample_size": {
+          "value": null,
+          "source": "none",
+          "is_present": false,
+          "is_valid": false,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.0,
+          "missing_reason": "statistical_meta_not_found"
+        },
+        "method": {
+          "value": null,
+          "source": "none",
+          "is_present": false,
+          "is_valid": false,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.0,
+          "missing_reason": "method_not_found"
+        },
+        "response_rate": {
+          "value": null,
+          "source": "none",
+          "is_present": false,
+          "is_valid": false,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.0,
+          "missing_reason": "statistical_meta_not_found"
+        },
+        "margin_of_error": {
+          "value": null,
+          "source": "none",
+          "is_present": false,
+          "is_valid": false,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.0,
+          "missing_reason": "statistical_meta_not_found"
+        },
+        "confidence_level": {
+          "value": null,
+          "source": "none",
+          "is_present": false,
+          "is_valid": false,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.0,
+          "missing_reason": "confidence_level_not_found"
+        }
+      }
+    },
+    "status": "pending",
+    "created_at": "2026-02-25T22:28:03.283099+00:00"
+  },
+  {
+    "id": "rvq_35dc28a77aec5ac7",
+    "entity_type": "poll_observation",
+    "entity_id": "obs_136dffa93edf3413",
+    "issue_type": "extract_error",
+    "stage": "legal_required_fields_v1",
+    "error_code": "LEGAL_REQUIRED_FIELDS_NEEDS_REVIEW",
+    "error_message": "missing/invalid/conflicting legal required fields detected",
+    "source_url": "https://news.google.com/rss/articles/CBMidEFVX3lxTE0tR240RHM3eWhpWHhBUmFDZzl1eUFIRjJZN0JGU185MXBaanpESmxwTUREYThKU3h6anpJRklRelduaHR1UjBLSFhlbDhoNkhJN284eS1RS2lmTm5wUTZXWXZLNFBNWm1vOW03YS1wTmdaRjB5",
+    "payload": {
+      "completeness_score": 0.125,
+      "threshold": 0.9,
+      "reason_code": "MISSING_SURVEY_PERIOD",
+      "missing_fields": [
+        "sponsor",
+        "survey_period",
+        "sample_size",
+        "method",
+        "response_rate",
+        "margin_of_error",
+        "confidence_level"
+      ],
+      "invalid_fields": [],
+      "conflict_fields": [],
+      "field_schema": {
+        "pollster": {
+          "value": "미상조사기관",
+          "source": "observation",
+          "is_present": true,
+          "is_valid": true,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 1.0,
+          "missing_reason": null
+        },
+        "sponsor": {
+          "value": null,
+          "source": "none",
+          "is_present": false,
+          "is_valid": false,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.0,
+          "missing_reason": "actor_not_found"
+        },
+        "survey_period": {
+          "value": null,
+          "source": "none",
+          "is_present": false,
+          "is_valid": false,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.0,
+          "missing_reason": "survey_date_not_found"
+        },
+        "sample_size": {
+          "value": null,
+          "source": "none",
+          "is_present": false,
+          "is_valid": false,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.0,
+          "missing_reason": "statistical_meta_not_found"
+        },
+        "method": {
+          "value": null,
+          "source": "none",
+          "is_present": false,
+          "is_valid": false,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.0,
+          "missing_reason": "method_not_found"
+        },
+        "response_rate": {
+          "value": null,
+          "source": "none",
+          "is_present": false,
+          "is_valid": false,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.0,
+          "missing_reason": "statistical_meta_not_found"
+        },
+        "margin_of_error": {
+          "value": null,
+          "source": "none",
+          "is_present": false,
+          "is_valid": false,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.0,
+          "missing_reason": "statistical_meta_not_found"
+        },
+        "confidence_level": {
+          "value": null,
+          "source": "none",
+          "is_present": false,
+          "is_valid": false,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.0,
+          "missing_reason": "confidence_level_not_found"
+        }
+      }
+    },
+    "status": "pending",
+    "created_at": "2026-02-25T22:28:03.283170+00:00"
+  },
+  {
+    "id": "rvq_6cf9254b2825489e",
+    "entity_type": "poll_observation",
+    "entity_id": "obs_444bed2fb448053a",
+    "issue_type": "extract_error",
+    "stage": "legal_required_fields_v1",
+    "error_code": "LEGAL_REQUIRED_FIELDS_NEEDS_REVIEW",
+    "error_message": "missing/invalid/conflicting legal required fields detected",
+    "source_url": "https://news.google.com/rss/articles/CBMiT0FVX3lxTE1TR0RwR3pLa1lTTXY0XzFmaF81SFA3NXhhcHNLWWhTczVrQUtJcDJtOUxaNGxYdnNueXRBU19VSTAzVGpselZMTXVHWUJfYTg",
+    "payload": {
+      "completeness_score": 0.125,
+      "threshold": 0.9,
+      "reason_code": "MISSING_SURVEY_PERIOD",
+      "missing_fields": [
+        "sponsor",
+        "survey_period",
+        "sample_size",
+        "method",
+        "response_rate",
+        "margin_of_error",
+        "confidence_level"
+      ],
+      "invalid_fields": [],
+      "conflict_fields": [],
+      "field_schema": {
+        "pollster": {
+          "value": "미상조사기관",
+          "source": "observation",
+          "is_present": true,
+          "is_valid": true,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 1.0,
+          "missing_reason": null
+        },
+        "sponsor": {
+          "value": null,
+          "source": "none",
+          "is_present": false,
+          "is_valid": false,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.0,
+          "missing_reason": "actor_not_found"
+        },
+        "survey_period": {
+          "value": null,
+          "source": "none",
+          "is_present": false,
+          "is_valid": false,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.0,
+          "missing_reason": "survey_date_not_found"
+        },
+        "sample_size": {
+          "value": null,
+          "source": "none",
+          "is_present": false,
+          "is_valid": false,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.0,
+          "missing_reason": "statistical_meta_not_found"
+        },
+        "method": {
+          "value": null,
+          "source": "none",
+          "is_present": false,
+          "is_valid": false,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.0,
+          "missing_reason": "method_not_found"
+        },
+        "response_rate": {
+          "value": null,
+          "source": "none",
+          "is_present": false,
+          "is_valid": false,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.0,
+          "missing_reason": "statistical_meta_not_found"
+        },
+        "margin_of_error": {
+          "value": null,
+          "source": "none",
+          "is_present": false,
+          "is_valid": false,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.0,
+          "missing_reason": "statistical_meta_not_found"
+        },
+        "confidence_level": {
+          "value": null,
+          "source": "none",
+          "is_present": false,
+          "is_valid": false,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.0,
+          "missing_reason": "confidence_level_not_found"
+        }
+      }
+    },
+    "status": "pending",
+    "created_at": "2026-02-25T22:28:03.283237+00:00"
+  },
+  {
+    "id": "rvq_8dd842675a395fb1",
+    "entity_type": "poll_observation",
+    "entity_id": "obs_82f9da3ac3360057",
+    "issue_type": "extract_error",
+    "stage": "legal_required_fields_v1",
+    "error_code": "LEGAL_REQUIRED_FIELDS_NEEDS_REVIEW",
+    "error_message": "missing/invalid/conflicting legal required fields detected",
+    "source_url": "https://news.google.com/rss/articles/CBMieEFVX3lxTE5YR2RWdVVLempqS2xCZU9WR083VHZWcEFjRnpqUUJpbWd3YjVINFBsNlU2UVRyNHU0UEg0YnBIRl9MLTkwaldWaDVPeE1XVnVKVWdGNlFXNTR5UFlfakR6bXZ4V0hTcVBrNU9oaEpPdWJjY2tpa1I4UQ",
+    "payload": {
+      "completeness_score": 0.25,
+      "threshold": 0.9,
+      "reason_code": "MISSING_SURVEY_PERIOD",
+      "missing_fields": [
+        "sponsor",
+        "survey_period",
+        "sample_size",
+        "method",
+        "response_rate",
+        "confidence_level"
+      ],
+      "invalid_fields": [],
+      "conflict_fields": [],
+      "field_schema": {
+        "pollster": {
+          "value": "미상조사기관",
+          "source": "observation",
+          "is_present": true,
+          "is_valid": true,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 1.0,
+          "missing_reason": null
+        },
+        "sponsor": {
+          "value": null,
+          "source": "none",
+          "is_present": false,
+          "is_valid": false,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.0,
+          "missing_reason": "actor_not_found"
+        },
+        "survey_period": {
+          "value": null,
+          "source": "none",
+          "is_present": false,
+          "is_valid": false,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.0,
+          "missing_reason": "survey_date_not_found"
+        },
+        "sample_size": {
+          "value": null,
+          "source": "none",
+          "is_present": false,
+          "is_valid": false,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.0,
+          "missing_reason": "statistical_meta_not_found"
+        },
+        "method": {
+          "value": null,
+          "source": "none",
+          "is_present": false,
+          "is_valid": false,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.0,
+          "missing_reason": "method_not_found"
+        },
+        "response_rate": {
+          "value": null,
+          "source": "none",
+          "is_present": false,
+          "is_valid": false,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.0,
+          "missing_reason": "statistical_meta_not_found"
+        },
+        "margin_of_error": {
+          "value": 6.0,
+          "source": "article_pattern",
+          "is_present": true,
+          "is_valid": true,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.78,
+          "missing_reason": null
+        },
+        "confidence_level": {
+          "value": null,
+          "source": "none",
+          "is_present": false,
+          "is_valid": false,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.0,
+          "missing_reason": "confidence_level_not_found"
+        }
+      }
+    },
+    "status": "pending",
+    "created_at": "2026-02-25T22:28:03.283317+00:00"
+  },
+  {
+    "id": "rvq_d6f31d3189e9ceb8",
+    "entity_type": "poll_observation",
+    "entity_id": "obs_6348089eeaf5b9f8",
+    "issue_type": "extract_error",
+    "stage": "legal_required_fields_v1",
+    "error_code": "LEGAL_REQUIRED_FIELDS_NEEDS_REVIEW",
+    "error_message": "missing/invalid/conflicting legal required fields detected",
+    "source_url": "https://news.google.com/rss/articles/CBMiUkFVX3lxTE1lS3hWUFprb0RROTRHT1FzUHo5QmpBOGdLU3RvNnQxQlJjYVBMakk3NmdXaUZpY19aWXY4U1dxMHhjQVlJanB1UHY1QURTVHRWNHc",
+    "payload": {
+      "completeness_score": 0.125,
+      "threshold": 0.9,
+      "reason_code": "MISSING_SURVEY_PERIOD",
+      "missing_fields": [
+        "sponsor",
+        "survey_period",
+        "sample_size",
+        "method",
+        "response_rate",
+        "margin_of_error",
+        "confidence_level"
+      ],
+      "invalid_fields": [],
+      "conflict_fields": [],
+      "field_schema": {
+        "pollster": {
+          "value": "미상조사기관",
+          "source": "observation",
+          "is_present": true,
+          "is_valid": true,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 1.0,
+          "missing_reason": null
+        },
+        "sponsor": {
+          "value": null,
+          "source": "none",
+          "is_present": false,
+          "is_valid": false,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.0,
+          "missing_reason": "actor_not_found"
+        },
+        "survey_period": {
+          "value": null,
+          "source": "none",
+          "is_present": false,
+          "is_valid": false,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.0,
+          "missing_reason": "survey_date_not_found"
+        },
+        "sample_size": {
+          "value": null,
+          "source": "none",
+          "is_present": false,
+          "is_valid": false,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.0,
+          "missing_reason": "statistical_meta_not_found"
+        },
+        "method": {
+          "value": null,
+          "source": "none",
+          "is_present": false,
+          "is_valid": false,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.0,
+          "missing_reason": "method_not_found"
+        },
+        "response_rate": {
+          "value": null,
+          "source": "none",
+          "is_present": false,
+          "is_valid": false,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.0,
+          "missing_reason": "statistical_meta_not_found"
+        },
+        "margin_of_error": {
+          "value": null,
+          "source": "none",
+          "is_present": false,
+          "is_valid": false,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.0,
+          "missing_reason": "statistical_meta_not_found"
+        },
+        "confidence_level": {
+          "value": null,
+          "source": "none",
+          "is_present": false,
+          "is_valid": false,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.0,
+          "missing_reason": "confidence_level_not_found"
+        }
+      }
+    },
+    "status": "pending",
+    "created_at": "2026-02-25T22:28:03.283378+00:00"
+  },
+  {
+    "id": "rvq_3f0f284c2be53194",
+    "entity_type": "poll_observation",
+    "entity_id": "obs_85c4e876cf8b2a2a",
+    "issue_type": "extract_error",
+    "stage": "legal_required_fields_v1",
+    "error_code": "LEGAL_REQUIRED_FIELDS_NEEDS_REVIEW",
+    "error_message": "missing/invalid/conflicting legal required fields detected",
+    "source_url": "https://news.google.com/rss/articles/CBMiUkFVX3lxTFBxZHRodk44MXJxVnVlSFRnUkxoQi0yR0tUSmRFdE80LVFmazhtdmdHcjhQQmlXNG92bEZySVpGVG5LaGZNQ2JxUEdTN20zbVhpb3c",
+    "payload": {
+      "completeness_score": 0.125,
+      "threshold": 0.9,
+      "reason_code": "MISSING_SURVEY_PERIOD",
+      "missing_fields": [
+        "sponsor",
+        "survey_period",
+        "sample_size",
+        "method",
+        "response_rate",
+        "margin_of_error",
+        "confidence_level"
+      ],
+      "invalid_fields": [],
+      "conflict_fields": [],
+      "field_schema": {
+        "pollster": {
+          "value": "미상조사기관",
+          "source": "observation",
+          "is_present": true,
+          "is_valid": true,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 1.0,
+          "missing_reason": null
+        },
+        "sponsor": {
+          "value": null,
+          "source": "none",
+          "is_present": false,
+          "is_valid": false,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.0,
+          "missing_reason": "actor_not_found"
+        },
+        "survey_period": {
+          "value": null,
+          "source": "none",
+          "is_present": false,
+          "is_valid": false,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.0,
+          "missing_reason": "survey_date_not_found"
+        },
+        "sample_size": {
+          "value": null,
+          "source": "none",
+          "is_present": false,
+          "is_valid": false,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.0,
+          "missing_reason": "statistical_meta_not_found"
+        },
+        "method": {
+          "value": null,
+          "source": "none",
+          "is_present": false,
+          "is_valid": false,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.0,
+          "missing_reason": "method_not_found"
+        },
+        "response_rate": {
+          "value": null,
+          "source": "none",
+          "is_present": false,
+          "is_valid": false,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.0,
+          "missing_reason": "statistical_meta_not_found"
+        },
+        "margin_of_error": {
+          "value": null,
+          "source": "none",
+          "is_present": false,
+          "is_valid": false,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.0,
+          "missing_reason": "statistical_meta_not_found"
+        },
+        "confidence_level": {
+          "value": null,
+          "source": "none",
+          "is_present": false,
+          "is_valid": false,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.0,
+          "missing_reason": "confidence_level_not_found"
+        }
+      }
+    },
+    "status": "pending",
+    "created_at": "2026-02-25T22:28:03.283438+00:00"
+  },
+  {
+    "id": "rvq_392c8904459f9726",
+    "entity_type": "poll_observation",
+    "entity_id": "obs_297e45acd1bc8bec",
+    "issue_type": "extract_error",
+    "stage": "legal_required_fields_v1",
+    "error_code": "LEGAL_REQUIRED_FIELDS_NEEDS_REVIEW",
+    "error_message": "missing/invalid/conflicting legal required fields detected",
+    "source_url": "https://news.google.com/rss/articles/CBMiUkFVX3lxTE8zQ29Gc1hUUnRvSXNrdjBsbW1VSERKTVJLa3NPZHFETnkyLUVnMHYwVm9OMFMzVUJBeTBtN192eTZXUThkM1U0RkE5Yk1PUk0yNmc",
+    "payload": {
+      "completeness_score": 0.125,
+      "threshold": 0.9,
+      "reason_code": "MISSING_SURVEY_PERIOD",
+      "missing_fields": [
+        "sponsor",
+        "survey_period",
+        "sample_size",
+        "method",
+        "response_rate",
+        "margin_of_error",
+        "confidence_level"
+      ],
+      "invalid_fields": [],
+      "conflict_fields": [],
+      "field_schema": {
+        "pollster": {
+          "value": "미상조사기관",
+          "source": "observation",
+          "is_present": true,
+          "is_valid": true,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 1.0,
+          "missing_reason": null
+        },
+        "sponsor": {
+          "value": null,
+          "source": "none",
+          "is_present": false,
+          "is_valid": false,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.0,
+          "missing_reason": "actor_not_found"
+        },
+        "survey_period": {
+          "value": null,
+          "source": "none",
+          "is_present": false,
+          "is_valid": false,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.0,
+          "missing_reason": "survey_date_not_found"
+        },
+        "sample_size": {
+          "value": null,
+          "source": "none",
+          "is_present": false,
+          "is_valid": false,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.0,
+          "missing_reason": "statistical_meta_not_found"
+        },
+        "method": {
+          "value": null,
+          "source": "none",
+          "is_present": false,
+          "is_valid": false,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.0,
+          "missing_reason": "method_not_found"
+        },
+        "response_rate": {
+          "value": null,
+          "source": "none",
+          "is_present": false,
+          "is_valid": false,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.0,
+          "missing_reason": "statistical_meta_not_found"
+        },
+        "margin_of_error": {
+          "value": null,
+          "source": "none",
+          "is_present": false,
+          "is_valid": false,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.0,
+          "missing_reason": "statistical_meta_not_found"
+        },
+        "confidence_level": {
+          "value": null,
+          "source": "none",
+          "is_present": false,
+          "is_valid": false,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.0,
+          "missing_reason": "confidence_level_not_found"
+        }
+      }
+    },
+    "status": "pending",
+    "created_at": "2026-02-25T22:28:03.283511+00:00"
+  },
+  {
+    "id": "rvq_1c1ded3d7da601fd",
+    "entity_type": "poll_observation",
+    "entity_id": "obs_ff78dcd3a82e1ee0",
+    "issue_type": "extract_error",
+    "stage": "legal_required_fields_v1",
+    "error_code": "LEGAL_REQUIRED_FIELDS_NEEDS_REVIEW",
+    "error_message": "missing/invalid/conflicting legal required fields detected",
+    "source_url": "https://news.google.com/rss/articles/CBMicEFVX3lxTE9TYVNqLXN0aW1lemlIME05b25KX09HNFYydlg1Zk9iaUgyZ2kwcG12b0tTVHRtSEZNVTBoRm1xYS1zMlVCQzZaSnVYZjJlWjNZSkI2cUZlUVZ4TlY1M1BJUUFLd09UV2hiV0taaERtbi0",
+    "payload": {
+      "completeness_score": 0.125,
+      "threshold": 0.9,
+      "reason_code": "MISSING_SURVEY_PERIOD",
+      "missing_fields": [
+        "sponsor",
+        "survey_period",
+        "sample_size",
+        "method",
+        "response_rate",
+        "margin_of_error",
+        "confidence_level"
+      ],
+      "invalid_fields": [],
+      "conflict_fields": [],
+      "field_schema": {
+        "pollster": {
+          "value": "미상조사기관",
+          "source": "observation",
+          "is_present": true,
+          "is_valid": true,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 1.0,
+          "missing_reason": null
+        },
+        "sponsor": {
+          "value": null,
+          "source": "none",
+          "is_present": false,
+          "is_valid": false,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.0,
+          "missing_reason": "actor_not_found"
+        },
+        "survey_period": {
+          "value": null,
+          "source": "none",
+          "is_present": false,
+          "is_valid": false,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.0,
+          "missing_reason": "survey_date_not_found"
+        },
+        "sample_size": {
+          "value": null,
+          "source": "none",
+          "is_present": false,
+          "is_valid": false,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.0,
+          "missing_reason": "statistical_meta_not_found"
+        },
+        "method": {
+          "value": null,
+          "source": "none",
+          "is_present": false,
+          "is_valid": false,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.0,
+          "missing_reason": "method_not_found"
+        },
+        "response_rate": {
+          "value": null,
+          "source": "none",
+          "is_present": false,
+          "is_valid": false,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.0,
+          "missing_reason": "statistical_meta_not_found"
+        },
+        "margin_of_error": {
+          "value": null,
+          "source": "none",
+          "is_present": false,
+          "is_valid": false,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.0,
+          "missing_reason": "statistical_meta_not_found"
+        },
+        "confidence_level": {
+          "value": null,
+          "source": "none",
+          "is_present": false,
+          "is_valid": false,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.0,
+          "missing_reason": "confidence_level_not_found"
+        }
+      }
+    },
+    "status": "pending",
+    "created_at": "2026-02-25T22:28:03.283578+00:00"
+  },
+  {
+    "id": "rvq_ba5888a6e57eead4",
+    "entity_type": "poll_observation",
+    "entity_id": "obs_0f585774f2b41565",
+    "issue_type": "extract_error",
+    "stage": "legal_required_fields_v1",
+    "error_code": "LEGAL_REQUIRED_FIELDS_NEEDS_REVIEW",
+    "error_message": "missing/invalid/conflicting legal required fields detected",
+    "source_url": "https://news.google.com/rss/articles/CBMiVEFVX3lxTE5rS0JxZXRJT3piMlN2VW5tWnpDVmtZNmFGRDJUZ0dnb0k2NjFsWTRVZkY4NDNHb0pSendnS0FqVUhpMG9JRkhwYUo5Nk92SnZSQWNacw",
+    "payload": {
+      "completeness_score": 0.125,
+      "threshold": 0.9,
+      "reason_code": "MISSING_SURVEY_PERIOD",
+      "missing_fields": [
+        "sponsor",
+        "survey_period",
+        "sample_size",
+        "method",
+        "response_rate",
+        "margin_of_error",
+        "confidence_level"
+      ],
+      "invalid_fields": [],
+      "conflict_fields": [],
+      "field_schema": {
+        "pollster": {
+          "value": "미상조사기관",
+          "source": "observation",
+          "is_present": true,
+          "is_valid": true,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 1.0,
+          "missing_reason": null
+        },
+        "sponsor": {
+          "value": null,
+          "source": "none",
+          "is_present": false,
+          "is_valid": false,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.0,
+          "missing_reason": "actor_not_found"
+        },
+        "survey_period": {
+          "value": null,
+          "source": "none",
+          "is_present": false,
+          "is_valid": false,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.0,
+          "missing_reason": "survey_date_not_found"
+        },
+        "sample_size": {
+          "value": null,
+          "source": "none",
+          "is_present": false,
+          "is_valid": false,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.0,
+          "missing_reason": "statistical_meta_not_found"
+        },
+        "method": {
+          "value": null,
+          "source": "none",
+          "is_present": false,
+          "is_valid": false,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.0,
+          "missing_reason": "method_not_found"
+        },
+        "response_rate": {
+          "value": null,
+          "source": "none",
+          "is_present": false,
+          "is_valid": false,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.0,
+          "missing_reason": "statistical_meta_not_found"
+        },
+        "margin_of_error": {
+          "value": null,
+          "source": "none",
+          "is_present": false,
+          "is_valid": false,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.0,
+          "missing_reason": "statistical_meta_not_found"
+        },
+        "confidence_level": {
+          "value": null,
+          "source": "none",
+          "is_present": false,
+          "is_valid": false,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.0,
+          "missing_reason": "confidence_level_not_found"
+        }
+      }
+    },
+    "status": "pending",
+    "created_at": "2026-02-25T22:28:03.283650+00:00"
+  },
+  {
+    "id": "rvq_94de1db5a7fbff08",
+    "entity_type": "poll_observation",
+    "entity_id": "obs_0cc203a71a596743",
+    "issue_type": "extract_error",
+    "stage": "legal_required_fields_v1",
+    "error_code": "LEGAL_REQUIRED_FIELDS_NEEDS_REVIEW",
+    "error_message": "missing/invalid/conflicting legal required fields detected",
+    "source_url": "https://news.google.com/rss/articles/CBMib0FVX3lxTFBVb1NSZjJ1enV6eDFDLWppUzM4eGlsc2RKRDVxY0pfSmxOUTBLcE1MbGZ0VGdqcVhUMVhHZTBzWk5xanF6Znl4Ym9icFMtX0xweWhsdTlVSzNURjVGUXdsQ1AzTC0xdXJDZDBjaG5TMA",
+    "payload": {
+      "completeness_score": 0.125,
+      "threshold": 0.9,
+      "reason_code": "MISSING_SURVEY_PERIOD",
+      "missing_fields": [
+        "sponsor",
+        "survey_period",
+        "sample_size",
+        "method",
+        "response_rate",
+        "margin_of_error",
+        "confidence_level"
+      ],
+      "invalid_fields": [],
+      "conflict_fields": [],
+      "field_schema": {
+        "pollster": {
+          "value": "미상조사기관",
+          "source": "observation",
+          "is_present": true,
+          "is_valid": true,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 1.0,
+          "missing_reason": null
+        },
+        "sponsor": {
+          "value": null,
+          "source": "none",
+          "is_present": false,
+          "is_valid": false,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.0,
+          "missing_reason": "actor_not_found"
+        },
+        "survey_period": {
+          "value": null,
+          "source": "none",
+          "is_present": false,
+          "is_valid": false,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.0,
+          "missing_reason": "survey_date_not_found"
+        },
+        "sample_size": {
+          "value": null,
+          "source": "none",
+          "is_present": false,
+          "is_valid": false,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.0,
+          "missing_reason": "statistical_meta_not_found"
+        },
+        "method": {
+          "value": null,
+          "source": "none",
+          "is_present": false,
+          "is_valid": false,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.0,
+          "missing_reason": "method_not_found"
+        },
+        "response_rate": {
+          "value": null,
+          "source": "none",
+          "is_present": false,
+          "is_valid": false,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.0,
+          "missing_reason": "statistical_meta_not_found"
+        },
+        "margin_of_error": {
+          "value": null,
+          "source": "none",
+          "is_present": false,
+          "is_valid": false,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.0,
+          "missing_reason": "statistical_meta_not_found"
+        },
+        "confidence_level": {
+          "value": null,
+          "source": "none",
+          "is_present": false,
+          "is_valid": false,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.0,
+          "missing_reason": "confidence_level_not_found"
+        }
+      }
+    },
+    "status": "pending",
+    "created_at": "2026-02-25T22:28:03.283710+00:00"
+  },
+  {
+    "id": "rvq_6d54c5fa0f698bc8",
+    "entity_type": "poll_observation",
+    "entity_id": "obs_57d26088f1d9972c",
+    "issue_type": "extract_error",
+    "stage": "legal_required_fields_v1",
+    "error_code": "LEGAL_REQUIRED_FIELDS_NEEDS_REVIEW",
+    "error_message": "missing/invalid/conflicting legal required fields detected",
+    "source_url": "https://news.google.com/rss/articles/CBMiZ0FVX3lxTE9VTlluWEJ1dFcydUhIa2M4YlhNSVloa1JmNkdtRHVEbGgxQzl5THhmaEY5Vlk3WTFIQTRUYmdVZjQ1SjRHRGF3YnA0MlFQQVB1UE1MY3lBdlVZM3IyS3FyMGhaelNaWFk",
+    "payload": {
+      "completeness_score": 0.125,
+      "threshold": 0.9,
+      "reason_code": "MISSING_SURVEY_PERIOD",
+      "missing_fields": [
+        "sponsor",
+        "survey_period",
+        "sample_size",
+        "method",
+        "response_rate",
+        "margin_of_error",
+        "confidence_level"
+      ],
+      "invalid_fields": [],
+      "conflict_fields": [],
+      "field_schema": {
+        "pollster": {
+          "value": "미상조사기관",
+          "source": "observation",
+          "is_present": true,
+          "is_valid": true,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 1.0,
+          "missing_reason": null
+        },
+        "sponsor": {
+          "value": null,
+          "source": "none",
+          "is_present": false,
+          "is_valid": false,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.0,
+          "missing_reason": "actor_not_found"
+        },
+        "survey_period": {
+          "value": null,
+          "source": "none",
+          "is_present": false,
+          "is_valid": false,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.0,
+          "missing_reason": "survey_date_not_found"
+        },
+        "sample_size": {
+          "value": null,
+          "source": "none",
+          "is_present": false,
+          "is_valid": false,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.0,
+          "missing_reason": "statistical_meta_not_found"
+        },
+        "method": {
+          "value": null,
+          "source": "none",
+          "is_present": false,
+          "is_valid": false,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.0,
+          "missing_reason": "method_not_found"
+        },
+        "response_rate": {
+          "value": null,
+          "source": "none",
+          "is_present": false,
+          "is_valid": false,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.0,
+          "missing_reason": "statistical_meta_not_found"
+        },
+        "margin_of_error": {
+          "value": null,
+          "source": "none",
+          "is_present": false,
+          "is_valid": false,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.0,
+          "missing_reason": "statistical_meta_not_found"
+        },
+        "confidence_level": {
+          "value": null,
+          "source": "none",
+          "is_present": false,
+          "is_valid": false,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.0,
+          "missing_reason": "confidence_level_not_found"
+        }
+      }
+    },
+    "status": "pending",
+    "created_at": "2026-02-25T22:28:03.283778+00:00"
+  },
+  {
+    "id": "rvq_c130374835139cd7",
+    "entity_type": "poll_observation",
+    "entity_id": "obs_a12b7fcd9b903160",
+    "issue_type": "extract_error",
+    "stage": "legal_required_fields_v1",
+    "error_code": "LEGAL_REQUIRED_FIELDS_NEEDS_REVIEW",
+    "error_message": "missing/invalid/conflicting legal required fields detected",
+    "source_url": "https://news.google.com/rss/articles/CBMiT0FVX3lxTE1hbjFpMFNxZGdfSnNlZ1NmTmdyVkpqbUJOMC1YQmp4cV9HWWRVOWZ4VzBTdEVsamdhN21JalI3NWY3eWdTTE5xS0FjT3drQTQ",
+    "payload": {
+      "completeness_score": 0.125,
+      "threshold": 0.9,
+      "reason_code": "MISSING_SURVEY_PERIOD",
+      "missing_fields": [
+        "sponsor",
+        "survey_period",
+        "sample_size",
+        "method",
+        "response_rate",
+        "margin_of_error",
+        "confidence_level"
+      ],
+      "invalid_fields": [],
+      "conflict_fields": [],
+      "field_schema": {
+        "pollster": {
+          "value": "미상조사기관",
+          "source": "observation",
+          "is_present": true,
+          "is_valid": true,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 1.0,
+          "missing_reason": null
+        },
+        "sponsor": {
+          "value": null,
+          "source": "none",
+          "is_present": false,
+          "is_valid": false,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.0,
+          "missing_reason": "actor_not_found"
+        },
+        "survey_period": {
+          "value": null,
+          "source": "none",
+          "is_present": false,
+          "is_valid": false,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.0,
+          "missing_reason": "survey_date_not_found"
+        },
+        "sample_size": {
+          "value": null,
+          "source": "none",
+          "is_present": false,
+          "is_valid": false,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.0,
+          "missing_reason": "statistical_meta_not_found"
+        },
+        "method": {
+          "value": null,
+          "source": "none",
+          "is_present": false,
+          "is_valid": false,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.0,
+          "missing_reason": "method_not_found"
+        },
+        "response_rate": {
+          "value": null,
+          "source": "none",
+          "is_present": false,
+          "is_valid": false,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.0,
+          "missing_reason": "statistical_meta_not_found"
+        },
+        "margin_of_error": {
+          "value": null,
+          "source": "none",
+          "is_present": false,
+          "is_valid": false,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.0,
+          "missing_reason": "statistical_meta_not_found"
+        },
+        "confidence_level": {
+          "value": null,
+          "source": "none",
+          "is_present": false,
+          "is_valid": false,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.0,
+          "missing_reason": "confidence_level_not_found"
+        }
+      }
+    },
+    "status": "pending",
+    "created_at": "2026-02-25T22:28:03.283844+00:00"
+  },
+  {
+    "id": "rvq_58b1becd56af2eb2",
+    "entity_type": "poll_observation",
+    "entity_id": "obs_3937ad1c6457214f",
+    "issue_type": "extract_error",
+    "stage": "legal_required_fields_v1",
+    "error_code": "LEGAL_REQUIRED_FIELDS_NEEDS_REVIEW",
+    "error_message": "missing/invalid/conflicting legal required fields detected",
+    "source_url": "https://news.google.com/rss/articles/CBMicEFVX3lxTE5SVTdnNi1DU3hFdmF1S3ZjbHdidU9tOVktNE1TZ095c2hMdmMxODNHckNxd0ZSQjVtYUZHeVg0TExGUU1jUUotdTFRUUJRZldLb1BSeTFueGhSM1p2WURuZnBUa3JHLVh3Q3FCcXJhdnM",
+    "payload": {
+      "completeness_score": 0.125,
+      "threshold": 0.9,
+      "reason_code": "MISSING_SURVEY_PERIOD",
+      "missing_fields": [
+        "sponsor",
+        "survey_period",
+        "sample_size",
+        "method",
+        "response_rate",
+        "margin_of_error",
+        "confidence_level"
+      ],
+      "invalid_fields": [],
+      "conflict_fields": [],
+      "field_schema": {
+        "pollster": {
+          "value": "미상조사기관",
+          "source": "observation",
+          "is_present": true,
+          "is_valid": true,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 1.0,
+          "missing_reason": null
+        },
+        "sponsor": {
+          "value": null,
+          "source": "none",
+          "is_present": false,
+          "is_valid": false,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.0,
+          "missing_reason": "actor_not_found"
+        },
+        "survey_period": {
+          "value": null,
+          "source": "none",
+          "is_present": false,
+          "is_valid": false,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.0,
+          "missing_reason": "survey_date_not_found"
+        },
+        "sample_size": {
+          "value": null,
+          "source": "none",
+          "is_present": false,
+          "is_valid": false,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.0,
+          "missing_reason": "statistical_meta_not_found"
+        },
+        "method": {
+          "value": null,
+          "source": "none",
+          "is_present": false,
+          "is_valid": false,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.0,
+          "missing_reason": "method_not_found"
+        },
+        "response_rate": {
+          "value": null,
+          "source": "none",
+          "is_present": false,
+          "is_valid": false,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.0,
+          "missing_reason": "statistical_meta_not_found"
+        },
+        "margin_of_error": {
+          "value": null,
+          "source": "none",
+          "is_present": false,
+          "is_valid": false,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.0,
+          "missing_reason": "statistical_meta_not_found"
+        },
+        "confidence_level": {
+          "value": null,
+          "source": "none",
+          "is_present": false,
+          "is_valid": false,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.0,
+          "missing_reason": "confidence_level_not_found"
+        }
+      }
+    },
+    "status": "pending",
+    "created_at": "2026-02-25T22:28:03.283910+00:00"
+  },
+  {
+    "id": "rvq_7f9c0276abc57054",
+    "entity_type": "poll_observation",
+    "entity_id": "obs_056d1438fa2bc3ff",
+    "issue_type": "extract_error",
+    "stage": "legal_required_fields_v1",
+    "error_code": "LEGAL_REQUIRED_FIELDS_NEEDS_REVIEW",
+    "error_message": "missing/invalid/conflicting legal required fields detected",
+    "source_url": "https://news.google.com/rss/articles/CBMiVEFVX3lxTE94Y2dsVWhMMENURWtmMmNOaGFpWUZBdG1GY3lzYlY3enFsOUthWkFkT0hrb1JnN09iMW5rUzliWFJQU1hXaHllQ1NwY0lSVkFnb1p5TQ",
+    "payload": {
+      "completeness_score": 0.25,
+      "threshold": 0.9,
+      "reason_code": "MISSING_SURVEY_PERIOD",
+      "missing_fields": [
+        "sponsor",
+        "survey_period",
+        "sample_size",
+        "method",
+        "response_rate",
+        "confidence_level"
+      ],
+      "invalid_fields": [],
+      "conflict_fields": [],
+      "field_schema": {
+        "pollster": {
+          "value": "미상조사기관",
+          "source": "observation",
+          "is_present": true,
+          "is_valid": true,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 1.0,
+          "missing_reason": null
+        },
+        "sponsor": {
+          "value": null,
+          "source": "none",
+          "is_present": false,
+          "is_valid": false,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.0,
+          "missing_reason": "actor_not_found"
+        },
+        "survey_period": {
+          "value": null,
+          "source": "none",
+          "is_present": false,
+          "is_valid": false,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.0,
+          "missing_reason": "survey_date_not_found"
+        },
+        "sample_size": {
+          "value": null,
+          "source": "none",
+          "is_present": false,
+          "is_valid": false,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.0,
+          "missing_reason": "statistical_meta_not_found"
+        },
+        "method": {
+          "value": null,
+          "source": "none",
+          "is_present": false,
+          "is_valid": false,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.0,
+          "missing_reason": "method_not_found"
+        },
+        "response_rate": {
+          "value": null,
+          "source": "none",
+          "is_present": false,
+          "is_valid": false,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.0,
+          "missing_reason": "statistical_meta_not_found"
+        },
+        "margin_of_error": {
+          "value": 30.2,
+          "source": "article_pattern",
+          "is_present": true,
+          "is_valid": true,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.78,
+          "missing_reason": null
+        },
+        "confidence_level": {
+          "value": null,
+          "source": "none",
+          "is_present": false,
+          "is_valid": false,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.0,
+          "missing_reason": "confidence_level_not_found"
+        }
+      }
+    },
+    "status": "pending",
+    "created_at": "2026-02-25T22:28:03.283986+00:00"
+  },
+  {
+    "id": "rvq_0006e94aa4b9e982",
+    "entity_type": "poll_observation",
+    "entity_id": "obs_debd6bb9da6779e7",
+    "issue_type": "extract_error",
+    "stage": "legal_required_fields_v1",
+    "error_code": "LEGAL_REQUIRED_FIELDS_NEEDS_REVIEW",
+    "error_message": "missing/invalid/conflicting legal required fields detected",
+    "source_url": "https://news.google.com/rss/articles/CBMiWkFVX3lxTFB2YUZpOFMxY2JtNEIwQi1GSTMwd0hkT1pzcDM3WWlKWnB6dE1vRDhDZzB2RVZfQjRQemJ6WkdrSDlIdXNmNm5hSnB0cjdKTEEtOE9JNjdtc3lJdw",
+    "payload": {
+      "completeness_score": 0.25,
+      "threshold": 0.9,
+      "reason_code": "MISSING_SURVEY_PERIOD",
+      "missing_fields": [
+        "sponsor",
+        "survey_period",
+        "sample_size",
+        "method",
+        "response_rate",
+        "confidence_level"
+      ],
+      "invalid_fields": [],
+      "conflict_fields": [],
+      "field_schema": {
+        "pollster": {
+          "value": "미상조사기관",
+          "source": "observation",
+          "is_present": true,
+          "is_valid": true,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 1.0,
+          "missing_reason": null
+        },
+        "sponsor": {
+          "value": null,
+          "source": "none",
+          "is_present": false,
+          "is_valid": false,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.0,
+          "missing_reason": "actor_not_found"
+        },
+        "survey_period": {
+          "value": null,
+          "source": "none",
+          "is_present": false,
+          "is_valid": false,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.0,
+          "missing_reason": "survey_date_not_found"
+        },
+        "sample_size": {
+          "value": null,
+          "source": "none",
+          "is_present": false,
+          "is_valid": false,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.0,
+          "missing_reason": "statistical_meta_not_found"
+        },
+        "method": {
+          "value": null,
+          "source": "none",
+          "is_present": false,
+          "is_valid": false,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.0,
+          "missing_reason": "method_not_found"
+        },
+        "response_rate": {
+          "value": null,
+          "source": "none",
+          "is_present": false,
+          "is_valid": false,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.0,
+          "missing_reason": "statistical_meta_not_found"
+        },
+        "margin_of_error": {
+          "value": 1.0,
+          "source": "article_pattern",
+          "is_present": true,
+          "is_valid": true,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.78,
+          "missing_reason": null
+        },
+        "confidence_level": {
+          "value": null,
+          "source": "none",
+          "is_present": false,
+          "is_valid": false,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.0,
+          "missing_reason": "confidence_level_not_found"
+        }
+      }
+    },
+    "status": "pending",
+    "created_at": "2026-02-25T22:28:03.284060+00:00"
+  },
+  {
+    "id": "rvq_0cdbae001446da3b",
+    "entity_type": "poll_observation",
+    "entity_id": "obs_5ab631e8fc7413b4",
+    "issue_type": "extract_error",
+    "stage": "legal_required_fields_v1",
+    "error_code": "LEGAL_REQUIRED_FIELDS_NEEDS_REVIEW",
+    "error_message": "missing/invalid/conflicting legal required fields detected",
+    "source_url": "https://news.google.com/rss/articles/CBMibkFVX3lxTE5VZ1UzR1k0dzJRRGgxdDl4QkR3bzBEUjFpc0hSc1Z5ZFFQWnU0VGg0NHJBeFFJLUE3RHhycFVjaUc2Q0RmQ3lNUkU2cU1lT3d0RlQxNGZuWjhFUVZvYUtWa0JSWE8xbkoxczc3VHFB0gFyQVVfeXFMTVYtemZ5RlluSnhqRklvaEZBdm0zMFh3MlBhN2NYYVFWM1F1MUpBajhsMFZZdHdfZGE1WVJMUHZRdUQ3SEVfWW1JYTJqbXBKN1Vnd1VET016bV9EX0lwZEpmeXFLTUp2b3BZaU9qOUxyTkFR",
+    "payload": {
+      "completeness_score": 0.125,
+      "threshold": 0.9,
+      "reason_code": "MISSING_SURVEY_PERIOD",
+      "missing_fields": [
+        "sponsor",
+        "survey_period",
+        "sample_size",
+        "method",
+        "response_rate",
+        "margin_of_error",
+        "confidence_level"
+      ],
+      "invalid_fields": [],
+      "conflict_fields": [],
+      "field_schema": {
+        "pollster": {
+          "value": "미상조사기관",
+          "source": "observation",
+          "is_present": true,
+          "is_valid": true,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 1.0,
+          "missing_reason": null
+        },
+        "sponsor": {
+          "value": null,
+          "source": "none",
+          "is_present": false,
+          "is_valid": false,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.0,
+          "missing_reason": "actor_not_found"
+        },
+        "survey_period": {
+          "value": null,
+          "source": "none",
+          "is_present": false,
+          "is_valid": false,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.0,
+          "missing_reason": "survey_date_not_found"
+        },
+        "sample_size": {
+          "value": null,
+          "source": "none",
+          "is_present": false,
+          "is_valid": false,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.0,
+          "missing_reason": "statistical_meta_not_found"
+        },
+        "method": {
+          "value": null,
+          "source": "none",
+          "is_present": false,
+          "is_valid": false,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.0,
+          "missing_reason": "method_not_found"
+        },
+        "response_rate": {
+          "value": null,
+          "source": "none",
+          "is_present": false,
+          "is_valid": false,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.0,
+          "missing_reason": "statistical_meta_not_found"
+        },
+        "margin_of_error": {
+          "value": null,
+          "source": "none",
+          "is_present": false,
+          "is_valid": false,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.0,
+          "missing_reason": "statistical_meta_not_found"
+        },
+        "confidence_level": {
+          "value": null,
+          "source": "none",
+          "is_present": false,
+          "is_valid": false,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.0,
+          "missing_reason": "confidence_level_not_found"
+        }
+      }
+    },
+    "status": "pending",
+    "created_at": "2026-02-25T22:28:03.284132+00:00"
+  },
+  {
+    "id": "rvq_6f2003d33816ea43",
+    "entity_type": "poll_observation",
+    "entity_id": "obs_bf18847149fb4b56",
+    "issue_type": "extract_error",
+    "stage": "legal_required_fields_v1",
+    "error_code": "LEGAL_REQUIRED_FIELDS_NEEDS_REVIEW",
+    "error_message": "missing/invalid/conflicting legal required fields detected",
+    "source_url": "https://news.google.com/rss/articles/CBMiT0FVX3lxTE9nVmxoSnkzMUNfX1V5YTZyYktkSm5WUEk0ZGVyOEZxc3Y2cVF4cko5NjdsUklaLUpROGVRUGh4NFVzY2s0T3JWcjI1ZXgzNVE",
+    "payload": {
+      "completeness_score": 0.125,
+      "threshold": 0.9,
+      "reason_code": "MISSING_SURVEY_PERIOD",
+      "missing_fields": [
+        "sponsor",
+        "survey_period",
+        "sample_size",
+        "method",
+        "response_rate",
+        "margin_of_error",
+        "confidence_level"
+      ],
+      "invalid_fields": [],
+      "conflict_fields": [],
+      "field_schema": {
+        "pollster": {
+          "value": "미상조사기관",
+          "source": "observation",
+          "is_present": true,
+          "is_valid": true,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 1.0,
+          "missing_reason": null
+        },
+        "sponsor": {
+          "value": null,
+          "source": "none",
+          "is_present": false,
+          "is_valid": false,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.0,
+          "missing_reason": "actor_not_found"
+        },
+        "survey_period": {
+          "value": null,
+          "source": "none",
+          "is_present": false,
+          "is_valid": false,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.0,
+          "missing_reason": "survey_date_not_found"
+        },
+        "sample_size": {
+          "value": null,
+          "source": "none",
+          "is_present": false,
+          "is_valid": false,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.0,
+          "missing_reason": "statistical_meta_not_found"
+        },
+        "method": {
+          "value": null,
+          "source": "none",
+          "is_present": false,
+          "is_valid": false,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.0,
+          "missing_reason": "method_not_found"
+        },
+        "response_rate": {
+          "value": null,
+          "source": "none",
+          "is_present": false,
+          "is_valid": false,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.0,
+          "missing_reason": "statistical_meta_not_found"
+        },
+        "margin_of_error": {
+          "value": null,
+          "source": "none",
+          "is_present": false,
+          "is_valid": false,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.0,
+          "missing_reason": "statistical_meta_not_found"
+        },
+        "confidence_level": {
+          "value": null,
+          "source": "none",
+          "is_present": false,
+          "is_valid": false,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.0,
+          "missing_reason": "confidence_level_not_found"
+        }
+      }
+    },
+    "status": "pending",
+    "created_at": "2026-02-25T22:28:03.284176+00:00"
+  },
+  {
+    "id": "rvq_cb01361c70625640",
+    "entity_type": "poll_observation",
+    "entity_id": "obs_09aef8cf8f7252e5",
+    "issue_type": "extract_error",
+    "stage": "legal_required_fields_v1",
+    "error_code": "LEGAL_REQUIRED_FIELDS_NEEDS_REVIEW",
+    "error_message": "missing/invalid/conflicting legal required fields detected",
+    "source_url": "https://news.google.com/rss/articles/CBMiT0FVX3lxTE54TGg4cF9nTG9rU3M2X0FGWGVKMllQRGMtUmNUNzJTREJCYUxRdFo0ZVBtTEgxc2ZiYnJiWG1yLWM5UXBDZHJFZld2OTl6a1E",
+    "payload": {
+      "completeness_score": 0.125,
+      "threshold": 0.9,
+      "reason_code": "MISSING_SURVEY_PERIOD",
+      "missing_fields": [
+        "sponsor",
+        "survey_period",
+        "sample_size",
+        "method",
+        "response_rate",
+        "margin_of_error",
+        "confidence_level"
+      ],
+      "invalid_fields": [],
+      "conflict_fields": [],
+      "field_schema": {
+        "pollster": {
+          "value": "미상조사기관",
+          "source": "observation",
+          "is_present": true,
+          "is_valid": true,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 1.0,
+          "missing_reason": null
+        },
+        "sponsor": {
+          "value": null,
+          "source": "none",
+          "is_present": false,
+          "is_valid": false,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.0,
+          "missing_reason": "actor_not_found"
+        },
+        "survey_period": {
+          "value": null,
+          "source": "none",
+          "is_present": false,
+          "is_valid": false,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.0,
+          "missing_reason": "survey_date_not_found"
+        },
+        "sample_size": {
+          "value": null,
+          "source": "none",
+          "is_present": false,
+          "is_valid": false,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.0,
+          "missing_reason": "statistical_meta_not_found"
+        },
+        "method": {
+          "value": null,
+          "source": "none",
+          "is_present": false,
+          "is_valid": false,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.0,
+          "missing_reason": "method_not_found"
+        },
+        "response_rate": {
+          "value": null,
+          "source": "none",
+          "is_present": false,
+          "is_valid": false,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.0,
+          "missing_reason": "statistical_meta_not_found"
+        },
+        "margin_of_error": {
+          "value": null,
+          "source": "none",
+          "is_present": false,
+          "is_valid": false,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.0,
+          "missing_reason": "statistical_meta_not_found"
+        },
+        "confidence_level": {
+          "value": null,
+          "source": "none",
+          "is_present": false,
+          "is_valid": false,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.0,
+          "missing_reason": "confidence_level_not_found"
+        }
+      }
+    },
+    "status": "pending",
+    "created_at": "2026-02-25T22:28:03.284250+00:00"
+  },
+  {
+    "id": "rvq_171dbf09e597c57e",
+    "entity_type": "poll_observation",
+    "entity_id": "obs_3ac1b89163285638",
+    "issue_type": "extract_error",
+    "stage": "legal_required_fields_v1",
+    "error_code": "LEGAL_REQUIRED_FIELDS_NEEDS_REVIEW",
+    "error_message": "missing/invalid/conflicting legal required fields detected",
+    "source_url": "https://news.google.com/rss/articles/CBMiT0FVX3lxTE9Nc1VkNEhQaDhxVkpJZ1ZfWHl0SXhJeG1DSHZHRnM0bmlZbV9na3hrS2t1V3BBeElBcFYzOEhHTWFLUklNcVU1V3RIdVVVZmM",
+    "payload": {
+      "completeness_score": 0.125,
+      "threshold": 0.9,
+      "reason_code": "MISSING_SURVEY_PERIOD",
+      "missing_fields": [
+        "sponsor",
+        "survey_period",
+        "sample_size",
+        "method",
+        "response_rate",
+        "margin_of_error",
+        "confidence_level"
+      ],
+      "invalid_fields": [],
+      "conflict_fields": [],
+      "field_schema": {
+        "pollster": {
+          "value": "미상조사기관",
+          "source": "observation",
+          "is_present": true,
+          "is_valid": true,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 1.0,
+          "missing_reason": null
+        },
+        "sponsor": {
+          "value": null,
+          "source": "none",
+          "is_present": false,
+          "is_valid": false,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.0,
+          "missing_reason": "actor_not_found"
+        },
+        "survey_period": {
+          "value": null,
+          "source": "none",
+          "is_present": false,
+          "is_valid": false,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.0,
+          "missing_reason": "survey_date_not_found"
+        },
+        "sample_size": {
+          "value": null,
+          "source": "none",
+          "is_present": false,
+          "is_valid": false,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.0,
+          "missing_reason": "statistical_meta_not_found"
+        },
+        "method": {
+          "value": null,
+          "source": "none",
+          "is_present": false,
+          "is_valid": false,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.0,
+          "missing_reason": "method_not_found"
+        },
+        "response_rate": {
+          "value": null,
+          "source": "none",
+          "is_present": false,
+          "is_valid": false,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.0,
+          "missing_reason": "statistical_meta_not_found"
+        },
+        "margin_of_error": {
+          "value": null,
+          "source": "none",
+          "is_present": false,
+          "is_valid": false,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.0,
+          "missing_reason": "statistical_meta_not_found"
+        },
+        "confidence_level": {
+          "value": null,
+          "source": "none",
+          "is_present": false,
+          "is_valid": false,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.0,
+          "missing_reason": "confidence_level_not_found"
+        }
+      }
+    },
+    "status": "pending",
+    "created_at": "2026-02-25T22:28:03.284320+00:00"
+  },
+  {
+    "id": "rvq_6a575ace60c4ae4d",
+    "entity_type": "poll_observation",
+    "entity_id": "obs_f319176068c072a1",
+    "issue_type": "extract_error",
+    "stage": "legal_required_fields_v1",
+    "error_code": "LEGAL_REQUIRED_FIELDS_NEEDS_REVIEW",
+    "error_message": "missing/invalid/conflicting legal required fields detected",
+    "source_url": "https://news.google.com/rss/articles/CBMia0FVX3lxTE8tUG1uOHA3ZWJCRy1iMVo0REtRemFjLS1BYWdPVmN3emZxSzFJd2x3NTNsdWF3Z0w3THJjdWQ5dDdRb0xiODlPendYRjlRMkc3ejVHN1FGd2hfWUJ0V2tqLU5aMnFsalFxUE1v",
+    "payload": {
+      "completeness_score": 0.125,
+      "threshold": 0.9,
+      "reason_code": "MISSING_SURVEY_PERIOD",
+      "missing_fields": [
+        "sponsor",
+        "survey_period",
+        "sample_size",
+        "method",
+        "response_rate",
+        "margin_of_error",
+        "confidence_level"
+      ],
+      "invalid_fields": [],
+      "conflict_fields": [],
+      "field_schema": {
+        "pollster": {
+          "value": "미상조사기관",
+          "source": "observation",
+          "is_present": true,
+          "is_valid": true,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 1.0,
+          "missing_reason": null
+        },
+        "sponsor": {
+          "value": null,
+          "source": "none",
+          "is_present": false,
+          "is_valid": false,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.0,
+          "missing_reason": "actor_not_found"
+        },
+        "survey_period": {
+          "value": null,
+          "source": "none",
+          "is_present": false,
+          "is_valid": false,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.0,
+          "missing_reason": "survey_date_not_found"
+        },
+        "sample_size": {
+          "value": null,
+          "source": "none",
+          "is_present": false,
+          "is_valid": false,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.0,
+          "missing_reason": "statistical_meta_not_found"
+        },
+        "method": {
+          "value": null,
+          "source": "none",
+          "is_present": false,
+          "is_valid": false,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.0,
+          "missing_reason": "method_not_found"
+        },
+        "response_rate": {
+          "value": null,
+          "source": "none",
+          "is_present": false,
+          "is_valid": false,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.0,
+          "missing_reason": "statistical_meta_not_found"
+        },
+        "margin_of_error": {
+          "value": null,
+          "source": "none",
+          "is_present": false,
+          "is_valid": false,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.0,
+          "missing_reason": "statistical_meta_not_found"
+        },
+        "confidence_level": {
+          "value": null,
+          "source": "none",
+          "is_present": false,
+          "is_valid": false,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.0,
+          "missing_reason": "confidence_level_not_found"
+        }
+      }
+    },
+    "status": "pending",
+    "created_at": "2026-02-25T22:28:03.284385+00:00"
+  },
+  {
+    "id": "rvq_508d7512e99c5f55",
+    "entity_type": "poll_observation",
+    "entity_id": "obs_906321b1cfa7df2a",
+    "issue_type": "extract_error",
+    "stage": "legal_required_fields_v1",
+    "error_code": "LEGAL_REQUIRED_FIELDS_NEEDS_REVIEW",
+    "error_message": "missing/invalid/conflicting legal required fields detected",
+    "source_url": "https://www.newsis.com/view/NISX20260224_0003523855",
+    "payload": {
+      "completeness_score": 0.25,
+      "threshold": 0.9,
+      "reason_code": "CONFLICT_REQUIRED_FIELD_VALUE",
+      "missing_fields": [
+        "sponsor",
+        "sample_size",
+        "response_rate",
+        "margin_of_error",
+        "confidence_level"
+      ],
+      "invalid_fields": [],
+      "conflict_fields": [
+        "survey_period"
+      ],
+      "field_schema": {
+        "pollster": {
+          "value": "미상조사기관",
+          "source": "observation",
+          "is_present": true,
+          "is_valid": true,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 1.0,
+          "missing_reason": null
+        },
+        "sponsor": {
+          "value": null,
+          "source": "none",
+          "is_present": false,
+          "is_valid": false,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.0,
+          "missing_reason": "actor_not_found"
+        },
+        "survey_period": {
+          "value": {
+            "survey_start_date": null,
+            "survey_end_date": "2026-02-23"
+          },
+          "source": "observation",
+          "is_present": true,
+          "is_valid": true,
+          "is_conflict": true,
+          "conflict_reason": "survey_period_mismatch",
+          "extraction_confidence": 1.0,
+          "missing_reason": "observation_article_conflict"
+        },
+        "sample_size": {
+          "value": null,
+          "source": "none",
+          "is_present": false,
+          "is_valid": false,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.0,
+          "missing_reason": "statistical_meta_not_found"
+        },
+        "method": {
+          "value": "온라인",
+          "source": "article_pattern",
+          "is_present": true,
+          "is_valid": true,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.78,
+          "missing_reason": null
+        },
+        "response_rate": {
+          "value": null,
+          "source": "none",
+          "is_present": false,
+          "is_valid": false,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.0,
+          "missing_reason": "statistical_meta_not_found"
+        },
+        "margin_of_error": {
+          "value": null,
+          "source": "none",
+          "is_present": false,
+          "is_valid": false,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.0,
+          "missing_reason": "statistical_meta_not_found"
+        },
+        "confidence_level": {
+          "value": null,
+          "source": "none",
+          "is_present": false,
+          "is_valid": false,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.0,
+          "missing_reason": "confidence_level_not_found"
+        }
+      }
+    },
+    "status": "pending",
+    "created_at": "2026-02-25T22:28:03.288062+00:00"
+  },
+  {
+    "id": "rvq_b330a7d600530890",
+    "entity_type": "poll_observation",
+    "entity_id": "obs_c5fd83f12d656982",
+    "issue_type": "extract_error",
+    "stage": "legal_required_fields_v1",
+    "error_code": "LEGAL_REQUIRED_FIELDS_NEEDS_REVIEW",
+    "error_message": "missing/invalid/conflicting legal required fields detected",
+    "source_url": "https://news.google.com/rss/articles/CBMid0FVX3lxTE90WTBqQ1BTb1dLYm90TUhacW82V2NxZGNMY1VNRGJmdHZ1MWFfOU0xX2I1LXFUUlZuWlNQWXFWRWl4UXBiVTBJYkNJZjRRUXF5TVpvZkJBaVhmU0lDVWtGalp5aDAxUGhKUGZJaTRRVGxzbXNtWkdR0gFmQVVfeXFMT01DbmstNW4zeEU5Tm9CMnpjeElNdUFRa1JYQmdpaGJGQWJLT2NMMndBYTdxV0VNYmhNa2Fyb0t2a0ZtelV0THlidk9GaEpNNV9lZ1JPLTNTaF9iVmxRQnhGTkItbFln",
+    "payload": {
+      "completeness_score": 0.125,
+      "threshold": 0.9,
+      "reason_code": "MISSING_SURVEY_PERIOD",
+      "missing_fields": [
+        "sponsor",
+        "survey_period",
+        "sample_size",
+        "method",
+        "response_rate",
+        "margin_of_error",
+        "confidence_level"
+      ],
+      "invalid_fields": [],
+      "conflict_fields": [],
+      "field_schema": {
+        "pollster": {
+          "value": "미상조사기관",
+          "source": "observation",
+          "is_present": true,
+          "is_valid": true,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 1.0,
+          "missing_reason": null
+        },
+        "sponsor": {
+          "value": null,
+          "source": "none",
+          "is_present": false,
+          "is_valid": false,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.0,
+          "missing_reason": "actor_not_found"
+        },
+        "survey_period": {
+          "value": null,
+          "source": "none",
+          "is_present": false,
+          "is_valid": false,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.0,
+          "missing_reason": "survey_date_not_found"
+        },
+        "sample_size": {
+          "value": null,
+          "source": "none",
+          "is_present": false,
+          "is_valid": false,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.0,
+          "missing_reason": "statistical_meta_not_found"
+        },
+        "method": {
+          "value": null,
+          "source": "none",
+          "is_present": false,
+          "is_valid": false,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.0,
+          "missing_reason": "method_not_found"
+        },
+        "response_rate": {
+          "value": null,
+          "source": "none",
+          "is_present": false,
+          "is_valid": false,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.0,
+          "missing_reason": "statistical_meta_not_found"
+        },
+        "margin_of_error": {
+          "value": null,
+          "source": "none",
+          "is_present": false,
+          "is_valid": false,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.0,
+          "missing_reason": "statistical_meta_not_found"
+        },
+        "confidence_level": {
+          "value": null,
+          "source": "none",
+          "is_present": false,
+          "is_valid": false,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.0,
+          "missing_reason": "confidence_level_not_found"
+        }
+      }
+    },
+    "status": "pending",
+    "created_at": "2026-02-25T22:28:03.288167+00:00"
+  },
+  {
+    "id": "rvq_ccefd46db95f9ee2",
+    "entity_type": "poll_observation",
+    "entity_id": "obs_d8cd4d8f6a0f22b8",
+    "issue_type": "extract_error",
+    "stage": "legal_required_fields_v1",
+    "error_code": "LEGAL_REQUIRED_FIELDS_NEEDS_REVIEW",
+    "error_message": "missing/invalid/conflicting legal required fields detected",
+    "source_url": "https://news.google.com/rss/articles/CBMiZkFVX3lxTE9oNUFjcktRS0p1ZENLRHVJdTdiQlZCVkY1T0dOWU55MjBBOUlKU3ZXWGZrVDBqeTlLMDFUUVJmNzc1anJ5VVJDNHdyUjR3TWhmZi1GRkR6WkczRHVpU01jWldPM3pldw",
+    "payload": {
+      "completeness_score": 0.125,
+      "threshold": 0.9,
+      "reason_code": "MISSING_SURVEY_PERIOD",
+      "missing_fields": [
+        "sponsor",
+        "survey_period",
+        "sample_size",
+        "method",
+        "response_rate",
+        "margin_of_error",
+        "confidence_level"
+      ],
+      "invalid_fields": [],
+      "conflict_fields": [],
+      "field_schema": {
+        "pollster": {
+          "value": "미상조사기관",
+          "source": "observation",
+          "is_present": true,
+          "is_valid": true,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 1.0,
+          "missing_reason": null
+        },
+        "sponsor": {
+          "value": null,
+          "source": "none",
+          "is_present": false,
+          "is_valid": false,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.0,
+          "missing_reason": "actor_not_found"
+        },
+        "survey_period": {
+          "value": null,
+          "source": "none",
+          "is_present": false,
+          "is_valid": false,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.0,
+          "missing_reason": "survey_date_not_found"
+        },
+        "sample_size": {
+          "value": null,
+          "source": "none",
+          "is_present": false,
+          "is_valid": false,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.0,
+          "missing_reason": "statistical_meta_not_found"
+        },
+        "method": {
+          "value": null,
+          "source": "none",
+          "is_present": false,
+          "is_valid": false,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.0,
+          "missing_reason": "method_not_found"
+        },
+        "response_rate": {
+          "value": null,
+          "source": "none",
+          "is_present": false,
+          "is_valid": false,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.0,
+          "missing_reason": "statistical_meta_not_found"
+        },
+        "margin_of_error": {
+          "value": null,
+          "source": "none",
+          "is_present": false,
+          "is_valid": false,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.0,
+          "missing_reason": "statistical_meta_not_found"
+        },
+        "confidence_level": {
+          "value": null,
+          "source": "none",
+          "is_present": false,
+          "is_valid": false,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.0,
+          "missing_reason": "confidence_level_not_found"
+        }
+      }
+    },
+    "status": "pending",
+    "created_at": "2026-02-25T22:28:03.288244+00:00"
+  },
+  {
+    "id": "rvq_31cdc43d6f03936d",
+    "entity_type": "poll_observation",
+    "entity_id": "obs_9720c0cca1ab37ca",
+    "issue_type": "extract_error",
+    "stage": "legal_required_fields_v1",
+    "error_code": "LEGAL_REQUIRED_FIELDS_NEEDS_REVIEW",
+    "error_message": "missing/invalid/conflicting legal required fields detected",
+    "source_url": "https://news.google.com/rss/articles/CBMiUEFVX3lxTE5ZVmw4S0lqNUl2blhORDJNaDhNYXRuOU5YVjEtbDB2X2JnUFRHaUlLamktTVIwRERxRFRvUU8tZUNJN3BSMHVFWHp3Skl4UTVW",
+    "payload": {
+      "completeness_score": 0.125,
+      "threshold": 0.9,
+      "reason_code": "MISSING_SURVEY_PERIOD",
+      "missing_fields": [
+        "sponsor",
+        "survey_period",
+        "sample_size",
+        "method",
+        "response_rate",
+        "margin_of_error",
+        "confidence_level"
+      ],
+      "invalid_fields": [],
+      "conflict_fields": [],
+      "field_schema": {
+        "pollster": {
+          "value": "조원씨앤아이",
+          "source": "observation",
+          "is_present": true,
+          "is_valid": true,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 1.0,
+          "missing_reason": null
+        },
+        "sponsor": {
+          "value": null,
+          "source": "none",
+          "is_present": false,
+          "is_valid": false,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.0,
+          "missing_reason": "actor_not_found"
+        },
+        "survey_period": {
+          "value": null,
+          "source": "none",
+          "is_present": false,
+          "is_valid": false,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.0,
+          "missing_reason": "survey_date_not_found"
+        },
+        "sample_size": {
+          "value": null,
+          "source": "none",
+          "is_present": false,
+          "is_valid": false,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.0,
+          "missing_reason": "statistical_meta_not_found"
+        },
+        "method": {
+          "value": null,
+          "source": "none",
+          "is_present": false,
+          "is_valid": false,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.0,
+          "missing_reason": "method_not_found"
+        },
+        "response_rate": {
+          "value": null,
+          "source": "none",
+          "is_present": false,
+          "is_valid": false,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.0,
+          "missing_reason": "statistical_meta_not_found"
+        },
+        "margin_of_error": {
+          "value": null,
+          "source": "none",
+          "is_present": false,
+          "is_valid": false,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.0,
+          "missing_reason": "statistical_meta_not_found"
+        },
+        "confidence_level": {
+          "value": null,
+          "source": "none",
+          "is_present": false,
+          "is_valid": false,
+          "is_conflict": false,
+          "conflict_reason": null,
+          "extraction_confidence": 0.0,
+          "missing_reason": "confidence_level_not_found"
+        }
+      }
+    },
+    "status": "pending",
+    "created_at": "2026-02-25T22:28:03.288306+00:00"
+  }
+]
