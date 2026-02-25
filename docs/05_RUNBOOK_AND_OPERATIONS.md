@@ -60,6 +60,33 @@
 - `Collector Live News Schedule` total runtime p95: `856s` (n=2, max=856s)
 - timeout 재시도 상한(`180 -> 270 -> 360` + timeout backoff 최소 5초)은 장시간 지연 구간을 커버하면서 무한 대기를 방지
 
+## 2.4 Collector Schedule Observability v1 (S6-HOTFIX/S7)
+1. 대상 워크플로:
+- `.github/workflows/collector-live-news-schedule.yml`
+2. bounded termination 가드:
+- job: `timeout-minutes: 25`
+- `Build live news payload`: `timeout-minutes: 10`
+- `Start API server`: `timeout-minutes: 3`
+- `Run ingest with retry`: `timeout-minutes: 15`
+3. heartbeat 로그:
+- `scripts/qa/run_ingest_with_retry.py --heartbeat-interval-seconds 20`
+- 출력 채널: `channel=ingest_runner_heartbeat`
+- 주요 이벤트: `run_start`, `attempt_start`, `attempt_waiting`, `attempt_result`, `retry_wait`, `timeout_scaled`, `run_end`
+4. 실패 분류 아티팩트:
+- 경로: `data/collector_live_news_v1_failure_classification.json`
+- 스키마 버전: `collector_ingest_failure_classification.v1`
+- 핵심 필드:
+  - `runner.failure_class`, `runner.failure_type`, `runner.failure_reason`
+  - `runner.failure_class_counts`, `runner.timeout_attempts`
+  - `attempt_timeline[]` (attempt/timeout/backoff/duration/error)
+  - `dead_letter_path`
+5. 아티팩트 업로드:
+- collector 아티팩트에 아래 파일을 `if: always()`로 업로드
+  - `data/collector_live_news_v1_ingest_runner_report.json`
+  - `data/collector_live_news_v1_failure_classification.json`
+  - `data/collector_live_news_api.log`
+  - `data/dead_letter/*.json`
+
 ## 3. 수동/자동 경계
 ### 자동 처리
 1. 중복 제거
@@ -193,6 +220,24 @@
 9. 품질 해석 기준:
 - percentile 값이 `null`이면 관측치 부족 상태로 간주
 - `official_confirmed_ratio` 하락 또는 `needs_manual_review_count` 급증 시 QA/수집기 재점검 트리거
+
+## 8.5 `/api/v1/dashboard/summary` 진단 필드 제안 (S7)
+1. 목적:
+- 스케줄 지연/실패 원인을 대시보드 요약에서 1차 판독 가능하게 설계
+2. 최소 제안 필드:
+- `last_ingest_status` (`success|partial_success|failed`)
+- `last_ingest_failure_class` (`timeout|http_5xx|payload_contract_422|...`)
+- `last_ingest_elapsed_seconds`
+- `last_ingest_attempt_count`
+- `last_ingest_timeout_attempts`
+- `last_ingest_artifact_ref` (classification artifact 경로 또는 run id)
+3. 데이터 소스 매핑:
+- `ingestion_runs`
+- `collector_live_news_v1_ingest_runner_report.json`
+- `collector_live_news_v1_failure_classification.json`
+4. 주의사항:
+- 공개 API에는 민감정보(토큰/원문 payload) 비노출
+- 실패 상세는 요약 분류 중심으로 제한하고 원문 디버그는 아티팩트/내부 로그에서 확인
 
 ## 8.3 경고 규칙 (기본값)
 1. `fetch_fail_rate > 0.15` 이면 경고

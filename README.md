@@ -99,6 +99,7 @@ python -m app.jobs.bootstrap_ingest \
 - DB 동등성 자동검증(로컬): `DATABASE_URL=<dsn> .venv/bin/python scripts/qa/run_db_equivalence.py --target local --report data/qa_local_db_report.json`
 - DB 동등성 자동검증(원격): `REMOTE_DATABASE_URL=<dsn> .venv/bin/python scripts/qa/run_db_equivalence.py --target remote --report data/qa_remote_db_report.json`
 - 내부 API 배치 재시도 실행: `INTERNAL_JOB_TOKEN=<token> .venv/bin/python scripts/qa/run_ingest_with_retry.py --api-base http://127.0.0.1:8100 --input data/sample_ingest.json --max-retries 2 --backoff-seconds 1 --timeout 180 --timeout-scale-on-timeout 1.5 --timeout-max 360 --report data/ingest_schedule_report.json`
+- collector schedule 진단 아티팩트: `data/collector_live_news_v1_failure_classification.json` (schema: `collector_ingest_failure_classification.v1`)
 - QA 보고서 경로: `QA_reports/`
 - QA 보고서 파일명: `YYYY-MM-DD_qa_<topic>_report.md`
 - 리포트 스캔(4개 트랙): `bash scripts/pm/report_scan.sh`

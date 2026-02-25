@@ -8,6 +8,7 @@ on:
 jobs:
   collector-live-news-ingest:
     runs-on: ubuntu-latest
+    timeout-minutes: 25
     env:
       SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
       SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
@@ -34,6 +35,7 @@ jobs:
           .venv/bin/pip install -r requirements.txt
 
       - name: Build live news payload
+        timeout-minutes: 10
         run: |
           PYTHONPATH=. .venv/bin/python scripts/generate_collector_live_news_v1_pack.py
           PYTHONPATH=. .venv/bin/python - <<'PY'
@@ -47,6 +49,7 @@ jobs:
           PY
 
       - name: Start API server
+        timeout-minutes: 3
         run: |
           nohup .venv/bin/uvicorn app.main:app --host 127.0.0.1 --port 8100 >/tmp/collector-live-news-api.log 2>&1 &
           for _ in $(seq 1 30); do
@@ -59,6 +62,7 @@ jobs:
           exit 1
 
       - name: Run ingest with retry
+        timeout-minutes: 15
         run: |
           .venv/bin/python scripts/qa/run_ingest_with_retry.py \
             --api-base "$API_BASE_URL" \
@@ -68,9 +72,19 @@ jobs:
             --timeout 180 \
             --timeout-scale-on-timeout 1.5 \
             --timeout-max 360 \
+            --heartbeat-interval-seconds 20 \
+            --classification-artifact data/collector_live_news_v1_failure_classification.json \
             --report data/collector_live_news_v1_ingest_runner_report.json
 
+      - name: Capture API log snapshot
+        if: always()
+        run: |
+          if [ -f /tmp/collector-live-news-api.log ]; then
+            cp /tmp/collector-live-news-api.log data/collector_live_news_api.log
+          fi
+
       - name: Upload artifacts
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: collector-live-news-artifacts
@@ -79,4 +93,7 @@ jobs:
             data/collector_live_news_v1_report.json
             data/collector_live_news_v1_review_queue_candidates.json
             data/collector_live_news_v1_ingest_runner_report.json
-          if-no-files-found: error
+            data/collector_live_news_v1_failure_classification.json
+            data/collector_live_news_api.log
+            data/dead_letter/*.json
+          if-no-files-found: warn
