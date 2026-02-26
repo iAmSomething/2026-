@@ -148,3 +148,69 @@ def test_info03_error_is_not_retried(monkeypatch):
     out = service.enrich_candidate(candidate)
     assert out["party_name"] == "원본정당"
     assert state["calls"] == 1
+
+
+def test_enrich_candidate_sets_election_history_from_history_field(monkeypatch):
+    service = _configured_service()
+    body = """
+<response>
+  <header>
+    <resultCode>00</resultCode>
+  </header>
+  <body>
+    <items>
+      <item>
+        <name>정원오</name>
+        <jdName>더불어민주당</jdName>
+        <career1>성동구청장</career1>
+        <history>2018 지방선거 당선</history>
+      </item>
+    </items>
+  </body>
+</response>
+""".strip()
+    monkeypatch.setattr("app.services.data_go_candidate.urlopen", lambda *args, **kwargs: _FakeResponse(body))  # noqa: ARG005
+    candidate = {"candidate_id": "cand-jwo", "name_ko": "정원오", "election_history": None}
+
+    out = service.enrich_candidate(candidate)
+
+    assert out["election_history"] == "2018 지방선거 당선"
+
+
+def test_match_prefers_gender_birth_when_same_name(monkeypatch):
+    service = _configured_service()
+    body = """
+<response>
+  <header>
+    <resultCode>00</resultCode>
+  </header>
+  <body>
+    <items>
+      <item>
+        <name>홍길동</name>
+        <jdName>정당A</jdName>
+        <gender>여</gender>
+        <birthday>19800101</birthday>
+      </item>
+      <item>
+        <name>홍길동</name>
+        <jdName>정당B</jdName>
+        <gender>남</gender>
+        <birthday>19790101</birthday>
+        <job>정치인</job>
+      </item>
+    </items>
+  </body>
+</response>
+""".strip()
+    monkeypatch.setattr("app.services.data_go_candidate.urlopen", lambda *args, **kwargs: _FakeResponse(body))  # noqa: ARG005
+    candidate = {
+        "candidate_id": "cand-hgd",
+        "name_ko": "홍길동",
+        "gender": "M",
+        "birth_date": "1979-01-01",
+    }
+
+    out = service.enrich_candidate(candidate)
+
+    assert out["party_name"] == "정당B"

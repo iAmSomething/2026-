@@ -10,6 +10,40 @@ from typing import Any
 from urllib.parse import urlencode, urlparse, urlunparse
 from urllib.request import urlopen
 
+ELECTION_HISTORY_HINTS = (
+    "당선",
+    "출마",
+    "선거",
+    "국회의원",
+    "구청장",
+    "시장",
+    "도지사",
+    "군수",
+    "대통령",
+    "도의원",
+    "시의원",
+    "구의원",
+)
+CAREER_FIELD_KEYS = (
+    "career1",
+    "career2",
+    "career3",
+    "career4",
+    "career5",
+    "career",
+    "majorCareer",
+)
+ELECTION_HISTORY_FIELD_KEYS = (
+    "electionHistory",
+    "electHistory",
+    "history",
+    "his1",
+    "his2",
+    "his3",
+    "winningHistory",
+    "candidacyHistory",
+)
+
 
 def _append_params(url: str, params: dict[str, str]) -> str:
     parsed = urlparse(url)
@@ -54,6 +88,27 @@ def _normalize_gender(value: Any) -> str | None:
     return _norm_text(value)
 
 
+def _collect_text_fields(item: dict[str, Any], keys: tuple[str, ...]) -> list[str]:
+    out: list[str] = []
+    seen: set[str] = set()
+    for key in keys:
+        value = _norm_text(item.get(key))
+        if not value:
+            continue
+        if value in seen:
+            continue
+        out.append(value)
+        seen.add(value)
+    return out
+
+
+def _looks_like_election_history(value: str | None) -> bool:
+    text = (_norm_text(value) or "").replace(" ", "")
+    if not text:
+        return False
+    return any(hint in text for hint in ELECTION_HISTORY_HINTS)
+
+
 @dataclass(frozen=True)
 class DataGoCandidateConfig:
     endpoint_url: str
@@ -94,7 +149,12 @@ class DataGoCandidateService:
         public_gender = _normalize_gender(item.get("gender"))
         public_birth_date = _parse_date(item.get("birthday"))
         public_job = _norm_text(item.get("job"))
-        public_career = " / ".join(x for x in [_norm_text(item.get("career1")), _norm_text(item.get("career2"))] if x) or None
+        career_parts = _collect_text_fields(item, CAREER_FIELD_KEYS)
+        public_career = " / ".join(career_parts) or None
+        election_history_parts = _collect_text_fields(item, ELECTION_HISTORY_FIELD_KEYS)
+        if not election_history_parts:
+            election_history_parts = [x for x in career_parts if _looks_like_election_history(x)]
+        public_election_history = " / ".join(election_history_parts) or None
 
         if public_party:
             merged["party_name"] = public_party
@@ -106,6 +166,8 @@ class DataGoCandidateService:
             merged["job"] = public_job
         if public_career and not _norm_text(merged.get("career_summary")):
             merged["career_summary"] = public_career
+        if public_election_history and not _norm_text(merged.get("election_history")):
+            merged["election_history"] = public_election_history
         return merged
 
     def verify_candidate(
@@ -270,13 +332,42 @@ class DataGoCandidateService:
         if not target_name:
             return None
         target_party = _norm_name(candidate.get("party_name"))
+        target_gender = _normalize_gender(candidate.get("gender"))
+        target_birth = _parse_date(candidate.get("birth_date"))
+        target_job = _norm_name(candidate.get("job"))
 
-        for item in items:
-            if _norm_name(item.get("name")) == target_name and (
-                not target_party or _norm_name(item.get("jdName")) == target_party
-            ):
-                return item
-        for item in items:
-            if _norm_name(item.get("name")) == target_name:
-                return item
-        return None
+        candidates = [item for item in items if _norm_name(item.get("name")) == target_name]
+        if not candidates:
+            return None
+        if len(candidates) == 1:
+            return candidates[0]
+
+        best_item: dict[str, Any] | None = None
+        best_score = float("-inf")
+        for item in candidates:
+            score = 0.0
+            item_party = _norm_name(item.get("jdName"))
+            item_gender = _normalize_gender(item.get("gender"))
+            item_birth = _parse_date(item.get("birthday"))
+            item_job = _norm_name(item.get("job"))
+
+            if target_party:
+                score += 5.0 if item_party == target_party else -2.5
+            if target_gender:
+                score += 2.0 if item_gender == target_gender else -1.0
+            if target_birth:
+                score += 3.0 if item_birth == target_birth else -1.5
+            if target_job:
+                score += 1.0 if item_job == target_job else -0.4
+
+            richness = 0
+            for key in ("jdName", "gender", "birthday", "job", "career1", "career2", "history"):
+                if _norm_text(item.get(key)):
+                    richness += 1
+            score += richness * 0.01
+
+            if best_item is None or score > best_score:
+                best_item = item
+                best_score = score
+
+        return best_item

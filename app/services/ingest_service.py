@@ -33,6 +33,19 @@ OFFICE_TYPE_TO_SG_TYPECODES = {
     "광역자치단체장": ("3", "4"),
     "기초자치단체장": ("4", "3", "5"),
 }
+CANDIDATE_PROFILE_FIELDS = (
+    "party_name",
+    "gender",
+    "birth_date",
+    "job",
+    "career_summary",
+    "election_history",
+)
+CANDIDATE_PROFILE_REQUIRED_FOR_REVIEW = (
+    "party_name",
+    "career_summary",
+    "election_history",
+)
 
 
 @dataclass
@@ -146,18 +159,12 @@ def _apply_candidate_verification(
         option_payload["needs_manual_review"] = True
         return "CANDIDATE_TOKEN_NOISE"
 
-    sd_name, sgg_name = _resolve_region_names(record)
     for sg_typecode in _office_type_sg_types(record.observation.office_type):
-        cache_key = (
-            _infer_election_id(record.observation.matchup_id),
-            sd_name,
-            sgg_name,
-            sg_typecode,
+        service = _build_or_get_candidate_service(
+            record=record,
+            sg_typecode=sg_typecode,
+            service_cache=service_cache,
         )
-        service = service_cache.get(cache_key)
-        if cache_key not in service_cache:
-            service = _build_candidate_service(record=record, sg_typecode=sg_typecode)
-            service_cache[cache_key] = service
         if service is None:
             continue
         verified, confidence = service.verify_candidate(candidate_name=option_name, party_name=party_name)
@@ -178,6 +185,84 @@ def _apply_candidate_verification(
     option_payload["candidate_verify_confidence"] = 0.2
     option_payload["needs_manual_review"] = True
     return "CANDIDATE_NOT_VERIFIED"
+
+
+def _candidate_profile_field_missing(value: Any) -> bool:
+    if value is None:
+        return True
+    if isinstance(value, str):
+        return not value.strip()
+    return False
+
+
+def _candidate_profile_score(candidate_payload: dict[str, Any]) -> int:
+    score = 0
+    for field in CANDIDATE_PROFILE_FIELDS:
+        if not _candidate_profile_field_missing(candidate_payload.get(field)):
+            score += 1
+    return score
+
+
+def _normalize_candidate_profile_fields(candidate_payload: dict[str, Any]) -> dict[str, Any]:
+    normalized = dict(candidate_payload)
+    for field in CANDIDATE_PROFILE_FIELDS:
+        normalized.setdefault(field, None)
+    return normalized
+
+
+def _build_or_get_candidate_service(
+    *,
+    record,
+    sg_typecode: str,
+    service_cache: dict[tuple[str, str | None, str | None, str], DataGoCandidateService | None],
+) -> DataGoCandidateService | None:
+    sd_name, sgg_name = _resolve_region_names(record)
+    cache_key = (
+        _infer_election_id(record.observation.matchup_id),
+        sd_name,
+        sgg_name,
+        sg_typecode,
+    )
+    if cache_key not in service_cache:
+        service_cache[cache_key] = _build_candidate_service(record=record, sg_typecode=sg_typecode)
+    return service_cache[cache_key]
+
+
+def _enrich_candidate_profile(
+    *,
+    candidate_payload: dict[str, Any],
+    record,
+    service_cache: dict[tuple[str, str | None, str | None, str], DataGoCandidateService | None],
+) -> tuple[dict[str, Any], str | None]:
+    enriched = _normalize_candidate_profile_fields(candidate_payload)
+    candidate_name = str(enriched.get("name_ko") or "").strip()
+    if _looks_like_noise_candidate(candidate_name):
+        return enriched, "CANDIDATE_PROFILE_NAME_INVALID"
+
+    best = dict(enriched)
+    best_score = _candidate_profile_score(best)
+    for sg_typecode in _office_type_sg_types(record.observation.office_type):
+        service = _build_or_get_candidate_service(
+            record=record,
+            sg_typecode=sg_typecode,
+            service_cache=service_cache,
+        )
+        if service is None:
+            continue
+        candidate_try = _normalize_candidate_profile_fields(service.enrich_candidate(enriched))
+        score = _candidate_profile_score(candidate_try)
+        if score > best_score:
+            best = candidate_try
+            best_score = score
+
+    required_missing = [
+        field
+        for field in CANDIDATE_PROFILE_REQUIRED_FOR_REVIEW
+        if _candidate_profile_field_missing(best.get(field))
+    ]
+    if required_missing:
+        return best, "CANDIDATE_PROFILE_INCOMPLETE:" + ",".join(required_missing)
+    return best, None
 
 
 def _normalize_option(option: PollOptionInput) -> tuple[dict, str | None]:
@@ -216,6 +301,7 @@ def ingest_payload(payload: IngestPayload, repo) -> IngestResult:
     date_inference_failed_count = 0
     date_inference_estimated_count = 0
     candidate_service_cache: dict[tuple[str, str | None, str | None, str], DataGoCandidateService | None] = {}
+    candidate_profile_review_marked: set[str] = set()
 
     for record in payload.records:
         try:
@@ -258,8 +344,28 @@ def ingest_payload(payload: IngestPayload, repo) -> IngestResult:
                 }
             )
 
+            candidate_rows: list[dict[str, Any]] = []
             for candidate in record.candidates:
-                repo.upsert_candidate(candidate.model_dump())
+                candidate_payload = candidate.model_dump()
+                enriched_candidate, profile_review_reason = _enrich_candidate_profile(
+                    candidate_payload=candidate_payload,
+                    record=record,
+                    service_cache=candidate_service_cache,
+                )
+                repo.upsert_candidate(enriched_candidate)
+                candidate_rows.append(enriched_candidate)
+                candidate_id = str(enriched_candidate.get("candidate_id") or "").strip()
+                if profile_review_reason and candidate_id and candidate_id not in candidate_profile_review_marked:
+                    try:
+                        repo.insert_review_queue(
+                            entity_type="candidate",
+                            entity_id=candidate_id,
+                            issue_type="mapping_error",
+                            review_note=f"candidate profile manual review required: {profile_review_reason}",
+                        )
+                        candidate_profile_review_marked.add(candidate_id)
+                    except Exception:  # noqa: BLE001
+                        pass
 
             article_id = repo.upsert_article(record.article.model_dump())
             observation_payload = record.observation.model_dump()
@@ -285,14 +391,14 @@ def ingest_payload(payload: IngestPayload, repo) -> IngestResult:
             )
 
             candidate_name_set = {
-                _normalize_candidate_token(candidate.name_ko)
-                for candidate in record.candidates
-                if _normalize_candidate_token(candidate.name_ko)
+                _normalize_candidate_token(candidate.get("name_ko"))
+                for candidate in candidate_rows
+                if _normalize_candidate_token(candidate.get("name_ko"))
             }
             candidate_party_map = {
-                _normalize_candidate_token(candidate.name_ko): candidate.party_name
-                for candidate in record.candidates
-                if _normalize_candidate_token(candidate.name_ko)
+                _normalize_candidate_token(candidate.get("name_ko")): candidate.get("party_name")
+                for candidate in candidate_rows
+                if _normalize_candidate_token(candidate.get("name_ko"))
             }
 
             party_inference_low_confidence: list[tuple[str, float]] = []
