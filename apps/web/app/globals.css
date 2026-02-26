@@ -259,6 +259,26 @@ main {
   cursor: pointer;
 }
 
+.map-label {
+  pointer-events: none;
+  fill: #334155;
+  font-size: 34px;
+  font-weight: 700;
+  paint-order: stroke;
+  stroke: #f8fcff;
+  stroke-width: 6px;
+  letter-spacing: -0.02em;
+}
+
+.map-label.optional {
+  fill: #475569;
+}
+
+.map-label.active {
+  fill: #0f172a;
+  stroke: #e0f2fe;
+}
+
 .map-region:focus-visible {
   outline: none;
 }
@@ -1033,6 +1053,15 @@ main {
 
   .trend-meta {
     font-size: 0.82rem;
+  }
+
+  .map-label {
+    font-size: 30px;
+    stroke-width: 7px;
+  }
+
+  .map-label.optional:not(.active) {
+    display: none;
   }
 
   .loading-skeleton-stack {

@@ -25,6 +25,38 @@ const REGION_PREFIX_LABELS = {
   "39": "제주특별자치도"
 };
 
+const REGION_SHORT_LABELS = {
+  "KR-11": "서울",
+  "KR-21": "부산",
+  "KR-22": "대구",
+  "KR-23": "인천",
+  "KR-24": "광주",
+  "KR-25": "대전",
+  "KR-26": "울산",
+  "KR-29": "세종",
+  "KR-31": "경기",
+  "KR-32": "강원",
+  "KR-33": "충북",
+  "KR-34": "충남",
+  "KR-35": "전북",
+  "KR-36": "전남",
+  "KR-37": "경북",
+  "KR-38": "경남",
+  "KR-39": "제주"
+};
+
+const DENSE_LABEL_CODES = new Set(["KR-11", "KR-22", "KR-23", "KR-26", "KR-31", "KR-38"]);
+
+const LABEL_OFFSETS = {
+  "KR-11": { x: -22, y: -10 },
+  "KR-23": { x: -35, y: 12 },
+  "KR-31": { x: 12, y: 0 },
+  "KR-22": { x: 18, y: 4 },
+  "KR-26": { x: 24, y: 10 },
+  "KR-38": { x: 22, y: 16 },
+  "KR-29": { x: -8, y: 12 }
+};
+
 const SLOT_ORDER = ["metro_mayor", "metro_council", "superintendent"];
 
 const SLOT_LABELS = {
@@ -246,6 +278,27 @@ export default function RegionalMapPanel({
     );
   }, [features]);
 
+  const mapLabels = useMemo(
+    () =>
+      features
+        .map((feature) => {
+          const regionCode = feature?.properties?.region_code;
+          const projectedFeature = projected.get(regionCode);
+          if (!regionCode || !projectedFeature) return null;
+
+          const offset = LABEL_OFFSETS[regionCode] || { x: 0, y: 0 };
+          return {
+            code: regionCode,
+            text: REGION_SHORT_LABELS[regionCode] || feature?.properties?.region_name || regionCode,
+            x: projectedFeature.center.x + offset.x,
+            y: projectedFeature.center.y + offset.y,
+            optional: DENSE_LABEL_CODES.has(regionCode)
+          };
+        })
+        .filter(Boolean),
+    [features, projected]
+  );
+
   const activeCode = selectedCode || focusedCode || hoveredCode;
   const activePrefix = regionPrefix(activeCode);
   const activeApiCode = toApiRegionCode(activeCode);
@@ -358,6 +411,21 @@ export default function RegionalMapPanel({
                     strokeWidth={isActive ? 2.6 : 1.4}
                   />
                 </g>
+              );
+            })}
+            {mapLabels.map((label) => {
+              const isActive = activeCode === label.code;
+              return (
+                <text
+                  key={label.code}
+                  x={label.x}
+                  y={label.y}
+                  className={`map-label ${label.optional ? "optional" : ""} ${isActive ? "active" : ""}`}
+                  textAnchor="middle"
+                  dominantBaseline="central"
+                >
+                  {label.text}
+                </text>
               );
             })}
           </svg>
