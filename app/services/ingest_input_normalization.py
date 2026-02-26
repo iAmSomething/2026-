@@ -4,6 +4,7 @@ import re
 from typing import Any
 
 ALLOWED_PARTY_INFERENCE_SOURCES = {"name_rule", "article_context", "manual"}
+ALLOWED_CANDIDATE_VERIFY_SOURCES = {"data_go", "article_context", "manual"}
 TRUE_TOKENS = {"1", "true", "yes", "y", "on"}
 FALSE_TOKENS = {"0", "false", "no", "n", "off"}
 MISSING_TOKENS = {"", "-", "na", "n/a", "none", "null", "미기재", "미상", "unknown"}
@@ -112,6 +113,14 @@ def _normalize_party_inference_source(source: Any, party_inferred: bool) -> str 
     return "manual" if party_inferred else None
 
 
+def _normalize_candidate_verify_source(source: Any, candidate_verified: bool) -> str | None:
+    if isinstance(source, str):
+        normalized = source.strip().lower()
+        if normalized in ALLOWED_CANDIDATE_VERIFY_SOURCES:
+            return normalized
+    return "article_context" if candidate_verified else "manual"
+
+
 def _normalize_float(value: Any) -> float | None:
     if value is None:
         return None
@@ -191,6 +200,20 @@ def normalize_option_fields(option: dict[str, Any]) -> dict[str, Any]:
     inferred = _normalize_party_inferred(option.get("party_inferred"), option_name)
     option["party_inferred"] = inferred
     option["party_inference_source"] = _normalize_party_inference_source(option.get("party_inference_source"), inferred)
+
+    if option.get("option_type") in {"candidate", "candidate_matchup"}:
+        candidate_verified = _normalize_party_inferred(option.get("candidate_verified"), option_name)
+        option["candidate_verified"] = candidate_verified
+        option["candidate_verify_source"] = _normalize_candidate_verify_source(
+            option.get("candidate_verify_source"), candidate_verified
+        )
+        option["candidate_verify_confidence"] = _normalize_float(option.get("candidate_verify_confidence"))
+    else:
+        option["candidate_verified"] = bool(option.get("candidate_verified", True))
+        option["candidate_verify_source"] = _normalize_candidate_verify_source(
+            option.get("candidate_verify_source"), option["candidate_verified"]
+        )
+        option["candidate_verify_confidence"] = _normalize_float(option.get("candidate_verify_confidence"))
     return option
 
 

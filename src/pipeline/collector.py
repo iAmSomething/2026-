@@ -72,12 +72,15 @@ class PollCollector:
     _NON_CANDIDATE_TOKENS = {
         "여론조사",
         "응답률",
+        "응답률은",
         "표본",
         "조사기관",
         "조사결과",
         "오차범위",
         "표본오차",
+        "오차는",
         "지지율",
+        "지지율은",
     }
     _CANDIDATE_STOPWORDS = {
         "대통령",
@@ -92,6 +95,9 @@ class PollCollector:
         "비호감",
         "여당",
         "야당",
+        "응답률은",
+        "오차는",
+        "지지율은",
     }
     _BODY_NOISE_MARKERS = (
         "무단전재",

@@ -170,6 +170,9 @@ class MatchupOptionOut(BaseModel):
     party_inferred: bool = False
     party_inference_source: Literal["name_rule", "article_context", "manual"] | None = None
     party_inference_confidence: float | None = None
+    candidate_verified: bool = True
+    candidate_verify_source: Literal["data_go", "article_context", "manual"] | None = None
+    candidate_verify_confidence: float | None = None
     needs_manual_review: bool = False
 
 
@@ -402,6 +405,9 @@ class PollOptionInput(BaseModel):
     party_inferred: bool = False
     party_inference_source: Literal["name_rule", "article_context", "manual"] | None = None
     party_inference_confidence: float | None = None
+    candidate_verified: bool = True
+    candidate_verify_source: Literal["data_go", "article_context", "manual"] | None = None
+    candidate_verify_confidence: float | None = None
     needs_manual_review: bool = False
 
 
