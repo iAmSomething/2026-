@@ -1,0 +1,116 @@
+{
+  "expected_targets": {
+    "party_support": {
+      "더불어민주당": 45.0,
+      "국민의힘": 17.0
+    },
+    "president_job_approval": {
+      "대통령 직무 긍정평가": 67.0,
+      "대통령 직무 부정평가": 25.0
+    },
+    "election_frame": {
+      "국정안정론": 53.0,
+      "국정견제론": 34.0
+    }
+  },
+  "pre": [
+    {
+      "card": "party_support",
+      "option_name": "더불어민주당",
+      "expected_value_mid": 45.0,
+      "actual_value_mid": 35.0,
+      "delta": -10.0,
+      "is_missing": false
+    },
+    {
+      "card": "party_support",
+      "option_name": "국민의힘",
+      "expected_value_mid": 17.0,
+      "actual_value_mid": 38.0,
+      "delta": 21.0,
+      "is_missing": false
+    },
+    {
+      "card": "president_job_approval",
+      "option_name": "대통령 직무 긍정평가",
+      "expected_value_mid": 67.0,
+      "actual_value_mid": null,
+      "delta": null,
+      "is_missing": true
+    },
+    {
+      "card": "president_job_approval",
+      "option_name": "대통령 직무 부정평가",
+      "expected_value_mid": 25.0,
+      "actual_value_mid": null,
+      "delta": null,
+      "is_missing": true
+    },
+    {
+      "card": "election_frame",
+      "option_name": "국정안정론",
+      "expected_value_mid": 53.0,
+      "actual_value_mid": 47.0,
+      "delta": -6.0,
+      "is_missing": false
+    },
+    {
+      "card": "election_frame",
+      "option_name": "국정견제론",
+      "expected_value_mid": 34.0,
+      "actual_value_mid": 45.0,
+      "delta": 11.0,
+      "is_missing": false
+    }
+  ],
+  "post": [
+    {
+      "card": "party_support",
+      "option_name": "더불어민주당",
+      "expected_value_mid": 45.0,
+      "actual_value_mid": 43.0,
+      "delta": -2.0,
+      "is_missing": false
+    },
+    {
+      "card": "party_support",
+      "option_name": "국민의힘",
+      "expected_value_mid": 17.0,
+      "actual_value_mid": 17.0,
+      "delta": 0.0,
+      "is_missing": false
+    },
+    {
+      "card": "president_job_approval",
+      "option_name": "대통령 직무 긍정평가",
+      "expected_value_mid": 67.0,
+      "actual_value_mid": 67.0,
+      "delta": 0.0,
+      "is_missing": false
+    },
+    {
+      "card": "president_job_approval",
+      "option_name": "대통령 직무 부정평가",
+      "expected_value_mid": 25.0,
+      "actual_value_mid": 29.0,
+      "delta": 4.0,
+      "is_missing": false
+    },
+    {
+      "card": "election_frame",
+      "option_name": "국정안정론",
+      "expected_value_mid": 53.0,
+      "actual_value_mid": 47.0,
+      "delta": -6.0,
+      "is_missing": false
+    },
+    {
+      "card": "election_frame",
+      "option_name": "국정견제론",
+      "expected_value_mid": 34.0,
+      "actual_value_mid": 45.0,
+      "delta": 11.0,
+      "is_missing": false
+    }
+  ]
+}

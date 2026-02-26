@@ -1,0 +1,89 @@
+{
+  "as_of": null,
+  "data_source": "article",
+  "party_support": [
+    {
+      "option_name": "국민의힘",
+      "value_mid": 38.0,
+      "pollster": "한국리서치",
+      "survey_end_date": "2026-02-23",
+      "audience_scope": "national",
+      "audience_region_code": null,
+      "source_priority": "article",
+      "official_release_at": null,
+      "article_published_at": "2026-02-18T00:00:00Z",
+      "freshness_hours": 201.42,
+      "is_official_confirmed": false,
+      "source_channel": "article",
+      "source_channels": [
+        "article"
+      ],
+      "verified": true
+    },
+    {
+      "option_name": "더불어민주당",
+      "value_mid": 35.0,
+      "pollster": "한국리서치",
+      "survey_end_date": "2026-02-23",
+      "audience_scope": "national",
+      "audience_region_code": null,
+      "source_priority": "article",
+      "official_release_at": null,
+      "article_published_at": "2026-02-18T00:00:00Z",
+      "freshness_hours": 201.42,
+      "is_official_confirmed": false,
+      "source_channel": "article",
+      "source_channels": [
+        "article"
+      ],
+      "verified": true
+    }
+  ],
+  "president_job_approval": [],
+  "election_frame": [
+    {
+      "option_name": "국정견제론",
+      "value_mid": 45.0,
+      "pollster": "코리아리서치",
+      "survey_end_date": "2026-02-22",
+      "audience_scope": "national",
+      "audience_region_code": null,
+      "source_priority": "article",
+      "official_release_at": null,
+      "article_published_at": "2026-02-17T00:00:00Z",
+      "freshness_hours": 225.42,
+      "is_official_confirmed": false,
+      "source_channel": "article",
+      "source_channels": [
+        "article"
+      ],
+      "verified": true
+    },
+    {
+      "option_name": "국정안정론",
+      "value_mid": 47.0,
+      "pollster": "코리아리서치",
+      "survey_end_date": "2026-02-22",
+      "audience_scope": "national",
+      "audience_region_code": null,
+      "source_priority": "article",
+      "official_release_at": null,
+      "article_published_at": "2026-02-17T00:00:00Z",
+      "freshness_hours": 225.42,
+      "is_official_confirmed": false,
+      "source_channel": "article",
+      "source_channels": [
+        "article"
+      ],
+      "verified": true
+    }
+  ],
+  "presidential_approval": [],
+  "presidential_approval_deprecated": true,
+  "scope_breakdown": {
+    "national": 4,
+    "regional": 0,
+    "local": 0,
+    "unknown": 2
+  }
+}

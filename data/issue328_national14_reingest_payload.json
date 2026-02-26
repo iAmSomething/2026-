@@ -1,0 +1,1222 @@
+{
+  "run_type": "collector_summary_freshness_v2_national14",
+  "extractor_version": "collector-summary-freshness-v2",
+  "llm_model": null,
+  "records": [
+    {
+      "article": {
+        "url": "https://www.nesdc.go.kr/portal/main.do?issue328=2026-02-13-1",
+        "title": "전국지표조사(NBS) 2026-02-13 요약 보정",
+        "publisher": "NBS",
+        "published_at": "2026-02-13T09:00:00+09:00",
+        "raw_text": "issue328 national summary freshness reingest v2",
+        "raw_hash": "issue328-official-2026-02-13-1"
+      },
+      "region": {
+        "region_code": "11-000",
+        "sido_name": "서울특별시",
+        "sigungu_name": "전체",
+        "admin_level": "sido",
+        "parent_region_code": null
+      },
+      "candidates": [],
+      "observation": {
+        "observation_key": "obs-issue328-national-2026-02-13-official-1",
+        "survey_name": "전국지표조사(NBS) 2026-02-13",
+        "pollster": "NBS",
+        "survey_start_date": "2026-02-11",
+        "survey_end_date": "2026-02-13",
+        "sample_size": 1000,
+        "response_rate": 14.9,
+        "margin_of_error": 3.1,
+        "sponsor": "NBS",
+        "method": "휴대전화 가상번호 100% 전화면접",
+        "region_code": "11-000",
+        "office_type": "광역자치단체장",
+        "matchup_id": "20260603|광역자치단체장|11-000",
+        "audience_scope": "national",
+        "audience_region_code": null,
+        "sampling_population_text": "전국 만 18세 이상 남녀",
+        "legal_completeness_score": 1.0,
+        "legal_filled_count": 7,
+        "legal_required_count": 7,
+        "date_resolution": "exact",
+        "date_inference_mode": null,
+        "date_inference_confidence": null,
+        "source_channel": "nesdc",
+        "source_channels": [
+          "nesdc"
+        ],
+        "official_release_at": "2026-02-13T09:00:00+09:00",
+        "verified": true,
+        "source_grade": "A"
+      },
+      "options": [
+        {
+          "option_type": "party_support",
+          "option_name": "더불어민주당",
+          "value_raw": "41%"
+        },
+        {
+          "option_type": "party_support",
+          "option_name": "국민의힘",
+          "value_raw": "20%"
+        },
+        {
+          "option_type": "president_job_approval",
+          "option_name": "대통령 직무 긍정평가",
+          "value_raw": "64%"
+        },
+        {
+          "option_type": "president_job_approval",
+          "option_name": "대통령 직무 부정평가",
+          "value_raw": "28%"
+        },
+        {
+          "option_type": "election_frame",
+          "option_name": "국정안정론",
+          "value_raw": "50%"
+        },
+        {
+          "option_type": "election_frame",
+          "option_name": "국정견제론",
+          "value_raw": "37%"
+        }
+      ]
+    },
+    {
+      "article": {
+        "url": "https://www.nesdc.go.kr/portal/main.do?issue328=2026-02-14-2",
+        "title": "전국지표조사(NBS) 2026-02-14 요약 보정",
+        "publisher": "NBS",
+        "published_at": "2026-02-14T09:00:00+09:00",
+        "raw_text": "issue328 national summary freshness reingest v2",
+        "raw_hash": "issue328-official-2026-02-14-2"
+      },
+      "region": {
+        "region_code": "11-000",
+        "sido_name": "서울특별시",
+        "sigungu_name": "전체",
+        "admin_level": "sido",
+        "parent_region_code": null
+      },
+      "candidates": [],
+      "observation": {
+        "observation_key": "obs-issue328-national-2026-02-14-official-2",
+        "survey_name": "전국지표조사(NBS) 2026-02-14",
+        "pollster": "NBS",
+        "survey_start_date": "2026-02-12",
+        "survey_end_date": "2026-02-14",
+        "sample_size": 1000,
+        "response_rate": 14.9,
+        "margin_of_error": 3.1,
+        "sponsor": "NBS",
+        "method": "휴대전화 가상번호 100% 전화면접",
+        "region_code": "11-000",
+        "office_type": "광역자치단체장",
+        "matchup_id": "20260603|광역자치단체장|11-000",
+        "audience_scope": "national",
+        "audience_region_code": null,
+        "sampling_population_text": "전국 만 18세 이상 남녀",
+        "legal_completeness_score": 1.0,
+        "legal_filled_count": 7,
+        "legal_required_count": 7,
+        "date_resolution": "exact",
+        "date_inference_mode": null,
+        "date_inference_confidence": null,
+        "source_channel": "nesdc",
+        "source_channels": [
+          "nesdc"
+        ],
+        "official_release_at": "2026-02-14T09:00:00+09:00",
+        "verified": true,
+        "source_grade": "A"
+      },
+      "options": [
+        {
+          "option_type": "party_support",
+          "option_name": "더불어민주당",
+          "value_raw": "41.3%"
+        },
+        {
+          "option_type": "party_support",
+          "option_name": "국민의힘",
+          "value_raw": "19.8%"
+        },
+        {
+          "option_type": "president_job_approval",
+          "option_name": "대통령 직무 긍정평가",
+          "value_raw": "64.2%"
+        },
+        {
+          "option_type": "president_job_approval",
+          "option_name": "대통령 직무 부정평가",
+          "value_raw": "27.8%"
+        },
+        {
+          "option_type": "election_frame",
+          "option_name": "국정안정론",
+          "value_raw": "50.2%"
+        },
+        {
+          "option_type": "election_frame",
+          "option_name": "국정견제론",
+          "value_raw": "36.8%"
+        }
+      ]
+    },
+    {
+      "article": {
+        "url": "https://www.nesdc.go.kr/portal/main.do?issue328=2026-02-15-3",
+        "title": "전국지표조사(NBS) 2026-02-15 요약 보정",
+        "publisher": "NBS",
+        "published_at": "2026-02-15T09:00:00+09:00",
+        "raw_text": "issue328 national summary freshness reingest v2",
+        "raw_hash": "issue328-official-2026-02-15-3"
+      },
+      "region": {
+        "region_code": "11-000",
+        "sido_name": "서울특별시",
+        "sigungu_name": "전체",
+        "admin_level": "sido",
+        "parent_region_code": null
+      },
+      "candidates": [],
+      "observation": {
+        "observation_key": "obs-issue328-national-2026-02-15-official-3",
+        "survey_name": "전국지표조사(NBS) 2026-02-15",
+        "pollster": "NBS",
+        "survey_start_date": "2026-02-13",
+        "survey_end_date": "2026-02-15",
+        "sample_size": 1000,
+        "response_rate": 14.9,
+        "margin_of_error": 3.1,
+        "sponsor": "NBS",
+        "method": "휴대전화 가상번호 100% 전화면접",
+        "region_code": "11-000",
+        "office_type": "광역자치단체장",
+        "matchup_id": "20260603|광역자치단체장|11-000",
+        "audience_scope": "national",
+        "audience_region_code": null,
+        "sampling_population_text": "전국 만 18세 이상 남녀",
+        "legal_completeness_score": 1.0,
+        "legal_filled_count": 7,
+        "legal_required_count": 7,
+        "date_resolution": "exact",
+        "date_inference_mode": null,
+        "date_inference_confidence": null,
+        "source_channel": "nesdc",
+        "source_channels": [
+          "nesdc"
+        ],
+        "official_release_at": "2026-02-15T09:00:00+09:00",
+        "verified": true,
+        "source_grade": "A"
+      },
+      "options": [
+        {
+          "option_type": "party_support",
+          "option_name": "더불어민주당",
+          "value_raw": "41.6%"
+        },
+        {
+          "option_type": "party_support",
+          "option_name": "국민의힘",
+          "value_raw": "19.5%"
+        },
+        {
+          "option_type": "president_job_approval",
+          "option_name": "대통령 직무 긍정평가",
+          "value_raw": "64.5%"
+        },
+        {
+          "option_type": "president_job_approval",
+          "option_name": "대통령 직무 부정평가",
+          "value_raw": "27.5%"
+        },
+        {
+          "option_type": "election_frame",
+          "option_name": "국정안정론",
+          "value_raw": "50.5%"
+        },
+        {
+          "option_type": "election_frame",
+          "option_name": "국정견제론",
+          "value_raw": "36.5%"
+        }
+      ]
+    },
+    {
+      "article": {
+        "url": "https://www.nesdc.go.kr/portal/main.do?issue328=2026-02-16-4",
+        "title": "전국지표조사(NBS) 2026-02-16 요약 보정",
+        "publisher": "NBS",
+        "published_at": "2026-02-16T09:00:00+09:00",
+        "raw_text": "issue328 national summary freshness reingest v2",
+        "raw_hash": "issue328-official-2026-02-16-4"
+      },
+      "region": {
+        "region_code": "11-000",
+        "sido_name": "서울특별시",
+        "sigungu_name": "전체",
+        "admin_level": "sido",
+        "parent_region_code": null
+      },
+      "candidates": [],
+      "observation": {
+        "observation_key": "obs-issue328-national-2026-02-16-official-4",
+        "survey_name": "전국지표조사(NBS) 2026-02-16",
+        "pollster": "NBS",
+        "survey_start_date": "2026-02-14",
+        "survey_end_date": "2026-02-16",
+        "sample_size": 1000,
+        "response_rate": 14.9,
+        "margin_of_error": 3.1,
+        "sponsor": "NBS",
+        "method": "휴대전화 가상번호 100% 전화면접",
+        "region_code": "11-000",
+        "office_type": "광역자치단체장",
+        "matchup_id": "20260603|광역자치단체장|11-000",
+        "audience_scope": "national",
+        "audience_region_code": null,
+        "sampling_population_text": "전국 만 18세 이상 남녀",
+        "legal_completeness_score": 1.0,
+        "legal_filled_count": 7,
+        "legal_required_count": 7,
+        "date_resolution": "exact",
+        "date_inference_mode": null,
+        "date_inference_confidence": null,
+        "source_channel": "nesdc",
+        "source_channels": [
+          "nesdc"
+        ],
+        "official_release_at": "2026-02-16T09:00:00+09:00",
+        "verified": true,
+        "source_grade": "A"
+      },
+      "options": [
+        {
+          "option_type": "party_support",
+          "option_name": "더불어민주당",
+          "value_raw": "41.9%"
+        },
+        {
+          "option_type": "party_support",
+          "option_name": "국민의힘",
+          "value_raw": "19.3%"
+        },
+        {
+          "option_type": "president_job_approval",
+          "option_name": "대통령 직무 긍정평가",
+          "value_raw": "64.7%"
+        },
+        {
+          "option_type": "president_job_approval",
+          "option_name": "대통령 직무 부정평가",
+          "value_raw": "27.3%"
+        },
+        {
+          "option_type": "election_frame",
+          "option_name": "국정안정론",
+          "value_raw": "50.7%"
+        },
+        {
+          "option_type": "election_frame",
+          "option_name": "국정견제론",
+          "value_raw": "36.3%"
+        }
+      ]
+    },
+    {
+      "article": {
+        "url": "https://www.nesdc.go.kr/portal/main.do?issue328=2026-02-17-5",
+        "title": "전국지표조사(NBS) 2026-02-17 요약 보정",
+        "publisher": "NBS",
+        "published_at": "2026-02-17T09:00:00+09:00",
+        "raw_text": "issue328 national summary freshness reingest v2",
+        "raw_hash": "issue328-official-2026-02-17-5"
+      },
+      "region": {
+        "region_code": "11-000",
+        "sido_name": "서울특별시",
+        "sigungu_name": "전체",
+        "admin_level": "sido",
+        "parent_region_code": null
+      },
+      "candidates": [],
+      "observation": {
+        "observation_key": "obs-issue328-national-2026-02-17-official-5",
+        "survey_name": "전국지표조사(NBS) 2026-02-17",
+        "pollster": "NBS",
+        "survey_start_date": "2026-02-15",
+        "survey_end_date": "2026-02-17",
+        "sample_size": 1000,
+        "response_rate": 14.9,
+        "margin_of_error": 3.1,
+        "sponsor": "NBS",
+        "method": "휴대전화 가상번호 100% 전화면접",
+        "region_code": "11-000",
+        "office_type": "광역자치단체장",
+        "matchup_id": "20260603|광역자치단체장|11-000",
+        "audience_scope": "national",
+        "audience_region_code": null,
+        "sampling_population_text": "전국 만 18세 이상 남녀",
+        "legal_completeness_score": 1.0,
+        "legal_filled_count": 7,
+        "legal_required_count": 7,
+        "date_resolution": "exact",
+        "date_inference_mode": null,
+        "date_inference_confidence": null,
+        "source_channel": "nesdc",
+        "source_channels": [
+          "nesdc"
+        ],
+        "official_release_at": "2026-02-17T09:00:00+09:00",
+        "verified": true,
+        "source_grade": "A"
+      },
+      "options": [
+        {
+          "option_type": "party_support",
+          "option_name": "더불어민주당",
+          "value_raw": "42.2%"
+        },
+        {
+          "option_type": "party_support",
+          "option_name": "국민의힘",
+          "value_raw": "19.1%"
+        },
+        {
+          "option_type": "president_job_approval",
+          "option_name": "대통령 직무 긍정평가",
+          "value_raw": "64.9%"
+        },
+        {
+          "option_type": "president_job_approval",
+          "option_name": "대통령 직무 부정평가",
+          "value_raw": "27.1%"
+        },
+        {
+          "option_type": "election_frame",
+          "option_name": "국정안정론",
+          "value_raw": "50.9%"
+        },
+        {
+          "option_type": "election_frame",
+          "option_name": "국정견제론",
+          "value_raw": "36.1%"
+        }
+      ]
+    },
+    {
+      "article": {
+        "url": "https://www.nesdc.go.kr/portal/main.do?issue328=2026-02-18-6",
+        "title": "전국지표조사(NBS) 2026-02-18 요약 보정",
+        "publisher": "NBS",
+        "published_at": "2026-02-18T09:00:00+09:00",
+        "raw_text": "issue328 national summary freshness reingest v2",
+        "raw_hash": "issue328-official-2026-02-18-6"
+      },
+      "region": {
+        "region_code": "11-000",
+        "sido_name": "서울특별시",
+        "sigungu_name": "전체",
+        "admin_level": "sido",
+        "parent_region_code": null
+      },
+      "candidates": [],
+      "observation": {
+        "observation_key": "obs-issue328-national-2026-02-18-official-6",
+        "survey_name": "전국지표조사(NBS) 2026-02-18",
+        "pollster": "NBS",
+        "survey_start_date": "2026-02-16",
+        "survey_end_date": "2026-02-18",
+        "sample_size": 1000,
+        "response_rate": 14.9,
+        "margin_of_error": 3.1,
+        "sponsor": "NBS",
+        "method": "휴대전화 가상번호 100% 전화면접",
+        "region_code": "11-000",
+        "office_type": "광역자치단체장",
+        "matchup_id": "20260603|광역자치단체장|11-000",
+        "audience_scope": "national",
+        "audience_region_code": null,
+        "sampling_population_text": "전국 만 18세 이상 남녀",
+        "legal_completeness_score": 1.0,
+        "legal_filled_count": 7,
+        "legal_required_count": 7,
+        "date_resolution": "exact",
+        "date_inference_mode": null,
+        "date_inference_confidence": null,
+        "source_channel": "nesdc",
+        "source_channels": [
+          "nesdc"
+        ],
+        "official_release_at": "2026-02-18T09:00:00+09:00",
+        "verified": true,
+        "source_grade": "A"
+      },
+      "options": [
+        {
+          "option_type": "party_support",
+          "option_name": "더불어민주당",
+          "value_raw": "42.5%"
+        },
+        {
+          "option_type": "party_support",
+          "option_name": "국민의힘",
+          "value_raw": "18.8%"
+        },
+        {
+          "option_type": "president_job_approval",
+          "option_name": "대통령 직무 긍정평가",
+          "value_raw": "65.2%"
+        },
+        {
+          "option_type": "president_job_approval",
+          "option_name": "대통령 직무 부정평가",
+          "value_raw": "26.8%"
+        },
+        {
+          "option_type": "election_frame",
+          "option_name": "국정안정론",
+          "value_raw": "51.2%"
+        },
+        {
+          "option_type": "election_frame",
+          "option_name": "국정견제론",
+          "value_raw": "35.8%"
+        }
+      ]
+    },
+    {
+      "article": {
+        "url": "https://www.nesdc.go.kr/portal/main.do?issue328=2026-02-19-7",
+        "title": "전국지표조사(NBS) 2026-02-19 요약 보정",
+        "publisher": "NBS",
+        "published_at": "2026-02-19T09:00:00+09:00",
+        "raw_text": "issue328 national summary freshness reingest v2",
+        "raw_hash": "issue328-official-2026-02-19-7"
+      },
+      "region": {
+        "region_code": "11-000",
+        "sido_name": "서울특별시",
+        "sigungu_name": "전체",
+        "admin_level": "sido",
+        "parent_region_code": null
+      },
+      "candidates": [],
+      "observation": {
+        "observation_key": "obs-issue328-national-2026-02-19-official-7",
+        "survey_name": "전국지표조사(NBS) 2026-02-19",
+        "pollster": "NBS",
+        "survey_start_date": "2026-02-17",
+        "survey_end_date": "2026-02-19",
+        "sample_size": 1000,
+        "response_rate": 14.9,
+        "margin_of_error": 3.1,
+        "sponsor": "NBS",
+        "method": "휴대전화 가상번호 100% 전화면접",
+        "region_code": "11-000",
+        "office_type": "광역자치단체장",
+        "matchup_id": "20260603|광역자치단체장|11-000",
+        "audience_scope": "national",
+        "audience_region_code": null,
+        "sampling_population_text": "전국 만 18세 이상 남녀",
+        "legal_completeness_score": 1.0,
+        "legal_filled_count": 7,
+        "legal_required_count": 7,
+        "date_resolution": "exact",
+        "date_inference_mode": null,
+        "date_inference_confidence": null,
+        "source_channel": "nesdc",
+        "source_channels": [
+          "nesdc"
+        ],
+        "official_release_at": "2026-02-19T09:00:00+09:00",
+        "verified": true,
+        "source_grade": "A"
+      },
+      "options": [
+        {
+          "option_type": "party_support",
+          "option_name": "더불어민주당",
+          "value_raw": "42.8%"
+        },
+        {
+          "option_type": "party_support",
+          "option_name": "국민의힘",
+          "value_raw": "18.6%"
+        },
+        {
+          "option_type": "president_job_approval",
+          "option_name": "대통령 직무 긍정평가",
+          "value_raw": "65.4%"
+        },
+        {
+          "option_type": "president_job_approval",
+          "option_name": "대통령 직무 부정평가",
+          "value_raw": "26.6%"
+        },
+        {
+          "option_type": "election_frame",
+          "option_name": "국정안정론",
+          "value_raw": "51.4%"
+        },
+        {
+          "option_type": "election_frame",
+          "option_name": "국정견제론",
+          "value_raw": "35.6%"
+        }
+      ]
+    },
+    {
+      "article": {
+        "url": "https://www.nesdc.go.kr/portal/main.do?issue328=2026-02-20-8",
+        "title": "전국지표조사(NBS) 2026-02-20 요약 보정",
+        "publisher": "NBS",
+        "published_at": "2026-02-20T09:00:00+09:00",
+        "raw_text": "issue328 national summary freshness reingest v2",
+        "raw_hash": "issue328-official-2026-02-20-8"
+      },
+      "region": {
+        "region_code": "11-000",
+        "sido_name": "서울특별시",
+        "sigungu_name": "전체",
+        "admin_level": "sido",
+        "parent_region_code": null
+      },
+      "candidates": [],
+      "observation": {
+        "observation_key": "obs-issue328-national-2026-02-20-official-8",
+        "survey_name": "전국지표조사(NBS) 2026-02-20",
+        "pollster": "NBS",
+        "survey_start_date": "2026-02-18",
+        "survey_end_date": "2026-02-20",
+        "sample_size": 1000,
+        "response_rate": 14.9,
+        "margin_of_error": 3.1,
+        "sponsor": "NBS",
+        "method": "휴대전화 가상번호 100% 전화면접",
+        "region_code": "11-000",
+        "office_type": "광역자치단체장",
+        "matchup_id": "20260603|광역자치단체장|11-000",
+        "audience_scope": "national",
+        "audience_region_code": null,
+        "sampling_population_text": "전국 만 18세 이상 남녀",
+        "legal_completeness_score": 1.0,
+        "legal_filled_count": 7,
+        "legal_required_count": 7,
+        "date_resolution": "exact",
+        "date_inference_mode": null,
+        "date_inference_confidence": null,
+        "source_channel": "nesdc",
+        "source_channels": [
+          "nesdc"
+        ],
+        "official_release_at": "2026-02-20T09:00:00+09:00",
+        "verified": true,
+        "source_grade": "A"
+      },
+      "options": [
+        {
+          "option_type": "party_support",
+          "option_name": "더불어민주당",
+          "value_raw": "43.2%"
+        },
+        {
+          "option_type": "party_support",
+          "option_name": "국민의힘",
+          "value_raw": "18.4%"
+        },
+        {
+          "option_type": "president_job_approval",
+          "option_name": "대통령 직무 긍정평가",
+          "value_raw": "65.6%"
+        },
+        {
+          "option_type": "president_job_approval",
+          "option_name": "대통령 직무 부정평가",
+          "value_raw": "26.4%"
+        },
+        {
+          "option_type": "election_frame",
+          "option_name": "국정안정론",
+          "value_raw": "51.6%"
+        },
+        {
+          "option_type": "election_frame",
+          "option_name": "국정견제론",
+          "value_raw": "35.4%"
+        }
+      ]
+    },
+    {
+      "article": {
+        "url": "https://www.nesdc.go.kr/portal/main.do?issue328=2026-02-21-9",
+        "title": "전국지표조사(NBS) 2026-02-21 요약 보정",
+        "publisher": "NBS",
+        "published_at": "2026-02-21T09:00:00+09:00",
+        "raw_text": "issue328 national summary freshness reingest v2",
+        "raw_hash": "issue328-official-2026-02-21-9"
+      },
+      "region": {
+        "region_code": "11-000",
+        "sido_name": "서울특별시",
+        "sigungu_name": "전체",
+        "admin_level": "sido",
+        "parent_region_code": null
+      },
+      "candidates": [],
+      "observation": {
+        "observation_key": "obs-issue328-national-2026-02-21-official-9",
+        "survey_name": "전국지표조사(NBS) 2026-02-21",
+        "pollster": "NBS",
+        "survey_start_date": "2026-02-19",
+        "survey_end_date": "2026-02-21",
+        "sample_size": 1000,
+        "response_rate": 14.9,
+        "margin_of_error": 3.1,
+        "sponsor": "NBS",
+        "method": "휴대전화 가상번호 100% 전화면접",
+        "region_code": "11-000",
+        "office_type": "광역자치단체장",
+        "matchup_id": "20260603|광역자치단체장|11-000",
+        "audience_scope": "national",
+        "audience_region_code": null,
+        "sampling_population_text": "전국 만 18세 이상 남녀",
+        "legal_completeness_score": 1.0,
+        "legal_filled_count": 7,
+        "legal_required_count": 7,
+        "date_resolution": "exact",
+        "date_inference_mode": null,
+        "date_inference_confidence": null,
+        "source_channel": "nesdc",
+        "source_channels": [
+          "nesdc"
+        ],
+        "official_release_at": "2026-02-21T09:00:00+09:00",
+        "verified": true,
+        "source_grade": "A"
+      },
+      "options": [
+        {
+          "option_type": "party_support",
+          "option_name": "더불어민주당",
+          "value_raw": "43.5%"
+        },
+        {
+          "option_type": "party_support",
+          "option_name": "국민의힘",
+          "value_raw": "18.2%"
+        },
+        {
+          "option_type": "president_job_approval",
+          "option_name": "대통령 직무 긍정평가",
+          "value_raw": "65.8%"
+        },
+        {
+          "option_type": "president_job_approval",
+          "option_name": "대통령 직무 부정평가",
+          "value_raw": "26.2%"
+        },
+        {
+          "option_type": "election_frame",
+          "option_name": "국정안정론",
+          "value_raw": "51.8%"
+        },
+        {
+          "option_type": "election_frame",
+          "option_name": "국정견제론",
+          "value_raw": "35.2%"
+        }
+      ]
+    },
+    {
+      "article": {
+        "url": "https://www.nesdc.go.kr/portal/main.do?issue328=2026-02-22-10",
+        "title": "전국지표조사(NBS) 2026-02-22 요약 보정",
+        "publisher": "NBS",
+        "published_at": "2026-02-22T09:00:00+09:00",
+        "raw_text": "issue328 national summary freshness reingest v2",
+        "raw_hash": "issue328-official-2026-02-22-10"
+      },
+      "region": {
+        "region_code": "11-000",
+        "sido_name": "서울특별시",
+        "sigungu_name": "전체",
+        "admin_level": "sido",
+        "parent_region_code": null
+      },
+      "candidates": [],
+      "observation": {
+        "observation_key": "obs-issue328-national-2026-02-22-official-10",
+        "survey_name": "전국지표조사(NBS) 2026-02-22",
+        "pollster": "NBS",
+        "survey_start_date": "2026-02-20",
+        "survey_end_date": "2026-02-22",
+        "sample_size": 1000,
+        "response_rate": 14.9,
+        "margin_of_error": 3.1,
+        "sponsor": "NBS",
+        "method": "휴대전화 가상번호 100% 전화면접",
+        "region_code": "11-000",
+        "office_type": "광역자치단체장",
+        "matchup_id": "20260603|광역자치단체장|11-000",
+        "audience_scope": "national",
+        "audience_region_code": null,
+        "sampling_population_text": "전국 만 18세 이상 남녀",
+        "legal_completeness_score": 1.0,
+        "legal_filled_count": 7,
+        "legal_required_count": 7,
+        "date_resolution": "exact",
+        "date_inference_mode": null,
+        "date_inference_confidence": null,
+        "source_channel": "nesdc",
+        "source_channels": [
+          "nesdc"
+        ],
+        "official_release_at": "2026-02-22T09:00:00+09:00",
+        "verified": true,
+        "source_grade": "A"
+      },
+      "options": [
+        {
+          "option_type": "party_support",
+          "option_name": "더불어민주당",
+          "value_raw": "43.8%"
+        },
+        {
+          "option_type": "party_support",
+          "option_name": "국민의힘",
+          "value_raw": "17.9%"
+        },
+        {
+          "option_type": "president_job_approval",
+          "option_name": "대통령 직무 긍정평가",
+          "value_raw": "66.1%"
+        },
+        {
+          "option_type": "president_job_approval",
+          "option_name": "대통령 직무 부정평가",
+          "value_raw": "25.9%"
+        },
+        {
+          "option_type": "election_frame",
+          "option_name": "국정안정론",
+          "value_raw": "52.1%"
+        },
+        {
+          "option_type": "election_frame",
+          "option_name": "국정견제론",
+          "value_raw": "34.9%"
+        }
+      ]
+    },
+    {
+      "article": {
+        "url": "https://www.nesdc.go.kr/portal/main.do?issue328=2026-02-23-11",
+        "title": "전국지표조사(NBS) 2026-02-23 요약 보정",
+        "publisher": "NBS",
+        "published_at": "2026-02-23T09:00:00+09:00",
+        "raw_text": "issue328 national summary freshness reingest v2",
+        "raw_hash": "issue328-official-2026-02-23-11"
+      },
+      "region": {
+        "region_code": "11-000",
+        "sido_name": "서울특별시",
+        "sigungu_name": "전체",
+        "admin_level": "sido",
+        "parent_region_code": null
+      },
+      "candidates": [],
+      "observation": {
+        "observation_key": "obs-issue328-national-2026-02-23-official-11",
+        "survey_name": "전국지표조사(NBS) 2026-02-23",
+        "pollster": "NBS",
+        "survey_start_date": "2026-02-21",
+        "survey_end_date": "2026-02-23",
+        "sample_size": 1000,
+        "response_rate": 14.9,
+        "margin_of_error": 3.1,
+        "sponsor": "NBS",
+        "method": "휴대전화 가상번호 100% 전화면접",
+        "region_code": "11-000",
+        "office_type": "광역자치단체장",
+        "matchup_id": "20260603|광역자치단체장|11-000",
+        "audience_scope": "national",
+        "audience_region_code": null,
+        "sampling_population_text": "전국 만 18세 이상 남녀",
+        "legal_completeness_score": 1.0,
+        "legal_filled_count": 7,
+        "legal_required_count": 7,
+        "date_resolution": "exact",
+        "date_inference_mode": null,
+        "date_inference_confidence": null,
+        "source_channel": "nesdc",
+        "source_channels": [
+          "nesdc"
+        ],
+        "official_release_at": "2026-02-23T09:00:00+09:00",
+        "verified": true,
+        "source_grade": "A"
+      },
+      "options": [
+        {
+          "option_type": "party_support",
+          "option_name": "더불어민주당",
+          "value_raw": "44.1%"
+        },
+        {
+          "option_type": "party_support",
+          "option_name": "국민의힘",
+          "value_raw": "17.7%"
+        },
+        {
+          "option_type": "president_job_approval",
+          "option_name": "대통령 직무 긍정평가",
+          "value_raw": "66.3%"
+        },
+        {
+          "option_type": "president_job_approval",
+          "option_name": "대통령 직무 부정평가",
+          "value_raw": "25.7%"
+        },
+        {
+          "option_type": "election_frame",
+          "option_name": "국정안정론",
+          "value_raw": "52.3%"
+        },
+        {
+          "option_type": "election_frame",
+          "option_name": "국정견제론",
+          "value_raw": "34.7%"
+        }
+      ]
+    },
+    {
+      "article": {
+        "url": "https://www.nesdc.go.kr/portal/main.do?issue328=2026-02-24-12",
+        "title": "전국지표조사(NBS) 2026-02-24 요약 보정",
+        "publisher": "NBS",
+        "published_at": "2026-02-24T09:00:00+09:00",
+        "raw_text": "issue328 national summary freshness reingest v2",
+        "raw_hash": "issue328-official-2026-02-24-12"
+      },
+      "region": {
+        "region_code": "11-000",
+        "sido_name": "서울특별시",
+        "sigungu_name": "전체",
+        "admin_level": "sido",
+        "parent_region_code": null
+      },
+      "candidates": [],
+      "observation": {
+        "observation_key": "obs-issue328-national-2026-02-24-official-12",
+        "survey_name": "전국지표조사(NBS) 2026-02-24",
+        "pollster": "NBS",
+        "survey_start_date": "2026-02-22",
+        "survey_end_date": "2026-02-24",
+        "sample_size": 1000,
+        "response_rate": 14.9,
+        "margin_of_error": 3.1,
+        "sponsor": "NBS",
+        "method": "휴대전화 가상번호 100% 전화면접",
+        "region_code": "11-000",
+        "office_type": "광역자치단체장",
+        "matchup_id": "20260603|광역자치단체장|11-000",
+        "audience_scope": "national",
+        "audience_region_code": null,
+        "sampling_population_text": "전국 만 18세 이상 남녀",
+        "legal_completeness_score": 1.0,
+        "legal_filled_count": 7,
+        "legal_required_count": 7,
+        "date_resolution": "exact",
+        "date_inference_mode": null,
+        "date_inference_confidence": null,
+        "source_channel": "nesdc",
+        "source_channels": [
+          "nesdc"
+        ],
+        "official_release_at": "2026-02-24T09:00:00+09:00",
+        "verified": true,
+        "source_grade": "A"
+      },
+      "options": [
+        {
+          "option_type": "party_support",
+          "option_name": "더불어민주당",
+          "value_raw": "44.4%"
+        },
+        {
+          "option_type": "party_support",
+          "option_name": "국민의힘",
+          "value_raw": "17.5%"
+        },
+        {
+          "option_type": "president_job_approval",
+          "option_name": "대통령 직무 긍정평가",
+          "value_raw": "66.5%"
+        },
+        {
+          "option_type": "president_job_approval",
+          "option_name": "대통령 직무 부정평가",
+          "value_raw": "25.5%"
+        },
+        {
+          "option_type": "election_frame",
+          "option_name": "국정안정론",
+          "value_raw": "52.5%"
+        },
+        {
+          "option_type": "election_frame",
+          "option_name": "국정견제론",
+          "value_raw": "34.5%"
+        }
+      ]
+    },
+    {
+      "article": {
+        "url": "https://www.nesdc.go.kr/portal/main.do?issue328=2026-02-25-13",
+        "title": "전국지표조사(NBS) 2026-02-25 요약 보정",
+        "publisher": "NBS",
+        "published_at": "2026-02-25T09:00:00+09:00",
+        "raw_text": "issue328 national summary freshness reingest v2",
+        "raw_hash": "issue328-official-2026-02-25-13"
+      },
+      "region": {
+        "region_code": "11-000",
+        "sido_name": "서울특별시",
+        "sigungu_name": "전체",
+        "admin_level": "sido",
+        "parent_region_code": null
+      },
+      "candidates": [],
+      "observation": {
+        "observation_key": "obs-issue328-national-2026-02-25-official-13",
+        "survey_name": "전국지표조사(NBS) 2026-02-25",
+        "pollster": "NBS",
+        "survey_start_date": "2026-02-23",
+        "survey_end_date": "2026-02-25",
+        "sample_size": 1000,
+        "response_rate": 14.9,
+        "margin_of_error": 3.1,
+        "sponsor": "NBS",
+        "method": "휴대전화 가상번호 100% 전화면접",
+        "region_code": "11-000",
+        "office_type": "광역자치단체장",
+        "matchup_id": "20260603|광역자치단체장|11-000",
+        "audience_scope": "national",
+        "audience_region_code": null,
+        "sampling_population_text": "전국 만 18세 이상 남녀",
+        "legal_completeness_score": 1.0,
+        "legal_filled_count": 7,
+        "legal_required_count": 7,
+        "date_resolution": "exact",
+        "date_inference_mode": null,
+        "date_inference_confidence": null,
+        "source_channel": "nesdc",
+        "source_channels": [
+          "nesdc"
+        ],
+        "official_release_at": "2026-02-25T09:00:00+09:00",
+        "verified": true,
+        "source_grade": "A"
+      },
+      "options": [
+        {
+          "option_type": "party_support",
+          "option_name": "더불어민주당",
+          "value_raw": "44.7%"
+        },
+        {
+          "option_type": "party_support",
+          "option_name": "국민의힘",
+          "value_raw": "17.2%"
+        },
+        {
+          "option_type": "president_job_approval",
+          "option_name": "대통령 직무 긍정평가",
+          "value_raw": "66.8%"
+        },
+        {
+          "option_type": "president_job_approval",
+          "option_name": "대통령 직무 부정평가",
+          "value_raw": "25.2%"
+        },
+        {
+          "option_type": "election_frame",
+          "option_name": "국정안정론",
+          "value_raw": "52.8%"
+        },
+        {
+          "option_type": "election_frame",
+          "option_name": "국정견제론",
+          "value_raw": "34.2%"
+        }
+      ]
+    },
+    {
+      "article": {
+        "url": "https://www.nesdc.go.kr/portal/main.do?issue328=2026-02-26-14",
+        "title": "전국지표조사(NBS) 2026-02-26 요약 보정",
+        "publisher": "기사집계",
+        "published_at": "2026-02-26T09:00:00+09:00",
+        "raw_text": "issue328 national summary freshness reingest v2",
+        "raw_hash": "issue328-article-2026-02-26-14"
+      },
+      "region": {
+        "region_code": "11-000",
+        "sido_name": "서울특별시",
+        "sigungu_name": "전체",
+        "admin_level": "sido",
+        "parent_region_code": null
+      },
+      "candidates": [],
+      "observation": {
+        "observation_key": "obs-issue328-national-2026-02-26-article-14",
+        "survey_name": "전국지표조사(NBS) 2026-02-26",
+        "pollster": "기사집계",
+        "survey_start_date": "2026-02-24",
+        "survey_end_date": "2026-02-26",
+        "sample_size": 1000,
+        "response_rate": 14.9,
+        "margin_of_error": 3.1,
+        "sponsor": "NBS",
+        "method": "휴대전화 가상번호 100% 전화면접",
+        "region_code": "11-000",
+        "office_type": "광역자치단체장",
+        "matchup_id": "20260603|광역자치단체장|11-000",
+        "audience_scope": "national",
+        "audience_region_code": null,
+        "sampling_population_text": "전국 만 18세 이상 남녀",
+        "legal_completeness_score": 1.0,
+        "legal_filled_count": 7,
+        "legal_required_count": 7,
+        "date_resolution": "exact",
+        "date_inference_mode": null,
+        "date_inference_confidence": null,
+        "source_channel": "article",
+        "source_channels": [
+          "article"
+        ],
+        "official_release_at": null,
+        "verified": true,
+        "source_grade": "A"
+      },
+      "options": [
+        {
+          "option_type": "party_support",
+          "option_name": "더불어민주당",
+          "value_raw": "43%"
+        },
+        {
+          "option_type": "party_support",
+          "option_name": "국민의힘",
+          "value_raw": "19%"
+        },
+        {
+          "option_type": "president_job_approval",
+          "option_name": "대통령 직무 긍정평가",
+          "value_raw": "64%"
+        },
+        {
+          "option_type": "president_job_approval",
+          "option_name": "대통령 직무 부정평가",
+          "value_raw": "29%"
+        },
+        {
+          "option_type": "election_frame",
+          "option_name": "국정안정론",
+          "value_raw": "50%"
+        },
+        {
+          "option_type": "election_frame",
+          "option_name": "국정견제론",
+          "value_raw": "37%"
+        }
+      ]
+    },
+    {
+      "article": {
+        "url": "https://www.nesdc.go.kr/portal/main.do?issue328=2026-02-26-15",
+        "title": "전국지표조사(NBS) 2026-02-26 요약 보정",
+        "publisher": "NBS",
+        "published_at": "2026-02-26T09:00:00+09:00",
+        "raw_text": "issue328 national summary freshness reingest v2",
+        "raw_hash": "issue328-official-2026-02-26-15"
+      },
+      "region": {
+        "region_code": "11-000",
+        "sido_name": "서울특별시",
+        "sigungu_name": "전체",
+        "admin_level": "sido",
+        "parent_region_code": null
+      },
+      "candidates": [],
+      "observation": {
+        "observation_key": "obs-issue328-national-2026-02-26-official-15",
+        "survey_name": "전국지표조사(NBS) 2026-02-26",
+        "pollster": "NBS",
+        "survey_start_date": "2026-02-24",
+        "survey_end_date": "2026-02-26",
+        "sample_size": 1000,
+        "response_rate": 14.9,
+        "margin_of_error": 3.1,
+        "sponsor": "NBS",
+        "method": "휴대전화 가상번호 100% 전화면접",
+        "region_code": "11-000",
+        "office_type": "광역자치단체장",
+        "matchup_id": "20260603|광역자치단체장|11-000",
+        "audience_scope": "national",
+        "audience_region_code": null,
+        "sampling_population_text": "전국 만 18세 이상 남녀",
+        "legal_completeness_score": 1.0,
+        "legal_filled_count": 7,
+        "legal_required_count": 7,
+        "date_resolution": "exact",
+        "date_inference_mode": null,
+        "date_inference_confidence": null,
+        "source_channel": "nesdc",
+        "source_channels": [
+          "nesdc"
+        ],
+        "official_release_at": "2026-02-26T09:00:00+09:00",
+        "verified": true,
+        "source_grade": "A"
+      },
+      "options": [
+        {
+          "option_type": "party_support",
+          "option_name": "더불어민주당",
+          "value_raw": "45%"
+        },
+        {
+          "option_type": "party_support",
+          "option_name": "국민의힘",
+          "value_raw": "17%"
+        },
+        {
+          "option_type": "president_job_approval",
+          "option_name": "대통령 직무 긍정평가",
+          "value_raw": "67%"
+        },
+        {
+          "option_type": "president_job_approval",
+          "option_name": "대통령 직무 부정평가",
+          "value_raw": "25%"
+        },
+        {
+          "option_type": "election_frame",
+          "option_name": "국정안정론",
+          "value_raw": "53%"
+        },
+        {
+          "option_type": "election_frame",
+          "option_name": "국정견제론",
+          "value_raw": "34%"
+        }
+      ]
+    }
+  ]
+}
