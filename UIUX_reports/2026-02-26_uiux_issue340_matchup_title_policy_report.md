@@ -52,3 +52,15 @@
 
 ## 7) 상태 제안
 - next_status: `status/in-review`
+
+## 8) 배포/PR 상태 (2026-02-26)
+- clean PR: `https://github.com/iAmSomething/2026-/pull/355`
+- superseded PR(closed): `https://github.com/iAmSomething/2026-/pull/354`
+- CI:
+  - `validate-report-path` PASS
+  - `phase1-qa` PASS
+  - `Vercel` FAILURE (`https://vercel.com/st939823s-projects/2026-deploy/6z7aJwzPdmyhHeKxhUnq8XshiNW3`)
+
+## 9) 현재 블로커
+- 운영 after 캡처는 배포 실패로 아직 확보 불가
+- `/api/v1/matchups/{id}` 운영 직접 호출은 404로 샘플 2건 캡처 조건 충족 불가(현재 UI는 fallback fixture 기반)
