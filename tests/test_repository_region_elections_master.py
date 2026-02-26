@@ -10,6 +10,7 @@ class _Cursor:
         topology_rows,
         parent_by_child,
         region_rows,
+        election_rows,
         matchup_rows,
         poll_meta_rows,
         scenario_children,
@@ -17,6 +18,7 @@ class _Cursor:
         self.topology_rows = topology_rows
         self.parent_by_child = parent_by_child
         self.region_rows = region_rows
+        self.election_rows = election_rows
         self.matchup_rows = matchup_rows
         self.poll_meta_rows = poll_meta_rows
         self.scenario_children = scenario_children
@@ -56,6 +58,10 @@ class _Cursor:
         return None
 
     def fetchall(self):
+        if "FROM elections" in self._query:
+            region_code = self._params[0]
+            return self.election_rows.get(region_code, [])
+
         if "FROM matchups" in self._query:
             region_code = self._params[0]
             return self.matchup_rows.get(region_code, [])
@@ -78,6 +84,7 @@ class _Conn:
         topology_rows,
         parent_by_child,
         region_rows,
+        election_rows,
         matchup_rows,
         poll_meta_rows,
         scenario_children,
@@ -86,6 +93,7 @@ class _Conn:
             topology_rows=topology_rows,
             parent_by_child=parent_by_child,
             region_rows=region_rows,
+            election_rows=election_rows,
             matchup_rows=matchup_rows,
             poll_meta_rows=poll_meta_rows,
             scenario_children=scenario_children,
@@ -95,7 +103,15 @@ class _Conn:
         return self._cursor
 
 
-def _base_conn(*, region_rows, matchup_rows, poll_meta_rows, parent_by_child=None, scenario_children=None):
+def _base_conn(
+    *,
+    region_rows,
+    election_rows=None,
+    matchup_rows,
+    poll_meta_rows,
+    parent_by_child=None,
+    scenario_children=None,
+):
     return _Conn(
         topology_rows={
             "official": {"version_id": "official-v1", "mode": "official", "status": "effective"},
@@ -107,6 +123,7 @@ def _base_conn(*, region_rows, matchup_rows, poll_meta_rows, parent_by_child=Non
         },
         parent_by_child=parent_by_child or {},
         region_rows=region_rows,
+        election_rows=election_rows or {},
         matchup_rows=matchup_rows,
         poll_meta_rows=poll_meta_rows,
         scenario_children=scenario_children or {},
@@ -134,6 +151,8 @@ def test_region_elections_returns_master_slots_for_sido_even_without_poll_data()
     assert [row["title"] for row in rows] == ["강원도지사", "강원도의회", "강원교육감"]
     assert all(row["has_poll_data"] is False for row in rows)
     assert all(row["status"] == "조사 데이터 없음" for row in rows)
+    assert all(row["is_fallback"] is True for row in rows)
+    assert all(row["source"] == "generated" for row in rows)
     assert all(row["topology"] == "official" for row in rows)
 
 
@@ -165,7 +184,7 @@ def test_region_elections_adds_sigungu_slots_and_status_metadata():
     rows = repo.fetch_region_elections("26-710")
 
     office_types = [row["office_type"] for row in rows]
-    assert office_types[:5] == ["광역자치단체장", "광역의회", "교육감", "기초자치단체장", "기초의회"]
+    assert office_types == ["기초자치단체장", "기초의회"]
 
     mayor = next(row for row in rows if row["office_type"] == "기초자치단체장")
     assert mayor["has_poll_data"] is True
@@ -173,6 +192,8 @@ def test_region_elections_adds_sigungu_slots_and_status_metadata():
     assert mayor["latest_survey_end_date"] == date(2026, 2, 19)
     assert mayor["latest_matchup_id"] == "20260603|기초자치단체장|26-710"
     assert mayor["status"] == "후보 정보 준비중"
+    assert all(row["is_fallback"] is True for row in rows)
+    assert all(row["source"] == "generated" for row in rows)
 
 
 def test_region_elections_supports_scenario_topology_merge_slots():
@@ -214,5 +235,44 @@ def test_region_elections_supports_scenario_topology_merge_slots():
     assert [row["office_type"] for row in rows] == ["광역자치단체장", "광역의회", "교육감"]
     assert [row["title"] for row in rows] == ["광주·전남 통합시장", "광주·전남 통합시의회", "광주·전남 통합교육감"]
     assert all(row["region_code"] == "29-46-000" for row in rows)
+    assert all(row["is_fallback"] is True for row in rows)
+    assert all(row["source"] == "generated" for row in rows)
     assert all(row["topology"] == "scenario" for row in rows)
     assert all(row["topology_version_id"] == "scenario-gj-jn-merge-v1" for row in rows)
+
+
+def test_region_elections_uses_master_rows_when_present():
+    conn = _base_conn(
+        region_rows={
+            "42-000": {
+                "region_code": "42-000",
+                "sido_name": "강원특별자치도",
+                "sigungu_name": "전체",
+                "admin_level": "sido",
+            }
+        },
+        election_rows={
+            "42-000": [
+                {
+                    "region_code": "42-000",
+                    "office_type": "광역자치단체장",
+                    "slot_matchup_id": "master|광역자치단체장|42-000",
+                    "title": "강원도지사",
+                    "source": "master_sync",
+                    "has_poll_data": False,
+                    "latest_matchup_id": None,
+                    "is_active": True,
+                }
+            ]
+        },
+        matchup_rows={"42-000": []},
+        poll_meta_rows={"42-000": []},
+    )
+
+    repo = PostgresRepository(conn)
+    rows = repo.fetch_region_elections("42-000")
+
+    assert len(rows) == 1
+    assert rows[0]["office_type"] == "광역자치단체장"
+    assert rows[0]["is_fallback"] is False
+    assert rows[0]["source"] == "master_sync"

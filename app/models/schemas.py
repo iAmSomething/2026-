@@ -164,6 +164,8 @@ class RegionElectionOut(BaseModel):
     topology: Literal["official", "scenario"] = "official"
     topology_version_id: str | None = None
     is_placeholder: bool = False
+    is_fallback: bool = False
+    source: str = "master"
     has_poll_data: bool = False
     has_candidate_data: bool = False
     latest_survey_end_date: date | None = None

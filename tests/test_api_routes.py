@@ -183,6 +183,8 @@ class FakeApiRepo:
                 "topology": topology,
                 "topology_version_id": version_id,
                 "is_placeholder": False,
+                "is_fallback": False,
+                "source": "master",
                 "has_poll_data": True,
                 "has_candidate_data": True,
                 "latest_survey_end_date": date(2026, 2, 18),
@@ -636,6 +638,8 @@ def test_api_contract_fields():
     assert region_election_row["is_active"] is True
     assert region_election_row["topology"] == "official"
     assert "has_poll_data" in region_election_row
+    assert "is_fallback" in region_election_row
+    assert "source" in region_election_row
     assert "latest_survey_end_date" in region_election_row
     assert "latest_matchup_id" in region_election_row
     assert "status" in region_election_row
