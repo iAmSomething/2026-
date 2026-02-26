@@ -1,0 +1,83 @@
+{
+  "as_of": null,
+  "data_source": "article",
+  "party_support": [
+    {
+      "option_name": "더불어민주당",
+      "value_mid": 35.0,
+      "pollster": "Fixture Institute",
+      "survey_end_date": "2026-02-20",
+      "audience_scope": "national",
+      "audience_region_code": null,
+      "source_priority": "article",
+      "official_release_at": null,
+      "article_published_at": "2026-02-20T09:00:00+00:00",
+      "freshness_hours": 12.0,
+      "is_official_confirmed": false,
+      "source_channel": "article",
+      "source_channels": ["article"],
+      "verified": true
+    }
+  ],
+  "president_job_approval": [
+    {
+      "option_name": "대통령 직무 긍정평가",
+      "value_mid": 48.0,
+      "pollster": "Fixture Institute",
+      "survey_end_date": "2026-02-20",
+      "audience_scope": "national",
+      "audience_region_code": null,
+      "source_priority": "article",
+      "official_release_at": null,
+      "article_published_at": "2026-02-20T09:00:00+00:00",
+      "freshness_hours": 12.0,
+      "is_official_confirmed": false,
+      "source_channel": "article",
+      "source_channels": ["article"],
+      "verified": true
+    }
+  ],
+  "election_frame": [
+    {
+      "option_name": "국정안정론",
+      "value_mid": 46.0,
+      "pollster": "Fixture Institute",
+      "survey_end_date": "2026-02-20",
+      "audience_scope": "national",
+      "audience_region_code": null,
+      "source_priority": "article",
+      "official_release_at": null,
+      "article_published_at": "2026-02-20T09:00:00+00:00",
+      "freshness_hours": 12.0,
+      "is_official_confirmed": false,
+      "source_channel": "article",
+      "source_channels": ["article"],
+      "verified": true
+    }
+  ],
+  "presidential_approval": [
+    {
+      "option_name": "대통령 직무 긍정평가",
+      "value_mid": 48.0,
+      "pollster": "Fixture Institute",
+      "survey_end_date": "2026-02-20",
+      "audience_scope": "national",
+      "audience_region_code": null,
+      "source_priority": "article",
+      "official_release_at": null,
+      "article_published_at": "2026-02-20T09:00:00+00:00",
+      "freshness_hours": 12.0,
+      "is_official_confirmed": false,
+      "source_channel": "article",
+      "source_channels": ["article"],
+      "verified": true
+    }
+  ],
+  "presidential_approval_deprecated": true,
+  "scope_breakdown": {
+    "national": 3,
+    "regional": 0,
+    "local": 0,
+    "unknown": 0
+  }
+}

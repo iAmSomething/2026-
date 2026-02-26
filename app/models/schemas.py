@@ -63,7 +63,10 @@ class DashboardSummaryOut(BaseModel):
     as_of: date | None = None
     data_source: Literal["official", "article", "mixed"] = "article"
     party_support: list[SummaryPoint]
-    presidential_approval: list[SummaryPoint]
+    president_job_approval: list[SummaryPoint] = Field(default_factory=list)
+    election_frame: list[SummaryPoint] = Field(default_factory=list)
+    presidential_approval: list[SummaryPoint] = Field(default_factory=list)
+    presidential_approval_deprecated: bool = True
     scope_breakdown: ScopeBreakdownOut = Field(default_factory=ScopeBreakdownOut)
 
 
