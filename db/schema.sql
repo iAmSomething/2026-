@@ -245,6 +245,11 @@ CREATE TABLE IF NOT EXISTS poll_options (
     observation_id BIGINT NOT NULL REFERENCES poll_observations(id) ON DELETE CASCADE,
     option_type TEXT NOT NULL,
     option_name TEXT NOT NULL,
+    candidate_id TEXT NULL,
+    party_name TEXT NULL,
+    scenario_key TEXT NOT NULL DEFAULT 'default',
+    scenario_type TEXT NULL,
+    scenario_title TEXT NULL,
     value_raw TEXT NULL,
     value_min FLOAT NULL,
     value_max FLOAT NULL,
@@ -259,10 +264,16 @@ CREATE TABLE IF NOT EXISTS poll_options (
     needs_manual_review BOOLEAN NOT NULL DEFAULT FALSE,
     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-    UNIQUE (observation_id, option_type, option_name)
+    CONSTRAINT poll_options_observation_option_scenario_unique
+        UNIQUE (observation_id, option_type, option_name, scenario_key)
 );
 
 ALTER TABLE poll_options
+    ADD COLUMN IF NOT EXISTS candidate_id TEXT NULL,
+    ADD COLUMN IF NOT EXISTS party_name TEXT NULL,
+    ADD COLUMN IF NOT EXISTS scenario_key TEXT NOT NULL DEFAULT 'default',
+    ADD COLUMN IF NOT EXISTS scenario_type TEXT NULL,
+    ADD COLUMN IF NOT EXISTS scenario_title TEXT NULL,
     ADD COLUMN IF NOT EXISTS party_inferred BOOLEAN NOT NULL DEFAULT FALSE,
     ADD COLUMN IF NOT EXISTS party_inference_source TEXT NULL,
     ADD COLUMN IF NOT EXISTS party_inference_confidence FLOAT NULL,
@@ -270,6 +281,33 @@ ALTER TABLE poll_options
     ADD COLUMN IF NOT EXISTS candidate_verify_source TEXT NULL,
     ADD COLUMN IF NOT EXISTS candidate_verify_confidence FLOAT NULL,
     ADD COLUMN IF NOT EXISTS needs_manual_review BOOLEAN NOT NULL DEFAULT FALSE;
+
+DO $$
+BEGIN
+    IF EXISTS (
+        SELECT 1
+        FROM pg_constraint
+        WHERE conname = 'poll_options_observation_id_option_type_option_name_key'
+    ) THEN
+        ALTER TABLE poll_options
+            DROP CONSTRAINT poll_options_observation_id_option_type_option_name_key;
+    END IF;
+END;
+$$;
+
+DO $$
+BEGIN
+    IF NOT EXISTS (
+        SELECT 1
+        FROM pg_constraint
+        WHERE conname = 'poll_options_observation_option_scenario_unique'
+    ) THEN
+        ALTER TABLE poll_options
+            ADD CONSTRAINT poll_options_observation_option_scenario_unique
+            UNIQUE (observation_id, option_type, option_name, scenario_key);
+    END IF;
+END;
+$$;
 
 DO $$
 BEGIN
@@ -300,6 +338,23 @@ BEGIN
             CHECK (
                 candidate_verify_source IS NULL
                 OR candidate_verify_source IN ('data_go', 'article_context', 'manual')
+            );
+    END IF;
+END;
+$$;
+
+DO $$
+BEGIN
+    IF NOT EXISTS (
+        SELECT 1
+        FROM pg_constraint
+        WHERE conname = 'poll_options_scenario_type_check'
+    ) THEN
+        ALTER TABLE poll_options
+            ADD CONSTRAINT poll_options_scenario_type_check
+            CHECK (
+                scenario_type IS NULL
+                OR scenario_type IN ('head_to_head', 'multi_candidate')
             );
     END IF;
 END;

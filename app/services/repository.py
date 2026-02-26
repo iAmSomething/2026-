@@ -318,6 +318,22 @@ class PostgresRepository:
     def upsert_poll_option(self, observation_id: int, option: dict) -> None:
         payload = dict(option)
         payload["observation_id"] = observation_id
+        candidate_id = payload.get("candidate_id")
+        if isinstance(candidate_id, str):
+            candidate_id = candidate_id.strip() or None
+        payload["candidate_id"] = candidate_id
+
+        party_name = payload.get("party_name")
+        if isinstance(party_name, str):
+            party_name = party_name.strip() or None
+        payload["party_name"] = party_name
+
+        scenario_key = payload.get("scenario_key")
+        if isinstance(scenario_key, str):
+            scenario_key = scenario_key.strip()
+        payload["scenario_key"] = scenario_key or "default"
+        payload.setdefault("scenario_type", None)
+        payload.setdefault("scenario_title", None)
         payload.setdefault("party_inferred", False)
         payload.setdefault("party_inference_source", None)
         payload.setdefault("party_inference_confidence", None)
@@ -331,6 +347,7 @@ class PostgresRepository:
                 """
                 INSERT INTO poll_options (
                     observation_id, option_type, option_name,
+                    candidate_id, party_name, scenario_key, scenario_type, scenario_title,
                     value_raw, value_min, value_max, value_mid, is_missing,
                     party_inferred, party_inference_source, party_inference_confidence,
                     candidate_verified, candidate_verify_source, candidate_verify_confidence,
@@ -338,13 +355,18 @@ class PostgresRepository:
                 )
                 VALUES (
                     %(observation_id)s, %(option_type)s, %(option_name)s,
+                    %(candidate_id)s, %(party_name)s, %(scenario_key)s, %(scenario_type)s, %(scenario_title)s,
                     %(value_raw)s, %(value_min)s, %(value_max)s, %(value_mid)s, %(is_missing)s,
                     %(party_inferred)s, %(party_inference_source)s, %(party_inference_confidence)s,
                     %(candidate_verified)s, %(candidate_verify_source)s, %(candidate_verify_confidence)s,
                     %(needs_manual_review)s
                 )
-                ON CONFLICT (observation_id, option_type, option_name) DO UPDATE
-                SET value_raw=EXCLUDED.value_raw,
+                ON CONFLICT (observation_id, option_type, option_name, scenario_key) DO UPDATE
+                SET candidate_id=COALESCE(EXCLUDED.candidate_id, poll_options.candidate_id),
+                    party_name=COALESCE(EXCLUDED.party_name, poll_options.party_name),
+                    scenario_type=COALESCE(EXCLUDED.scenario_type, poll_options.scenario_type),
+                    scenario_title=COALESCE(EXCLUDED.scenario_title, poll_options.scenario_title),
+                    value_raw=EXCLUDED.value_raw,
                     value_min=EXCLUDED.value_min,
                     value_max=EXCLUDED.value_max,
                     value_mid=EXCLUDED.value_mid,
@@ -910,19 +932,54 @@ class PostgresRepository:
                         json_agg(
                             json_build_object(
                                 'option_name', po.option_name,
+                                'candidate_id', COALESCE(po.candidate_id, c.candidate_id),
+                                'party_name', CASE
+                                    WHEN COALESCE(c.party_name, '') <> '' THEN c.party_name
+                                    WHEN COALESCE(po.party_name, '') <> '' THEN po.party_name
+                                    ELSE '미확정(검수대기)'
+                                END,
+                                'scenario_key', po.scenario_key,
+                                'scenario_type', po.scenario_type,
+                                'scenario_title', po.scenario_title,
                                 'value_mid', po.value_mid,
                                 'value_raw', po.value_raw,
-                                'party_inferred', po.party_inferred,
-                                'party_inference_source', po.party_inference_source,
-                                'party_inference_confidence', po.party_inference_confidence,
+                                'party_inferred', CASE
+                                    WHEN COALESCE(c.party_name, '') <> '' THEN FALSE
+                                    ELSE po.party_inferred
+                                END,
+                                'party_inference_source', CASE
+                                    WHEN COALESCE(c.party_name, '') <> '' THEN NULL
+                                    ELSE po.party_inference_source
+                                END,
+                                'party_inference_confidence', CASE
+                                    WHEN COALESCE(c.party_name, '') <> '' THEN NULL
+                                    ELSE po.party_inference_confidence
+                                END,
+                                'needs_manual_review', (
+                                    po.needs_manual_review
+                                    OR (
+                                        COALESCE(c.party_name, '') = ''
+                                        AND COALESCE(po.party_name, '') = ''
+                                    )
+                                ),
                                 'candidate_verified', po.candidate_verified,
                                 'candidate_verify_source', po.candidate_verify_source,
-                                'candidate_verify_confidence', po.candidate_verify_confidence,
-                                'needs_manual_review', po.needs_manual_review
+                                'candidate_verify_confidence', po.candidate_verify_confidence
                             )
-                            ORDER BY po.value_mid DESC NULLS LAST, po.option_name
+                            ORDER BY po.scenario_key, po.value_mid DESC NULLS LAST, po.option_name
                         ) AS options
                     FROM poll_options po
+                    LEFT JOIN LATERAL (
+                        SELECT c.candidate_id, c.party_name
+                        FROM candidates c
+                        WHERE c.candidate_id = po.candidate_id
+                           OR (po.candidate_id IS NULL AND c.name_ko = po.option_name)
+                        ORDER BY
+                            (c.candidate_id = po.candidate_id) DESC,
+                            (c.party_name IS NOT NULL) DESC,
+                            c.updated_at DESC
+                        LIMIT 1
+                    ) c ON TRUE
                     WHERE po.observation_id = o.id
                       AND COALESCE(po.candidate_verified, TRUE) = TRUE
                 ) opts ON TRUE
@@ -946,7 +1003,108 @@ class PostgresRepository:
             options = []
         if not isinstance(options, list):
             options = []
-        return options
+        normalized: list[dict] = []
+        for option in options:
+            if not isinstance(option, dict):
+                continue
+            row = dict(option)
+
+            scenario_key = row.get("scenario_key")
+            if isinstance(scenario_key, str):
+                scenario_key = scenario_key.strip()
+            row["scenario_key"] = scenario_key or "default"
+
+            scenario_type = row.get("scenario_type")
+            if scenario_type not in {"head_to_head", "multi_candidate"}:
+                scenario_type = None
+            row["scenario_type"] = scenario_type
+
+            scenario_title = row.get("scenario_title")
+            if isinstance(scenario_title, str):
+                scenario_title = scenario_title.strip() or None
+            row["scenario_title"] = scenario_title
+
+            candidate_id = row.get("candidate_id")
+            if isinstance(candidate_id, str):
+                candidate_id = candidate_id.strip() or None
+            row["candidate_id"] = candidate_id
+
+            party_name = row.get("party_name")
+            if isinstance(party_name, str):
+                party_name = party_name.strip() or None
+            row["party_name"] = party_name or "미확정(검수대기)"
+
+            normalized.append(row)
+        return normalized
+
+    @staticmethod
+    def _infer_scenario_type(options: list[dict]) -> str:
+        for option in options:
+            scenario_type = option.get("scenario_type")
+            if scenario_type in {"head_to_head", "multi_candidate"}:
+                return scenario_type
+        return "head_to_head" if len(options) <= 2 else "multi_candidate"
+
+    @staticmethod
+    def _infer_scenario_title(options: list[dict], scenario_type: str, scenario_key: str) -> str:
+        for option in options:
+            scenario_title = option.get("scenario_title")
+            if isinstance(scenario_title, str) and scenario_title.strip():
+                return scenario_title.strip()
+
+        names = [str(opt.get("option_name", "")).strip() for opt in options if str(opt.get("option_name", "")).strip()]
+        if scenario_type == "head_to_head":
+            if len(names) >= 2:
+                return f"{names[0]} vs {names[1]}"
+            if len(names) == 1:
+                return f"{names[0]} 단독"
+            return "양자대결"
+
+        if names:
+            lead = ", ".join(names[:3])
+            return f"다자대결: {lead}" if len(names) <= 3 else f"다자대결: {lead} 외"
+        return f"다자대결 ({scenario_key})"
+
+    def _build_matchup_scenarios(self, options: list[dict]) -> tuple[list[dict], list[dict]]:
+        grouped: dict[str, list[dict]] = {}
+        for option in options:
+            scenario_key = option.get("scenario_key") or "default"
+            grouped.setdefault(scenario_key, []).append(option)
+
+        scenarios: list[dict] = []
+        for scenario_key, items in grouped.items():
+            sorted_items = sorted(
+                items,
+                key=lambda item: (
+                    -(item.get("value_mid") if item.get("value_mid") is not None else -1),
+                    item.get("option_name") or "",
+                ),
+            )
+            scenario_type = self._infer_scenario_type(sorted_items)
+            scenario_title = self._infer_scenario_title(sorted_items, scenario_type, scenario_key)
+            normalized_options = []
+            for option in sorted_items:
+                merged = dict(option)
+                merged["scenario_key"] = scenario_key
+                merged["scenario_type"] = scenario_type
+                merged["scenario_title"] = scenario_title
+                normalized_options.append(merged)
+
+            scenarios.append(
+                {
+                    "scenario_key": scenario_key,
+                    "scenario_type": scenario_type,
+                    "scenario_title": scenario_title,
+                    "options": normalized_options,
+                }
+            )
+
+        scenarios.sort(key=lambda row: (0 if row["scenario_type"] == "head_to_head" else 1, row["scenario_title"]))
+        if not scenarios:
+            return [], []
+
+        primary = next((row for row in scenarios if row["scenario_key"] == "default"), scenarios[0])
+        return scenarios, primary["options"]
 
     def get_matchup(self, matchup_id: str):
         matchup_meta = self._find_matchup_meta(matchup_id)
@@ -988,10 +1146,12 @@ class PostgresRepository:
                 "source_channel": None,
                 "source_channels": [],
                 "verified": False,
+                "scenarios": [],
                 "options": [],
             }
 
         options = self._normalize_options(observation.get("options"))
+        scenarios, primary_options = self._build_matchup_scenarios(options)
         return {
             "matchup_id": observation["matchup_id"],
             "region_code": observation["region_code"],
@@ -1024,7 +1184,8 @@ class PostgresRepository:
             "source_channel": observation["source_channel"],
             "source_channels": observation["source_channels"],
             "verified": observation["verified"],
-            "options": options,
+            "scenarios": scenarios,
+            "options": primary_options,
         }
 
     def get_candidate(self, candidate_id: str):

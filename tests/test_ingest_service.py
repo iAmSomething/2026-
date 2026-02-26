@@ -126,6 +126,7 @@ def test_idempotent_ingest_no_duplicate_records():
     assert len(repo.options) == 1
     assert repo.option_rows[0]["option_type"] == "election_frame"
     assert repo.option_rows[0]["candidate_verified"] is True
+    assert repo.option_rows[0]["scenario_key"] == "default"
     assert repo.observations["obs-1"]["audience_scope"] == "national"
     assert repo.observations["obs-1"]["legal_filled_count"] == 6
     assert len(repo.observations["obs-1"]["poll_fingerprint"]) == 64

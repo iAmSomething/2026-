@@ -182,6 +182,26 @@ def _apply_candidate_verification(
 
 def _normalize_option(option: PollOptionInput) -> tuple[dict, str | None]:
     payload = option.model_dump()
+    scenario_key = payload.get("scenario_key")
+    if isinstance(scenario_key, str):
+        scenario_key = scenario_key.strip()
+    payload["scenario_key"] = scenario_key or "default"
+
+    candidate_id = payload.get("candidate_id")
+    if isinstance(candidate_id, str):
+        candidate_id = candidate_id.strip() or None
+    payload["candidate_id"] = candidate_id
+
+    party_name = payload.get("party_name")
+    if isinstance(party_name, str):
+        party_name = party_name.strip() or None
+    payload["party_name"] = party_name
+
+    scenario_title = payload.get("scenario_title")
+    if isinstance(scenario_title, str):
+        scenario_title = scenario_title.strip() or None
+    payload["scenario_title"] = scenario_title
+
     normalized_option_type, classification_needs_review, classification_reason = normalize_option_type(
         payload.get("option_type"),
         payload.get("option_name"),

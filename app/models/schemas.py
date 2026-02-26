@@ -165,6 +165,11 @@ class RegionElectionOut(BaseModel):
 
 class MatchupOptionOut(BaseModel):
     option_name: str
+    candidate_id: str | None = None
+    party_name: str | None = None
+    scenario_key: str | None = None
+    scenario_type: Literal["head_to_head", "multi_candidate"] | None = None
+    scenario_title: str | None = None
     value_mid: float | None = None
     value_raw: str | None = None
     party_inferred: bool = False
@@ -174,6 +179,13 @@ class MatchupOptionOut(BaseModel):
     candidate_verify_source: Literal["data_go", "article_context", "manual"] | None = None
     candidate_verify_confidence: float | None = None
     needs_manual_review: bool = False
+
+
+class MatchupScenarioOut(BaseModel):
+    scenario_key: str
+    scenario_type: Literal["head_to_head", "multi_candidate"]
+    scenario_title: str
+    options: list[MatchupOptionOut]
 
 
 class MatchupOut(BaseModel):
@@ -210,6 +222,7 @@ class MatchupOut(BaseModel):
     source_channel: Literal["article", "nesdc"] | None = None
     source_channels: list[Literal["article", "nesdc"]] | None = None
     verified: bool = False
+    scenarios: list[MatchupScenarioOut] = Field(default_factory=list)
     options: list[MatchupOptionOut]
 
 
@@ -397,6 +410,11 @@ class PollObservationInput(BaseModel):
 class PollOptionInput(BaseModel):
     option_type: str
     option_name: str
+    candidate_id: str | None = None
+    party_name: str | None = None
+    scenario_key: str | None = None
+    scenario_type: Literal["head_to_head", "multi_candidate"] | None = None
+    scenario_title: str | None = None
     value_raw: str | None = None
     value_min: float | None = None
     value_max: float | None = None

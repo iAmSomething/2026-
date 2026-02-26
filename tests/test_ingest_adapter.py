@@ -48,3 +48,4 @@ def test_collector_output_converts_to_ingest_payload():
     assert parsed.records[0].observation.source_channel == "article"
     assert parsed.records[0].observation.source_channels == ["article"]
     assert parsed.records[0].observation.date_inference_mode == "relative_published_at"
+    assert parsed.records[0].options[0].candidate_id is not None

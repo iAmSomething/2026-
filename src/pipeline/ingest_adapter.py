@@ -109,6 +109,11 @@ def collector_output_to_ingest_payload(
                     {
                         "option_type": _option_type_for_ingest(option["option_type"]),
                         "option_name": option["option_name"],
+                        "candidate_id": option.get("candidate_id"),
+                        "party_name": option.get("party_name"),
+                        "scenario_key": option.get("scenario_key"),
+                        "scenario_type": option.get("scenario_type"),
+                        "scenario_title": option.get("scenario_title"),
                         "value_raw": option["value_raw"],
                         "value_min": option["value_min"],
                         "value_max": option["value_max"],
