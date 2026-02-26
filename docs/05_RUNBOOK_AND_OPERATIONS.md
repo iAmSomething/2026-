@@ -386,12 +386,23 @@ curl -sS -o /tmp/web_rc_candidate.json -w "%{http_code}\n" "$API_BASE/api/v1/can
 - `GET /api/v1/regions/search?q=서울` (200, `query` alias도 허용)
 - `GET /api/v1/candidates/cand-jwo` (200 또는 계약된 404)
 - CORS preflight(`OPTIONS /api/v1/dashboard/summary`) 응답 및 `access-control-allow-origin` 일치
+4. strict-contract 모드(회귀 핫스팟 확인):
+- `GET /api/v1/dashboard/map-latest?limit=200`에서 노이즈 옵션(`재정자립도/지지/국정안정론/국정견제론`) 0건
+- `GET /api/v1/regions/29-000/elections`의 title이 모두 `세종` 포함
 4. 실행 예시:
 ```bash
 scripts/qa/smoke_public_api.sh \
   --api-base "https://2026-api-production.up.railway.app" \
   --web-origin "https://2026-deploy.vercel.app" \
   --out-dir /tmp/public_api_smoke
+```
+5. strict 실행 예시:
+```bash
+scripts/qa/smoke_public_api.sh \
+  --api-base "https://2026-api-production.up.railway.app" \
+  --web-origin "https://2026-deploy.vercel.app" \
+  --out-dir /tmp/public_api_smoke_strict \
+  --strict-contract
 ```
 
 ## 16. 공개 웹 라우트 RC 스모크
