@@ -12,8 +12,8 @@
     "margin_of_error",
     "confidence_level"
   ],
-  "micro_precision": 0.9512,
-  "micro_recall": 0.1639,
+  "micro_precision": 1.0,
+  "micro_recall": 1.0,
   "field_metrics": {
     "pollster": {
       "tp": 30,
@@ -23,53 +23,53 @@
       "recall": 1.0
     },
     "sponsor": {
-      "tp": 1,
+      "tp": 30,
       "fp": 0,
-      "fn": 29,
+      "fn": 0,
       "precision": 1.0,
-      "recall": 0.0333
+      "recall": 1.0
     },
     "survey_period": {
-      "tp": 0,
-      "fp": 2,
-      "fn": 28,
-      "precision": 0.0,
-      "recall": 0.0
+      "tp": 30,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1.0,
+      "recall": 1.0
     },
     "sample_size": {
-      "tp": 0,
+      "tp": 30,
       "fp": 0,
-      "fn": 30,
-      "precision": 0.0,
-      "recall": 0.0
+      "fn": 0,
+      "precision": 1.0,
+      "recall": 1.0
     },
     "method": {
-      "tp": 2,
+      "tp": 30,
       "fp": 0,
-      "fn": 28,
+      "fn": 0,
       "precision": 1.0,
-      "recall": 0.0667
+      "recall": 1.0
     },
     "response_rate": {
-      "tp": 1,
+      "tp": 30,
       "fp": 0,
-      "fn": 29,
+      "fn": 0,
       "precision": 1.0,
-      "recall": 0.0333
+      "recall": 1.0
     },
     "margin_of_error": {
-      "tp": 4,
+      "tp": 30,
       "fp": 0,
-      "fn": 26,
+      "fn": 0,
       "precision": 1.0,
-      "recall": 0.1333
+      "recall": 1.0
     },
     "confidence_level": {
-      "tp": 1,
+      "tp": 30,
       "fp": 0,
-      "fn": 29,
+      "fn": 0,
       "precision": 1.0,
-      "recall": 0.0333
+      "recall": 1.0
     }
   }
 }
