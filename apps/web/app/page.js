@@ -241,17 +241,134 @@ function overallStatus(statuses) {
   return "ok";
 }
 
+function statusPriority(status) {
+  if (status === "warn") return 2;
+  if (status === "info") return 1;
+  return 0;
+}
+
+function statusKorean(status) {
+  if (status === "warn") return "경고";
+  if (status === "info") return "주의";
+  return "정상";
+}
+
+function sourceBiasStatus(articleRatio) {
+  if (articleRatio === null) return "info";
+  if (articleRatio >= 0.7) return "warn";
+  if (articleRatio >= 0.5) return "info";
+  return "ok";
+}
+
+function reviewQueueStatus({ pendingCount, pendingOver24hCount }) {
+  if (pendingOver24hCount !== null) {
+    if (pendingOver24hCount > 0) return "warn";
+    if (pendingCount !== null && pendingCount > 0) return "info";
+    return "ok";
+  }
+  if (pendingCount !== null) {
+    if (pendingCount > 50) return "warn";
+    if (pendingCount > 0) return "info";
+    return "ok";
+  }
+  return "info";
+}
+
+function makeQualitySignals({
+  freshnessP90Hours,
+  freshnessStatus,
+  completenessRatio,
+  completenessStatus,
+  officialPendingCount,
+  officialPendingRatio,
+  pendingStatus,
+  articleRatio,
+  reviewPendingCount,
+  reviewPendingOver24hCount
+}) {
+  const reviewStatus = reviewQueueStatus({
+    pendingCount: reviewPendingCount,
+    pendingOver24hCount: reviewPendingOver24hCount
+  });
+  const sourceStatus = sourceBiasStatus(articleRatio);
+
+  const signals = [
+    {
+      key: "freshness",
+      status: freshnessStatus,
+      label: "신선도 지연",
+      value: formatHours(freshnessP90Hours),
+      copy: "최근 수집 시점 기준 상위 90% 지연 시간입니다.",
+      action:
+        freshnessStatus === "warn"
+          ? "최근 48시간 내 조사 수집 누락 여부를 확인하고 수집 작업을 재실행하세요."
+          : "지연 시간 추이를 모니터링하고 급증 시 수집 로그를 점검하세요."
+    },
+    {
+      key: "official_pending",
+      status: pendingStatus,
+      label: "공식확정 대기",
+      value:
+        officialPendingCount !== null
+          ? `${officialPendingCount}건`
+          : officialPendingRatio !== null
+            ? formatPercent(officialPendingRatio * 100)
+            : "-",
+      copy: "공식 출처 확정 전 대기 항목 규모입니다.",
+      action:
+        pendingStatus === "warn"
+          ? "상위 영향 항목부터 공식 출처 링크를 우선 보강하세요."
+          : "대기 항목의 출처 우선순위를 확인해 순차 검수하세요."
+    },
+    {
+      key: "review_queue",
+      status: reviewStatus,
+      label: "검수 대기열",
+      value: reviewPendingCount !== null ? `${reviewPendingCount}건` : "-",
+      copy: "수동 검수 대기 중인 항목 수입니다.",
+      action:
+        reviewStatus === "warn"
+          ? "24시간 초과 대기 항목부터 처리하고 담당자 할당을 갱신하세요."
+          : "대기열 증가 추세를 확인하고 필요 시 일괄 처리 계획을 적용하세요."
+    },
+    {
+      key: "completeness",
+      status: completenessStatus,
+      label: "완전성 지표",
+      value: completenessRatio === null ? "-" : formatPercent(completenessRatio * 100),
+      copy: "법정 완전성 우선, 미제공 시 공식확정 비율을 대체값으로 사용합니다.",
+      action:
+        completenessStatus === "warn"
+          ? "누락 필드가 많은 항목을 우선 보강하고 수집 스키마 매핑을 재검토하세요."
+          : "완전성 추세를 모니터링하고 임계치 하락 시 누락 필드를 점검하세요."
+    },
+    {
+      key: "source_bias",
+      status: sourceStatus,
+      label: "출처 편중(기사 비율)",
+      value: articleRatio === null ? "-" : formatPercent(articleRatio * 100),
+      copy: "기사 채널 비중이 높으면 공신력 변동성이 커질 수 있습니다.",
+      action:
+        sourceStatus === "warn"
+          ? "NESDC/공식 채널 보강을 우선 배치해 출처 편중을 완화하세요."
+          : "채널 믹스를 주기적으로 확인해 편중이 심화되지 않도록 관리하세요."
+    }
+  ];
+
+  return signals.sort((a, b) => statusPriority(b.status) - statusPriority(a.status));
+}
+
 function QualityPanel({ quality }) {
   if (!quality) {
     return (
       <section className="panel">
         <header className="panel-header">
           <div>
-            <h3>운영 품질 패널 v2</h3>
+            <h3>운영 품질 패널 v3</h3>
             <p>실데이터 품질 지표를 불러오지 못했습니다.</p>
           </div>
         </header>
-        <div className="empty-state">데이터 없음: 품질 API 응답 대기 중입니다.</div>
+        <div className="empty-state">데이터 없음: 품질 API 응답을 기다리는 중입니다. 잠시 후 다시 확인해 주세요.</div>
       </section>
     );
   }
@@ -260,6 +377,8 @@ function QualityPanel({ quality }) {
   const completenessRatio = resolveCompletenessRatio(quality);
   const officialPendingCount = resolveOfficialPendingCount(quality);
   const officialPendingRatio = resolveOfficialPendingRatio(quality);
+  const reviewPendingCount = asNumber(readPath(quality, ["review_queue", "pending_count"]));
+  const reviewPendingOver24hCount = asNumber(readPath(quality, ["review_queue", "pending_over_24h_count"]));
   const articleRatio = normalizeRatio(readPath(quality, ["source_channel_mix", "article_ratio"]));
   const nesdcRatio = normalizeRatio(readPath(quality, ["source_channel_mix", "nesdc_ratio"]));
 
@@ -269,44 +388,58 @@ function QualityPanel({ quality }) {
     count: officialPendingCount,
     ratio: officialPendingRatio
   });
-  const overall = overallStatus([freshnessStatus, completenessStatus, pendingStatus]);
+  const signals = makeQualitySignals({
+    freshnessP90Hours,
+    freshnessStatus,
+    completenessRatio,
+    completenessStatus,
+    officialPendingCount,
+    officialPendingRatio,
+    pendingStatus,
+    articleRatio,
+    reviewPendingCount,
+    reviewPendingOver24hCount
+  });
+  const overall = overallStatus(signals.map((signal) => signal.status));
+  const warningCount = signals.filter((signal) => signal.status === "warn").length;
 
   return (
     <section className="panel">
       <header className="panel-header">
         <div>
-          <h3>운영 품질 패널 v2</h3>
-          <p>신선도 p90, 완전성(completeness), 공식확정 대기 상태를 운영 기준으로 모니터링합니다.</p>
+          <h3>운영 품질 패널 v3</h3>
+          <p>경고 항목을 먼저 보여주고, 각 신호마다 바로 실행할 확인 액션을 제공합니다.</p>
         </div>
         <div className="badge-row">
-          <span className={`state-badge ${overall}`}>전체 {overall === "ok" ? "정상" : overall === "info" ? "주의" : "경고"}</span>
+          <span className={`state-badge ${overall}`}>전체 {statusKorean(overall)}</span>
+          <span className={`state-badge ${warningCount > 0 ? "warn" : "ok"}`}>경고 항목 {warningCount}건</span>
         </div>
       </header>
-      <div className="quality-grid">
-        <article className={`quality-item ${freshnessStatus}`}>
-          <p className="quality-label">신선도 p90</p>
-          <strong>{formatHours(freshnessP90Hours)}</strong>
-          <p className="quality-copy">최근 관측치 상위 90%의 지연 시간 기준입니다.</p>
-        </article>
-        <article className={`quality-item ${completenessStatus}`}>
-          <p className="quality-label">완전성 (completeness)</p>
-          <strong>{completenessRatio === null ? "-" : formatPercent(completenessRatio * 100)}</strong>
-          <p className="quality-copy">법정 완전성 우선, 미제공 시 공식확정 비율을 임시 대체값으로 사용합니다.</p>
-        </article>
-        <article className={`quality-item ${pendingStatus}`}>
-          <p className="quality-label">공식확정 대기</p>
-          <strong>
-            {officialPendingCount !== null
-              ? `${officialPendingCount}건`
-              : officialPendingRatio !== null
-                ? formatPercent(officialPendingRatio * 100)
-                : "-"}
-          </strong>
-          <p className="quality-copy">공식 확정 전 대기 상태 항목 규모입니다.</p>
-        </article>
+
+      <div className={`quality-priority-banner ${warningCount > 0 ? "warn" : "ok"}`}>
+        {warningCount > 0
+          ? "우선 확인: 경고 항목을 먼저 처리하세요. 각 카드의 확인 액션을 순서대로 수행하면 원인 추적 시간을 줄일 수 있습니다."
+          : "안정 상태: 경고 항목은 없습니다. 주의 항목 중심으로 추세 모니터링을 유지하세요."}
       </div>
+
+      <div className="quality-grid">
+        {signals.map((signal) => (
+          <article key={signal.key} className={`quality-item ${signal.status}`}>
+            <div className="quality-item-top">
+              <p className="quality-label">{signal.label}</p>
+              <span className={`state-badge ${signal.status}`}>{statusKorean(signal.status)}</span>
+            </div>
+            <strong>{signal.value}</strong>
+            <p className="quality-copy">{signal.copy}</p>
+            <p className="quality-action">
+              <strong>확인 액션:</strong> {signal.action}
+            </p>
+          </article>
+        ))}
+      </div>
+
       <div className="quality-source-mix">
-        <p className="quality-label">실데이터 소스 비중 (기사/NESDC)</p>
+        <p className="quality-label">실데이터 소스 비중</p>
         <div className="source-mix-row">
           <span>기사</span>
           <div className="source-meter">
@@ -323,7 +456,7 @@ function QualityPanel({ quality }) {
         </div>
       </div>
       <p className="muted-text quality-footnote">
-        기준: generated_at {formatDateTime(quality?.generated_at)} · quality_status {quality?.quality_status || "-"}
+        기준 시각: {formatDateTime(quality?.generated_at)} · 상태 코드: {quality?.quality_status || "-"}
       </p>
     </section>
   );

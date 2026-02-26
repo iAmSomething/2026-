@@ -327,6 +327,27 @@ main {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 10px;
+  margin-top: 10px;
+}
+
+.quality-priority-banner {
+  border: 1px solid #dbe6f3;
+  border-radius: 12px;
+  padding: 10px 12px;
+  font-size: 0.86rem;
+  line-height: 1.5;
+  color: #2b3b4d;
+  background: #f8fbff;
+}
+
+.quality-priority-banner.warn {
+  border-color: #fed7aa;
+  background: #fff7ed;
+}
+
+.quality-priority-banner.ok {
+  border-color: #bbf7d0;
+  background: #f0fdf4;
 }
 
 .quality-item {
@@ -340,6 +361,13 @@ main {
   display: block;
   margin-top: 4px;
   color: #0f172a;
+}
+
+.quality-item-top {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  align-items: center;
 }
 
 .quality-item.ok {
@@ -367,6 +395,12 @@ main {
   margin: 6px 0 0;
   font-size: 0.8rem;
   color: #526172;
+}
+
+.quality-action {
+  margin: 8px 0 0;
+  font-size: 0.8rem;
+  color: #334155;
 }
 
 .quality-footnote {
