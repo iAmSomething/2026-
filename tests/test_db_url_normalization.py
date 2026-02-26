@@ -40,8 +40,12 @@ class _FakePsycopgError(Exception):
     [
         (_FakePsycopgError("password authentication failed", "28P01"), "auth_failed"),
         (_FakePsycopgError("role is not permitted", "28000"), "auth_error"),
+        (_FakePsycopgError("password authentication failed for user \"postgres.ref\""), "auth_failed"),
+        (_FakePsycopgError("no pg_hba.conf entry for host \"1.2.3.4\""), "auth_error"),
         (_FakePsycopgError("could not translate host name \"bad\" to address"), "invalid_host_or_uri"),
         (_FakePsycopgError("connection refused"), "connection_refused"),
+        (_FakePsycopgError("server closed the connection unexpectedly"), "network_error"),
+        (_FakePsycopgError("connection reset by peer"), "network_error"),
         (_FakePsycopgError("timeout expired"), "network_timeout"),
         (_FakePsycopgError("sslmode value \"disable\" invalid when SSL required"), "ssl_required"),
         (_FakePsycopgError("some other message"), "unknown"),
