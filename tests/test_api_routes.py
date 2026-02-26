@@ -1437,6 +1437,67 @@ def test_cors_rejects_unknown_origin():
     assert res.headers.get("access-control-allow-origin") is None
 
 
+def test_health_db_ok(monkeypatch: pytest.MonkeyPatch):
+    class _Cursor:
+        def __enter__(self):
+            return self
+
+        def __exit__(self, exc_type, exc, tb):  # noqa: ANN001
+            return False
+
+        def execute(self, query):  # noqa: ARG002
+            return None
+
+        def fetchone(self):
+            return {"ok": 1}
+
+    class _Conn:
+        def __enter__(self):
+            return self
+
+        def __exit__(self, exc_type, exc, tb):  # noqa: ANN001
+            return False
+
+        def cursor(self):
+            return _Cursor()
+
+    from contextlib import contextmanager
+
+    @contextmanager
+    def _fake_get_connection():
+        yield _Conn()
+
+    monkeypatch.setattr("app.main.get_connection", _fake_get_connection)
+
+    client = TestClient(app)
+    res = client.get("/health/db")
+    assert res.status_code == 200
+    body = res.json()
+    assert body["status"] == "ok"
+    assert body["db"] == "ok"
+    assert body["ping"] is True
+
+
+def test_health_db_reports_degraded_when_db_is_not_configured(monkeypatch: pytest.MonkeyPatch):
+    from contextlib import contextmanager
+
+    from app.db import DatabaseConfigurationError
+
+    @contextmanager
+    def _fake_get_connection():
+        raise DatabaseConfigurationError("DATABASE_URL is empty")
+        yield  # pragma: no cover
+
+    monkeypatch.setattr("app.main.get_connection", _fake_get_connection)
+
+    client = TestClient(app)
+    res = client.get("/health/db")
+    assert res.status_code == 503
+    body = res.json()
+    assert body["status"] == "degraded"
+    assert body["reason"] == "database_not_configured"
+
+
 def test_candidate_endpoint_merges_data_go_fields():
     app.dependency_overrides[get_repository] = override_repo
     app.dependency_overrides[get_candidate_data_go_service] = lambda: FakeCandidateDataGoService(
