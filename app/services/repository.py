@@ -814,36 +814,202 @@ class PostgresRepository:
             return cur.fetchall()
 
     def fetch_region_elections(self, region_code: str):
+        def normalize_text(value: str | None) -> str:
+            if not isinstance(value, str):
+                return ""
+            return value.strip()
+
+        def strip_region_suffix(name: str) -> str:
+            for suffix in ("특별자치도", "특별자치시", "특별시", "광역시", "자치시", "도", "시"):
+                if name.endswith(suffix):
+                    return name[: -len(suffix)] or name
+            return name
+
+        def derive_placeholder_title(region: dict, office_type: str) -> str:
+            sido_name = normalize_text(region.get("sido_name"))
+            sigungu_name = normalize_text(region.get("sigungu_name"))
+            base_sido = strip_region_suffix(sido_name)
+
+            if office_type == "광역자치단체장":
+                if sido_name.endswith(("특별시", "광역시", "특별자치시", "자치시")):
+                    return f"{base_sido}시장"
+                if sido_name.endswith(("도", "특별자치도")):
+                    return f"{base_sido}도지사"
+                return f"{base_sido}광역자치단체장"
+
+            if office_type == "광역의회":
+                if sido_name.endswith(("특별시", "광역시", "특별자치시", "자치시")):
+                    return f"{base_sido}시의회"
+                if sido_name.endswith(("도", "특별자치도")):
+                    return f"{base_sido}도의회"
+                return f"{base_sido}광역의회"
+
+            if office_type == "교육감":
+                return f"{base_sido}교육감"
+
+            target = sigungu_name if sigungu_name and sigungu_name != "전체" else base_sido
+            if office_type == "기초자치단체장":
+                if target.endswith("구"):
+                    return f"{target}청장"
+                if target.endswith("군"):
+                    return f"{target}수"
+                if target.endswith("시"):
+                    return f"{target}장"
+                return f"{target}기초자치단체장"
+
+            if office_type == "기초의회":
+                return f"{target}의회"
+
+            if office_type == "재보궐":
+                return f"{target}재보궐"
+
+            return f"{target} {office_type}".strip()
+
+        def infer_election_id(matchup_rows: list[dict], poll_meta_rows: list[dict]) -> str:
+            for row in matchup_rows:
+                matchup_id = row.get("matchup_id")
+                if isinstance(matchup_id, str) and "|" in matchup_id:
+                    return matchup_id.split("|", 1)[0]
+            for row in poll_meta_rows:
+                matchup_id = row.get("latest_matchup_id")
+                if isinstance(matchup_id, str) and "|" in matchup_id:
+                    return matchup_id.split("|", 1)[0]
+            return "20260603"
+
+        def status_label(has_poll_data: bool, has_candidate_data: bool) -> str:
+            if not has_poll_data:
+                return "조사 데이터 없음"
+            if not has_candidate_data:
+                return "후보 정보 준비중"
+            return "데이터 준비 완료"
+
+        office_order = ["광역자치단체장", "광역의회", "교육감", "기초자치단체장", "기초의회", "재보궐"]
+
         with self.conn.cursor() as cur:
             cur.execute(
                 """
-                SELECT matchup_id, region_code, office_type, title, is_active
-                FROM matchups
+                SELECT region_code, sido_name, sigungu_name, admin_level
+                FROM regions
                 WHERE region_code = %s
-                ORDER BY is_active DESC, office_type, title
                 """,
                 (region_code,),
             )
-            rows = cur.fetchall()
-
-            if rows:
-                return rows
+            region = cur.fetchone()
+            if not region:
+                return []
 
             cur.execute(
                 """
-                SELECT DISTINCT
-                    matchup_id,
-                    region_code,
-                    office_type,
-                    matchup_id AS title,
-                    TRUE AS is_active
-                FROM poll_observations
+                SELECT matchup_id, region_code, office_type, title, is_active, updated_at
+                FROM matchups
                 WHERE region_code = %s
-                ORDER BY office_type, matchup_id
+                ORDER BY is_active DESC, updated_at DESC, matchup_id DESC
                 """,
                 (region_code,),
             )
-            return cur.fetchall()
+            matchup_rows = cur.fetchall() or []
+
+            cur.execute(
+                """
+                WITH ranked AS (
+                    SELECT
+                        o.id,
+                        o.office_type,
+                        o.matchup_id,
+                        o.survey_end_date,
+                        ROW_NUMBER() OVER (
+                            PARTITION BY o.office_type
+                            ORDER BY o.survey_end_date DESC NULLS LAST, o.id DESC
+                        ) AS rn
+                    FROM poll_observations o
+                    WHERE o.region_code = %s
+                )
+                SELECT
+                    r.office_type,
+                    TRUE AS has_poll_data,
+                    r.survey_end_date::date AS latest_survey_end_date,
+                    r.matchup_id AS latest_matchup_id,
+                    EXISTS (
+                        SELECT 1
+                        FROM poll_options po
+                        WHERE po.observation_id = r.id
+                          AND po.option_type = 'candidate_matchup'
+                          AND COALESCE(po.candidate_verified, TRUE) = TRUE
+                    ) AS has_candidate_data
+                FROM ranked r
+                WHERE r.rn = 1
+                """,
+                (region_code,),
+            )
+            poll_meta_rows = cur.fetchall() or []
+
+        matchup_by_office: dict[str, dict] = {}
+        for row in matchup_rows:
+            office_type = row.get("office_type")
+            if not isinstance(office_type, str):
+                continue
+            matchup_by_office.setdefault(office_type, row)
+
+        poll_meta_by_office = {
+            row["office_type"]: row
+            for row in poll_meta_rows
+            if isinstance(row.get("office_type"), str)
+        }
+
+        slots = ["광역자치단체장", "광역의회", "교육감"]
+        if normalize_text(region.get("admin_level")) in {"sigungu", "local"}:
+            slots.extend(["기초자치단체장", "기초의회"])
+
+        if "재보궐" in matchup_by_office or "재보궐" in poll_meta_by_office:
+            slots.append("재보궐")
+
+        extra_offices = sorted(
+            (set(matchup_by_office.keys()) | set(poll_meta_by_office.keys())) - set(slots),
+            key=lambda office: (
+                office_order.index(office) if office in office_order else len(office_order),
+                office,
+            ),
+        )
+        slots.extend(extra_offices)
+
+        election_id = infer_election_id(matchup_rows, poll_meta_rows)
+        result: list[dict] = []
+        for office_type in slots:
+            poll_meta = poll_meta_by_office.get(office_type, {})
+            has_poll_data = bool(poll_meta.get("has_poll_data", False))
+            has_candidate_data = bool(poll_meta.get("has_candidate_data", False))
+            latest_survey_end_date = poll_meta.get("latest_survey_end_date")
+            latest_matchup_id = poll_meta.get("latest_matchup_id")
+
+            matchup_row = matchup_by_office.get(office_type)
+            if matchup_row:
+                matchup_id = matchup_row["matchup_id"]
+                title = matchup_row["title"]
+                is_active = bool(matchup_row.get("is_active", True))
+                is_placeholder = False
+            else:
+                matchup_id = latest_matchup_id or f"{election_id}|{office_type}|{region_code}"
+                title = derive_placeholder_title(region, office_type)
+                is_active = True
+                is_placeholder = True
+
+            result.append(
+                {
+                    "matchup_id": matchup_id,
+                    "region_code": region_code,
+                    "office_type": office_type,
+                    "title": title,
+                    "is_active": is_active,
+                    "is_placeholder": is_placeholder,
+                    "has_poll_data": has_poll_data,
+                    "has_candidate_data": has_candidate_data,
+                    "latest_survey_end_date": latest_survey_end_date,
+                    "latest_matchup_id": latest_matchup_id,
+                    "status": status_label(has_poll_data=has_poll_data, has_candidate_data=has_candidate_data),
+                }
+            )
+
+        return result
 
     def _find_matchup_meta(self, matchup_id: str) -> dict | None:
         with self.conn.cursor() as cur:

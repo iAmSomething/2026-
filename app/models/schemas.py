@@ -161,6 +161,12 @@ class RegionElectionOut(BaseModel):
     office_type: str
     title: str
     is_active: bool
+    is_placeholder: bool = False
+    has_poll_data: bool = False
+    has_candidate_data: bool = False
+    latest_survey_end_date: date | None = None
+    latest_matchup_id: str | None = None
+    status: Literal["조사 데이터 없음", "후보 정보 준비중", "데이터 준비 완료"] = "조사 데이터 없음"
 
 
 class MatchupOptionOut(BaseModel):

@@ -160,15 +160,34 @@ export default async function SearchPage({ searchParams }) {
 
               {electionsRes.ok && filteredElections.length > 0 ? (
                 <ul className="election-list full">
-                  {filteredElections.map((election) => (
-                    <li key={election.matchup_id}>
-                      <Link href={`/matchups/${encodeURIComponent(election.matchup_id)}`}>
-                        <span>{election.office_type}</span>
-                        <strong>{election.title}</strong>
-                        <span>{election.is_active ? "활성" : "비활성"}</span>
-                      </Link>
-                    </li>
-                  ))}
+                  {filteredElections.map((election) => {
+                    const navigationMatchupId =
+                      election.latest_matchup_id || (election.is_placeholder ? "" : election.matchup_id);
+                    const canNavigate = Boolean(navigationMatchupId);
+                    const statusText =
+                      election.status ||
+                      (election.has_poll_data ? "데이터 준비 완료" : "조사 데이터 없음");
+
+                    return (
+                      <li key={election.matchup_id}>
+                        {canNavigate ? (
+                          <Link href={`/matchups/${encodeURIComponent(navigationMatchupId)}`}>
+                            <span>{election.office_type}</span>
+                            <strong>{election.title}</strong>
+                            <span>{statusText}</span>
+                            <span>{election.latest_survey_end_date || "-"}</span>
+                          </Link>
+                        ) : (
+                          <div>
+                            <span>{election.office_type}</span>
+                            <strong>{election.title}</strong>
+                            <span>{statusText}</span>
+                            <span>매치업 준비중</span>
+                          </div>
+                        )}
+                      </li>
+                    );
+                  })}
                 </ul>
               ) : null}
             </section>
