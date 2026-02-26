@@ -5,6 +5,12 @@ import { formatDate, formatDateTime, formatPercent, joinChannels } from "../../_
 import { fetchApi } from "../../_lib/api";
 
 const REGIONAL_OFFICE_TYPES = new Set([
+  "metro_mayor",
+  "metro_council",
+  "superintendent",
+  "local_mayor",
+  "local_council",
+  "by_election",
   "광역자치단체장",
   "광역의회",
   "교육감",
@@ -12,6 +18,41 @@ const REGIONAL_OFFICE_TYPES = new Set([
   "기초의회",
   "재보궐"
 ]);
+
+const OFFICE_TYPE_LABELS = {
+  metro_mayor: "광역자치단체장",
+  metro_council: "광역의회",
+  superintendent: "교육감",
+  local_mayor: "기초자치단체장",
+  local_council: "기초의회",
+  by_election: "재보궐",
+  광역자치단체장: "광역자치단체장",
+  광역의회: "광역의회",
+  교육감: "교육감",
+  기초자치단체장: "기초자치단체장",
+  기초의회: "기초의회",
+  재보궐: "재보궐"
+};
+
+const REGION_PREFIX_LABELS = {
+  "KR-11": "서울특별시",
+  "KR-21": "부산광역시",
+  "KR-22": "대구광역시",
+  "KR-23": "인천광역시",
+  "KR-24": "광주광역시",
+  "KR-25": "대전광역시",
+  "KR-26": "울산광역시",
+  "KR-29": "세종특별자치시",
+  "KR-31": "경기도",
+  "KR-32": "강원특별자치도",
+  "KR-33": "충청북도",
+  "KR-34": "충청남도",
+  "KR-35": "전북특별자치도",
+  "KR-36": "전라남도",
+  "KR-37": "경상북도",
+  "KR-38": "경상남도",
+  "KR-39": "제주특별자치도"
+};
 
 function resolveScope({ audienceScope, officeType, regionCode }) {
   if (audienceScope === "national" || audienceScope === "regional" || audienceScope === "local") {
@@ -79,6 +120,30 @@ function buildCandidateDetailHref(candidateId, matchupId) {
   const candidatePath = `/candidates/${encodeURIComponent(candidateId)}`;
   const query = `from=matchup&matchup_id=${encodeURIComponent(matchupId)}`;
   return `${candidatePath}?${query}`;
+}
+
+function regionPrefix(regionCode) {
+  if (!regionCode) return null;
+  const krMatch = String(regionCode).match(/^KR-\d{2}/);
+  if (krMatch) return krMatch[0];
+  const shortMatch = String(regionCode).match(/^(\d{2})/);
+  if (shortMatch) return `KR-${shortMatch[1]}`;
+  return null;
+}
+
+function officeTypeLabel(officeType) {
+  if (!officeType) return "선거유형 미상";
+  return OFFICE_TYPE_LABELS[officeType] || officeType;
+}
+
+function regionLabel(regionCode) {
+  const prefix = regionPrefix(regionCode);
+  if (prefix && REGION_PREFIX_LABELS[prefix]) return REGION_PREFIX_LABELS[prefix];
+  return regionCode || "지역 미상";
+}
+
+function canonicalMatchupTitle(matchup) {
+  return `${regionLabel(matchup?.region_code)} ${officeTypeLabel(matchup?.office_type)}`;
 }
 
 export default async function MatchupPage({ params, searchParams }) {
@@ -195,14 +260,20 @@ export default async function MatchupPage({ params, searchParams }) {
     scenarioCopy = `상태 시나리오: ${confirmLabel} · ${sourceLabel} · ${stateLabel}`;
   }
 
+  const canonicalTitle = canonicalMatchupTitle(matchup);
+  const articleHeadline = matchup.title || matchup.matchup_id || "기사 제목 미제공";
+  const pollsterLabel = matchup.pollster || "조사기관 미상";
+  const surveyPeriod = `${formatDate(matchup.survey_start_date)} ~ ${formatDate(matchup.survey_end_date)}`;
+
   return (
     <main className="detail-root">
       <section className="panel detail-hero">
         <div>
           <p className="kicker">MATCHUP DETAIL</p>
-          <h1>{matchup.title || matchup.matchup_id}</h1>
+          <h1>{canonicalTitle}</h1>
+          <p className="muted-text">기사 제목: {articleHeadline}</p>
           <p>
-            {matchup.pollster || "조사기관 미상"} · {formatDate(matchup.survey_start_date)} ~ {formatDate(matchup.survey_end_date)}
+            {pollsterLabel} · {surveyPeriod}
           </p>
         </div>
         <div className="hero-actions">
