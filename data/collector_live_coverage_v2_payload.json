@@ -2007,9 +2007,9 @@
           "value_max": 32.3,
           "value_mid": 32.3,
           "is_missing": false,
-          "scenario_key": "multi-전재수",
-          "scenario_type": "multi_candidate",
-          "scenario_title": "다자대결"
+          "scenario_key": "h2h-전재수-박형준",
+          "scenario_type": "head_to_head",
+          "scenario_title": "전재수 vs 박형준"
         },
         {
           "option_type": "candidate_matchup",
@@ -2046,6 +2046,18 @@
           "scenario_key": "multi-전재수",
           "scenario_type": "multi_candidate",
           "scenario_title": "다자대결"
+        },
+        {
+          "option_type": "candidate_matchup",
+          "option_name": "전재수",
+          "value_raw": "43.4%",
+          "value_min": 43.8,
+          "value_max": 43.8,
+          "value_mid": 43.4,
+          "is_missing": false,
+          "scenario_key": "h2h-전재수-박형준",
+          "scenario_type": "head_to_head",
+          "scenario_title": "전재수 vs 박형준"
         }
       ],
       "query_override_applied": true,

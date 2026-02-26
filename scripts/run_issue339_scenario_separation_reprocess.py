@@ -126,6 +126,15 @@ def run_reprocess() -> dict[str, Any]:
             key = str(opt.get("scenario_key") or "default")
             scenario_counts[key] = scenario_counts.get(key, 0) + 1
 
+    required_three_blocks = {
+        "h2h_전재수_박형준": "h2h-전재수-박형준" in scenario_counts,
+        "h2h_전재수_김도읍": "h2h-전재수-김도읍" in scenario_counts,
+        "multi_전재수": "multi-전재수" in scenario_counts,
+    }
+
+    scenario_count_ge_3 = len(scenario_counts) >= 3
+    has_required_three_blocks = all(required_three_blocks.values())
+
     report = {
         "issue": 339,
         "executed_at": datetime.now(timezone.utc).isoformat(),
@@ -142,8 +151,13 @@ def run_reprocess() -> dict[str, Any]:
         },
         "acceptance_checks": {
             "target_records_changed": target_count == changed_count and target_count > 0,
-            "has_head_to_head_and_multi": any(k.startswith("h2h-") for k in scenario_counts)
-            and any(k.startswith("multi-") for k in scenario_counts),
+            "target_records_ready_or_changed": (
+                (target_count == changed_count and target_count > 0)
+                or (target_count > 0 and scenario_count_ge_3 and has_required_three_blocks)
+            ),
+            "scenario_count_ge_3": scenario_count_ge_3,
+            "has_required_three_blocks": has_required_three_blocks,
+            "required_three_blocks_detail": required_three_blocks,
             "candidate_mapping_not_lost": len(candidate_name_before - candidate_name_after) == 0,
         },
         "artifacts": {

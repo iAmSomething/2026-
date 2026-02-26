@@ -226,10 +226,7 @@ def _repair_local_candidate_scenarios(record: dict[str, Any]) -> None:
     if not changed:
         return
 
-    for src, dst in zip(normalized_options, options, strict=False):
-        dst["scenario_key"] = src.get("scenario_key")
-        dst["scenario_type"] = src.get("scenario_type")
-        dst["scenario_title"] = src.get("scenario_title")
+    record["options"] = normalized_options
 
 
 def build_live_coverage_v2_pack(*, as_of: date = date(2026, 2, 22)) -> dict[str, Any]:

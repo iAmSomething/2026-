@@ -422,7 +422,15 @@ def test_candidate_matchup_scenarios_are_split_when_default_would_mix_groups() -
     scenario_keys = {row.get("scenario_key") for row in option_rows}
     scenario_types = {row.get("scenario_type") for row in option_rows}
     assert "default" not in scenario_keys
-    assert len(scenario_keys) >= 2
+    assert len(scenario_keys) >= 3
+    assert "h2h-전재수-박형준" in scenario_keys
+    assert "h2h-전재수-김도읍" in scenario_keys
+    assert "multi-전재수" in scenario_keys
     assert "head_to_head" in scenario_types
     assert "multi_candidate" in scenario_types
     assert {row["option_name"] for row in option_rows} == {"전재수", "박형준", "김도읍"}
+    grouped = {}
+    for row in option_rows:
+        grouped.setdefault(row.get("scenario_key"), []).append(row["option_name"])
+    assert set(grouped["h2h-전재수-박형준"]) == {"전재수", "박형준"}
+    assert set(grouped["h2h-전재수-김도읍"]) == {"전재수", "김도읍"}
