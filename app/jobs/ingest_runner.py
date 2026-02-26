@@ -26,6 +26,7 @@ class AttemptLog:
     request_timeout_seconds: float
     error: str | None = None
     detail: str | None = None
+    cause_code: str | None = None
     started_at: str | None = None
     finished_at: str | None = None
     duration_seconds: float | None = None
@@ -42,6 +43,7 @@ class IngestRunnerResult:
     elapsed_seconds: float | None = None
     failure_class: str | None = None
     failure_type: str | None = None
+    cause_code: str | None = None
     failure_reason: str | None = None
 
     def to_dict(self) -> dict[str, Any]:
@@ -54,6 +56,7 @@ class IngestRunnerResult:
             "elapsed_seconds": self.elapsed_seconds,
             "failure_class": self.failure_class,
             "failure_type": self.failure_type,
+            "cause_code": self.cause_code,
             "failure_reason": self.failure_reason,
         }
 
@@ -103,6 +106,66 @@ def _classify_failure(
     if job_status == "failed":
         return "job_failed"
     return "unknown_failure"
+
+
+def _derive_cause_code(
+    *,
+    failure_class: str | None,
+    http_status: int | None,
+    detail: str | None,
+    error: str | None,
+) -> str | None:
+    lowered_detail = (detail or "").lower()
+    lowered_error = (error or "").lower()
+
+    if failure_class == "timeout":
+        return "timeout_request"
+    if "timeout" in lowered_error:
+        return "timeout_request"
+    if "database settings are not configured" in lowered_detail or "database is not configured" in lowered_detail:
+        return "db_config_missing"
+    if "database_url is empty" in lowered_detail:
+        return "db_config_missing"
+    if "database schema mismatch" in lowered_detail or "schema auto-healed" in lowered_detail:
+        return "db_schema_mismatch"
+    if failure_class == "payload_contract_422":
+        return "schema_payload_contract_422"
+
+    if "database connection failed" in lowered_detail:
+        if "(auth_failed)" in lowered_detail or "(auth_error)" in lowered_detail:
+            return "db_auth_failed"
+        if "(network_timeout)" in lowered_detail:
+            return "db_timeout"
+        if "(invalid_host_or_uri)" in lowered_detail:
+            return "db_uri_invalid"
+        if "(connection_refused)" in lowered_detail or "(network_error)" in lowered_detail:
+            return "db_network_error"
+        if "(ssl_required)" in lowered_detail:
+            return "db_ssl_required"
+        if "(unknown)" in lowered_detail:
+            return "db_connection_unknown"
+        return "db_connection_error"
+
+    if "database query failed" in lowered_detail and "(" in lowered_detail and ")" in lowered_detail:
+        return "db_query_error"
+    if "database query failed" in lowered_detail:
+        return "db_query_error"
+
+    if failure_class in {"http_408", "http_429"}:
+        return "http_retryable_client"
+    if failure_class == "http_5xx" and http_status is not None:
+        return f"http_{http_status}"
+    if failure_class == "http_5xx":
+        return "http_5xx"
+    if failure_class == "request_error":
+        return "request_error"
+    if failure_class == "http_4xx":
+        return "http_4xx"
+    if failure_class == "job_partial_success":
+        return "job_partial_success"
+    if failure_class == "job_failed":
+        return "job_failed"
+    return failure_class
 
 
 def _is_retryable_failure_class(failure_class: str | None) -> bool:
@@ -294,6 +357,12 @@ def run_ingest_with_retry(
         attempt_finished_at = utc_now()
         attempt_duration = round(time.monotonic() - attempt_started_monotonic, 3)
         failure_class = _classify_failure(http_status, job_status, error)
+        cause_code = _derive_cause_code(
+            failure_class=failure_class,
+            http_status=http_status,
+            detail=detail,
+            error=error,
+        )
         retryable = _is_retryable_failure_class(failure_class)
         next_backoff_seconds = (
             _next_backoff_seconds(failure_class, backoff_seconds, attempt)
@@ -307,6 +376,7 @@ def run_ingest_with_retry(
                 job_status=job_status,
                 failure_class=failure_class,
                 failure_type=_to_failure_type(failure_class),
+                cause_code=cause_code,
                 retryable=retryable,
                 request_timeout_seconds=current_timeout,
                 error=error,
@@ -325,6 +395,7 @@ def run_ingest_with_retry(
             job_status=job_status,
             failure_class=failure_class,
             failure_type=_to_failure_type(failure_class),
+            cause_code=cause_code,
             retryable=retryable,
             duration_seconds=attempt_duration,
             next_backoff_seconds=next_backoff_seconds,
@@ -350,6 +421,7 @@ def run_ingest_with_retry(
                 elapsed_seconds=elapsed_seconds,
                 failure_class=None,
                 failure_type=None,
+                cause_code=None,
                 failure_reason=None,
             )
 
@@ -387,6 +459,7 @@ def run_ingest_with_retry(
         attempt_count=len(attempts),
         failure_class=attempts[-1].failure_class if attempts else None,
         failure_type=attempts[-1].failure_type if attempts else None,
+        cause_code=attempts[-1].cause_code if attempts else None,
         failure_reason=failure_reason,
     )
     return IngestRunnerResult(
@@ -398,6 +471,7 @@ def run_ingest_with_retry(
         elapsed_seconds=elapsed_seconds,
         failure_class=attempts[-1].failure_class if attempts else None,
         failure_type=attempts[-1].failure_type if attempts else None,
+        cause_code=attempts[-1].cause_code if attempts else None,
         failure_reason=failure_reason,
     )
 

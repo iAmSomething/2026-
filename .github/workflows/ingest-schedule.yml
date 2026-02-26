@@ -68,6 +68,8 @@ jobs:
             --timeout-scale-on-timeout 1.5 \
             --timeout-max 360 \
             --allow-partial-success \
+            --classification-artifact data/ingest_schedule_failure_classification.json \
+            --comment-template-path data/ingest_schedule_failure_comment_template.md \
             --dead-letter-dir data/dead_letter \
             --report data/ingest_schedule_report.json
 
@@ -77,6 +79,87 @@ jobs:
           echo "===== /tmp/ingest-schedule-api.log ====="
           cat /tmp/ingest-schedule-api.log || true
 
+      - name: Ensure ingest diagnostics artifacts exist
+        if: always()
+        run: |
+          .venv/bin/python - <<'PY'
+          import json
+          import os
+          from datetime import datetime, timezone
+          from pathlib import Path
+
+          report_path = Path("data/ingest_schedule_report.json")
+          payload_path = Path(os.environ.get("INGEST_SCHEDULE_PAYLOAD", "data/collector_live_payload.json"))
+          classification_path = Path("data/ingest_schedule_failure_classification.json")
+          comment_template_path = Path("data/ingest_schedule_failure_comment_template.md")
+
+          report = {}
+          if report_path.exists():
+              report = json.loads(report_path.read_text(encoding="utf-8"))
+
+          payload = {}
+          if payload_path.exists():
+              payload = json.loads(payload_path.read_text(encoding="utf-8"))
+
+          if not classification_path.exists():
+              attempts = report.get("attempts") or []
+              failure_counts = {}
+              for item in attempts:
+                  key = item.get("failure_class") or "none"
+                  failure_counts[key] = failure_counts.get(key, 0) + 1
+              artifact = {
+                  "schema_version": "collector_ingest_failure_classification.v1",
+                  "generated_at": datetime.now(timezone.utc).isoformat(),
+                  "source_input_path": str(payload_path),
+                  "payload_run_type": payload.get("run_type"),
+                  "payload_record_count": len(payload.get("records") or []),
+                  "runner": {
+                      "success": bool(report.get("success")),
+                      "raw_success": bool(report.get("raw_success", report.get("success"))),
+                      "attempt_count": len(attempts),
+                      "run_ids": report.get("run_ids") or [],
+                      "started_at": report.get("started_at"),
+                      "finished_at": report.get("finished_at"),
+                      "elapsed_seconds": report.get("elapsed_seconds"),
+                      "failure_class": report.get("failure_class") or "workflow_step_interrupted",
+                      "failure_type": report.get("failure_type") or "workflow_interrupted",
+                      "cause_code": report.get("cause_code") or "unknown",
+                      "failure_reason": report.get("failure_reason") or "ingest step interrupted",
+                      "timeout_attempts": sum(
+                          1 for item in attempts
+                          if (item.get("failure_class") == "timeout" or item.get("cause_code") == "timeout_request")
+                      ),
+                      "failure_class_counts": failure_counts,
+                  },
+                  "dead_letter_path": report.get("dead_letter_path"),
+                  "attempt_timeline": attempts,
+              }
+              classification_path.parent.mkdir(parents=True, exist_ok=True)
+              classification_path.write_text(json.dumps(artifact, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+
+          if not comment_template_path.exists() and report.get("success") is False:
+              repo = os.environ.get("GITHUB_REPOSITORY", "")
+              run_id = os.environ.get("GITHUB_RUN_ID", "")
+              server = os.environ.get("GITHUB_SERVER_URL", "https://github.com")
+              run_url = f"{server}/{repo}/actions/runs/{run_id}" if repo and run_id else ""
+              lines = [
+                  "[DEVELOP][INGEST FAILURE TEMPLATE]",
+                  "report_path: develop_report/YYYY-MM-DD_issueNNN_ingest_failure_report.md",
+                  "evidence:",
+                  f"- workflow_run: {run_url}",
+                  f"- ingest_report: `{report_path}`",
+                  f"- classification_artifact: `{classification_path}`",
+                  f"- dead_letter: `{report.get('dead_letter_path')}`",
+                  f"- failure_class: `{report.get('failure_class')}`",
+                  f"- failure_type: `{report.get('failure_type')}`",
+                  f"- cause_code: `{report.get('cause_code')}`",
+                  f"- failure_reason: `{report.get('failure_reason')}`",
+                  "next_status: status/in-progress",
+              ]
+              comment_template_path.parent.mkdir(parents=True, exist_ok=True)
+              comment_template_path.write_text("\n".join(lines) + "\n", encoding="utf-8")
+          PY
+
       - name: Upload ingest report artifact
         if: always()
         uses: actions/upload-artifact@v4
@@ -85,6 +168,8 @@ jobs:
           path: |
             data/ingest_schedule_report.json
             data/ingest_schedule_payload_route_report.json
+            data/ingest_schedule_failure_classification.json
+            data/ingest_schedule_failure_comment_template.md
           if-no-files-found: error
 
       - name: Upload dead-letter artifact (optional)

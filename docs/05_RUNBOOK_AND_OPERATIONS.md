@@ -23,7 +23,10 @@
 3. 실행 방식:
 - 워크플로가 API 서버(`uvicorn`)를 기동
 - `scripts/qa/run_ingest_with_retry.py`로 `POST /api/v1/jobs/run-ingest` 호출
-- 결과 리포트 `data/ingest_schedule_report.json` 아티팩트 업로드
+- 결과 리포트/진단 아티팩트 업로드
+  - `data/ingest_schedule_report.json`
+  - `data/ingest_schedule_failure_classification.json`
+  - `data/ingest_schedule_failure_comment_template.md`
 4. 필수 Secret:
 - `SUPABASE_URL`
 - `SUPABASE_SERVICE_ROLE_KEY`
@@ -76,9 +79,9 @@
 - 경로: `data/collector_live_news_v1_failure_classification.json`
 - 스키마 버전: `collector_ingest_failure_classification.v1`
 - 핵심 필드:
-  - `runner.failure_class`, `runner.failure_type`, `runner.failure_reason`
+  - `runner.failure_class`, `runner.failure_type`, `runner.cause_code`, `runner.failure_reason`
   - `runner.failure_class_counts`, `runner.timeout_attempts`
-  - `attempt_timeline[]` (attempt/timeout/backoff/duration/error)
+  - `attempt_timeline[]` (attempt/timeout/backoff/duration/error/cause_code)
   - `dead_letter_path`
 5. 아티팩트 업로드:
 - collector 아티팩트에 아래 파일을 `if: always()`로 업로드
@@ -86,6 +89,23 @@
   - `data/collector_live_news_v1_failure_classification.json`
   - `data/collector_live_news_api.log`
   - `data/dead_letter/*.json`
+
+## 2.5 Ingest Failure 진단코드 표준 (W1)
+1. 대상:
+- `app/jobs/ingest_runner.py`
+- `scripts/qa/run_ingest_with_retry.py`
+- `.github/workflows/ingest-schedule.yml`
+2. 표준 원인코드(`cause_code`) 분류:
+- DB/Auth: `db_auth_failed`
+- DB/Schema: `db_schema_mismatch`, `schema_payload_contract_422`
+- DB/Config/연결: `db_config_missing`, `db_connection_error`, `db_connection_unknown`, `db_network_error`, `db_uri_invalid`, `db_ssl_required`
+- Timeout: `timeout_request`, `db_timeout`
+- HTTP fallback: `http_5xx`, `http_4xx`, `http_408`, `http_429`
+3. 실패 시 생성 아티팩트:
+- `data/ingest_schedule_failure_classification.json`
+- `data/ingest_schedule_failure_comment_template.md`
+4. 코멘트 템플릿 목적:
+- 이슈 코멘트 계약키(`report_path`, `evidence`, `next_status`)를 누락하지 않도록 실패 코멘트 초안을 자동 생성
 
 ## 3. 수동/자동 경계
 ### 자동 처리
