@@ -45,3 +45,20 @@ source .venv313/bin/activate && pytest tests/test_db_url_normalization.py tests/
 - main 반영 후 `Ingest Schedule` workflow_dispatch 1회 실행
 - `Run scheduled ingest with retry` 단계 success 로그 확인
 - green run URL을 #357 코멘트로 첨부
+
+## 7. post-merge dispatch 결과 및 추가 조치
+1. post-merge 재실행
+- run: https://github.com/iAmSomething/2026-/actions/runs/22439982740
+- 결과: failure (동일 단계 `Run scheduled ingest with retry`)
+- detail: `http_status=503`, `database connection failed` 지속
+
+2. 추가 개선(진단 강화)
+- `.github/workflows/ingest-schedule.yml` 수정:
+  - 실패 시 `/tmp/ingest-schedule-api.log` 즉시 출력
+  - ingest report/dead-letter artifact를 `if: always()`로 업로드
+- 목적: 다음 실행에서 DB 접속 실패 원인(인증/호스트/네트워크)을 로그로 확정
+
+3. 현재 판정
+- 코드 상 비밀번호 인코딩 복구 로직 반영은 완료.
+- 그러나 운영 secret/접속 대상 상태가 여전히 유효하지 않아 green run 미달성.
+- 다음 액션: 진단 강화 워크플로 반영 후 workflow_dispatch 재실행 + 로그 기반 시크릿 교정.
