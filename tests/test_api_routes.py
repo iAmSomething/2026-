@@ -632,6 +632,77 @@ def test_regions_search_normalizes_non_ascii_and_encoded_query_forms():
     app.dependency_overrides.clear()
 
 
+def test_dashboard_summary_filters_rows_before_fixed_article_cutoff():
+    class CutoffRepo(FakeApiRepo):
+        def fetch_dashboard_summary(self, as_of):  # noqa: ARG002
+            return [
+                {
+                    "option_type": "party_support",
+                    "option_name": "신규정당",
+                    "value_mid": 11.0,
+                    "pollster": "테스트",
+                    "survey_end_date": date(2026, 2, 18),
+                    "audience_scope": "national",
+                    "audience_region_code": None,
+                    "observation_updated_at": "2026-02-18T03:00:00+00:00",
+                    "article_published_at": "2025-11-30T23:59:59+09:00",
+                    "source_channel": "article",
+                    "source_channels": ["article"],
+                    "verified": True,
+                },
+                {
+                    "option_type": "party_support",
+                    "option_name": "기준통과정당",
+                    "value_mid": 22.0,
+                    "pollster": "테스트",
+                    "survey_end_date": date(2026, 2, 18),
+                    "audience_scope": "national",
+                    "audience_region_code": None,
+                    "observation_updated_at": "2026-02-18T03:00:00+00:00",
+                    "article_published_at": "2025-12-01T00:00:00+09:00",
+                    "source_channel": "article",
+                    "source_channels": ["article"],
+                    "verified": True,
+                },
+            ]
+
+    def override_cutoff_repo():
+        yield CutoffRepo()
+
+    app.dependency_overrides[get_repository] = override_cutoff_repo
+    app.dependency_overrides[get_candidate_data_go_service] = override_candidate_data_go_service
+    client = TestClient(app)
+
+    res = client.get("/api/v1/dashboard/summary")
+    assert res.status_code == 200
+    names = [x["option_name"] for x in res.json()["party_support"]]
+    assert names == ["기준통과정당"]
+
+    app.dependency_overrides.clear()
+
+
+def test_matchup_before_cutoff_returns_not_found():
+    class CutoffMatchupRepo(FakeApiRepo):
+        def get_matchup(self, matchup_id):  # noqa: ARG002
+            row = super().get_matchup("anything")
+            row["source_channel"] = "article"
+            row["source_channels"] = ["article"]
+            row["article_published_at"] = "2025-11-30T23:59:59+09:00"
+            return row
+
+    def override_cutoff_matchup_repo():
+        yield CutoffMatchupRepo()
+
+    app.dependency_overrides[get_repository] = override_cutoff_matchup_repo
+    app.dependency_overrides[get_candidate_data_go_service] = override_candidate_data_go_service
+    client = TestClient(app)
+
+    res = client.get("/api/v1/matchups/20260603|광역자치단체장|11-000")
+    assert res.status_code == 404
+
+    app.dependency_overrides.clear()
+
+
 @pytest.mark.parametrize(
     ("summary", "expected_state", "expected_warning"),
     [

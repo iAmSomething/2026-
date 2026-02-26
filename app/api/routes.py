@@ -40,6 +40,7 @@ from app.models.schemas import (
     RegionOut,
     SummaryPoint,
 )
+from app.services.cutoff_policy import has_article_source, is_article_published_at_allowed
 from app.services.ingest_service import ingest_payload
 from app.services.ingest_input_normalization import normalize_ingest_payload
 
@@ -144,6 +145,15 @@ def _derive_source_meta(row: dict) -> dict:
     }
 
 
+def _is_cutoff_eligible_row(row: dict) -> bool:
+    if not has_article_source(
+        source_channel=row.get("source_channel"),
+        source_channels=row.get("source_channels"),
+    ):
+        return True
+    return is_article_published_at_allowed(row.get("article_published_at"))
+
+
 @router.get("/dashboard/summary", response_model=DashboardSummaryOut)
 def get_dashboard_summary(
     as_of: date | None = Query(default=None),
@@ -152,8 +162,9 @@ def get_dashboard_summary(
     rows = repo.fetch_dashboard_summary(as_of=as_of)
     party_support = []
     presidential_approval = []
+    eligible_rows = [row for row in rows if _is_cutoff_eligible_row(row)]
 
-    for row in rows:
+    for row in eligible_rows:
         if row.get("audience_scope") != "national":
             continue
         source_meta = _derive_source_meta(row)
@@ -182,7 +193,7 @@ def get_dashboard_summary(
         as_of=as_of,
         party_support=party_support,
         presidential_approval=presidential_approval,
-        scope_breakdown=ScopeBreakdownOut(**_build_scope_breakdown(rows)),
+        scope_breakdown=ScopeBreakdownOut(**_build_scope_breakdown(eligible_rows)),
     )
 
 
@@ -194,7 +205,8 @@ def get_dashboard_map_latest(
 ):
     rows = repo.fetch_dashboard_map_latest(as_of=as_of, limit=limit)
     items = []
-    for row in rows:
+    eligible_rows = [row for row in rows if _is_cutoff_eligible_row(row)]
+    for row in eligible_rows:
         source_meta = _derive_source_meta(row)
         items.append(
             MapLatestPoint(
@@ -218,7 +230,7 @@ def get_dashboard_map_latest(
     return DashboardMapLatestOut(
         as_of=as_of,
         items=items,
-        scope_breakdown=ScopeBreakdownOut(**_build_scope_breakdown(rows)),
+        scope_breakdown=ScopeBreakdownOut(**_build_scope_breakdown(eligible_rows)),
     )
 
 
@@ -230,7 +242,8 @@ def get_dashboard_big_matches(
 ):
     rows = repo.fetch_dashboard_big_matches(as_of=as_of, limit=limit)
     items = []
-    for row in rows:
+    eligible_rows = [row for row in rows if _is_cutoff_eligible_row(row)]
+    for row in eligible_rows:
         source_meta = _derive_source_meta(row)
         items.append(
             BigMatchPoint(
@@ -253,7 +266,7 @@ def get_dashboard_big_matches(
     return DashboardBigMatchesOut(
         as_of=as_of,
         items=items,
-        scope_breakdown=ScopeBreakdownOut(**_build_scope_breakdown(rows)),
+        scope_breakdown=ScopeBreakdownOut(**_build_scope_breakdown(eligible_rows)),
     )
 
 
@@ -318,6 +331,8 @@ def get_matchup(matchup_id: str, repo=Depends(get_repository)):
     resolved_matchup_id = MATCHUP_ID_ALIASES.get(matchup_id, matchup_id)
     matchup = repo.get_matchup(resolved_matchup_id)
     if not matchup:
+        raise HTTPException(status_code=404, detail="matchup not found")
+    if not _is_cutoff_eligible_row(matchup):
         raise HTTPException(status_code=404, detail="matchup not found")
     source_meta = _derive_source_meta(matchup)
     payload = dict(matchup)

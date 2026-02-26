@@ -11,6 +11,13 @@ import urllib.request
 from urllib.parse import urlparse, urlunparse
 import xml.etree.ElementTree as ET
 
+from app.services.cutoff_policy import (
+    ARTICLE_PUBLISHED_AT_CUTOFF_ISO,
+    is_article_published_at_allowed,
+    parse_datetime_like,
+    published_at_cutoff_reason,
+)
+
 from .collector import PollCollector
 from .contracts import Article, ReviewQueueItem, new_review_queue_item, stable_id
 
@@ -64,6 +71,7 @@ class DiscoveryResultV11:
     deduped_candidates: list[DiscoveryCandidateV11] = field(default_factory=list)
     fetched_candidates: list[DiscoveryCandidateV11] = field(default_factory=list)
     valid_candidates: list[DiscoveryCandidateV11] = field(default_factory=list)
+    cutoff_excluded_candidates: list[DiscoveryCandidateV11] = field(default_factory=list)
     review_queue: list[ReviewQueueItem] = field(default_factory=list)
 
     def metrics(self) -> dict[str, Any]:
@@ -71,6 +79,7 @@ class DiscoveryResultV11:
         dedup = len(self.deduped_candidates)
         fetched = len(self.fetched_candidates)
         valid = len(self.valid_candidates)
+        cutoff_excluded = len(self.cutoff_excluded_candidates)
         fetch_fail = max(dedup - fetched, 0)
         fallback_count = sum(1 for c in self.fetched_candidates if c.used_fallback)
         return {
@@ -85,6 +94,7 @@ class DiscoveryResultV11:
             "fetch_fail_count": fetch_fail,
             "fetch_fail_rate": round(fetch_fail / dedup, 4) if dedup else 0.0,
             "valid_article_rate": round(valid / dedup, 4) if dedup else 0.0,
+            "cutoff_excluded_count": cutoff_excluded,
         }
 
 
@@ -150,6 +160,38 @@ class DiscoveryPipelineV11:
                 result.review_queue.append(error)
             if article is None:
                 continue
+
+            if not is_article_published_at_allowed(article.published_at):
+                cutoff_reason = published_at_cutoff_reason(article.published_at)
+                parsed_published_at = parse_datetime_like(article.published_at)
+                result.cutoff_excluded_candidates.append(candidate)
+                result.review_queue.append(
+                    new_review_queue_item(
+                        entity_type="article",
+                        entity_id=article.id,
+                        issue_type="mapping_error",
+                        stage="discover",
+                        error_code=cutoff_reason,
+                        error_message=(
+                            "article excluded by fixed cutoff policy: "
+                            f"published_at must be >= {ARTICLE_PUBLISHED_AT_CUTOFF_ISO}"
+                        ),
+                        source_url=article.url,
+                        payload={
+                            "published_at": article.published_at,
+                            "published_at_kst": (
+                                parsed_published_at.isoformat(timespec="seconds")
+                                if parsed_published_at is not None
+                                else None
+                            ),
+                            "published_at_cutoff_kst": ARTICLE_PUBLISHED_AT_CUTOFF_ISO,
+                            "source_type": candidate.source_type,
+                            "query": candidate.query,
+                        },
+                    )
+                )
+                continue
+
             candidate.article = article
             result.fetched_candidates.append(candidate)
 

@@ -1,0 +1,27 @@
+{
+  "policy": {
+    "published_at_cutoff_kst": "2025-12-01T00:00:00+09:00",
+    "applies_to_source_channel": "article"
+  },
+  "counts": {
+    "input_record_count": 1,
+    "kept_record_count": 1,
+    "cutoff_violation_count": 0
+  },
+  "cutoff_violation_preview": [],
+  "acceptance_checks": {
+    "filtered_payload_has_no_cutoff_violation": true
+  },
+  "backfill_cleanup_sql": {
+    "count_violation_rows": "SELECT COUNT(*)::int AS violation_count FROM poll_observations o LEFT JOIN articles a ON a.id = o.article_id WHERE ((o.source_channel = 'article') OR COALESCE('article' = ANY(o.source_channels), FALSE)) AND (a.published_at IS NULL OR a.published_at < %(cutoff)s::timestamptz);",
+    "delete_poll_observations": "WITH target AS (SELECT o.id FROM poll_observations o LEFT JOIN articles a ON a.id = o.article_id WHERE ((o.source_channel = 'article') OR COALESCE('article' = ANY(o.source_channels), FALSE)) AND (a.published_at IS NULL OR a.published_at < %(cutoff)s::timestamptz)) DELETE FROM poll_observations o USING target t WHERE o.id = t.id;",
+    "delete_orphan_articles": "DELETE FROM articles a WHERE (a.published_at IS NULL OR a.published_at < %(cutoff)s::timestamptz) AND NOT EXISTS (SELECT 1 FROM poll_observations o WHERE o.article_id = a.id);",
+    "cleanup_candidates_article_published_at": "UPDATE candidates SET article_published_at = NULL, updated_at = NOW() WHERE article_published_at < %(cutoff)s::timestamptz;",
+    "sql_params_example": "{\"cutoff\": \"2025-12-01T00:00:00+09:00\"}"
+  },
+  "output_paths": {
+    "input": "data/sample_ingest.json",
+    "filtered_payload": "data/sample_ingest_article_cutoff_filtered.json",
+    "report": "data/collector_article_cutoff_cleanup_v1_report.json"
+  }
+}

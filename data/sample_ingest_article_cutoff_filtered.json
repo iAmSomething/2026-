@@ -1,0 +1,78 @@
+{
+  "run_type": "manual",
+  "extractor_version": "manual-v1",
+  "llm_model": null,
+  "records": [
+    {
+      "article": {
+        "url": "https://example.com/poll-2026-02-18",
+        "title": "[6·3 지방선거 여론조사] 서울 접전",
+        "publisher": "샘플뉴스",
+        "published_at": "2026-02-18T19:34:00+09:00",
+        "raw_text": "서울시장 가상대결 정원오 40% 오세훈 36%",
+        "raw_hash": "samplehash1"
+      },
+      "region": {
+        "region_code": "11-000",
+        "sido_name": "서울특별시",
+        "sigungu_name": "전체",
+        "admin_level": "sido",
+        "parent_region_code": null
+      },
+      "candidates": [
+        {
+          "candidate_id": "cand-jwo",
+          "name_ko": "정원오",
+          "party_name": "더불어민주당",
+          "gender": "M",
+          "birth_date": "1968-08-12",
+          "job": "구청장",
+          "career_summary": "성동구청장",
+          "election_history": "지방선거 출마"
+        },
+        {
+          "candidate_id": "cand-osh",
+          "name_ko": "오세훈",
+          "party_name": "국민의힘",
+          "gender": "M",
+          "birth_date": "1961-01-04",
+          "job": "서울시장",
+          "career_summary": "서울시장",
+          "election_history": "지방선거 출마"
+        }
+      ],
+      "observation": {
+        "observation_key": "obs-20260218-seoul-mbc",
+        "survey_name": "설 민심 여론조사",
+        "pollster": "MBC",
+        "survey_start_date": "2026-02-16",
+        "survey_end_date": "2026-02-18",
+        "sample_size": 1000,
+        "response_rate": 12.4,
+        "margin_of_error": null,
+        "region_code": "11-000",
+        "office_type": "광역자치단체장",
+        "matchup_id": "20260603|광역자치단체장|11-000",
+        "verified": true,
+        "source_grade": "B"
+      },
+      "options": [
+        {
+          "option_type": "candidate_matchup",
+          "option_name": "정원오",
+          "value_raw": "40%"
+        },
+        {
+          "option_type": "candidate_matchup",
+          "option_name": "오세훈",
+          "value_raw": "36%"
+        },
+        {
+          "option_type": "presidential_approval",
+          "option_name": "국정안정론",
+          "value_raw": "53~55%"
+        }
+      ]
+    }
+  ]
+}
