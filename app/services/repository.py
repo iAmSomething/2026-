@@ -813,7 +813,12 @@ class PostgresRepository:
             )
             return cur.fetchall()
 
-    def fetch_region_elections(self, region_code: str):
+    def fetch_region_elections(
+        self,
+        region_code: str,
+        topology: str = "official",
+        version_id: str | None = None,
+    ):
         def normalize_text(value: str | None) -> str:
             if not isinstance(value, str):
                 return ""
@@ -824,6 +829,17 @@ class PostgresRepository:
                 if name.endswith(suffix):
                     return name[: -len(suffix)] or name
             return name
+
+        def compact_region_name(name: str) -> str:
+            replacements = {
+                "전라남": "전남",
+                "전라북": "전북",
+                "충청남": "충남",
+                "충청북": "충북",
+                "경상남": "경남",
+                "경상북": "경북",
+            }
+            return replacements.get(name, name)
 
         def derive_placeholder_title(region: dict, office_type: str) -> str:
             sido_name = normalize_text(region.get("sido_name"))
@@ -883,18 +899,108 @@ class PostgresRepository:
                 return "후보 정보 준비중"
             return "데이터 준비 완료"
 
+        def build_scenario_parent_region(
+            parent_region_code: str,
+            topology_version_id: str,
+            cur,
+        ) -> dict | None:
+            cur.execute(
+                """
+                SELECT r.sido_name, r.sigungu_name
+                FROM region_topology_edges e
+                JOIN regions r ON r.region_code = e.child_region_code
+                WHERE e.version_id = %s
+                  AND e.parent_region_code = %s
+                ORDER BY e.child_region_code
+                """,
+                (topology_version_id, parent_region_code),
+            )
+            children = cur.fetchall() or []
+            if not children:
+                return None
+
+            bases: list[str] = []
+            for child in children:
+                name = compact_region_name(strip_region_suffix(normalize_text(child.get("sido_name"))))
+                if name and name not in bases:
+                    bases.append(name)
+            label = "·".join(bases) if bases else parent_region_code
+            return {
+                "region_code": parent_region_code,
+                "sido_name": f"{label} 통합특별시",
+                "sigungu_name": "전체",
+                "admin_level": "sido",
+            }
+
         office_order = ["광역자치단체장", "광역의회", "교육감", "기초자치단체장", "기초의회", "재보궐"]
+        topology_mode = "scenario" if topology == "scenario" else "official"
 
         with self.conn.cursor() as cur:
+            topology_version = None
+            if version_id:
+                cur.execute(
+                    """
+                    SELECT version_id, mode, status
+                    FROM region_topology_versions
+                    WHERE version_id = %s
+                      AND mode = %s
+                    LIMIT 1
+                    """,
+                    (version_id, topology_mode),
+                )
+                topology_version = cur.fetchone()
+            else:
+                cur.execute(
+                    """
+                    SELECT version_id, mode, status
+                    FROM region_topology_versions
+                    WHERE mode = %s
+                    ORDER BY
+                        CASE status
+                            WHEN 'effective' THEN 0
+                            WHEN 'announced' THEN 1
+                            ELSE 2
+                        END,
+                        effective_from DESC NULLS LAST,
+                        version_id DESC
+                    LIMIT 1
+                    """,
+                    (topology_mode,),
+                )
+                topology_version = cur.fetchone()
+
+            if topology_mode == "official":
+                topology_version_id = (topology_version or {}).get("version_id", "official-v1")
+                effective_region_code = region_code
+            else:
+                topology_version_id = (topology_version or {}).get("version_id", "scenario-unversioned")
+                effective_region_code = region_code
+                cur.execute(
+                    """
+                    SELECT parent_region_code
+                    FROM region_topology_edges
+                    WHERE version_id = %s
+                      AND child_region_code = %s
+                    ORDER BY parent_region_code
+                    LIMIT 1
+                    """,
+                    (topology_version_id, region_code),
+                )
+                parent = cur.fetchone()
+                if parent and parent.get("parent_region_code"):
+                    effective_region_code = parent["parent_region_code"]
+
             cur.execute(
                 """
                 SELECT region_code, sido_name, sigungu_name, admin_level
                 FROM regions
                 WHERE region_code = %s
                 """,
-                (region_code,),
+                (effective_region_code,),
             )
             region = cur.fetchone()
+            if not region and topology_mode == "scenario" and effective_region_code != region_code:
+                region = build_scenario_parent_region(effective_region_code, topology_version_id, cur)
             if not region:
                 return []
 
@@ -913,7 +1019,7 @@ class PostgresRepository:
                 WHERE region_code = %s
                 ORDER BY has_poll_data DESC, office_type, title
                 """,
-                (region_code,),
+                (effective_region_code,),
             )
             election_rows = cur.fetchall() or []
 
@@ -924,7 +1030,7 @@ class PostgresRepository:
                 WHERE region_code = %s
                 ORDER BY is_active DESC, updated_at DESC, matchup_id DESC
                 """,
-                (region_code,),
+                (effective_region_code,),
             )
             matchup_rows = cur.fetchall() or []
 
@@ -958,7 +1064,7 @@ class PostgresRepository:
                 FROM ranked r
                 WHERE r.rn = 1
                 """,
-                (region_code,),
+                (effective_region_code,),
             )
             poll_meta_rows = cur.fetchall() or []
 
@@ -969,6 +1075,7 @@ class PostgresRepository:
                 continue
             election_by_office[office_type] = row
 
+        resolved_region_code = region.get("region_code") or effective_region_code
         matchup_by_office: dict[str, dict] = {}
         for row in matchup_rows:
             office_type = row.get("office_type")
@@ -1025,7 +1132,7 @@ class PostgresRepository:
             if election_row:
                 slot_matchup_id = election_row.get("slot_matchup_id")
                 matchup_id = latest_matchup_id or (matchup_row.get("matchup_id") if matchup_row else None) or slot_matchup_id
-                matchup_id = matchup_id or f"{election_id}|{office_type}|{region_code}"
+                matchup_id = matchup_id or f"{election_id}|{office_type}|{resolved_region_code}"
                 title = (
                     election_row.get("title")
                     or (matchup_row.get("title") if matchup_row else None)
@@ -1039,7 +1146,7 @@ class PostgresRepository:
                 is_active = bool(matchup_row.get("is_active", True))
                 is_placeholder = False
             else:
-                matchup_id = latest_matchup_id or f"{election_id}|{office_type}|{region_code}"
+                matchup_id = latest_matchup_id or f"{election_id}|{office_type}|{resolved_region_code}"
                 title = derive_placeholder_title(region, office_type)
                 is_active = True
                 is_placeholder = True
@@ -1047,7 +1154,7 @@ class PostgresRepository:
             result.append(
                 {
                     "matchup_id": matchup_id,
-                    "region_code": region_code,
+                    "region_code": resolved_region_code,
                     "office_type": office_type,
                     "title": title,
                     "is_active": is_active,
@@ -1057,6 +1164,8 @@ class PostgresRepository:
                     "latest_survey_end_date": latest_survey_end_date,
                     "latest_matchup_id": latest_matchup_id,
                     "status": status_label(has_poll_data=has_poll_data, has_candidate_data=has_candidate_data),
+                    "topology": topology_mode,
+                    "topology_version_id": topology_version_id,
                 }
             )
 

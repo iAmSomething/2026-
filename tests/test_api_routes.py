@@ -158,7 +158,7 @@ class FakeApiRepo:
             }
         ]
 
-    def fetch_region_elections(self, region_code):
+    def fetch_region_elections(self, region_code, topology="official", version_id=None):  # noqa: ARG002
         return [
             {
                 "matchup_id": "20260603|광역자치단체장|11-000",
@@ -166,6 +166,14 @@ class FakeApiRepo:
                 "office_type": "광역자치단체장",
                 "title": "서울시장 가상대결",
                 "is_active": True,
+                "topology": topology,
+                "topology_version_id": version_id,
+                "is_placeholder": False,
+                "has_poll_data": True,
+                "has_candidate_data": True,
+                "latest_survey_end_date": date(2026, 2, 18),
+                "latest_matchup_id": "20260603|광역자치단체장|11-000",
+                "status": "데이터 준비 완료",
             }
         ]
 
@@ -612,6 +620,7 @@ def test_api_contract_fields():
     assert region_elections.status_code == 200
     region_election_row = region_elections.json()[0]
     assert region_election_row["is_active"] is True
+    assert region_election_row["topology"] == "official"
     assert "has_poll_data" in region_election_row
     assert "latest_survey_end_date" in region_election_row
     assert "latest_matchup_id" in region_election_row
@@ -827,6 +836,42 @@ def test_matchup_before_cutoff_returns_not_found():
 
     res = client.get("/api/v1/matchups/20260603|광역자치단체장|11-000")
     assert res.status_code == 404
+
+    app.dependency_overrides.clear()
+
+
+def test_region_elections_topology_scenario_query_contract():
+    class ScenarioRepo(FakeApiRepo):
+        def fetch_region_elections(self, region_code, topology="official", version_id=None):  # noqa: ARG002
+            row = super().fetch_region_elections(region_code, topology=topology, version_id=version_id)[0]
+            row["region_code"] = "29-46-000"
+            row["title"] = "광주·전남 통합시장 가상대결"
+            row["has_poll_data"] = False
+            row["has_candidate_data"] = False
+            row["latest_survey_end_date"] = None
+            row["latest_matchup_id"] = None
+            row["status"] = "조사 데이터 없음"
+            row["is_placeholder"] = True
+            return [row]
+
+    def override_scenario_repo():
+        yield ScenarioRepo()
+
+    app.dependency_overrides[get_repository] = override_scenario_repo
+    app.dependency_overrides[get_candidate_data_go_service] = override_candidate_data_go_service
+    client = TestClient(app)
+
+    res = client.get(
+        "/api/v1/regions/29-000/elections",
+        params={"topology": "scenario", "version_id": "scenario-gj-jn-merge-v1"},
+    )
+    assert res.status_code == 200
+    row = res.json()[0]
+    assert row["topology"] == "scenario"
+    assert row["topology_version_id"] == "scenario-gj-jn-merge-v1"
+    assert row["region_code"] == "29-46-000"
+    assert row["status"] == "조사 데이터 없음"
+    assert row["is_placeholder"] is True
 
     app.dependency_overrides.clear()
 

@@ -25,6 +25,8 @@ export default async function SearchPage({ searchParams }) {
   const resolved = await searchParams;
   const rawQ = (resolved?.q || "").trim();
   const demoQueryParam = (resolved?.demo_query || "").trim();
+  const topology = (resolved?.topology || "official").trim().toLowerCase() === "scenario" ? "scenario" : "official";
+  const versionId = (resolved?.version_id || "").trim();
 
   const queryFromScenario = rawQ || demoQueryParam;
   const normalizedQuery = normalizeDemoQuery(queryFromScenario);
@@ -38,9 +40,11 @@ export default async function SearchPage({ searchParams }) {
 
   const regions = regionsRes.ok && Array.isArray(regionsRes.body) ? regionsRes.body : [];
   const regionCode = selectedRegion || regions[0]?.region_code || "";
+  const electionQuery = new URLSearchParams({ topology });
+  if (versionId) electionQuery.set("version_id", versionId);
 
   const electionsRes = regionCode
-    ? await fetchApi(`/api/v1/regions/${encodeURIComponent(regionCode)}/elections`)
+    ? await fetchApi(`/api/v1/regions/${encodeURIComponent(regionCode)}/elections?${electionQuery.toString()}`)
     : { ok: true, body: [] };
   const elections = electionsRes.ok && Array.isArray(electionsRes.body) ? electionsRes.body : [];
 
@@ -51,7 +55,13 @@ export default async function SearchPage({ searchParams }) {
   const isScenarioEmptyCase = demoQueryParam === "없는지역명";
 
   const scenarioBaseParams = {
-    demo_query: demoQueryParam
+    demo_query: demoQueryParam,
+    topology,
+    version_id: versionId
+  };
+  const topologyParams = {
+    topology,
+    version_id: versionId
   };
 
   return (
@@ -88,6 +98,8 @@ export default async function SearchPage({ searchParams }) {
             readOnly={scenarioFixed}
           />
           {demoQueryParam ? <input type="hidden" name="demo_query" value={demoQueryParam} /> : null}
+          {topology !== "official" ? <input type="hidden" name="topology" value={topology} /> : null}
+          {versionId ? <input type="hidden" name="version_id" value={versionId} /> : null}
           <button type="submit">검색</button>
         </form>
 
@@ -111,6 +123,7 @@ export default async function SearchPage({ searchParams }) {
                 {regions.map((region) => {
                   const href = buildQueryString({
                     ...(scenarioFixed ? scenarioBaseParams : {}),
+                    ...(!scenarioFixed ? topologyParams : {}),
                     q: rawQ || normalizedQuery.input,
                     region: region.region_code,
                     office: selectedOffice === "all" ? "" : selectedOffice
@@ -133,7 +146,12 @@ export default async function SearchPage({ searchParams }) {
               <h3>선거 타입</h3>
               <div className="tab-row">
                 <Link
-                  href={`/search${buildQueryString({ ...(scenarioFixed ? scenarioBaseParams : {}), q: rawQ || normalizedQuery.input, region: regionCode })}`}
+                  href={`/search${buildQueryString({
+                    ...(scenarioFixed ? scenarioBaseParams : {}),
+                    ...(!scenarioFixed ? topologyParams : {}),
+                    q: rawQ || normalizedQuery.input,
+                    region: regionCode
+                  })}`}
                   className={selectedOffice === "all" ? "tab active" : "tab"}
                 >
                   전체
@@ -143,6 +161,7 @@ export default async function SearchPage({ searchParams }) {
                     key={officeType}
                     href={`/search${buildQueryString({
                       ...(scenarioFixed ? scenarioBaseParams : {}),
+                      ...(!scenarioFixed ? topologyParams : {}),
                       q: rawQ || normalizedQuery.input,
                       region: regionCode,
                       office: officeType
