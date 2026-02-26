@@ -253,6 +253,9 @@ CREATE TABLE IF NOT EXISTS poll_options (
     party_inferred BOOLEAN NOT NULL DEFAULT FALSE,
     party_inference_source TEXT NULL,
     party_inference_confidence FLOAT NULL,
+    candidate_verified BOOLEAN NOT NULL DEFAULT TRUE,
+    candidate_verify_source TEXT NULL,
+    candidate_verify_confidence FLOAT NULL,
     needs_manual_review BOOLEAN NOT NULL DEFAULT FALSE,
     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
@@ -263,6 +266,9 @@ ALTER TABLE poll_options
     ADD COLUMN IF NOT EXISTS party_inferred BOOLEAN NOT NULL DEFAULT FALSE,
     ADD COLUMN IF NOT EXISTS party_inference_source TEXT NULL,
     ADD COLUMN IF NOT EXISTS party_inference_confidence FLOAT NULL,
+    ADD COLUMN IF NOT EXISTS candidate_verified BOOLEAN NOT NULL DEFAULT TRUE,
+    ADD COLUMN IF NOT EXISTS candidate_verify_source TEXT NULL,
+    ADD COLUMN IF NOT EXISTS candidate_verify_confidence FLOAT NULL,
     ADD COLUMN IF NOT EXISTS needs_manual_review BOOLEAN NOT NULL DEFAULT FALSE;
 
 DO $$
@@ -277,6 +283,23 @@ BEGIN
             CHECK (
                 party_inference_source IS NULL
                 OR party_inference_source IN ('name_rule', 'article_context', 'manual')
+            );
+    END IF;
+END;
+$$;
+
+DO $$
+BEGIN
+    IF NOT EXISTS (
+        SELECT 1
+        FROM pg_constraint
+        WHERE conname = 'poll_options_candidate_verify_source_check'
+    ) THEN
+        ALTER TABLE poll_options
+            ADD CONSTRAINT poll_options_candidate_verify_source_check
+            CHECK (
+                candidate_verify_source IS NULL
+                OR candidate_verify_source IN ('data_go', 'article_context', 'manual')
             );
     END IF;
 END;

@@ -30,6 +30,15 @@ class CollectorExtractTest(unittest.TestCase):
         self.assertEqual(pairs[1]["name"], "오세훈")
         self.assertEqual(pairs[1]["value_raw"], "37%")
 
+    def test_extract_candidate_pairs_v2_filters_noise_tokens(self) -> None:
+        collector = PollCollector()
+        body = "서울시장 여론조사에서 응답률은 12.3%였고 정원오 41% vs 오세훈 37%였다."
+        pairs = collector.extract_candidate_pairs(body, title="서울시장 조사", mode="v2")
+        names = [row["name"] for row in pairs]
+        self.assertIn("정원오", names)
+        self.assertIn("오세훈", names)
+        self.assertNotIn("응답률은", names)
+
     def test_fetch_success_path(self) -> None:
         collector = PollCollector()
         collector._robots_allowed = lambda _url: True  # type: ignore[method-assign]

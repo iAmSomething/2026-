@@ -2,6 +2,7 @@ from copy import deepcopy
 
 from app.models.schemas import IngestPayload
 from app.services.errors import DuplicateConflictError
+import app.services.ingest_service as ingest_service_module
 from app.services.ingest_service import ingest_payload
 
 
@@ -50,6 +51,9 @@ class FakeRepo:
                 option.get("party_inferred"),
                 option.get("party_inference_source"),
                 option.get("party_inference_confidence"),
+                option.get("candidate_verified"),
+                option.get("candidate_verify_source"),
+                option.get("candidate_verify_confidence"),
                 option.get("needs_manual_review"),
             )
         )
@@ -121,6 +125,7 @@ def test_idempotent_ingest_no_duplicate_records():
     assert len(repo.observations) == 1
     assert len(repo.options) == 1
     assert repo.option_rows[0]["option_type"] == "election_frame"
+    assert repo.option_rows[0]["candidate_verified"] is True
     assert repo.observations["obs-1"]["audience_scope"] == "national"
     assert repo.observations["obs-1"]["legal_filled_count"] == 6
     assert len(repo.observations["obs-1"]["poll_fingerprint"]) == 64
@@ -229,3 +234,52 @@ def test_nesdc_source_record_without_article_published_at_is_allowed():
     assert result.processed_count == 1
     assert result.error_count == 0
     assert len(repo.articles) == 1
+
+
+def test_candidate_noise_token_routes_manual_review_mapping_error():
+    repo = FakeRepo()
+    payload_data = deepcopy(PAYLOAD)
+    payload_data["records"][0]["options"] = [
+        {"option_type": "candidate_matchup", "option_name": "응답률은", "value_raw": "44%"}
+    ]
+    payload = IngestPayload.model_validate(payload_data)
+
+    result = ingest_payload(payload, repo)
+
+    assert result.status == "success"
+    assert repo.option_rows[0]["candidate_verified"] is False
+    assert repo.option_rows[0]["candidate_verify_source"] == "manual"
+    assert repo.option_rows[0]["needs_manual_review"] is True
+    assert any(row[2] == "mapping_error" and "CANDIDATE_TOKEN_NOISE" in row[3] for row in repo.review)
+
+
+def test_candidate_data_go_verified_sets_data_go_source(monkeypatch):
+    class _FakeVerifier:
+        def verify_candidate(self, *, candidate_name, party_name=None):  # noqa: ARG002
+            return (candidate_name == "정원오", 0.97)
+
+    def fake_build_service(*, record, sg_typecode):  # noqa: ARG001
+        return _FakeVerifier()
+
+    monkeypatch.setattr(ingest_service_module, "_build_candidate_service", fake_build_service)
+
+    repo = FakeRepo()
+    payload_data = deepcopy(PAYLOAD)
+    payload_data["records"][0]["candidates"] = [
+        {
+            "candidate_id": "cand-jwo",
+            "name_ko": "정원오",
+            "party_name": "더불어민주당",
+        }
+    ]
+    payload_data["records"][0]["options"] = [
+        {"option_type": "candidate_matchup", "option_name": "정원오", "value_raw": "44%"}
+    ]
+    payload = IngestPayload.model_validate(payload_data)
+
+    result = ingest_payload(payload, repo)
+
+    assert result.status == "success"
+    assert repo.option_rows[0]["candidate_verified"] is True
+    assert repo.option_rows[0]["candidate_verify_source"] == "data_go"
+    assert float(repo.option_rows[0]["candidate_verify_confidence"]) >= 0.9

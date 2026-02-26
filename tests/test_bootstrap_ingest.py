@@ -81,8 +81,8 @@ def _write_payload(path: Path, *, region_code: str, observation_key: str) -> Non
                 },
                 "options": [
                     {
-                        "option_type": "candidate_matchup",
-                        "option_name": "A",
+                        "option_type": "election_frame",
+                        "option_name": "지지정당없음",
                         "value_raw": "40%",
                     }
                 ],

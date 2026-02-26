@@ -108,6 +108,40 @@ class DataGoCandidateService:
             merged["career_summary"] = public_career
         return merged
 
+    def verify_candidate(
+        self,
+        *,
+        candidate_name: str | None,
+        party_name: str | None = None,
+    ) -> tuple[bool, float]:
+        if not self.is_configured():
+            return False, 0.0
+        if not _norm_name(candidate_name):
+            return False, 0.0
+
+        try:
+            items = self.fetch_items()
+        except Exception:  # noqa: BLE001
+            return False, 0.0
+
+        matched = self._match_item(
+            items,
+            {
+                "name_ko": candidate_name,
+                "party_name": party_name,
+            },
+        )
+        if not matched:
+            return False, 0.0
+
+        target_party = _norm_name(party_name)
+        matched_party = _norm_name(matched.get("jdName"))
+        if target_party and matched_party and target_party == matched_party:
+            return True, 0.98
+        if target_party and matched_party and target_party != matched_party:
+            return True, 0.82
+        return True, 0.9
+
     def is_configured(self) -> bool:
         cfg = self.config
         return bool(cfg.endpoint_url and cfg.service_key and cfg.sg_id and cfg.sg_typecode)

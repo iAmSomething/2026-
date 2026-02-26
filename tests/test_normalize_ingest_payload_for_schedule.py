@@ -180,3 +180,28 @@ def test_normalize_payload_marks_ambiguous_presidential_option_type_for_manual_r
     option = out["records"][0]["options"][0]
     assert option["option_type"] == "presidential_approval"
     assert option["needs_manual_review"] is True
+
+
+def test_normalize_payload_candidate_verify_fields() -> None:
+    payload = {
+        "records": [
+            {
+                "options": [
+                    {
+                        "option_type": "candidate_matchup",
+                        "option_name": "홍길동",
+                        "value_raw": "47%",
+                        "candidate_verified": "true",
+                        "candidate_verify_source": "external-service",
+                        "candidate_verify_confidence": "0.83",
+                    }
+                ]
+            }
+        ]
+    }
+
+    out = normalize_payload(payload)
+    option = out["records"][0]["options"][0]
+    assert option["candidate_verified"] is True
+    assert option["candidate_verify_source"] == "article_context"
+    assert option["candidate_verify_confidence"] == 0.83

@@ -321,6 +321,9 @@ class PostgresRepository:
         payload.setdefault("party_inferred", False)
         payload.setdefault("party_inference_source", None)
         payload.setdefault("party_inference_confidence", None)
+        payload.setdefault("candidate_verified", True)
+        payload.setdefault("candidate_verify_source", None)
+        payload.setdefault("candidate_verify_confidence", None)
         payload.setdefault("needs_manual_review", False)
 
         with self.conn.cursor() as cur:
@@ -329,12 +332,16 @@ class PostgresRepository:
                 INSERT INTO poll_options (
                     observation_id, option_type, option_name,
                     value_raw, value_min, value_max, value_mid, is_missing,
-                    party_inferred, party_inference_source, party_inference_confidence, needs_manual_review
+                    party_inferred, party_inference_source, party_inference_confidence,
+                    candidate_verified, candidate_verify_source, candidate_verify_confidence,
+                    needs_manual_review
                 )
                 VALUES (
                     %(observation_id)s, %(option_type)s, %(option_name)s,
                     %(value_raw)s, %(value_min)s, %(value_max)s, %(value_mid)s, %(is_missing)s,
-                    %(party_inferred)s, %(party_inference_source)s, %(party_inference_confidence)s, %(needs_manual_review)s
+                    %(party_inferred)s, %(party_inference_source)s, %(party_inference_confidence)s,
+                    %(candidate_verified)s, %(candidate_verify_source)s, %(candidate_verify_confidence)s,
+                    %(needs_manual_review)s
                 )
                 ON CONFLICT (observation_id, option_type, option_name) DO UPDATE
                 SET value_raw=EXCLUDED.value_raw,
@@ -345,6 +352,9 @@ class PostgresRepository:
                     party_inferred=EXCLUDED.party_inferred,
                     party_inference_source=EXCLUDED.party_inference_source,
                     party_inference_confidence=EXCLUDED.party_inference_confidence,
+                    candidate_verified=EXCLUDED.candidate_verified,
+                    candidate_verify_source=EXCLUDED.candidate_verify_source,
+                    candidate_verify_confidence=EXCLUDED.candidate_verify_confidence,
                     needs_manual_review=EXCLUDED.needs_manual_review,
                     updated_at=NOW()
                 """,
@@ -468,6 +478,7 @@ class PostgresRepository:
                 LEFT JOIN articles a ON a.id = o.article_id
                 WHERE o.verified = TRUE
                   AND po.option_type = 'candidate_matchup'
+                  AND COALESCE(po.candidate_verified, TRUE) = TRUE
                   AND po.value_mid IS NOT NULL
                   {as_of_filter}
             )
@@ -542,6 +553,7 @@ class PostgresRepository:
                 JOIN poll_options po ON po.observation_id = lo.id
                 WHERE lo.rn = 1
                   AND po.option_type = 'candidate_matchup'
+                  AND COALESCE(po.candidate_verified, TRUE) = TRUE
                   AND po.value_mid IS NOT NULL
             ),
             scored AS (
@@ -903,12 +915,16 @@ class PostgresRepository:
                                 'party_inferred', po.party_inferred,
                                 'party_inference_source', po.party_inference_source,
                                 'party_inference_confidence', po.party_inference_confidence,
+                                'candidate_verified', po.candidate_verified,
+                                'candidate_verify_source', po.candidate_verify_source,
+                                'candidate_verify_confidence', po.candidate_verify_confidence,
                                 'needs_manual_review', po.needs_manual_review
                             )
                             ORDER BY po.value_mid DESC NULLS LAST, po.option_name
                         ) AS options
                     FROM poll_options po
                     WHERE po.observation_id = o.id
+                      AND COALESCE(po.candidate_verified, TRUE) = TRUE
                 ) opts ON TRUE
                 WHERE o.matchup_id = %s
                 ORDER BY o.survey_end_date DESC NULLS LAST, o.id DESC
