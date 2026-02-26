@@ -64,6 +64,11 @@ class _Cursor:
                 "options": [
                     {
                         "option_name": "정원오",
+                        "candidate_id": "cand-jwo",
+                        "party_name": "더불어민주당",
+                        "scenario_key": "default",
+                        "scenario_type": "head_to_head",
+                        "scenario_title": "정원오 vs 오세훈",
                         "value_mid": 44.0,
                         "value_raw": "44%",
                         "party_inferred": True,
@@ -108,5 +113,9 @@ def test_get_matchup_returns_legal_metadata_fields():
     assert out["options"][0]["party_inferred"] is True
     assert out["options"][0]["party_inference_source"] == "name_rule"
     assert out["options"][0]["party_inference_confidence"] == 0.84
+    assert out["options"][0]["candidate_id"] == "cand-jwo"
+    assert out["options"][0]["party_name"] == "더불어민주당"
     assert out["options"][0]["needs_manual_review"] is False
+    assert out["scenarios"][0]["scenario_type"] == "head_to_head"
+    assert out["scenarios"][0]["scenario_title"] == "정원오 vs 오세훈"
     assert len(conn.cur.execs) == 2

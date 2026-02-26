@@ -18,3 +18,8 @@ def test_schema_contains_party_inference_columns() -> None:
     assert "ADD COLUMN IF NOT EXISTS party_inferred BOOLEAN NOT NULL DEFAULT FALSE" in sql
     assert "poll_options_party_inference_source_check" in sql
     assert "poll_options_candidate_verify_source_check" in sql
+    assert "ADD COLUMN IF NOT EXISTS candidate_id TEXT NULL" in sql
+    assert "ADD COLUMN IF NOT EXISTS party_name TEXT NULL" in sql
+    assert "ADD COLUMN IF NOT EXISTS scenario_key TEXT NOT NULL DEFAULT 'default'" in sql
+    assert "poll_options_observation_option_scenario_unique" in sql
+    assert "poll_options_scenario_type_check" in sql

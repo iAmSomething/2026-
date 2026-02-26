@@ -205,6 +205,7 @@ class FakeApiRepo:
                 "source_channel": None,
                 "source_channels": [],
                 "verified": False,
+                "scenarios": [],
                 "options": [],
             }
         return {
@@ -238,9 +239,51 @@ class FakeApiRepo:
             "source_channel": "article",
             "source_channels": ["article", "nesdc"],
             "verified": True,
+            "scenarios": [
+                {
+                    "scenario_key": "h2h-jwo-oh",
+                    "scenario_type": "head_to_head",
+                    "scenario_title": "정원오 vs 오세훈",
+                    "options": [
+                        {
+                            "option_name": "정원오",
+                            "candidate_id": "cand-jwo",
+                            "party_name": "더불어민주당",
+                            "scenario_key": "h2h-jwo-oh",
+                            "scenario_type": "head_to_head",
+                            "scenario_title": "정원오 vs 오세훈",
+                            "value_mid": 44.0,
+                            "value_raw": "44%",
+                            "party_inferred": True,
+                            "party_inference_source": "name_rule",
+                            "party_inference_confidence": 0.86,
+                            "needs_manual_review": False,
+                        },
+                        {
+                            "option_name": "오세훈",
+                            "candidate_id": "cand-oh",
+                            "party_name": "국민의힘",
+                            "scenario_key": "h2h-jwo-oh",
+                            "scenario_type": "head_to_head",
+                            "scenario_title": "정원오 vs 오세훈",
+                            "value_mid": 42.0,
+                            "value_raw": "42%",
+                            "party_inferred": False,
+                            "party_inference_source": None,
+                            "party_inference_confidence": None,
+                            "needs_manual_review": True,
+                        },
+                    ],
+                }
+            ],
             "options": [
                 {
                     "option_name": "정원오",
+                    "candidate_id": "cand-jwo",
+                    "party_name": "더불어민주당",
+                    "scenario_key": "h2h-jwo-oh",
+                    "scenario_type": "head_to_head",
+                    "scenario_title": "정원오 vs 오세훈",
                     "value_mid": 44.0,
                     "value_raw": "44%",
                     "party_inferred": True,
@@ -250,6 +293,11 @@ class FakeApiRepo:
                 },
                 {
                     "option_name": "오세훈",
+                    "candidate_id": "cand-oh",
+                    "party_name": "국민의힘",
+                    "scenario_key": "h2h-jwo-oh",
+                    "scenario_type": "head_to_head",
+                    "scenario_title": "정원오 vs 오세훈",
                     "value_mid": 42.0,
                     "value_raw": "42%",
                     "party_inferred": False,
@@ -585,11 +633,16 @@ def test_api_contract_fields():
     assert matchup.json()["official_release_at"] is not None
     assert matchup.json()["source_channel"] == "article"
     assert matchup.json()["source_channels"] == ["article", "nesdc"]
+    assert matchup.json()["scenarios"][0]["scenario_type"] == "head_to_head"
+    assert matchup.json()["scenarios"][0]["scenario_title"] == "정원오 vs 오세훈"
     assert matchup.json()["options"][0]["party_inferred"] is True
     assert matchup.json()["options"][0]["party_inference_source"] == "name_rule"
     assert matchup.json()["options"][0]["party_inference_confidence"] == 0.86
+    assert matchup.json()["options"][0]["candidate_id"] == "cand-jwo"
+    assert matchup.json()["options"][0]["party_name"] == "더불어민주당"
     assert matchup.json()["options"][0]["needs_manual_review"] is False
     assert matchup.json()["options"][1]["needs_manual_review"] is True
+    assert matchup.json()["options"][1]["candidate_id"] == "cand-oh"
     matchup_alias = client.get("/api/v1/matchups/m_2026_seoul_mayor")
     assert matchup_alias.status_code == 200
     assert matchup_alias.json()["matchup_id"] == "20260603|광역자치단체장|11-000"
@@ -597,6 +650,7 @@ def test_api_contract_fields():
     assert matchup_meta_only.status_code == 200
     assert matchup_meta_only.json()["matchup_id"] == "20260603|기초자치단체장|26-710"
     assert matchup_meta_only.json()["has_data"] is False
+    assert matchup_meta_only.json()["scenarios"] == []
     assert matchup_meta_only.json()["options"] == []
 
     candidate = client.get("/api/v1/candidates/cand-jwo")

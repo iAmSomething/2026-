@@ -4,10 +4,6 @@ import { toScenarioBadge } from "../../_components/demoParams";
 import { formatDate, formatDateTime, formatPercent, joinChannels } from "../../_components/format";
 import { fetchApi } from "../../_lib/api";
 
-const CANDIDATE_ALIAS_BY_NAME = {
-  정원오: "cand-jwo"
-};
-
 const REGIONAL_OFFICE_TYPES = new Set([
   "광역자치단체장",
   "광역의회",
@@ -107,15 +103,35 @@ export default async function MatchupPage({ params, searchParams }) {
   }
 
   const matchup = payload.body;
-  let options = Array.isArray(matchup.options) ? [...matchup.options] : [];
+  let scenarios = Array.isArray(matchup.scenarios) && matchup.scenarios.length > 0
+    ? matchup.scenarios.map((scenario) => ({
+        ...scenario,
+        options: Array.isArray(scenario.options) ? [...scenario.options] : []
+      }))
+    : [
+        {
+          scenario_key: "default",
+          scenario_type: "multi_candidate",
+          scenario_title: "최신 스냅샷",
+          options: Array.isArray(matchup.options) ? [...matchup.options] : []
+        }
+      ];
+
   if (stateDemo === "empty") {
-    options = [];
+    scenarios = scenarios.map((scenario) => ({ ...scenario, options: [] }));
   }
   if (stateDemo === "review") {
-    options = options.map((option, index) => (index === 0 ? { ...option, needs_manual_review: true } : option));
+    scenarios = scenarios.map((scenario) => ({
+      ...scenario,
+      options: scenario.options.map((option, index) => (index === 0 ? { ...option, needs_manual_review: true } : option))
+    }));
   }
-  options.sort((a, b) => (b.value_mid || 0) - (a.value_mid || 0));
-  const maxValue = Math.max(...options.map((option) => option.value_mid || 0), 1);
+
+  scenarios = scenarios.map((scenario) => ({
+    ...scenario,
+    options: [...scenario.options].sort((a, b) => (b.value_mid || 0) - (a.value_mid || 0))
+  }));
+  const totalOptionCount = scenarios.reduce((acc, scenario) => acc + scenario.options.length, 0);
   const resolvedScope = resolveScope({
     audienceScope: matchup.audience_scope,
     officeType: matchup.office_type,
@@ -218,42 +234,56 @@ export default async function MatchupPage({ params, searchParams }) {
       <section className="detail-grid">
         <article className="panel">
           <h3>후보별 최신 지표</h3>
-          {options.length === 0 ? (
+          {totalOptionCount === 0 ? (
             <div className="empty-state">
               {matchup.has_data === false
                 ? "데이터 준비 중: 관측치 수집 전이며 매치업 메타데이터만 먼저 노출됩니다."
                 : "데이터 없음: 후보별 지표가 아직 수집되지 않았습니다."}
             </div>
           ) : (
-            <ul className="option-bars">
-              {options.map((option) => {
-                const width = Math.max(6, Math.round(((option.value_mid || 0) / maxValue) * 100));
-                const candidateAlias = CANDIDATE_ALIAS_BY_NAME[option.option_name];
-                const review = optionNeedsReview(matchup, option);
+            <div className="stack">
+              {scenarios.map((scenario, scenarioIndex) => {
+                const maxValue = Math.max(...scenario.options.map((option) => option.value_mid || 0), 1);
+                const scenarioTypeLabel = scenario.scenario_type === "head_to_head" ? "양자대결" : "다자대결";
                 return (
-                  <li key={option.option_name}>
-                    <div className="option-row-head">
-                      <strong>{option.option_name}</strong>
-                      <span>{formatPercent(option.value_mid)}</span>
-                    </div>
-                    <div className="bar-track">
-                      <span className="bar-fill" style={{ width: `${width}%` }} />
-                    </div>
+                  <section key={`${scenario.scenario_key}-${scenarioIndex}`}>
                     <div className="badge-row option-row-meta">
-                      <span className={`state-badge ${sourceTone(matchup)}`}>{sourceLabel(matchup)}</span>
-                      <span className={`state-badge ${officialTone(matchup.is_official_confirmed)}`}>{officialLabel(matchup.is_official_confirmed)}</span>
-                      {review ? <span className="state-badge warn">검수대기</span> : null}
+                      <span className="state-badge info">{scenarioTypeLabel}</span>
+                      <span className="state-badge ok">{scenario.scenario_title || "시나리오"}</span>
                     </div>
-                    <p className="muted-text">원문: {option.value_raw || "-"}</p>
-                    {candidateAlias ? (
-                      <Link href={`/candidates/${candidateAlias}`} className="text-link small">
-                        후보 상세 보기
-                      </Link>
-                    ) : null}
-                  </li>
+                    <ul className="option-bars">
+                      {scenario.options.map((option, optionIndex) => {
+                        const width = Math.max(6, Math.round(((option.value_mid || 0) / maxValue) * 100));
+                        const review = optionNeedsReview(matchup, option);
+                        return (
+                          <li key={`${scenario.scenario_key}-${option.candidate_id || option.option_name}-${optionIndex}`}>
+                            <div className="option-row-head">
+                              <strong>{option.option_name}</strong>
+                              <span>{formatPercent(option.value_mid)}</span>
+                            </div>
+                            <div className="bar-track">
+                              <span className="bar-fill" style={{ width: `${width}%` }} />
+                            </div>
+                            <div className="badge-row option-row-meta">
+                              <span className={`state-badge ${sourceTone(matchup)}`}>{sourceLabel(matchup)}</span>
+                              <span className={`state-badge ${officialTone(matchup.is_official_confirmed)}`}>{officialLabel(matchup.is_official_confirmed)}</span>
+                              {review ? <span className="state-badge warn">검수대기</span> : null}
+                            </div>
+                            <p className="muted-text">정당: {option.party_name || "미확정(검수대기)"}</p>
+                            <p className="muted-text">원문: {option.value_raw || "-"}</p>
+                            {option.candidate_id ? (
+                              <Link href={`/candidates/${option.candidate_id}`} className="text-link small">
+                                후보 상세 보기
+                              </Link>
+                            ) : null}
+                          </li>
+                        );
+                      })}
+                    </ul>
+                  </section>
                 );
               })}
-            </ul>
+            </div>
           )}
         </article>
 
