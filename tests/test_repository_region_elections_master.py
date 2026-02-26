@@ -4,8 +4,9 @@ from app.services.repository import PostgresRepository
 
 
 class _Cursor:
-    def __init__(self, *, region_row, matchup_rows, poll_meta_rows):
+    def __init__(self, *, region_row, election_rows, matchup_rows, poll_meta_rows):
         self._region_row = region_row
+        self._election_rows = election_rows
         self._matchup_rows = matchup_rows
         self._poll_meta_rows = poll_meta_rows
         self._step = 0
@@ -28,16 +29,24 @@ class _Cursor:
     def fetchall(self):
         if self._step == 1:
             self._step += 1
-            return self._matchup_rows
+            return self._election_rows
         if self._step == 2:
+            self._step += 1
+            return self._matchup_rows
+        if self._step == 3:
             self._step += 1
             return self._poll_meta_rows
         return []
 
 
 class _Conn:
-    def __init__(self, *, region_row, matchup_rows, poll_meta_rows):
-        self._cursor = _Cursor(region_row=region_row, matchup_rows=matchup_rows, poll_meta_rows=poll_meta_rows)
+    def __init__(self, *, region_row, election_rows, matchup_rows, poll_meta_rows):
+        self._cursor = _Cursor(
+            region_row=region_row,
+            election_rows=election_rows,
+            matchup_rows=matchup_rows,
+            poll_meta_rows=poll_meta_rows,
+        )
 
     def cursor(self):
         return self._cursor
@@ -51,6 +60,7 @@ def test_region_elections_returns_master_slots_for_sido_even_without_poll_data()
             "sigungu_name": "전체",
             "admin_level": "sido",
         },
+        election_rows=[],
         matchup_rows=[],
         poll_meta_rows=[],
     )
@@ -72,6 +82,7 @@ def test_region_elections_adds_sigungu_slots_and_status_metadata():
             "sigungu_name": "중구",
             "admin_level": "sigungu",
         },
+        election_rows=[],
         matchup_rows=[],
         poll_meta_rows=[
             {
