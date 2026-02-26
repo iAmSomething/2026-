@@ -156,6 +156,53 @@ def test_region_elections_returns_master_slots_for_sido_even_without_poll_data()
     assert all(row["topology"] == "official" for row in rows)
 
 
+def test_region_elections_official_overrides_29_code_to_sejong_titles():
+    conn = _base_conn(
+        region_rows={
+            "29-000": {
+                "region_code": "29-000",
+                "sido_name": "광주광역시",
+                "sigungu_name": "전체",
+                "admin_level": "sido",
+            }
+        },
+        matchup_rows={"29-000": []},
+        poll_meta_rows={"29-000": []},
+    )
+
+    repo = PostgresRepository(conn)
+    rows = repo.fetch_region_elections("29-000")
+
+    assert [row["office_type"] for row in rows] == ["광역자치단체장", "광역의회", "교육감"]
+    assert [row["title"] for row in rows] == ["세종시장", "세종시의회", "세종교육감"]
+    assert all(row["region_code"] == "29-000" for row in rows)
+    assert all(row["topology"] == "official" for row in rows)
+
+
+def test_region_elections_returns_three_metro_slots_for_17_sido_codes_even_if_admin_level_corrupted():
+    metro_codes = [f"{idx:02d}-000" for idx in range(11, 28)]
+    region_rows = {
+        code: {
+            "region_code": code,
+            "sido_name": f"테스트{code[:2]}광역시",
+            "sigungu_name": "전체",
+            "admin_level": "sigungu",
+        }
+        for code in metro_codes
+    }
+
+    conn = _base_conn(
+        region_rows=region_rows,
+        matchup_rows={code: [] for code in metro_codes},
+        poll_meta_rows={code: [] for code in metro_codes},
+    )
+    repo = PostgresRepository(conn)
+
+    for code in metro_codes:
+        rows = repo.fetch_region_elections(code)
+        assert [row["office_type"] for row in rows] == ["광역자치단체장", "광역의회", "교육감"]
+
+
 def test_region_elections_adds_sigungu_slots_and_status_metadata():
     conn = _base_conn(
         region_rows={
