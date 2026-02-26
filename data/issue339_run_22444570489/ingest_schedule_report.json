@@ -1,0 +1,61 @@
+{
+  "success": false,
+  "attempts": [
+    {
+      "attempt": 1,
+      "http_status": 503,
+      "job_status": null,
+      "failure_class": "http_5xx",
+      "failure_type": "http_5xx",
+      "retryable": true,
+      "request_timeout_seconds": 180.0,
+      "error": null,
+      "detail": "database connection failed (unknown)",
+      "cause_code": "db_connection_unknown",
+      "started_at": "2026-02-26T13:39:13.713149+00:00",
+      "finished_at": "2026-02-26T13:39:18.123892+00:00",
+      "duration_seconds": 4.411,
+      "next_backoff_seconds": 2.0
+    },
+    {
+      "attempt": 2,
+      "http_status": 503,
+      "job_status": null,
+      "failure_class": "http_5xx",
+      "failure_type": "http_5xx",
+      "retryable": true,
+      "request_timeout_seconds": 180.0,
+      "error": null,
+      "detail": "database connection failed (unknown)",
+      "cause_code": "db_connection_unknown",
+      "started_at": "2026-02-26T13:39:20.124120+00:00",
+      "finished_at": "2026-02-26T13:39:24.411835+00:00",
+      "duration_seconds": 4.288,
+      "next_backoff_seconds": 2.0
+    },
+    {
+      "attempt": 3,
+      "http_status": 503,
+      "job_status": null,
+      "failure_class": "http_5xx",
+      "failure_type": "http_5xx",
+      "retryable": true,
+      "request_timeout_seconds": 180.0,
+      "error": null,
+      "detail": "database connection failed (unknown)",
+      "cause_code": "db_connection_unknown",
+      "started_at": "2026-02-26T13:39:26.412057+00:00",
+      "finished_at": "2026-02-26T13:39:30.663933+00:00",
+      "duration_seconds": 4.252,
+      "next_backoff_seconds": null
+    }
+  ],
+  "run_ids": [],
+  "started_at": "2026-02-26T13:39:13.713097+00:00",
+  "finished_at": "2026-02-26T13:39:30.664049+00:00",
+  "elapsed_seconds": 16.951,
+  "failure_class": "http_5xx",
+  "failure_type": "http_5xx",
+  "cause_code": "db_connection_unknown",
+  "failure_reason": "http_5xx: http_status=503 (database connection failed (unknown))"
+}

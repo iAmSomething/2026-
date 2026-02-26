@@ -1,0 +1,75 @@
+{
+  "schema_version": "collector_ingest_failure_classification.v1",
+  "generated_at": "2026-02-26T13:39:30.667921+00:00",
+  "source_input_path": "data/collector_live_payload.json",
+  "payload_run_type": "collector_live_coverage_v2",
+  "payload_record_count": 30,
+  "runner": {
+    "success": false,
+    "raw_success": false,
+    "attempt_count": 3,
+    "run_ids": [],
+    "started_at": "2026-02-26T13:39:13.713097+00:00",
+    "finished_at": "2026-02-26T13:39:30.664049+00:00",
+    "elapsed_seconds": 16.951,
+    "failure_class": "http_5xx",
+    "failure_type": "http_5xx",
+    "cause_code": "db_connection_unknown",
+    "failure_reason": "http_5xx: http_status=503 (database connection failed (unknown))",
+    "timeout_attempts": 0,
+    "failure_class_counts": {
+      "http_5xx": 3
+    }
+  },
+  "dead_letter_path": "data/dead_letter/ingest_dead_letter_20260226T133930Z_http_5xx.json",
+  "attempt_timeline": [
+    {
+      "attempt": 1,
+      "started_at": "2026-02-26T13:39:13.713149+00:00",
+      "finished_at": "2026-02-26T13:39:18.123892+00:00",
+      "duration_seconds": 4.411,
+      "request_timeout_seconds": 180.0,
+      "http_status": 503,
+      "job_status": null,
+      "failure_class": "http_5xx",
+      "failure_type": "http_5xx",
+      "cause_code": "db_connection_unknown",
+      "retryable": true,
+      "next_backoff_seconds": 2.0,
+      "error": null,
+      "detail": "database connection failed (unknown)"
+    },
+    {
+      "attempt": 2,
+      "started_at": "2026-02-26T13:39:20.124120+00:00",
+      "finished_at": "2026-02-26T13:39:24.411835+00:00",
+      "duration_seconds": 4.288,
+      "request_timeout_seconds": 180.0,
+      "http_status": 503,
+      "job_status": null,
+      "failure_class": "http_5xx",
+      "failure_type": "http_5xx",
+      "cause_code": "db_connection_unknown",
+      "retryable": true,
+      "next_backoff_seconds": 2.0,
+      "error": null,
+      "detail": "database connection failed (unknown)"
+    },
+    {
+      "attempt": 3,
+      "started_at": "2026-02-26T13:39:26.412057+00:00",
+      "finished_at": "2026-02-26T13:39:30.663933+00:00",
+      "duration_seconds": 4.252,
+      "request_timeout_seconds": 180.0,
+      "http_status": 503,
+      "job_status": null,
+      "failure_class": "http_5xx",
+      "failure_type": "http_5xx",
+      "cause_code": "db_connection_unknown",
+      "retryable": true,
+      "next_backoff_seconds": null,
+      "error": null,
+      "detail": "database connection failed (unknown)"
+    }
+  ]
+}
