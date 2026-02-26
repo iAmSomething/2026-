@@ -40,3 +40,24 @@ def test_build_live_coverage_v2_pack_idempotent_for_fixed_date() -> None:
     keys1 = [r["observation"]["observation_key"] for r in out1["payload"]["records"]]
     keys2 = [r["observation"]["observation_key"] for r in out2["payload"]["records"]]
     assert keys1 == keys2
+
+
+def test_build_live_coverage_v2_pack_repairs_scenario_mixing_for_26710() -> None:
+    out = build_live_coverage_v2_pack()
+    target = None
+    for row in out["payload"]["records"]:
+        obs = row.get("observation") or {}
+        survey_name = str(obs.get("survey_name") or "")
+        if obs.get("region_code") == "26-710" and "다자대결" in survey_name:
+            target = row
+            break
+
+    assert target is not None
+    scenario_rows = [o for o in target["options"] if o.get("option_type") == "candidate_matchup"]
+    scenario_keys = {o.get("scenario_key") for o in scenario_rows}
+    scenario_types = {o.get("scenario_type") for o in scenario_rows}
+    assert "default" not in scenario_keys
+    assert any(str(key).startswith("h2h-") for key in scenario_keys)
+    assert any(str(key).startswith("multi-") for key in scenario_keys)
+    assert "head_to_head" in scenario_types
+    assert "multi_candidate" in scenario_types

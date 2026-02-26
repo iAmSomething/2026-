@@ -7,7 +7,9 @@ from pathlib import Path
 import re
 from typing import Any
 
+from app.services.ingest_service import _repair_candidate_matchup_scenarios
 from app.services.ingest_input_normalization import normalize_option_type
+from app.services.normalization import normalize_percentage
 from src.pipeline.contracts import new_review_queue_item
 
 INPUT_WEB_DEMO = "data/collector_web_demo_datapack_30d.json"
@@ -194,7 +196,40 @@ def _normalize_local_record_v2(
 
     out["article"] = article
     out["observation"] = obs
+    _repair_local_candidate_scenarios(out)
     return out
+
+
+def _repair_local_candidate_scenarios(record: dict[str, Any]) -> None:
+    options = record.get("options") or []
+    if not options:
+        return
+
+    normalized_options: list[dict[str, Any]] = []
+    for opt in options:
+        row = dict(opt)
+        if row.get("value_mid") is None:
+            normalized = normalize_percentage(row.get("value_raw"))
+            row["value_mid"] = normalized.value_mid
+            row["value_min"] = normalized.value_min
+            row["value_max"] = normalized.value_max
+            row["is_missing"] = normalized.is_missing
+        row["scenario_key"] = str(row.get("scenario_key") or "").strip() or "default"
+        row.setdefault("scenario_type", None)
+        row.setdefault("scenario_title", None)
+        normalized_options.append(row)
+
+    changed = _repair_candidate_matchup_scenarios(
+        survey_name=(record.get("observation") or {}).get("survey_name"),
+        options=normalized_options,
+    )
+    if not changed:
+        return
+
+    for src, dst in zip(normalized_options, options, strict=False):
+        dst["scenario_key"] = src.get("scenario_key")
+        dst["scenario_type"] = src.get("scenario_type")
+        dst["scenario_title"] = src.get("scenario_title")
 
 
 def build_live_coverage_v2_pack(*, as_of: date = date(2026, 2, 22)) -> dict[str, Any]:

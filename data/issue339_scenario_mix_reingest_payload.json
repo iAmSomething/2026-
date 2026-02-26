@@ -1,6 +1,6 @@
 {
-  "run_type": "collector_live_coverage_v2",
-  "extractor_version": "collector-live-coverage-v2",
+  "run_type": "collector_issue339_scenario_reprocess_v1",
+  "extractor_version": "collector-issue339-scenario-reprocess-v1",
   "llm_model": null,
   "records": [
     {
