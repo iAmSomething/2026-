@@ -1,0 +1,237 @@
+{
+  "status": "success",
+  "executed_at": "2026-02-26T05:56:49.729610+00:00",
+  "dry_run": false,
+  "sg_id": "20260603",
+  "common_code_counts": {
+    "sido_count": 17,
+    "sigungu_count": 227,
+    "total_expected": 244
+  },
+  "resolved_region_rows": 244,
+  "unresolved_count": 0,
+  "upserted_region_count": 244,
+  "mapping_stats": {
+    "mapped_from_db_count": 111,
+    "mapped_from_standard_count": 163,
+    "mapped_from_tsv_count": 193,
+    "generated_code_count": 4,
+    "missing_sido_names": [],
+    "generated_examples": [
+      {
+        "sido_name": "인천광역시",
+        "sigungu_name": "영종구",
+        "generated_region_code": "28-900",
+        "reason": "name_not_in_lookup"
+      },
+      {
+        "sido_name": "인천광역시",
+        "sigungu_name": "제물포구",
+        "generated_region_code": "28-901",
+        "reason": "name_not_in_lookup"
+      },
+      {
+        "sido_name": "인천광역시",
+        "sigungu_name": "검단구",
+        "generated_region_code": "28-902",
+        "reason": "name_not_in_lookup"
+      },
+      {
+        "sido_name": "경기도",
+        "sigungu_name": "화성시만세구",
+        "generated_region_code": "41-900",
+        "reason": "name_not_in_lookup"
+      }
+    ],
+    "resolved_total": 244
+  },
+  "schema_patch": {
+    "status": "ok"
+  },
+  "elections_sync": {
+    "status": "success",
+    "executed_at": "2026-02-26T05:56:48.410212+00:00",
+    "dry_run": false,
+    "region_count": 257,
+    "slot_count": 533,
+    "upserted_slot_count": 533,
+    "with_poll_data_slot_count": 28,
+    "without_poll_data_slot_count": 505,
+    "observed_byelection_pair_count": 2,
+    "missing_default_slot_pairs": 0,
+    "sample_checks": {
+      "region_32_000_slot_count": 0,
+      "region_42_000_slot_count": 3,
+      "region_26_710_slot_count": 2
+    },
+    "acceptance_checks": {
+      "default_slot_pairs_complete": true,
+      "slots_queryable_even_without_poll": true,
+      "sample_metro_region_ge_3": true,
+      "sample_region_26_710_ge_2": true
+    },
+    "acceptance_meta": {
+      "metro_sample_region_present": true,
+      "metro_sample_slot_count": 3
+    },
+    "sample_slots": [
+      {
+        "region_code": "11-000",
+        "office_type": "광역자치단체장",
+        "slot_matchup_id": "master|광역자치단체장|11-000",
+        "title": "서울특별시 광역자치단체장",
+        "source": "code_master",
+        "has_poll_data": true,
+        "latest_matchup_id": "20260603|광역자치단체장|11-000",
+        "is_active": true
+      },
+      {
+        "region_code": "11-000",
+        "office_type": "광역의회",
+        "slot_matchup_id": "master|광역의회|11-000",
+        "title": "서울특별시 광역의회",
+        "source": "code_master",
+        "has_poll_data": false,
+        "latest_matchup_id": null,
+        "is_active": true
+      },
+      {
+        "region_code": "11-000",
+        "office_type": "교육감",
+        "slot_matchup_id": "master|교육감|11-000",
+        "title": "서울특별시 교육감",
+        "source": "code_master",
+        "has_poll_data": false,
+        "latest_matchup_id": null,
+        "is_active": true
+      },
+      {
+        "region_code": "11-000",
+        "office_type": "재보궐",
+        "slot_matchup_id": "master|재보궐|11-000",
+        "title": "서울특별시 재보궐",
+        "source": "code_master",
+        "has_poll_data": false,
+        "latest_matchup_id": null,
+        "is_active": true
+      },
+      {
+        "region_code": "11-110",
+        "office_type": "기초자치단체장",
+        "slot_matchup_id": "master|기초자치단체장|11-110",
+        "title": "서울특별시 종로구 기초자치단체장",
+        "source": "code_master",
+        "has_poll_data": true,
+        "latest_matchup_id": "2026_local|기초자치단체장|11-110",
+        "is_active": true
+      },
+      {
+        "region_code": "11-110",
+        "office_type": "기초의회",
+        "slot_matchup_id": "master|기초의회|11-110",
+        "title": "서울특별시 종로구 기초의회",
+        "source": "code_master",
+        "has_poll_data": false,
+        "latest_matchup_id": null,
+        "is_active": true
+      },
+      {
+        "region_code": "11-140",
+        "office_type": "기초자치단체장",
+        "slot_matchup_id": "master|기초자치단체장|11-140",
+        "title": "서울특별시 중구 기초자치단체장",
+        "source": "code_master",
+        "has_poll_data": false,
+        "latest_matchup_id": null,
+        "is_active": true
+      },
+      {
+        "region_code": "11-140",
+        "office_type": "기초의회",
+        "slot_matchup_id": "master|기초의회|11-140",
+        "title": "서울특별시 중구 기초의회",
+        "source": "code_master",
+        "has_poll_data": false,
+        "latest_matchup_id": null,
+        "is_active": true
+      },
+      {
+        "region_code": "11-170",
+        "office_type": "기초자치단체장",
+        "slot_matchup_id": "master|기초자치단체장|11-170",
+        "title": "서울특별시 용산구 기초자치단체장",
+        "source": "code_master",
+        "has_poll_data": false,
+        "latest_matchup_id": null,
+        "is_active": true
+      },
+      {
+        "region_code": "11-170",
+        "office_type": "기초의회",
+        "slot_matchup_id": "master|기초의회|11-170",
+        "title": "서울특별시 용산구 기초의회",
+        "source": "code_master",
+        "has_poll_data": false,
+        "latest_matchup_id": null,
+        "is_active": true
+      }
+    ]
+  },
+  "artifacts": {
+    "pre_snapshot_path": "data/issue312_pre_snapshot.json",
+    "post_snapshot_path": "data/issue312_post_snapshot.json",
+    "compare_path": "data/issue312_sync_before_after.json",
+    "elections_report_path": "data/elections_master_sync_report_issue312.json"
+  },
+  "sample_checks": {
+    "region_42_000_exists": true,
+    "region_11_000_exists": true,
+    "region_26_710_exists": true,
+    "regions_missing_zero": true
+  },
+  "pm_required_cardinality": {
+    "pre_regions_by_level": {
+      "sido": 6,
+      "sigungu": 26
+    },
+    "post_regions_by_level": {
+      "sido": 17,
+      "sigungu": 240
+    }
+  },
+  "pm_required_missing_codes": {
+    "missing_sido_names": [],
+    "generated_code_examples": [
+      {
+        "sido_name": "인천광역시",
+        "sigungu_name": "영종구",
+        "generated_region_code": "28-900",
+        "reason": "name_not_in_lookup"
+      },
+      {
+        "sido_name": "인천광역시",
+        "sigungu_name": "제물포구",
+        "generated_region_code": "28-901",
+        "reason": "name_not_in_lookup"
+      },
+      {
+        "sido_name": "인천광역시",
+        "sigungu_name": "검단구",
+        "generated_region_code": "28-902",
+        "reason": "name_not_in_lookup"
+      },
+      {
+        "sido_name": "경기도",
+        "sigungu_name": "화성시만세구",
+        "generated_region_code": "41-900",
+        "reason": "name_not_in_lookup"
+      }
+    ]
+  },
+  "pm_required_314_compare_case": {
+    "before_master_rows_empty": true,
+    "after_master_rows_available": true,
+    "before_regions_total": 32,
+    "after_regions_total": 257
+  }
+}

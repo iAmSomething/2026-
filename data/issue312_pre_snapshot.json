@@ -1,0 +1,27 @@
+{
+  "regions_by_level": {
+    "sido": 6,
+    "sigungu": 26
+  },
+  "regions_total": 32,
+  "elections_master_columns_ready": false,
+  "region_samples": {
+    "42-000": null,
+    "11-000": {
+      "region_code": "11-000",
+      "sido_name": "서울특별시",
+      "sigungu_name": "전체",
+      "admin_level": "sido",
+      "parent_region_code": null
+    },
+    "26-710": {
+      "region_code": "26-710",
+      "sido_name": "부산광역시",
+      "sigungu_name": "기장군",
+      "admin_level": "sigungu",
+      "parent_region_code": "26-000"
+    }
+  },
+  "elections_total": null,
+  "election_samples": []
+}
