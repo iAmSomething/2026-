@@ -179,6 +179,77 @@ def test_region_elections_official_overrides_29_code_to_sejong_titles():
     assert all(row["topology"] == "official" for row in rows)
 
 
+def test_region_elections_official_rewrites_legacy_gwangju_title_from_master_rows():
+    conn = _base_conn(
+        region_rows={
+            "29-000": {
+                "region_code": "29-000",
+                "sido_name": "광주광역시",
+                "sigungu_name": "전체",
+                "admin_level": "sido",
+            }
+        },
+        election_rows={
+            "29-000": [
+                {
+                    "region_code": "29-000",
+                    "office_type": "광역자치단체장",
+                    "slot_matchup_id": "master|광역자치단체장|29-000",
+                    "title": "광주광역시 광역자치단체장",
+                    "source": "master_sync",
+                    "has_poll_data": False,
+                    "latest_matchup_id": None,
+                    "is_active": True,
+                }
+            ]
+        },
+        matchup_rows={"29-000": []},
+        poll_meta_rows={"29-000": []},
+    )
+
+    repo = PostgresRepository(conn)
+    rows = repo.fetch_region_elections("29-000")
+
+    assert len(rows) == 1
+    assert rows[0]["office_type"] == "광역자치단체장"
+    assert rows[0]["title"] == "세종시장"
+    assert rows[0]["source"] == "master_sync"
+
+
+def test_region_elections_official_rewrites_legacy_gwangju_title_from_matchup_rows():
+    conn = _base_conn(
+        region_rows={
+            "29-000": {
+                "region_code": "29-000",
+                "sido_name": "광주광역시",
+                "sigungu_name": "전체",
+                "admin_level": "sido",
+            }
+        },
+        matchup_rows={
+            "29-000": [
+                {
+                    "matchup_id": "20260603|광역자치단체장|29-000",
+                    "region_code": "29-000",
+                    "office_type": "광역자치단체장",
+                    "title": "광주광역시 광역자치단체장",
+                    "is_active": True,
+                    "updated_at": "2026-02-26T10:00:00+00:00",
+                }
+            ]
+        },
+        poll_meta_rows={"29-000": []},
+    )
+
+    repo = PostgresRepository(conn)
+    rows = repo.fetch_region_elections("29-000")
+    mayor = next(row for row in rows if row["office_type"] == "광역자치단체장")
+
+    assert mayor["title"] == "세종시장"
+    assert mayor["region_code"] == "29-000"
+    assert mayor["topology"] == "official"
+
+
 def test_region_elections_returns_three_metro_slots_for_17_sido_codes_even_if_admin_level_corrupted():
     metro_codes = [f"{idx:02d}-000" for idx in range(11, 28)]
     region_rows = {
