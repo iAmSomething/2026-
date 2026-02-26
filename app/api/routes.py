@@ -318,10 +318,15 @@ def _survey_end_before_cutoff(survey_end_date: date | str | None) -> bool:
 
 
 def _map_latest_exclusion_reason(row: dict) -> str | None:
-    if not _is_cutoff_eligible_row(row):
-        return "article_published_at_before_cutoff"
     if _survey_end_before_cutoff(row.get("survey_end_date")):
         return "survey_end_date_before_cutoff"
+    drop_reason = _map_latest_drop_reason(row)
+    if drop_reason == "cutoff_blocked":
+        return "article_published_at_before_cutoff"
+    if drop_reason in {"generic_option_token", "invalid_candidate_name"}:
+        return "invalid_candidate_option_name"
+    if drop_reason == "legacy_title":
+        return "legacy_matchup_title"
     if _is_legacy_matchup_title(row.get("title")):
         return "legacy_matchup_title"
     if _is_map_latest_noise_option_name(row.get("option_name")):
@@ -559,7 +564,9 @@ def get_dashboard_map_latest(
     for row in rows:
         exclusion_reason = _map_latest_exclusion_reason(row)
         if exclusion_reason is not None:
-            reason_counts[exclusion_reason] = reason_counts.get(exclusion_reason, 0) + 1
+            drop_reason = _map_latest_drop_reason(row)
+            reason_key = drop_reason or exclusion_reason
+            reason_counts[reason_key] = reason_counts.get(reason_key, 0) + 1
             continue
         kept_rows.append(row)
 
