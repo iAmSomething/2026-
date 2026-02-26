@@ -1,5 +1,6 @@
 from contextlib import contextmanager
 from pathlib import Path
+from urllib.parse import quote, unquote
 
 import psycopg
 from psycopg.rows import dict_row
@@ -15,6 +16,31 @@ class DatabaseConnectionError(RuntimeError):
     """Raised when a DB connection cannot be established."""
 
 
+def _normalize_database_url(database_url: str) -> str:
+    text = str(database_url or "").strip()
+    if not text:
+        return text
+    if "://" not in text or "@" not in text:
+        return text
+
+    scheme, remainder = text.split("://", 1)
+    if not scheme.startswith("postgres"):
+        return text
+    if "@" not in remainder or ":" not in remainder:
+        return text
+
+    credentials, tail = remainder.rsplit("@", 1)
+    if ":" not in credentials:
+        return text
+
+    username, raw_password = credentials.split(":", 1)
+    if not username:
+        return text
+
+    normalized_password = quote(unquote(raw_password), safe="")
+    return f"{scheme}://{username}:{normalized_password}@{tail}"
+
+
 @contextmanager
 def get_connection():
     try:
@@ -22,7 +48,7 @@ def get_connection():
     except Exception as exc:  # noqa: BLE001
         raise DatabaseConfigurationError("database settings are not configured") from exc
 
-    database_url = str(settings.database_url or "").strip()
+    database_url = _normalize_database_url(str(settings.database_url or "").strip())
     if not database_url:
         raise DatabaseConfigurationError("DATABASE_URL is empty")
 
