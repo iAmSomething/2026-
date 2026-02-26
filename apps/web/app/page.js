@@ -353,8 +353,14 @@ export default async function HomePage({ searchParams }) {
     summaryRes.ok && typeof summaryRes.body?.data_source === "string" ? summaryRes.body.data_source : "article";
 
   const partyItems = summaryRes.ok && Array.isArray(summaryRes.body?.party_support) ? summaryRes.body.party_support : [];
-  const presidentialItems =
-    summaryRes.ok && Array.isArray(summaryRes.body?.presidential_approval) ? summaryRes.body.presidential_approval : [];
+  const presidentJobItems =
+    summaryRes.ok && Array.isArray(summaryRes.body?.president_job_approval)
+      ? summaryRes.body.president_job_approval
+      : summaryRes.ok && Array.isArray(summaryRes.body?.presidential_approval)
+        ? summaryRes.body.presidential_approval
+        : [];
+  const electionFrameItems =
+    summaryRes.ok && Array.isArray(summaryRes.body?.election_frame) ? summaryRes.body.election_frame : [];
   const mapItems = mapRes.ok && Array.isArray(mapRes.body?.items) ? mapRes.body.items : [];
   const bigMatchItemsRaw = bigMatchRes.ok && Array.isArray(bigMatchRes.body?.items) ? bigMatchRes.body.items : [];
   const qualityMetrics = qualityRes.ok && qualityRes.body ? qualityRes.body : null;
@@ -385,7 +391,7 @@ export default async function HomePage({ searchParams }) {
           <p className="kicker">ELECTION 2026</p>
           <h1>전국 여론조사 대시보드</h1>
           <p>
-            정당·대통령 요약, 지역별 최신 매치업, 빅매치를 한 화면에서 확인할 수 있습니다.
+            정당·대통령 직무평가·선거 성격 요약, 지역별 최신 매치업, 빅매치를 한 화면에서 확인할 수 있습니다.
           </p>
         </div>
         <div className="hero-meta">
@@ -434,17 +440,31 @@ export default async function HomePage({ searchParams }) {
           }
         />
         <SummaryColumn
-          title="대통령 지지율"
-          description="전국 스코프 기준 최신 조사"
+          title="대통령 직무평가"
+          description="전국 스코프 기준 긍정/부정 지표"
           dataSource={summaryDataSource}
           items={
             stateDemo === "empty"
               ? []
               : stateDemo === "review"
-                ? presidentialItems.map((item, index) =>
+                ? presidentJobItems.map((item, index) =>
                     index === 0 ? { ...item, needs_manual_review: true, is_official_confirmed: false, freshness_hours: 120 } : item
                   )
-                : presidentialItems
+                : presidentJobItems
+          }
+        />
+        <SummaryColumn
+          title="선거 성격"
+          description="전국 스코프 기준 안정/견제 프레이밍"
+          dataSource={summaryDataSource}
+          items={
+            stateDemo === "empty"
+              ? []
+              : stateDemo === "review"
+                ? electionFrameItems.map((item, index) =>
+                    index === 0 ? { ...item, needs_manual_review: true, is_official_confirmed: false, freshness_hours: 120 } : item
+                  )
+                : electionFrameItems
           }
         />
       </section>

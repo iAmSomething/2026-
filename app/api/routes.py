@@ -50,6 +50,28 @@ MATCHUP_ID_ALIASES = {
     "m_2026_seoul_mayor": "20260603|광역자치단체장|11-000",
 }
 
+PRESIDENT_JOB_APPROVAL_KEYWORDS = (
+    "긍정",
+    "부정",
+    "직무",
+    "국정수행",
+    "잘한다",
+    "잘못",
+    "못한다",
+)
+ELECTION_FRAME_KEYWORDS = (
+    "국정안정",
+    "국정견제",
+    "안정론",
+    "견제론",
+    "정권교체",
+    "정권재창출",
+    "정권심판",
+    "정권지원",
+    "선거성격",
+    "프레임",
+)
+
 
 def _build_scope_breakdown(rows: list[dict]) -> dict[str, int]:
     counts = {"national": 0, "regional": 0, "local": 0, "unknown": 0}
@@ -190,6 +212,15 @@ def _normalize_matchup_id(raw_matchup_id: str) -> str:
     return f"{election_id}|{office_type}|{compact_region}"
 
 
+def _classify_presidential_option(option_name: str) -> str:
+    normalized = re.sub(r"\s+", "", option_name or "")
+    if any(keyword in normalized for keyword in ELECTION_FRAME_KEYWORDS):
+        return "election_frame"
+    if any(keyword in normalized for keyword in PRESIDENT_JOB_APPROVAL_KEYWORDS):
+        return "president_job_approval"
+    return "election_frame"
+
+
 @router.get("/dashboard/summary", response_model=DashboardSummaryOut)
 def get_dashboard_summary(
     as_of: date | None = Query(default=None),
@@ -197,7 +228,8 @@ def get_dashboard_summary(
 ):
     rows = repo.fetch_dashboard_summary(as_of=as_of)
     party_support = []
-    presidential_approval = []
+    president_job_approval = []
+    election_frame = []
     eligible_rows = [row for row in rows if _is_cutoff_eligible_row(row)]
 
     for row in eligible_rows:
@@ -223,13 +255,20 @@ def get_dashboard_summary(
         if row["option_type"] == "party_support":
             party_support.append(point)
         elif row["option_type"] == "presidential_approval":
-            presidential_approval.append(point)
+            bucket = _classify_presidential_option(point.option_name)
+            if bucket == "president_job_approval":
+                president_job_approval.append(point)
+            else:
+                election_frame.append(point)
 
     return DashboardSummaryOut(
         as_of=as_of,
         data_source=_derive_dashboard_data_source(eligible_rows),
         party_support=party_support,
-        presidential_approval=presidential_approval,
+        president_job_approval=president_job_approval,
+        election_frame=election_frame,
+        presidential_approval=president_job_approval,
+        presidential_approval_deprecated=True,
         scope_breakdown=ScopeBreakdownOut(**_build_scope_breakdown(eligible_rows)),
     )
 

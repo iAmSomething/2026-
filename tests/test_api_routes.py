@@ -69,6 +69,20 @@ class FakeApiRepo:
             },
             {
                 "option_type": "presidential_approval",
+                "option_name": "대통령 직무 긍정평가",
+                "value_mid": 51.0,
+                "pollster": "KBS",
+                "survey_end_date": date(2026, 2, 18),
+                "audience_scope": "national",
+                "audience_region_code": None,
+                "observation_updated_at": "2026-02-18T03:20:00+00:00",
+                "article_published_at": "2026-02-18T02:50:00+00:00",
+                "source_channel": "article",
+                "source_channels": ["article"],
+                "verified": True,
+            },
+            {
+                "option_type": "presidential_approval",
                 "option_name": "국정안정론",
                 "value_mid": 54.0,
                 "pollster": "KBS",
@@ -466,7 +480,10 @@ def test_api_contract_fields():
     assert summary.status_code == 200
     body = summary.json()
     assert "party_support" in body
+    assert "president_job_approval" in body
+    assert "election_frame" in body
     assert "presidential_approval" in body
+    assert body["presidential_approval_deprecated"] is True
     assert body["data_source"] == "mixed"
     assert "option_name" in body["party_support"][0]
     assert "value_mid" in body["party_support"][0]
@@ -474,10 +491,15 @@ def test_api_contract_fields():
     assert body["party_support"][0]["source_channels"] == ["article", "nesdc"]
     assert body["party_support"][0]["audience_scope"] == "national"
     assert "audience_region_code" in body["party_support"][0]
-    assert all(x["audience_scope"] == "national" for x in body["party_support"] + body["presidential_approval"])
+    assert all(
+        x["audience_scope"] == "national"
+        for x in body["party_support"] + body["president_job_approval"] + body["election_frame"] + body["presidential_approval"]
+    )
     assert [x["option_name"] for x in body["party_support"]] == ["더불어민주당"]
-    assert [x["option_name"] for x in body["presidential_approval"]] == ["국정안정론"]
-    assert body["scope_breakdown"] == {"national": 2, "regional": 1, "local": 1, "unknown": 0}
+    assert [x["option_name"] for x in body["president_job_approval"]] == ["대통령 직무 긍정평가"]
+    assert [x["option_name"] for x in body["election_frame"]] == ["국정안정론"]
+    assert [x["option_name"] for x in body["presidential_approval"]] == ["대통령 직무 긍정평가"]
+    assert body["scope_breakdown"] == {"national": 3, "regional": 1, "local": 1, "unknown": 0}
     assert body["party_support"][0]["source_priority"] == "mixed"
     assert body["party_support"][0]["is_official_confirmed"] is True
     assert isinstance(body["party_support"][0]["freshness_hours"], float)
