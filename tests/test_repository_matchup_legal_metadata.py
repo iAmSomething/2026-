@@ -24,10 +24,18 @@ class _Cursor:
                 "matchup_id": "m1",
                 "region_code": "11-000",
                 "office_type": "광역자치단체장",
-                "title": "서울특별시장 선거",
+                "title": "[여론조사] 서울시장 양자대결 정원오-오세훈",
                 "is_active": True,
             }
         if self._step == 1:
+            self._step += 1
+            return {
+                "region_code": "11-000",
+                "sido_name": "서울특별시",
+                "sigungu_name": "전체",
+                "admin_level": "sido",
+            }
+        if self._step == 2:
             self._step += 1
             return {
                 "matchup_id": "m1",
@@ -98,8 +106,8 @@ def test_get_matchup_returns_legal_metadata_fields():
     out = repo.get_matchup("m1")
 
     assert out is not None
-    assert out["title"] == "서울특별시장 선거"
-    assert out["canonical_title"] == "서울특별시장 선거"
+    assert out["title"] == "서울시장"
+    assert out["canonical_title"] == "서울시장"
     assert out["article_title"] == "[여론조사] 서울시장 양자대결 정원오-오세훈"
     assert out["survey_start_date"] == date(2026, 2, 15)
     assert out["confidence_level"] == 95.0
@@ -121,4 +129,4 @@ def test_get_matchup_returns_legal_metadata_fields():
     assert out["options"][0]["needs_manual_review"] is False
     assert out["scenarios"][0]["scenario_type"] == "head_to_head"
     assert out["scenarios"][0]["scenario_title"] == "정원오 vs 오세훈"
-    assert len(conn.cur.execs) == 2
+    assert len(conn.cur.execs) == 3

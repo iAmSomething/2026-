@@ -1716,13 +1716,88 @@ class PostgresRepository:
         primary = next((row for row in scenarios if row["scenario_key"] == "default"), scenarios[0])
         return scenarios, primary["options"]
 
+    @staticmethod
+    def _strip_region_suffix(name: str) -> str:
+        for suffix in ("특별자치도", "특별자치시", "특별시", "광역시", "자치시", "도", "시"):
+            if name.endswith(suffix):
+                return name[: -len(suffix)] or name
+        return name
+
+    @staticmethod
+    def _derive_matchup_title_from_region(region: dict | None, office_type: str | None, fallback: str) -> str:
+        if not isinstance(region, dict):
+            return fallback
+
+        sido_name = str(region.get("sido_name") or "").strip()
+        sigungu_name = str(region.get("sigungu_name") or "").strip()
+        base_sido = PostgresRepository._strip_region_suffix(sido_name)
+        office = str(office_type or "").strip()
+
+        if office == "광역자치단체장":
+            if sido_name.endswith(("특별시", "광역시", "특별자치시", "자치시")):
+                return f"{base_sido}시장"
+            if sido_name.endswith(("도", "특별자치도")):
+                return f"{base_sido}도지사"
+            return f"{base_sido}광역자치단체장" if base_sido else fallback
+
+        if office == "광역의회":
+            if sido_name.endswith(("특별시", "광역시", "특별자치시", "자치시")):
+                return f"{base_sido}시의회"
+            if sido_name.endswith(("도", "특별자치도")):
+                return f"{base_sido}도의회"
+            return f"{base_sido}광역의회" if base_sido else fallback
+
+        if office == "교육감":
+            return f"{base_sido}교육감" if base_sido else fallback
+
+        target = sigungu_name if sigungu_name and sigungu_name != "전체" else base_sido
+        if office == "기초자치단체장":
+            if target.endswith("구"):
+                return f"{target}청장"
+            if target.endswith("군"):
+                return f"{target}수"
+            if target.endswith("시"):
+                return f"{target}장"
+            return f"{target}기초자치단체장" if target else fallback
+
+        if office == "기초의회":
+            return f"{target}의회" if target else fallback
+
+        if office == "재보궐":
+            return f"{target}재보궐" if target else fallback
+
+        if target and office:
+            return f"{target} {office}".strip()
+        return fallback
+
+    def _fetch_region_for_matchup_title(self, region_code: str | None) -> dict | None:
+        normalized = str(region_code or "").strip()
+        if not normalized:
+            return None
+        with self.conn.cursor() as cur:
+            cur.execute(
+                """
+                SELECT region_code, sido_name, sigungu_name, admin_level
+                FROM regions
+                WHERE region_code = %s
+                LIMIT 1
+                """,
+                (normalized,),
+            )
+            return cur.fetchone()
+
     def get_matchup(self, matchup_id: str):
         matchup_meta = self._find_matchup_meta(matchup_id)
         if not matchup_meta:
             return None
 
         canonical_matchup_id = matchup_meta["matchup_id"]
-        canonical_title = str(matchup_meta.get("title") or "").strip() or canonical_matchup_id
+        region_for_title = self._fetch_region_for_matchup_title(matchup_meta.get("region_code"))
+        canonical_title = self._derive_matchup_title_from_region(
+            region_for_title,
+            matchup_meta.get("office_type"),
+            str(matchup_meta.get("title") or "").strip() or canonical_matchup_id,
+        )
         observation = self._fetch_latest_matchup_observation(canonical_matchup_id)
         if not observation:
             return {

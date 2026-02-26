@@ -30,6 +30,14 @@ class _Cursor:
         if self._step == 1:
             self._step += 1
             return {
+                "region_code": "26-000",
+                "sido_name": "부산광역시",
+                "sigungu_name": "전체",
+                "admin_level": "sido",
+            }
+        if self._step == 2:
+            self._step += 1
+            return {
                 "matchup_id": "m1",
                 "region_code": "26-000",
                 "office_type": "광역자치단체장",
