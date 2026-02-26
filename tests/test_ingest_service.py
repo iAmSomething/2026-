@@ -13,6 +13,7 @@ class FakeRepo:
         self.observations = {}
         self.options = set()
         self.option_rows = []
+        self.candidate_rows = []
         self.review = []
         self.policy_counters = []
 
@@ -30,7 +31,7 @@ class FakeRepo:
         pass
 
     def upsert_candidate(self, candidate):
-        pass
+        self.candidate_rows.append(candidate)
 
     def upsert_article(self, article):
         self.articles[article["url"]] = article
@@ -256,6 +257,9 @@ def test_candidate_noise_token_routes_manual_review_mapping_error():
 
 def test_candidate_data_go_verified_sets_data_go_source(monkeypatch):
     class _FakeVerifier:
+        def enrich_candidate(self, candidate):  # noqa: ANN001
+            return candidate
+
         def verify_candidate(self, *, candidate_name, party_name=None):  # noqa: ARG002
             return (candidate_name == "정원오", 0.97)
 
@@ -284,3 +288,91 @@ def test_candidate_data_go_verified_sets_data_go_source(monkeypatch):
     assert repo.option_rows[0]["candidate_verified"] is True
     assert repo.option_rows[0]["candidate_verify_source"] == "data_go"
     assert float(repo.option_rows[0]["candidate_verify_confidence"]) >= 0.9
+
+
+def test_candidate_profile_enrichment_fills_candidate_fields(monkeypatch):
+    class _FakeService:
+        def enrich_candidate(self, candidate):  # noqa: ANN001
+            out = dict(candidate)
+            out["party_name"] = "더불어민주당"
+            out["gender"] = "M"
+            out["birth_date"] = "1968-08-12"
+            out["job"] = "정치인"
+            out["career_summary"] = "성동구청장"
+            out["election_history"] = "2018 지방선거 당선"
+            return out
+
+        def verify_candidate(self, *, candidate_name, party_name=None):  # noqa: ARG002
+            return (candidate_name == "정원오", 0.98)
+
+    def fake_build_service(*, record, sg_typecode):  # noqa: ARG001
+        return _FakeService()
+
+    monkeypatch.setattr(ingest_service_module, "_build_candidate_service", fake_build_service)
+
+    repo = FakeRepo()
+    payload_data = deepcopy(PAYLOAD)
+    payload_data["records"][0]["candidates"] = [
+        {
+            "candidate_id": "cand-jwo",
+            "name_ko": "정원오",
+            "party_name": None,
+            "gender": None,
+            "birth_date": None,
+            "job": None,
+            "career_summary": None,
+            "election_history": None,
+        }
+    ]
+    payload = IngestPayload.model_validate(payload_data)
+
+    result = ingest_payload(payload, repo)
+
+    assert result.status == "success"
+    assert len(repo.candidate_rows) == 1
+    row = repo.candidate_rows[0]
+    assert row["party_name"] == "더불어민주당"
+    assert row["career_summary"] == "성동구청장"
+    assert row["election_history"] == "2018 지방선거 당선"
+
+
+def test_candidate_profile_incomplete_routes_mapping_error(monkeypatch):
+    class _FakeService:
+        def enrich_candidate(self, candidate):  # noqa: ANN001
+            out = dict(candidate)
+            out["party_name"] = None
+            out["career_summary"] = None
+            out["election_history"] = None
+            return out
+
+        def verify_candidate(self, *, candidate_name, party_name=None):  # noqa: ARG002
+            return (False, 0.0)
+
+    def fake_build_service(*, record, sg_typecode):  # noqa: ARG001
+        return _FakeService()
+
+    monkeypatch.setattr(ingest_service_module, "_build_candidate_service", fake_build_service)
+
+    repo = FakeRepo()
+    payload_data = deepcopy(PAYLOAD)
+    payload_data["records"][0]["candidates"] = [
+        {
+            "candidate_id": "cand-jwo",
+            "name_ko": "정원오",
+            "party_name": None,
+            "gender": None,
+            "birth_date": None,
+            "job": None,
+            "career_summary": None,
+            "election_history": None,
+        }
+    ]
+    payload = IngestPayload.model_validate(payload_data)
+
+    result = ingest_payload(payload, repo)
+
+    assert result.status == "success"
+    assert any(
+        row[0] == "candidate" and row[1] == "cand-jwo" and row[2] == "mapping_error" and "CANDIDATE_PROFILE_INCOMPLETE" in row[3]
+        for row in repo.review
+    )
