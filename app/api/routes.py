@@ -1,6 +1,7 @@
 import re
 import unicodedata
 from datetime import date, datetime, timezone
+from typing import Literal
 from urllib.parse import unquote_plus
 
 from fastapi import APIRouter, Depends, HTTPException, Query, Request
@@ -403,8 +404,13 @@ def search_regions(
 
 
 @router.get("/regions/{region_code}/elections", response_model=list[RegionElectionOut])
-def get_region_elections(region_code: str, repo=Depends(get_repository)):
-    rows = repo.fetch_region_elections(region_code=region_code)
+def get_region_elections(
+    region_code: str,
+    topology: Literal["official", "scenario"] = Query(default="official"),
+    version_id: str | None = Query(default=None),
+    repo=Depends(get_repository),
+):
+    rows = repo.fetch_region_elections(region_code=region_code, topology=topology, version_id=version_id)
     return [RegionElectionOut(**row) for row in rows]
 
 

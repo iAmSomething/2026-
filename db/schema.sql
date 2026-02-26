@@ -8,6 +8,82 @@ CREATE TABLE IF NOT EXISTS regions (
     updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 
+CREATE TABLE IF NOT EXISTS region_topology_versions (
+    version_id TEXT PRIMARY KEY,
+    mode TEXT NOT NULL,
+    effective_from DATE NULL,
+    effective_to DATE NULL,
+    status TEXT NOT NULL,
+    note TEXT NULL,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+DO $$
+BEGIN
+    IF NOT EXISTS (
+        SELECT 1
+        FROM pg_constraint
+        WHERE conname = 'region_topology_versions_mode_check'
+    ) THEN
+        ALTER TABLE region_topology_versions
+            ADD CONSTRAINT region_topology_versions_mode_check
+            CHECK (mode IN ('official', 'scenario'));
+    END IF;
+END;
+$$;
+
+DO $$
+BEGIN
+    IF NOT EXISTS (
+        SELECT 1
+        FROM pg_constraint
+        WHERE conname = 'region_topology_versions_status_check'
+    ) THEN
+        ALTER TABLE region_topology_versions
+            ADD CONSTRAINT region_topology_versions_status_check
+            CHECK (status IN ('draft', 'announced', 'effective'));
+    END IF;
+END;
+$$;
+
+CREATE TABLE IF NOT EXISTS region_topology_edges (
+    id BIGSERIAL PRIMARY KEY,
+    parent_region_code TEXT NOT NULL,
+    child_region_code TEXT NOT NULL,
+    version_id TEXT NOT NULL REFERENCES region_topology_versions(version_id) ON DELETE CASCADE,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    UNIQUE (version_id, parent_region_code, child_region_code)
+);
+
+CREATE INDEX IF NOT EXISTS idx_region_topology_edges_child
+    ON region_topology_edges (version_id, child_region_code);
+CREATE INDEX IF NOT EXISTS idx_region_topology_edges_parent
+    ON region_topology_edges (version_id, parent_region_code);
+
+INSERT INTO region_topology_versions (
+    version_id, mode, effective_from, effective_to, status, note
+)
+VALUES (
+    'official-v1', 'official', NULL, NULL, 'effective', 'default official topology'
+)
+ON CONFLICT (version_id) DO NOTHING;
+
+INSERT INTO region_topology_versions (
+    version_id, mode, effective_from, effective_to, status, note
+)
+VALUES (
+    'scenario-gj-jn-merge-v1', 'scenario', NULL, NULL, 'draft', '광주·전남 통합특별시 시나리오'
+)
+ON CONFLICT (version_id) DO NOTHING;
+
+INSERT INTO region_topology_edges (parent_region_code, child_region_code, version_id)
+VALUES
+    ('29-46-000', '29-000', 'scenario-gj-jn-merge-v1'),
+    ('29-46-000', '46-000', 'scenario-gj-jn-merge-v1')
+ON CONFLICT (version_id, parent_region_code, child_region_code) DO NOTHING;
+
 CREATE TABLE IF NOT EXISTS candidates (
     candidate_id TEXT PRIMARY KEY,
     name_ko TEXT NOT NULL,
