@@ -941,6 +941,52 @@ main {
   background: #f8fbff;
 }
 
+.loading-callout {
+  border: 1px solid #93c5fd;
+  background: #eff6ff;
+  color: #0c4a6e;
+}
+
+.loading-callout strong {
+  display: block;
+  font-size: 1.05rem;
+  font-weight: 800;
+}
+
+.loading-callout p {
+  margin: 6px 0 0;
+  font-size: 0.92rem;
+}
+
+.loading-skeleton-stack {
+  display: grid;
+  gap: 14px;
+}
+
+.skeleton-block {
+  border-radius: 12px;
+  border: 1px solid #d7e1ec;
+  background: linear-gradient(90deg, #edf2f8 0%, #f6f9fc 50%, #edf2f8 100%);
+  background-size: 220% 100%;
+  animation: shimmer 1.8s ease-in-out infinite;
+}
+
+.skeleton-sm {
+  min-height: 120px;
+}
+
+.skeleton-md {
+  min-height: 180px;
+}
+
+.skeleton-lg {
+  min-height: 260px;
+}
+
+.candidate-loading-stack .skeleton-md {
+  min-height: 160px;
+}
+
 @media (max-width: 980px) {
   .hero,
   .trend-grid,
@@ -987,6 +1033,43 @@ main {
 
   .trend-meta {
     font-size: 0.82rem;
+  }
+
+  .loading-skeleton-stack {
+    gap: 10px;
+  }
+
+  .loading-callout strong {
+    font-size: 0.98rem;
+  }
+
+  .loading-callout p {
+    font-size: 0.86rem;
+  }
+
+  .skeleton-sm {
+    min-height: 96px;
+  }
+
+  .skeleton-md {
+    min-height: 132px;
+  }
+
+  .skeleton-lg {
+    min-height: 188px;
+  }
+
+  .candidate-loading-stack .skeleton-md {
+    min-height: 118px;
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: 100% 0;
+  }
+  100% {
+    background-position: -100% 0;
   }
 }
 
