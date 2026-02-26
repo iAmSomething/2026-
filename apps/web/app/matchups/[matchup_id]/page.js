@@ -81,6 +81,37 @@ function buildCandidateDetailHref(candidateId, matchupId) {
   return `${candidatePath}?${query}`;
 }
 
+function scenarioGroupKey(scenario) {
+  const type = (scenario?.scenario_type || "").toLowerCase();
+  if (type === "head_to_head" || type === "two_candidate" || type === "binary") {
+    return "head_to_head";
+  }
+  if (type === "multi_candidate" || type === "multi") {
+    return "multi_candidate";
+  }
+  const optionCount = Array.isArray(scenario?.options) ? scenario.options.length : 0;
+  return optionCount <= 2 ? "head_to_head" : "multi_candidate";
+}
+
+function scenarioGroupLabel(groupKey) {
+  return groupKey === "head_to_head" ? "양자 시나리오" : "다자 시나리오";
+}
+
+function scenarioTypeLabel(scenario) {
+  const groupKey = scenarioGroupKey(scenario);
+  return groupKey === "head_to_head" ? "양자대결" : "다자대결";
+}
+
+function cloneOption(option, nextValueMid) {
+  if (!option) return null;
+  return {
+    ...option,
+    value_mid: nextValueMid,
+    value_min: nextValueMid,
+    value_max: nextValueMid,
+    value_raw: `${nextValueMid}%`
+  };
+}
 export default async function MatchupPage({ params, searchParams }) {
   const resolvedParams = await params;
   const resolvedSearch = await searchParams;
@@ -90,6 +121,7 @@ export default async function MatchupPage({ params, searchParams }) {
   const sourceDemo = (resolvedSearch?.source_demo || "").trim().toLowerCase();
   const demoState = (resolvedSearch?.demo_state || "").trim().toLowerCase();
   const stateDemo = (resolvedSearch?.state_demo || "").trim().toLowerCase();
+  const scenarioDemo = (resolvedSearch?.scenario_demo || "").trim().toLowerCase();
 
   const payload = await fetchApi(`/api/v1/matchups/${encodeURIComponent(requestedMatchupId)}`);
 
@@ -137,10 +169,93 @@ export default async function MatchupPage({ params, searchParams }) {
     }));
   }
 
+  if (scenarioDemo === "triad") {
+    const baseOptions = scenarios.flatMap((scenario) => scenario.options).filter(Boolean);
+    const uniqueOptions = [];
+    const seen = new Set();
+    for (const option of baseOptions) {
+      const key = option.candidate_id || option.option_name;
+      if (!key || seen.has(key)) continue;
+      seen.add(key);
+      uniqueOptions.push(option);
+    }
+    let ranked = uniqueOptions.sort((a, b) => (b.value_mid || 0) - (a.value_mid || 0));
+    if (ranked.length < 2) {
+      ranked = [
+        {
+          candidate_id: "cand_demo_a",
+          option_name: "후보A",
+          party_name: "가상정당A",
+          value_mid: 44,
+          value_raw: "44%"
+        },
+        {
+          candidate_id: "cand_demo_b",
+          option_name: "후보B",
+          party_name: "가상정당B",
+          value_mid: 41,
+          value_raw: "41%"
+        },
+        {
+          candidate_id: "cand_demo_c",
+          option_name: "후보C",
+          party_name: "가상정당C",
+          value_mid: 33,
+          value_raw: "33%"
+        },
+        {
+          candidate_id: "cand_demo_d",
+          option_name: "후보D",
+          party_name: "가상정당D",
+          value_mid: 29,
+          value_raw: "29%"
+        }
+      ];
+    }
+    if (ranked.length >= 2) {
+      const first = ranked[0];
+      const second = ranked[1];
+      const third = ranked[2] || ranked[1];
+      const fourth = ranked[3] || ranked[0];
+      scenarios = [
+        {
+          scenario_key: "head_to_head_primary",
+          scenario_type: "head_to_head",
+          scenario_title: "양자 가상대결 A",
+          options: [cloneOption(first, first.value_mid || 44), cloneOption(second, second.value_mid || 41)].filter(Boolean)
+        },
+        {
+          scenario_key: "head_to_head_secondary",
+          scenario_type: "head_to_head",
+          scenario_title: "양자 가상대결 B",
+          options: [cloneOption(first, Math.max(0, (first.value_mid || 44) - 2)), cloneOption(second, Math.max(0, (second.value_mid || 41) + 2))].filter(Boolean)
+        },
+        {
+          scenario_key: "multi_candidate_primary",
+          scenario_type: "multi_candidate",
+          scenario_title: "다자 구도",
+          options: [
+            cloneOption(first, Math.max(0, first.value_mid || 44)),
+            cloneOption(second, Math.max(0, second.value_mid || 41)),
+            cloneOption(third, Math.max(0, (third.value_mid || 33) - 1)),
+            cloneOption(fourth, Math.max(0, (fourth.value_mid || 31) - 2))
+          ].filter(Boolean)
+        }
+      ];
+    }
+  }
+
   scenarios = scenarios.map((scenario) => ({
     ...scenario,
     options: [...scenario.options].sort((a, b) => (b.value_mid || 0) - (a.value_mid || 0))
   }));
+  const groupedScenarios = ["head_to_head", "multi_candidate"]
+    .map((groupKey) => ({
+      groupKey,
+      groupLabel: scenarioGroupLabel(groupKey),
+      items: scenarios.filter((scenario) => scenarioGroupKey(scenario) === groupKey)
+    }))
+    .filter((group) => group.items.length > 0);
   const totalOptionCount = scenarios.reduce((acc, scenario) => acc + scenario.options.length, 0);
   const resolvedScope = resolveScope({
     audienceScope: matchup.audience_scope,
@@ -179,6 +294,9 @@ export default async function MatchupPage({ params, searchParams }) {
   if (demoState) {
     scenarioBadges.push(toScenarioBadge(`demo_state=${demoState}`, demoState === "ready" ? "ok" : "info"));
   }
+  if (scenarioDemo) {
+    scenarioBadges.push(toScenarioBadge(`scenario_demo=${scenarioDemo}`, scenarioDemo === "triad" ? "ok" : "info"));
+  }
 
   let scenarioCopy = "";
   if (isOfficialScenario) {
@@ -196,6 +314,11 @@ export default async function MatchupPage({ params, searchParams }) {
       sourceDemo === "nesdc" ? "중앙선관위/NESDC" : sourceDemo === "article" ? "기사" : "기본";
     const stateLabel = demoState === "ready" ? "ready(노출 준비 완료)" : demoState || "기본";
     scenarioCopy = `상태 시나리오: ${confirmLabel} · ${sourceLabel} · ${stateLabel}`;
+  }
+  if (scenarioDemo === "triad") {
+    scenarioCopy = scenarioCopy
+      ? `${scenarioCopy} · 시나리오 블록: 양자2 + 다자1`
+      : "시나리오 블록 데모: 양자 2개 + 다자 1개";
   }
 
   return (
@@ -252,62 +375,74 @@ export default async function MatchupPage({ params, searchParams }) {
                 : "데이터 없음: 후보별 지표가 아직 수집되지 않았습니다."}
             </div>
           ) : (
-            <div className="stack">
-              {scenarios.map((scenario, scenarioIndex) => {
-                const maxValue = Math.max(...scenario.options.map((option) => option.value_mid || 0), 1);
-                const scenarioTypeLabel = scenario.scenario_type === "head_to_head" ? "양자대결" : "다자대결";
-                return (
-                  <section key={`${scenario.scenario_key}-${scenarioIndex}`}>
-                    <div className="badge-row option-row-meta">
-                      <span className="state-badge info">{scenarioTypeLabel}</span>
-                      <span className="state-badge ok">{scenario.scenario_title || "시나리오"}</span>
-                    </div>
-                    <ul className="option-bars">
-                      {scenario.options.map((option, optionIndex) => {
-                        const width = Math.max(6, Math.round(((option.value_mid || 0) / maxValue) * 100));
-                        const review = optionNeedsReview(matchup, option);
-                        const candidateHref = buildCandidateDetailHref(option.candidate_id, matchup.matchup_id);
-                        return (
-                          <li key={`${scenario.scenario_key}-${option.candidate_id || option.option_name}-${optionIndex}`}>
-                            <div className="option-row-head">
-                              <strong>
-                                {candidateHref ? (
-                                  <Link href={candidateHref} className="text-link small">
-                                    {option.option_name}
-                                  </Link>
-                                ) : (
-                                  option.option_name
-                                )}
-                              </strong>
-                              <span>{formatPercent(option.value_mid)}</span>
-                            </div>
-                            <div className="bar-track">
-                              <span className="bar-fill" style={{ width: `${width}%` }} />
-                            </div>
+            <div className="scenario-group-stack">
+              {groupedScenarios.map((group) => (
+                <section key={group.groupKey} className="scenario-group">
+                  <header className="scenario-group-head">
+                    <h4>{group.groupLabel}</h4>
+                    <span className="state-badge info">{group.items.length}개 시나리오</span>
+                  </header>
+                  <div className="scenario-card-grid">
+                    {group.items.map((scenario, scenarioIndex) => {
+                      const maxValue = Math.max(...scenario.options.map((option) => option.value_mid || 0), 1);
+                      const scenarioType = scenarioTypeLabel(scenario);
+                      return (
+                        <article key={`${scenario.scenario_key}-${scenarioIndex}`} className="scenario-block">
+                          <div className="scenario-block-head">
                             <div className="badge-row option-row-meta">
-                              <span className={`state-badge ${sourceTone(matchup)}`}>{sourceLabel(matchup)}</span>
-                              <span className={`state-badge ${officialTone(matchup.is_official_confirmed)}`}>{officialLabel(matchup.is_official_confirmed)}</span>
-                              {review ? <span className="state-badge warn">검수대기</span> : null}
-                              {!option.candidate_id ? <span className="state-badge warn">candidate_id 누락</span> : null}
+                              <span className="state-badge info">{scenarioType}</span>
+                              <span className="state-badge ok">{scenario.scenario_title || "시나리오"}</span>
                             </div>
-                            <p className="muted-text">정당: {option.party_name || "미확정(검수대기)"}</p>
-                            <p className="muted-text">원문: {option.value_raw || "-"}</p>
-                            {candidateHref ? (
-                              <Link href={candidateHref} className="text-link small">
-                                프로필
-                              </Link>
-                            ) : (
-                              <button type="button" className="text-link small" disabled title="candidate_id가 없어 이동할 수 없습니다.">
-                                프로필
-                              </button>
-                            )}
-                          </li>
-                        );
-                      })}
-                    </ul>
-                  </section>
-                );
-              })}
+                          </div>
+                          <ul className="option-bars scenario-options">
+                            {scenario.options.map((option, optionIndex) => {
+                              const width = Math.max(6, Math.round(((option.value_mid || 0) / maxValue) * 100));
+                              const review = optionNeedsReview(matchup, option);
+                              const candidateHref = buildCandidateDetailHref(option.candidate_id, matchup.matchup_id);
+                              return (
+                                <li key={`${scenario.scenario_key}-${option.candidate_id || option.option_name}-${optionIndex}`}>
+                                  <div className="option-row-head">
+                                    <strong>
+                                      {candidateHref ? (
+                                        <Link href={candidateHref} className="text-link small">
+                                          {option.option_name}
+                                        </Link>
+                                      ) : (
+                                        option.option_name
+                                      )}
+                                    </strong>
+                                    <span>{formatPercent(option.value_mid)}</span>
+                                  </div>
+                                  <div className="bar-track">
+                                    <span className="bar-fill" style={{ width: `${width}%` }} />
+                                  </div>
+                                  <div className="badge-row option-row-meta">
+                                    <span className={`state-badge ${sourceTone(matchup)}`}>{sourceLabel(matchup)}</span>
+                                    <span className={`state-badge ${officialTone(matchup.is_official_confirmed)}`}>{officialLabel(matchup.is_official_confirmed)}</span>
+                                    {review ? <span className="state-badge warn">검수대기</span> : null}
+                                    {!option.candidate_id ? <span className="state-badge warn">candidate_id 누락</span> : null}
+                                  </div>
+                                  <p className="muted-text">정당: {option.party_name || "미확정(검수대기)"}</p>
+                                  <p className="muted-text">원문: {option.value_raw || "-"}</p>
+                                  {candidateHref ? (
+                                    <Link href={candidateHref} className="text-link small">
+                                      프로필
+                                    </Link>
+                                  ) : (
+                                    <button type="button" className="text-link small" disabled title="candidate_id가 없어 이동할 수 없습니다.">
+                                      프로필
+                                    </button>
+                                  )}
+                                </li>
+                              );
+                            })}
+                          </ul>
+                        </article>
+                      );
+                    })}
+                  </div>
+                </section>
+              ))}
             </div>
           )}
         </article>

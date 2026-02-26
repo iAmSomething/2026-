@@ -516,12 +516,59 @@ main {
   gap: 10px;
 }
 
+.scenario-group-stack {
+  display: grid;
+  gap: 12px;
+  margin-top: 10px;
+}
+
+.scenario-group {
+  border: 1px solid #d6e4f1;
+  border-radius: 12px;
+  background: #f8fbff;
+  padding: 12px;
+}
+
+.scenario-group-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.scenario-group-head h4 {
+  margin: 0;
+  font-size: 0.95rem;
+  color: #1e293b;
+}
+
+.scenario-card-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.scenario-block {
+  border: 1px solid #dbe7f2;
+  border-radius: 10px;
+  background: #fff;
+  padding: 10px;
+}
+
 .option-bars {
   list-style: none;
   margin: 0;
   padding: 0;
   display: grid;
   gap: 12px;
+}
+
+.scenario-options > li {
+  border: 1px solid #e4edf6;
+  border-radius: 10px;
+  padding: 10px;
+  background: #fcfeff;
 }
 
 .option-row-head {
@@ -715,6 +762,10 @@ main {
 
   .hero-actions {
     flex-wrap: wrap;
+  }
+
+  .scenario-card-grid {
+    grid-template-columns: 1fr;
   }
 }
 
