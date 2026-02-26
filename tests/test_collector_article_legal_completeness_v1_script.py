@@ -12,8 +12,10 @@ def _record(
     *,
     key: str,
     pollster: str | None,
+    sponsor: str | None,
     survey_end_date: str | None,
     sample_size: int | None,
+    method: str | None,
     response_rate: float | None,
     margin_of_error: float | None,
     raw_text: str,
@@ -44,6 +46,8 @@ def _record(
             "sample_size": sample_size,
             "response_rate": response_rate,
             "margin_of_error": margin_of_error,
+            "sponsor": sponsor,
+            "method": method,
             "region_code": "11-000",
             "office_type": "광역자치단체장",
             "matchup_id": "20260603|광역자치단체장|11-000",
@@ -54,7 +58,7 @@ def _record(
     }
 
 
-def test_completeness_threshold_routes_review_queue(tmp_path: Path) -> None:
+def test_legal_required_fields_routes_missing_and_tracks_missing_reason(tmp_path: Path) -> None:
     payload = {
         "run_type": "collector_bootstrap",
         "extractor_version": "x",
@@ -63,20 +67,24 @@ def test_completeness_threshold_routes_review_queue(tmp_path: Path) -> None:
             _record(
                 key="obs-good",
                 pollster="한국갤럽",
+                sponsor="서울신문",
                 survey_end_date="2026-02-20",
                 sample_size=1000,
+                method="전화면접조사",
                 response_rate=12.3,
                 margin_of_error=3.1,
-                raw_text="의뢰자: 서울신문",
+                raw_text="의뢰기관 서울신문 조사기관 한국갤럽 표본수 1,000명 응답률 12.3% 오차범위 ±3.1%p 95% 신뢰수준",
             ),
             _record(
                 key="obs-bad",
                 pollster=None,
+                sponsor=None,
                 survey_end_date=None,
                 sample_size=None,
+                method=None,
                 response_rate=None,
                 margin_of_error=None,
-                raw_text="의뢰 정보 없음",
+                raw_text="관련 정보 없음",
             ),
         ],
     }
@@ -86,42 +94,38 @@ def test_completeness_threshold_routes_review_queue(tmp_path: Path) -> None:
     out = generate_collector_article_legal_completeness_v1_batch50(
         source_path=str(source),
         sample_size=2,
-        threshold=0.8,
+        threshold=0.9,
+        eval_sample_size=2,
     )
 
     assert out["report"]["completeness"]["threshold_miss_count"] == 1
     assert len(out["review_queue_candidates"]) == 1
-    assert out["review_queue_candidates"][0]["error_code"] == "LEGAL_COMPLETENESS_BELOW_THRESHOLD"
-    assert out["report"]["acceptance_checks"]["threshold_miss_review_queue_synced"] is True
-    assert out["report"]["acceptance_checks"]["legal_schema_injected_all"] is True
-    assert out["report"]["risk_signals"]["missing_or_abnormal_cases_present"] is True
-    assert out["report"]["risk_signals"]["threshold_miss_count"] == 1
+    assert out["review_queue_candidates"][0]["error_code"] == "LEGAL_REQUIRED_FIELDS_NEEDS_REVIEW"
+    assert out["report"]["acceptance_checks"]["missing_reason_coverage_eq_100"] is True
+
+    bad_obs = out["batch"]["records"][1]["observation"]
+    sponsor_schema = bad_obs["legal_required_schema"]["sponsor"]
+    assert sponsor_schema["missing_reason"] == "actor_not_found"
+    assert sponsor_schema["extraction_confidence"] == 0.0
 
 
-def test_completeness_schema_injection_and_reason_codes(tmp_path: Path) -> None:
+def test_legal_required_fields_routes_conflict_even_when_threshold_met(tmp_path: Path) -> None:
     payload = {
         "run_type": "collector_bootstrap",
         "extractor_version": "x",
         "llm_model": None,
         "records": [
             _record(
-                key="obs-1",
+                key="obs-conflict",
                 pollster="한국갤럽",
+                sponsor="서울신문",
                 survey_end_date="2026-02-20",
                 sample_size=1000,
+                method="전화면접조사",
                 response_rate=12.3,
                 margin_of_error=3.1,
-                raw_text="의뢰자: 서울신문",
-            ),
-            _record(
-                key="obs-2",
-                pollster="리얼미터",
-                survey_end_date="2026-02-20",
-                sample_size=1000,
-                response_rate=200.0,
-                margin_of_error=3.1,
-                raw_text="의뢰자: 부산일보",
-            ),
+                raw_text="의뢰기관 서울신문 조사기관 한국갤럽 표본수 1,000명 전화면접조사 응답률 22.0% 오차범위 ±3.1%p 95% 신뢰수준",
+            )
         ],
     }
     source = tmp_path / "source.json"
@@ -129,16 +133,50 @@ def test_completeness_schema_injection_and_reason_codes(tmp_path: Path) -> None:
 
     out = generate_collector_article_legal_completeness_v1_batch50(
         source_path=str(source),
-        sample_size=2,
+        sample_size=1,
         threshold=0.8,
+        eval_sample_size=1,
     )
 
-    rec1 = out["batch"]["records"][0]["observation"]
-    rec2 = out["batch"]["records"][1]["observation"]
+    obs = out["batch"]["records"][0]["observation"]
+    assert "response_rate" in obs["legal_conflict_fields"]
+    assert out["report"]["risk_signals"]["issue_row_count"] == 1
+    assert len(out["review_queue_candidates"]) == 1
 
-    assert rec1["legal_completeness_score"] == 1.0
-    assert rec1["legal_reason_code"] == "COMPLETE"
-    assert rec1["legal_required_schema"]["sponsor"]["is_present"] is True
 
-    assert rec2["legal_reason_code"] == "ABNORMAL_REQUIRED_FIELD_VALUE"
-    assert "response_rate" in rec2["legal_invalid_fields"]
+def test_legal_required_fields_reports_precision_recall_on_30_sample(tmp_path: Path) -> None:
+    records = [
+        _record(
+            key=f"obs-{idx}",
+            pollster="한국갤럽",
+            sponsor="서울신문",
+            survey_end_date="2026-02-20",
+            sample_size=1000,
+            method="전화면접조사",
+            response_rate=12.3,
+            margin_of_error=3.1,
+            raw_text="의뢰기관 서울신문 조사기관 한국갤럽 표본수 1,000명 전화면접조사 응답률 12.3% 오차범위 ±3.1%p 95% 신뢰수준",
+        )
+        for idx in range(35)
+    ]
+    payload = {
+        "run_type": "collector_bootstrap",
+        "extractor_version": "x",
+        "llm_model": None,
+        "records": records,
+    }
+    source = tmp_path / "source.json"
+    source.write_text(json.dumps(payload, ensure_ascii=False), encoding="utf-8")
+
+    out = generate_collector_article_legal_completeness_v1_batch50(
+        source_path=str(source),
+        sample_size=35,
+        threshold=0.9,
+        eval_sample_size=30,
+    )
+
+    pr = out["report"]["precision_recall"]
+    assert pr["sample_size"] == 30
+    assert out["report"]["acceptance_checks"]["eval_sample_size_eq_30"] is True
+    assert pr["micro_precision"] == 1.0
+    assert pr["micro_recall"] == 1.0

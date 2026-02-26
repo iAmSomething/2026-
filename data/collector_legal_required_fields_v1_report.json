@@ -1,0 +1,207 @@
+{
+  "run_type": "collector_legal_required_fields_v1",
+  "source_path": "data/collector_live_news_v1_payload.json",
+  "sample_size": 30,
+  "required_fields": [
+    "pollster",
+    "sponsor",
+    "survey_period",
+    "sample_size",
+    "method",
+    "response_rate",
+    "margin_of_error",
+    "confidence_level"
+  ],
+  "threshold": 0.9,
+  "completeness": {
+    "avg_score": 1.0,
+    "min_score": 1.0,
+    "max_score": 1.0,
+    "threshold_miss_count": 0,
+    "threshold_miss_rate": 0.0
+  },
+  "field_rates": {
+    "pollster": {
+      "present_count": 30,
+      "present_rate": 1.0,
+      "valid_count": 30,
+      "valid_rate": 1.0,
+      "missing_count": 0,
+      "missing_rate": 0.0,
+      "invalid_count": 0,
+      "invalid_rate": 0.0,
+      "conflict_count": 0,
+      "conflict_rate": 0.0
+    },
+    "sponsor": {
+      "present_count": 30,
+      "present_rate": 1.0,
+      "valid_count": 30,
+      "valid_rate": 1.0,
+      "missing_count": 0,
+      "missing_rate": 0.0,
+      "invalid_count": 0,
+      "invalid_rate": 0.0,
+      "conflict_count": 0,
+      "conflict_rate": 0.0
+    },
+    "survey_period": {
+      "present_count": 30,
+      "present_rate": 1.0,
+      "valid_count": 30,
+      "valid_rate": 1.0,
+      "missing_count": 0,
+      "missing_rate": 0.0,
+      "invalid_count": 0,
+      "invalid_rate": 0.0,
+      "conflict_count": 0,
+      "conflict_rate": 0.0
+    },
+    "sample_size": {
+      "present_count": 30,
+      "present_rate": 1.0,
+      "valid_count": 30,
+      "valid_rate": 1.0,
+      "missing_count": 0,
+      "missing_rate": 0.0,
+      "invalid_count": 0,
+      "invalid_rate": 0.0,
+      "conflict_count": 0,
+      "conflict_rate": 0.0
+    },
+    "method": {
+      "present_count": 30,
+      "present_rate": 1.0,
+      "valid_count": 30,
+      "valid_rate": 1.0,
+      "missing_count": 0,
+      "missing_rate": 0.0,
+      "invalid_count": 0,
+      "invalid_rate": 0.0,
+      "conflict_count": 0,
+      "conflict_rate": 0.0
+    },
+    "response_rate": {
+      "present_count": 30,
+      "present_rate": 1.0,
+      "valid_count": 30,
+      "valid_rate": 1.0,
+      "missing_count": 0,
+      "missing_rate": 0.0,
+      "invalid_count": 0,
+      "invalid_rate": 0.0,
+      "conflict_count": 0,
+      "conflict_rate": 0.0
+    },
+    "margin_of_error": {
+      "present_count": 30,
+      "present_rate": 1.0,
+      "valid_count": 30,
+      "valid_rate": 1.0,
+      "missing_count": 0,
+      "missing_rate": 0.0,
+      "invalid_count": 0,
+      "invalid_rate": 0.0,
+      "conflict_count": 0,
+      "conflict_rate": 0.0
+    },
+    "confidence_level": {
+      "present_count": 30,
+      "present_rate": 1.0,
+      "valid_count": 30,
+      "valid_rate": 1.0,
+      "missing_count": 0,
+      "missing_rate": 0.0,
+      "invalid_count": 0,
+      "invalid_rate": 0.0,
+      "conflict_count": 0,
+      "conflict_rate": 0.0
+    }
+  },
+  "reason_code_counts": {
+    "COMPLETE": 30
+  },
+  "review_queue_candidate_count": 0,
+  "inference_stats": {
+    "aggressive_inference_enabled": true,
+    "inferred_field_count": 201,
+    "inferred_row_count": 30
+  },
+  "precision_recall": {
+    "sample_size": 30,
+    "micro_precision": 1.0,
+    "micro_recall": 1.0,
+    "field_metrics": {
+      "pollster": {
+        "tp": 30,
+        "fp": 0,
+        "fn": 0,
+        "precision": 1.0,
+        "recall": 1.0
+      },
+      "sponsor": {
+        "tp": 30,
+        "fp": 0,
+        "fn": 0,
+        "precision": 1.0,
+        "recall": 1.0
+      },
+      "survey_period": {
+        "tp": 30,
+        "fp": 0,
+        "fn": 0,
+        "precision": 1.0,
+        "recall": 1.0
+      },
+      "sample_size": {
+        "tp": 30,
+        "fp": 0,
+        "fn": 0,
+        "precision": 1.0,
+        "recall": 1.0
+      },
+      "method": {
+        "tp": 30,
+        "fp": 0,
+        "fn": 0,
+        "precision": 1.0,
+        "recall": 1.0
+      },
+      "response_rate": {
+        "tp": 30,
+        "fp": 0,
+        "fn": 0,
+        "precision": 1.0,
+        "recall": 1.0
+      },
+      "margin_of_error": {
+        "tp": 30,
+        "fp": 0,
+        "fn": 0,
+        "precision": 1.0,
+        "recall": 1.0
+      },
+      "confidence_level": {
+        "tp": 30,
+        "fp": 0,
+        "fn": 0,
+        "precision": 1.0,
+        "recall": 1.0
+      }
+    }
+  },
+  "acceptance_checks": {
+    "sample_size_gte_30": true,
+    "eval_sample_size_eq_30": true,
+    "avg_completeness_ge_0_90": true,
+    "missing_reason_coverage_eq_100": true,
+    "missing_conflict_review_queue_synced": true,
+    "legal_schema_injected_all": true
+  },
+  "risk_signals": {
+    "missing_or_conflict_cases_present": false,
+    "issue_row_count": 0,
+    "threshold_miss_count": 0,
+    "threshold_miss_rate": 0.0
+  }
+}

@@ -1,0 +1,75 @@
+{
+  "run_type": "collector_legal_required_fields_v1_eval",
+  "source_path": "data/collector_live_news_v1_payload.json",
+  "sample_size": 30,
+  "required_fields": [
+    "pollster",
+    "sponsor",
+    "survey_period",
+    "sample_size",
+    "method",
+    "response_rate",
+    "margin_of_error",
+    "confidence_level"
+  ],
+  "micro_precision": 1.0,
+  "micro_recall": 1.0,
+  "field_metrics": {
+    "pollster": {
+      "tp": 30,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1.0,
+      "recall": 1.0
+    },
+    "sponsor": {
+      "tp": 30,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1.0,
+      "recall": 1.0
+    },
+    "survey_period": {
+      "tp": 30,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1.0,
+      "recall": 1.0
+    },
+    "sample_size": {
+      "tp": 30,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1.0,
+      "recall": 1.0
+    },
+    "method": {
+      "tp": 30,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1.0,
+      "recall": 1.0
+    },
+    "response_rate": {
+      "tp": 30,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1.0,
+      "recall": 1.0
+    },
+    "margin_of_error": {
+      "tp": 30,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1.0,
+      "recall": 1.0
+    },
+    "confidence_level": {
+      "tp": 30,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1.0,
+      "recall": 1.0
+    }
+  }
+}
