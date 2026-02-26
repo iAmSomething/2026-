@@ -43,11 +43,20 @@ DATABASE_URL=postgresql://postgres:postgres@127.0.0.1:5432/app \
 /Users/gimtaehun/election2026_codex/.venv/bin/pytest tests/test_api_routes.py tests/test_sync_common_codes.py
 ```
 2. 결과: `14 passed`.
-3. 문법검사:
+3. 전체 회귀:
+```bash
+SUPABASE_URL=https://example.supabase.co \
+SUPABASE_SERVICE_ROLE_KEY=test \
+DATA_GO_KR_KEY=test \
+DATABASE_URL=postgresql://postgres:postgres@127.0.0.1:5432/app \
+/Users/gimtaehun/election2026_codex/.venv/bin/pytest
+```
+4. 결과: `146 passed`.
+5. 문법검사:
 ```bash
 python3 -m py_compile app/services/data_go_common_codes.py scripts/sync_common_codes.py app/api/routes.py app/services/repository.py
 ```
-4. 결과: 성공.
+6. 결과: 성공.
 
 ## 5) 완료 기준 대비
 1. #270 재현 ID 케이스: API 계약상 404 대신 200(empty payload) 경로 구현 완료.

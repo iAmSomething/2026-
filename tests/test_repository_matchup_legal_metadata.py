@@ -25,6 +25,15 @@ class _Cursor:
                 "region_code": "11-000",
                 "office_type": "광역자치단체장",
                 "title": "서울시장 가상대결",
+                "is_active": True,
+            }
+        if self._step == 1:
+            self._step += 1
+            return {
+                "matchup_id": "m1",
+                "region_code": "11-000",
+                "office_type": "광역자치단체장",
+                "title": "서울시장 가상대결",
                 "pollster": "KBS",
                 "survey_start_date": date(2026, 2, 15),
                 "survey_end_date": date(2026, 2, 18),
@@ -100,4 +109,4 @@ def test_get_matchup_returns_legal_metadata_fields():
     assert out["options"][0]["party_inference_source"] == "name_rule"
     assert out["options"][0]["party_inference_confidence"] == 0.84
     assert out["options"][0]["needs_manual_review"] is False
-    assert len(conn.cur.execs) == 1
+    assert len(conn.cur.execs) == 2
