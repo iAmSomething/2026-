@@ -165,7 +165,7 @@ class RegionElectionOut(BaseModel):
 
 class MatchupOptionOut(BaseModel):
     option_name: str
-    candidate_id: str | None = None
+    candidate_id: str | None
     party_name: str | None = None
     scenario_key: str | None = None
     scenario_type: Literal["head_to_head", "multi_candidate"] | None = None

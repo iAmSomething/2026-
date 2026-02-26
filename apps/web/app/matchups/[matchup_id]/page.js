@@ -74,6 +74,13 @@ function optionNeedsReview(matchup, option) {
   return matchup?.is_official_confirmed === false && Number.isFinite(freshness) && freshness > 48;
 }
 
+function buildCandidateDetailHref(candidateId, matchupId) {
+  if (!candidateId) return null;
+  const candidatePath = `/candidates/${encodeURIComponent(candidateId)}`;
+  const query = `from=matchup&matchup_id=${encodeURIComponent(matchupId)}`;
+  return `${candidatePath}?${query}`;
+}
+
 export default async function MatchupPage({ params, searchParams }) {
   const resolvedParams = await params;
   const resolvedSearch = await searchParams;
@@ -255,10 +262,19 @@ export default async function MatchupPage({ params, searchParams }) {
                       {scenario.options.map((option, optionIndex) => {
                         const width = Math.max(6, Math.round(((option.value_mid || 0) / maxValue) * 100));
                         const review = optionNeedsReview(matchup, option);
+                        const candidateHref = buildCandidateDetailHref(option.candidate_id, matchup.matchup_id);
                         return (
                           <li key={`${scenario.scenario_key}-${option.candidate_id || option.option_name}-${optionIndex}`}>
                             <div className="option-row-head">
-                              <strong>{option.option_name}</strong>
+                              <strong>
+                                {candidateHref ? (
+                                  <Link href={candidateHref} className="text-link small">
+                                    {option.option_name}
+                                  </Link>
+                                ) : (
+                                  option.option_name
+                                )}
+                              </strong>
                               <span>{formatPercent(option.value_mid)}</span>
                             </div>
                             <div className="bar-track">
@@ -268,14 +284,19 @@ export default async function MatchupPage({ params, searchParams }) {
                               <span className={`state-badge ${sourceTone(matchup)}`}>{sourceLabel(matchup)}</span>
                               <span className={`state-badge ${officialTone(matchup.is_official_confirmed)}`}>{officialLabel(matchup.is_official_confirmed)}</span>
                               {review ? <span className="state-badge warn">검수대기</span> : null}
+                              {!option.candidate_id ? <span className="state-badge warn">candidate_id 누락</span> : null}
                             </div>
                             <p className="muted-text">정당: {option.party_name || "미확정(검수대기)"}</p>
                             <p className="muted-text">원문: {option.value_raw || "-"}</p>
-                            {option.candidate_id ? (
-                              <Link href={`/candidates/${option.candidate_id}`} className="text-link small">
-                                후보 상세 보기
+                            {candidateHref ? (
+                              <Link href={candidateHref} className="text-link small">
+                                프로필
                               </Link>
-                            ) : null}
+                            ) : (
+                              <button type="button" className="text-link small" disabled title="candidate_id가 없어 이동할 수 없습니다.">
+                                프로필
+                              </button>
+                            )}
                           </li>
                         );
                       })}
