@@ -121,6 +121,7 @@ jobs:
                   "elapsed_seconds": report.get("elapsed_seconds"),
                   "failure_class": report.get("failure_class") or "workflow_step_interrupted",
                   "failure_type": report.get("failure_type") or "workflow_interrupted",
+                  "cause_code": report.get("cause_code") or "unknown",
                   "failure_reason": report.get("failure_reason")
                   or "collector ingest step interrupted before runner classification persisted",
                   "timeout_attempts": sum(

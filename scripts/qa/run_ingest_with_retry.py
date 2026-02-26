@@ -30,6 +30,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--heartbeat-interval-seconds", type=float, default=30.0)
     parser.add_argument("--report", default="data/ingest_retry_report.json")
     parser.add_argument("--classification-artifact", default=None)
+    parser.add_argument("--comment-template-path", default=None)
     parser.add_argument("--dead-letter-dir", default="data/dead_letter")
     parser.add_argument("--disable-dead-letter", action="store_true")
     parser.add_argument("--allow-partial-success", action="store_true")
@@ -118,6 +119,7 @@ def write_failure_classification_artifact(
             "job_status": item.job_status,
             "failure_class": item.failure_class,
             "failure_type": item.failure_type,
+            "cause_code": item.cause_code,
             "retryable": item.retryable,
             "next_backoff_seconds": item.next_backoff_seconds,
             "error": item.error,
@@ -142,6 +144,7 @@ def write_failure_classification_artifact(
             "elapsed_seconds": result.elapsed_seconds,
             "failure_class": result.failure_class,
             "failure_type": result.failure_type,
+            "cause_code": result.cause_code,
             "failure_reason": result.failure_reason,
             "timeout_attempts": timeout_attempts,
             "failure_class_counts": failure_counts,
@@ -150,6 +153,48 @@ def write_failure_classification_artifact(
         "attempt_timeline": attempt_timeline,
     }
     target.write_text(json.dumps(artifact, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    return target
+
+
+def write_failure_comment_template(
+    *,
+    path: str | Path,
+    report_path: str,
+    classification_artifact_path: str | None,
+    dead_letter_path: str | None,
+    result,
+) -> Path:
+    target = Path(path)
+    target.parent.mkdir(parents=True, exist_ok=True)
+    run_url = (
+        f"{os.getenv('GITHUB_SERVER_URL', 'https://github.com')}/"
+        f"{os.getenv('GITHUB_REPOSITORY', '')}/actions/runs/{os.getenv('GITHUB_RUN_ID', '')}"
+    )
+    lines = [
+        "[DEVELOP][INGEST FAILURE TEMPLATE]",
+        "report_path: develop_report/YYYY-MM-DD_issueNNN_ingest_failure_report.md",
+        "evidence:",
+        f"- workflow_run: {run_url}",
+        f"- ingest_report: `{report_path}`",
+    ]
+    if classification_artifact_path:
+        lines.append(f"- classification_artifact: `{classification_artifact_path}`")
+    if dead_letter_path:
+        lines.append(f"- dead_letter: `{dead_letter_path}`")
+    lines.extend(
+        [
+            f"- failure_class: `{result.failure_class}`",
+            f"- failure_type: `{result.failure_type}`",
+            f"- cause_code: `{result.cause_code}`",
+            f"- failure_reason: `{result.failure_reason}`",
+            "next_status: status/in-progress",
+            "",
+            "# Summary",
+            "1. cause_code 기반으로 DB/Auth/Schema/Timeout 조치 대상을 분리합니다.",
+            "2. 동일 유형 재실행에서 cause_code 일치 여부를 확인합니다.",
+        ]
+    )
+    target.write_text("\n".join(lines) + "\n", encoding="utf-8")
     return target
 
 
@@ -208,6 +253,7 @@ def main() -> int:
         "attempt_count": len(result.attempts),
         "failure_class": result.failure_class,
         "failure_type": result.failure_type,
+        "cause_code": result.cause_code,
         "failure_reason": result.failure_reason,
     }
     if result.attempts:
@@ -216,6 +262,7 @@ def main() -> int:
             "attempt": last.attempt,
             "http_status": last.http_status,
             "job_status": last.job_status,
+            "cause_code": last.cause_code,
             "error": last.error,
             "detail": last.detail,
         }
@@ -223,6 +270,7 @@ def main() -> int:
         output["accepted_partial_success"] = True
 
     dead_letter_path: str | None = None
+    artifact_path: str | None = None
     if not success and not args.disable_dead_letter:
         dead_letter_path = write_dead_letter_record(
             dead_letter_dir=args.dead_letter_dir,
@@ -234,7 +282,8 @@ def main() -> int:
         dead_letter_path = str(dead_letter_path)
         output["dead_letter_path"] = dead_letter_path
     if args.classification_artifact:
-        artifact_path = write_failure_classification_artifact(
+        artifact_path = str(
+            write_failure_classification_artifact(
             path=args.classification_artifact,
             source_input_path=args.input,
             payload=payload,
@@ -242,8 +291,18 @@ def main() -> int:
             success=success,
             raw_success=result.success,
             dead_letter_path=dead_letter_path,
+            )
         )
-        output["classification_artifact"] = str(artifact_path)
+        output["classification_artifact"] = artifact_path
+    if not success and args.comment_template_path:
+        template_path = write_failure_comment_template(
+            path=args.comment_template_path,
+            report_path=args.report,
+            classification_artifact_path=artifact_path,
+            dead_letter_path=dead_letter_path,
+            result=result,
+        )
+        output["comment_template_path"] = str(template_path)
     output["elapsed_seconds"] = round(time.monotonic() - started_monotonic, 3)
     print(json.dumps(output, ensure_ascii=False))
     return 0 if success else 1
