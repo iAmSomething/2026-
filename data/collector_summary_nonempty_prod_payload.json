@@ -1,0 +1,109 @@
+{
+  "run_type": "collector_summary_nonempty_prod",
+  "extractor_version": "collector-summary-nonempty-prod-v1",
+  "llm_model": null,
+  "records": [
+    {
+      "article": {
+        "url": "https://www.nesdc.go.kr/portal/main.do",
+        "title": "전국지표조사(NBS) 2026년 2월 4주 결과",
+        "publisher": "NBS",
+        "published_at": "2026-02-26T09:00:00+09:00",
+        "raw_text": "보조출처: https://www.mk.co.kr/news/politics/11972663 https://news.nate.com/view/20260226n15513 https://www.donga.com/news/Politics/article/all/20260226/133427602/2",
+        "raw_hash": "summary-nonempty-prod-v1"
+      },
+      "region": {
+        "region_code": "11-000",
+        "sido_name": "서울특별시",
+        "sigungu_name": "전체",
+        "admin_level": "sido",
+        "parent_region_code": null
+      },
+      "candidates": [],
+      "observation": {
+        "observation_key": "obs-summary-nonempty-20260225-nbs",
+        "survey_name": "전국지표조사(NBS) 2월 4주",
+        "pollster": "NBS",
+        "survey_start_date": "2026-02-23",
+        "survey_end_date": "2026-02-25",
+        "sample_size": 1002,
+        "response_rate": 14.9,
+        "margin_of_error": 3.1,
+        "sponsor": "NBS",
+        "method": "휴대전화 가상번호 100% 전화면접",
+        "region_code": "11-000",
+        "office_type": "광역자치단체장",
+        "matchup_id": "20260603|광역자치단체장|11-000",
+        "audience_scope": "national",
+        "audience_region_code": null,
+        "sampling_population_text": "전국 만 18세 이상 남녀",
+        "legal_completeness_score": 0.86,
+        "legal_filled_count": 7,
+        "legal_required_count": 7,
+        "date_resolution": "exact",
+        "date_inference_mode": null,
+        "date_inference_confidence": null,
+        "source_channel": "nesdc",
+        "source_channels": [
+          "nesdc",
+          "article"
+        ],
+        "official_release_at": "2026-02-26T09:00:00+09:00",
+        "verified": true,
+        "source_grade": "A"
+      },
+      "options": [
+        {
+          "option_type": "party_support",
+          "option_name": "더불어민주당",
+          "value_raw": "45%"
+        },
+        {
+          "option_type": "party_support",
+          "option_name": "국민의힘",
+          "value_raw": "17%"
+        },
+        {
+          "option_type": "party_support",
+          "option_name": "조국혁신당",
+          "value_raw": "4%"
+        },
+        {
+          "option_type": "party_support",
+          "option_name": "개혁신당",
+          "value_raw": "3%"
+        },
+        {
+          "option_type": "party_support",
+          "option_name": "진보당",
+          "value_raw": "1%"
+        },
+        {
+          "option_type": "party_support",
+          "option_name": "태도유보",
+          "value_raw": "27%"
+        },
+        {
+          "option_type": "president_job_approval",
+          "option_name": "대통령 직무 긍정평가",
+          "value_raw": "67%"
+        },
+        {
+          "option_type": "president_job_approval",
+          "option_name": "대통령 직무 부정평가",
+          "value_raw": "25%"
+        },
+        {
+          "option_type": "election_frame",
+          "option_name": "국정안정론",
+          "value_raw": "53%"
+        },
+        {
+          "option_type": "election_frame",
+          "option_name": "국정견제론",
+          "value_raw": "34%"
+        }
+      ]
+    }
+  ]
+}

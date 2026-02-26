@@ -1,0 +1,78 @@
+{
+  "party_support": [
+    {
+      "option_name": "더불어민주당",
+      "value_raw": "45%",
+      "survey_end_date": "2026-02-25",
+      "audience_scope": "national",
+      "source_priority": "mixed"
+    },
+    {
+      "option_name": "국민의힘",
+      "value_raw": "17%",
+      "survey_end_date": "2026-02-25",
+      "audience_scope": "national",
+      "source_priority": "mixed"
+    },
+    {
+      "option_name": "조국혁신당",
+      "value_raw": "4%",
+      "survey_end_date": "2026-02-25",
+      "audience_scope": "national",
+      "source_priority": "mixed"
+    },
+    {
+      "option_name": "개혁신당",
+      "value_raw": "3%",
+      "survey_end_date": "2026-02-25",
+      "audience_scope": "national",
+      "source_priority": "mixed"
+    },
+    {
+      "option_name": "진보당",
+      "value_raw": "1%",
+      "survey_end_date": "2026-02-25",
+      "audience_scope": "national",
+      "source_priority": "mixed"
+    },
+    {
+      "option_name": "태도유보",
+      "value_raw": "27%",
+      "survey_end_date": "2026-02-25",
+      "audience_scope": "national",
+      "source_priority": "mixed"
+    }
+  ],
+  "president_job_approval": [
+    {
+      "option_name": "대통령 직무 긍정평가",
+      "value_raw": "67%",
+      "survey_end_date": "2026-02-25",
+      "audience_scope": "national",
+      "source_priority": "mixed"
+    },
+    {
+      "option_name": "대통령 직무 부정평가",
+      "value_raw": "25%",
+      "survey_end_date": "2026-02-25",
+      "audience_scope": "national",
+      "source_priority": "mixed"
+    }
+  ],
+  "election_frame": [
+    {
+      "option_name": "국정안정론",
+      "value_raw": "53%",
+      "survey_end_date": "2026-02-25",
+      "audience_scope": "national",
+      "source_priority": "mixed"
+    },
+    {
+      "option_name": "국정견제론",
+      "value_raw": "34%",
+      "survey_end_date": "2026-02-25",
+      "audience_scope": "national",
+      "source_priority": "mixed"
+    }
+  ]
+}
