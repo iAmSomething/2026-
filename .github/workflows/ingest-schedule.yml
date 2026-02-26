@@ -57,6 +57,17 @@ jobs:
           echo "::error::API server failed to start"
           exit 1
 
+      - name: DB preflight via health/db
+        run: |
+          DB_HEALTH_STATUS="$(curl -sS -o /tmp/ingest-schedule-health-db.json -w "%{http_code}" http://127.0.0.1:8100/health/db || true)"
+          echo "health_db_http_status=${DB_HEALTH_STATUS}"
+          echo "===== /tmp/ingest-schedule-health-db.json ====="
+          cat /tmp/ingest-schedule-health-db.json || true
+          if [ "${DB_HEALTH_STATUS}" != "200" ]; then
+            echo "::error::DB preflight failed (/health/db status=${DB_HEALTH_STATUS})"
+            exit 1
+          fi
+
       - name: Run scheduled ingest with retry
         run: |
           .venv/bin/python scripts/qa/run_ingest_with_retry.py \

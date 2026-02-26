@@ -30,6 +30,16 @@ def _classify_connection_error(exc: psycopg.Error) -> str:
         return "invalid_host_or_uri"
     if "connection refused" in message:
         return "connection_refused"
+    if "password authentication failed" in message:
+        return "auth_failed"
+    if "authentication failed" in message:
+        return "auth_error"
+    if "no pg_hba.conf entry" in message:
+        return "auth_error"
+    if "server closed the connection unexpectedly" in message:
+        return "network_error"
+    if "connection reset by peer" in message:
+        return "network_error"
     if "timeout expired" in message or "timed out" in message:
         return "network_timeout"
     if "sslmode" in message or ("ssl" in message and "required" in message):
@@ -77,7 +87,10 @@ def get_connection():
         conn = psycopg.connect(database_url, row_factory=dict_row)
     except psycopg.Error as exc:
         reason = _classify_connection_error(exc)
-        raise DatabaseConnectionError(f"database connection failed ({reason})") from exc
+        message = " ".join(str(exc).split())
+        if len(message) > 180:
+            message = message[:177] + "..."
+        raise DatabaseConnectionError(f"database connection failed ({reason}): {message}") from exc
 
     try:
         yield conn
