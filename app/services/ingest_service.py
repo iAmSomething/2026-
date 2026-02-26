@@ -45,6 +45,10 @@ CANDIDATE_NOISE_CONTAINS_TOKENS = {
     "지지율",
 }
 SCENARIO_NAME_RE = re.compile(r"[가-힣]{2,6}")
+SCENARIO_H2H_PAIR_RE = re.compile(
+    r"([가-힣]{2,6})\s*([0-9]{1,2}(?:\.[0-9]+)?)\s*%?\s*[-~]\s*([가-힣]{2,6})\s*([0-9]{1,2}(?:\.[0-9]+)?)\s*%?"
+)
+SCENARIO_MULTI_SINGLE_RE = re.compile(r"다자대결[^가-힣0-9%]*([가-힣]{2,6})\s*([0-9]{1,2}(?:\.[0-9]+)?)\s*%?")
 DEFAULT_SG_TYPECODES = ("3", "4", "5")
 OFFICE_TYPE_TO_SG_TYPECODES = {
     "광역자치단체장": ("3", "4"),
@@ -349,6 +353,83 @@ def _scenario_value(option: dict[str, Any]) -> float:
         return float("-inf")
 
 
+def _extract_h2h_pairs(survey_name: str) -> list[tuple[str, float, str, float]]:
+    pairs: list[tuple[str, float, str, float]] = []
+    seen: set[tuple[str, float, str, float]] = set()
+    for match in SCENARIO_H2H_PAIR_RE.finditer(survey_name):
+        left_name = _scenario_name_token(match.group(1))
+        right_name = _scenario_name_token(match.group(3))
+        if not left_name or not right_name or left_name == right_name:
+            continue
+        try:
+            left_value = float(match.group(2))
+            right_value = float(match.group(4))
+        except (TypeError, ValueError):
+            continue
+        key = (left_name, left_value, right_name, right_value)
+        if key in seen:
+            continue
+        seen.add(key)
+        pairs.append(key)
+    return pairs
+
+
+def _extract_multi_anchor(survey_name: str) -> tuple[str, float] | None:
+    match = SCENARIO_MULTI_SINGLE_RE.search(survey_name)
+    if not match:
+        return None
+    name = _scenario_name_token(match.group(1))
+    if not name:
+        return None
+    try:
+        value = float(match.group(2))
+    except (TypeError, ValueError):
+        return None
+    return name, value
+
+
+def _match_candidate_index(
+    *,
+    options: list[dict[str, Any]],
+    candidate_indexes: list[int],
+    names_by_index: dict[int, str],
+    name: str,
+    value: float,
+    exclude: set[int],
+) -> int | None:
+    candidates = [i for i in candidate_indexes if i not in exclude and names_by_index.get(i) == name]
+    if not candidates:
+        return None
+    exact = [i for i in candidates if abs(_scenario_value(options[i]) - value) <= 0.15]
+    if not exact:
+        return None
+    exact.sort(key=lambda i: abs(_scenario_value(options[i]) - value))
+    return exact[0]
+
+
+def _clone_candidate_option(
+    *,
+    options: list[dict[str, Any]],
+    candidate_indexes: list[int],
+    names_by_index: dict[int, str],
+    name: str,
+    value: float,
+) -> int | None:
+    template_indexes = [i for i in candidate_indexes if names_by_index.get(i) == name]
+    if not template_indexes:
+        return None
+    template_indexes.sort(key=lambda i: abs(_scenario_value(options[i]) - value))
+    row = dict(options[template_indexes[0]])
+    row["option_name"] = name
+    row["value_mid"] = value
+    row["value_raw"] = f"{value:.1f}%"
+    row["scenario_key"] = "default"
+    row["scenario_type"] = None
+    row["scenario_title"] = None
+    options.append(row)
+    return len(options) - 1
+
+
 def _repair_candidate_matchup_scenarios(
     *,
     survey_name: str | None,
@@ -373,6 +454,117 @@ def _repair_candidate_matchup_scenarios(
         if not name:
             continue
         counts[name] = counts.get(name, 0) + 1
+
+    # Enhanced split: when survey text includes multiple explicit h2h pairs + multi,
+    # materialize separate scenario groups (h2h/h2h/multi) even if source options are under default.
+    h2h_pairs = _extract_h2h_pairs(text)
+    if "다자대결" in text and len(h2h_pairs) >= 2:
+        assigned = False
+        used_indexes: set[int] = set()
+        anchor_for_multi: str | None = None
+        candidate_indexes_all = list(candidate_indexes)
+        names_all = dict(names_by_index)
+
+        for left_name, left_value, right_name, right_value in h2h_pairs:
+            left_idx = _match_candidate_index(
+                options=options,
+                candidate_indexes=candidate_indexes_all,
+                names_by_index=names_all,
+                name=left_name,
+                value=left_value,
+                exclude=used_indexes,
+            )
+            if left_idx is None:
+                left_idx = _clone_candidate_option(
+                    options=options,
+                    candidate_indexes=candidate_indexes_all,
+                    names_by_index=names_all,
+                    name=left_name,
+                    value=left_value,
+                )
+                if left_idx is not None:
+                    candidate_indexes_all.append(left_idx)
+                    names_all[left_idx] = left_name
+
+            right_idx = _match_candidate_index(
+                options=options,
+                candidate_indexes=candidate_indexes_all,
+                names_by_index=names_all,
+                name=right_name,
+                value=right_value,
+                exclude=used_indexes,
+            )
+            if right_idx is None:
+                right_idx = _clone_candidate_option(
+                    options=options,
+                    candidate_indexes=candidate_indexes_all,
+                    names_by_index=names_all,
+                    name=right_name,
+                    value=right_value,
+                )
+                if right_idx is not None:
+                    candidate_indexes_all.append(right_idx)
+                    names_all[right_idx] = right_name
+
+            if left_idx is None or right_idx is None or left_idx == right_idx:
+                continue
+
+            scenario_key = f"h2h-{left_name}-{right_name}"
+            scenario_title = f"{left_name} vs {right_name}"
+            for idx, option_name, option_value in (
+                (left_idx, left_name, left_value),
+                (right_idx, right_name, right_value),
+            ):
+                row = options[idx]
+                row["option_name"] = option_name
+                row["value_mid"] = option_value
+                row["value_raw"] = f"{option_value:.1f}%"
+                row["scenario_key"] = scenario_key
+                row["scenario_type"] = "head_to_head"
+                row["scenario_title"] = scenario_title
+                used_indexes.add(idx)
+            if anchor_for_multi is None:
+                anchor_for_multi = left_name
+            assigned = True
+
+        multi_indexes = [i for i in candidate_indexes_all if i not in used_indexes and names_all.get(i)]
+        multi_anchor = _extract_multi_anchor(text)
+        if multi_anchor is not None:
+            multi_name, multi_value = multi_anchor
+            multi_idx = _match_candidate_index(
+                options=options,
+                candidate_indexes=candidate_indexes_all,
+                names_by_index=names_all,
+                name=multi_name,
+                value=multi_value,
+                exclude=used_indexes,
+            )
+            if multi_idx is None:
+                multi_idx = _clone_candidate_option(
+                    options=options,
+                    candidate_indexes=candidate_indexes_all,
+                    names_by_index=names_all,
+                    name=multi_name,
+                    value=multi_value,
+                )
+                if multi_idx is not None:
+                    candidate_indexes_all.append(multi_idx)
+                    names_all[multi_idx] = multi_name
+            if multi_idx is not None and multi_idx not in multi_indexes:
+                multi_indexes.append(multi_idx)
+                row = options[multi_idx]
+                row["option_name"] = multi_name
+                row["value_mid"] = multi_value
+                row["value_raw"] = f"{multi_value:.1f}%"
+
+        if assigned and multi_indexes:
+            multi_key = f"multi-{anchor_for_multi or names_all.get(multi_indexes[0]) or '후보'}"
+            for idx in multi_indexes:
+                row = options[idx]
+                row["scenario_key"] = multi_key
+                row["scenario_type"] = "multi_candidate"
+                row["scenario_title"] = "다자대결"
+            return True
 
     duplicate_names = [name for name, cnt in counts.items() if cnt >= 2]
     if not duplicate_names:
@@ -533,18 +725,19 @@ def ingest_payload(payload: IngestPayload, repo) -> IngestResult:
             party_inference_low_confidence: list[tuple[str, float]] = []
             option_type_manual_review: list[tuple[str, str]] = []
             candidate_verify_manual_review: list[tuple[str, str]] = []
-            normalized_rows: list[tuple[dict[str, Any], str | None]] = []
+            normalized_options: list[dict[str, Any]] = []
+            classification_reason_by_id: dict[int, str | None] = {}
             for option in record.options:
                 normalized_option, classification_reason = _normalize_option(option)
-                normalized_rows.append((normalized_option, classification_reason))
-
-            normalized_options = [row for row, _ in normalized_rows]
+                normalized_options.append(normalized_option)
+                classification_reason_by_id[id(normalized_option)] = classification_reason
             _repair_candidate_matchup_scenarios(
                 survey_name=record.observation.survey_name,
                 options=normalized_options,
             )
 
-            for normalized_option, classification_reason in normalized_rows:
+            for normalized_option in normalized_options:
+                classification_reason = classification_reason_by_id.get(id(normalized_option))
                 candidate_verify_reason = _apply_candidate_verification(
                     option_payload=normalized_option,
                     record=record,

@@ -57,7 +57,9 @@ def test_build_live_coverage_v2_pack_repairs_scenario_mixing_for_26710() -> None
     scenario_keys = {o.get("scenario_key") for o in scenario_rows}
     scenario_types = {o.get("scenario_type") for o in scenario_rows}
     assert "default" not in scenario_keys
-    assert any(str(key).startswith("h2h-") for key in scenario_keys)
+    assert "h2h-전재수-박형준" in scenario_keys
+    assert "h2h-전재수-김도읍" in scenario_keys
     assert any(str(key).startswith("multi-") for key in scenario_keys)
+    assert len(scenario_keys) >= 3
     assert "head_to_head" in scenario_types
     assert "multi_candidate" in scenario_types
