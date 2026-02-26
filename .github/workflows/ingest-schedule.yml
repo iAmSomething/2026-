@@ -71,7 +71,14 @@ jobs:
             --dead-letter-dir data/dead_letter \
             --report data/ingest_schedule_report.json
 
+      - name: Dump API server log on failure
+        if: failure()
+        run: |
+          echo "===== /tmp/ingest-schedule-api.log ====="
+          cat /tmp/ingest-schedule-api.log || true
+
       - name: Upload ingest report artifact
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: ingest-schedule-report
@@ -81,6 +88,7 @@ jobs:
           if-no-files-found: error
 
       - name: Upload dead-letter artifact (optional)
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: ingest-schedule-dead-letter
