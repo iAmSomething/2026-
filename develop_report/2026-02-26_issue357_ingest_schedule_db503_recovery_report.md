@@ -62,3 +62,19 @@ source .venv313/bin/activate && pytest tests/test_db_url_normalization.py tests/
 - 코드 상 비밀번호 인코딩 복구 로직 반영은 완료.
 - 그러나 운영 secret/접속 대상 상태가 여전히 유효하지 않아 green run 미달성.
 - 다음 액션: 진단 강화 워크플로 반영 후 workflow_dispatch 재실행 + 로그 기반 시크릿 교정.
+
+## 8. DB 접속 실패 reason 분류 추가
+1. 배경
+- API 로그에는 503만 남고 원인 분류가 없어 시크릿/네트워크/SSL 중 즉시 판별이 어려움.
+
+2. 변경
+- `app/db.py`
+  - `_classify_connection_error()` 추가
+  - `DatabaseConnectionError` 메시지에 분류코드 포함:
+    - `auth_failed`, `auth_error`, `invalid_host_or_uri`, `connection_refused`, `network_timeout`, `ssl_required`, `unknown`
+- `tests/test_db_url_normalization.py`
+  - 분류 로직 단위테스트 추가
+
+3. 기대효과
+- Ingest Schedule 실패 시 runner detail에 `database connection failed (<reason>)` 노출
+- secret 오입력/호스트 오기입/네트워크 계열을 즉시 분기 가능
