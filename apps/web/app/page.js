@@ -682,12 +682,51 @@ function QualityPanel({ quality }) {
   );
 }
 
+function HomeLoadingDemoState() {
+  return (
+    <main className="dashboard-root">
+      <section className="panel loading-callout" aria-live="polite">
+        <strong>요약 데이터를 불러오는 중입니다.</strong>
+        <p>잠시만 기다려 주세요. 최신 수집 상태를 확인하고 있습니다.</p>
+        <div className="badge-row">
+          <span className="state-badge info">1/2 요약 단계</span>
+          <span className="state-badge info">출처/신선도 점검</span>
+        </div>
+      </section>
+
+      <section className="loading-skeleton-stack">
+        <div className="skeleton-block skeleton-md" />
+        <div className="skeleton-block skeleton-md" />
+      </section>
+
+      <section className="panel loading-callout" aria-live="polite">
+        <strong>홈 데이터를 불러오는 중입니다.</strong>
+        <p>지도와 빅매치를 준비하고 있습니다. 단계 완료 후 자동으로 전환됩니다.</p>
+        <div className="badge-row">
+          <span className="state-badge info">2/2 홈 단계</span>
+          <span className="state-badge info">지도/빅매치 준비</span>
+        </div>
+      </section>
+
+      <section className="loading-skeleton-stack">
+        <div className="skeleton-block skeleton-lg" />
+        <div className="skeleton-block skeleton-md" />
+      </section>
+    </main>
+  );
+}
+
 export default async function HomePage({ searchParams }) {
   const resolved = await searchParams;
   const scopeMixEnabled = parseOnFlag(resolved?.scope_mix || "");
   const trendDemoEnabled = parseOnFlag(resolved?.trend_demo || "");
+  const loadingDemoEnabled = parseOnFlag(resolved?.loading_demo || "");
   const regionScenario = normalizeRegionParam(resolved?.selected_region || "");
   const stateDemo = (resolved?.state_demo || "").toLowerCase().trim();
+
+  if (loadingDemoEnabled) {
+    return <HomeLoadingDemoState />;
+  }
 
   const [summaryResRaw, mapRes, bigMatchRes, qualityRes] = await Promise.all([
     fetchApi("/api/v1/dashboard/summary"),

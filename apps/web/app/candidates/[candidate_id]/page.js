@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-import { toScenarioBadge } from "../../_components/demoParams";
+import { parseOnFlag, toScenarioBadge } from "../../_components/demoParams";
 import { formatDate, formatDateTime, joinChannels } from "../../_components/format";
 import { fetchApi } from "../../_lib/api";
 
@@ -95,12 +95,34 @@ export default async function CandidatePage({ params, searchParams }) {
   const resolvedParams = await params;
   const resolvedSearch = await searchParams;
   const requestedCandidateId = resolvedParams.candidate_id;
+  const loadingDemoEnabled = parseOnFlag(resolvedSearch?.loading_demo || "");
   const fromSource = (resolvedSearch?.from || "").trim().toLowerCase();
   const fromMatchupId = (resolvedSearch?.matchup_id || "").trim();
 
   const partyDemo = (resolvedSearch?.party_demo || "").trim().toLowerCase();
   const confirmDemo = (resolvedSearch?.confirm_demo || "").trim().toLowerCase();
   const stateDemo = (resolvedSearch?.state_demo || "").trim().toLowerCase();
+
+  if (loadingDemoEnabled) {
+    return (
+      <main className="detail-root">
+        <section className="panel loading-callout" aria-live="polite">
+          <strong>후보 정보를 불러오는 중입니다.</strong>
+          <p>출처와 신선도 정보를 확인하고 있습니다. 잠시만 기다려 주세요.</p>
+          <div className="badge-row">
+            <span className="state-badge info">1/2 후보 조회</span>
+            <span className="state-badge info">2/2 출처 검증</span>
+          </div>
+        </section>
+
+        <section className="loading-skeleton-stack candidate-loading-stack">
+          <div className="skeleton-block skeleton-md" />
+          <div className="skeleton-block skeleton-md" />
+          <div className="skeleton-block skeleton-sm" />
+        </section>
+      </main>
+    );
+  }
 
   const payload = await fetchApi(`/api/v1/candidates/${encodeURIComponent(requestedCandidateId)}`);
 
