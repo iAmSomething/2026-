@@ -1,6 +1,7 @@
 import re
 import unicodedata
 from datetime import date, datetime, timezone
+import logging
 from typing import Literal
 from urllib.parse import unquote_plus
 
@@ -44,8 +45,10 @@ from app.models.schemas import (
 from app.services.cutoff_policy import has_article_source, is_article_published_at_allowed
 from app.services.ingest_service import ingest_payload
 from app.services.ingest_input_normalization import normalize_ingest_payload
+from app.services.region_code_normalizer import normalize_region_code_input
 
 router = APIRouter(prefix="/api/v1", tags=["v1"])
+logger = logging.getLogger(__name__)
 
 MATCHUP_ID_ALIASES = {
     "m_2026_seoul_mayor": "20260603|광역자치단체장|11-000",
@@ -207,8 +210,17 @@ def _normalize_matchup_id(raw_matchup_id: str) -> str:
     if len(parts) != 3:
         return text
     election_id, office_type, region_code = parts
+    region_normalized = normalize_region_code_input(region_code)
     compact_region = region_code.replace("_", "-")
-    if compact_region.isdigit() and len(compact_region) == 5:
+    if region_normalized.canonical:
+        compact_region = region_normalized.canonical
+        if region_normalized.was_aliased:
+            logger.info(
+                "region_code_alias_normalized endpoint=matchups.get raw=%s canonical=%s",
+                region_code,
+                compact_region,
+            )
+    elif compact_region.isdigit() and len(compact_region) == 5:
         compact_region = f"{compact_region[:2]}-{compact_region[2:]}"
     return f"{election_id}|{office_type}|{compact_region}"
 
@@ -399,7 +411,17 @@ def search_regions(
     if not resolved_query:
         raise HTTPException(status_code=422, detail="q or query is required")
 
-    rows = repo.search_regions(query=resolved_query, limit=limit)
+    region_normalized = normalize_region_code_input(resolved_query)
+    if region_normalized.canonical:
+        if region_normalized.was_aliased:
+            logger.info(
+                "region_code_alias_normalized endpoint=regions.search raw=%s canonical=%s",
+                resolved_query,
+                region_normalized.canonical,
+            )
+        rows = repo.search_regions_by_code(region_code=region_normalized.canonical, limit=limit)
+    else:
+        rows = repo.search_regions(query=resolved_query, limit=limit)
     return [RegionOut(**row) for row in rows]
 
 
@@ -410,7 +432,15 @@ def get_region_elections(
     version_id: str | None = Query(default=None),
     repo=Depends(get_repository),
 ):
-    rows = repo.fetch_region_elections(region_code=region_code, topology=topology, version_id=version_id)
+    region_normalized = normalize_region_code_input(region_code)
+    resolved_region_code = region_normalized.canonical or region_code
+    if region_normalized.was_aliased and region_normalized.canonical:
+        logger.info(
+            "region_code_alias_normalized endpoint=regions.elections raw=%s canonical=%s",
+            region_code,
+            region_normalized.canonical,
+        )
+    rows = repo.fetch_region_elections(region_code=resolved_region_code, topology=topology, version_id=version_id)
     return [RegionElectionOut(**row) for row in rows]
 
 

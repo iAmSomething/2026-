@@ -54,3 +54,24 @@ def test_region_search_returns_empty_without_query_text():
     out = repo.search_regions("   ", limit=20)
     assert out == []
     assert conn._cursor.executed == []
+
+
+def test_region_search_by_code_uses_exact_match():
+    conn = _RecordingConn(rows=[])
+    repo = PostgresRepository(conn)
+
+    repo.search_regions_by_code("42-000", limit=10)
+
+    assert len(conn._cursor.executed) == 1
+    query, params = conn._cursor.executed[0]
+    assert "WHERE r.region_code = %s" in query
+    assert params == ("42-000", 10)
+
+
+def test_region_search_by_code_returns_empty_without_region_code():
+    conn = _RecordingConn(rows=[{"region_code": "42-000"}])
+    repo = PostgresRepository(conn)
+
+    out = repo.search_regions_by_code("   ", limit=20)
+    assert out == []
+    assert conn._cursor.executed == []
