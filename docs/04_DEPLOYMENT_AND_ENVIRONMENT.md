@@ -66,11 +66,19 @@ PYTHONPATH=. .venv/bin/python scripts/sync_common_codes.py \
   --region-url "$COMMON_CODE_REGION_URL" \
   --region-sigungu-url "$COMMON_CODE_SIGUNGU_URL" \
   --party-url "$COMMON_CODE_PARTY_URL" \
-  --election-url "$COMMON_CODE_ELECTION_URL"
+  --election-url "$COMMON_CODE_ELECTION_URL" \
+  --elections-report-path "data/elections_master_sync_report.json"
 ```
 4. 산출 리포트: `data/common_codes_sync_report.json`
 - `diff.added_count`, `diff.updated_count`, `diff.delete_candidate_count` 포함
 - 실패 시 `status=failed` + `review_queue(issue_type=code_sync_error)` 기록
+5. elections 마스터 슬롯 동기화:
+- `sync_common_codes.py` 실행 시 기본적으로 `scripts/sync_elections_master.py`가 연쇄 실행
+- 분리 실행도 가능:
+```bash
+PYTHONPATH=. .venv/bin/python scripts/sync_elections_master.py \
+  --report-path "data/elections_master_sync_report.json"
+```
 
 ### 선택
 1. `WinnerInfoInqireService2`

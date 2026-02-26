@@ -900,6 +900,25 @@ class PostgresRepository:
 
             cur.execute(
                 """
+                SELECT
+                    region_code,
+                    office_type,
+                    slot_matchup_id,
+                    title,
+                    source,
+                    has_poll_data,
+                    latest_matchup_id,
+                    is_active
+                FROM elections
+                WHERE region_code = %s
+                ORDER BY has_poll_data DESC, office_type, title
+                """,
+                (region_code,),
+            )
+            election_rows = cur.fetchall() or []
+
+            cur.execute(
+                """
                 SELECT matchup_id, region_code, office_type, title, is_active, updated_at
                 FROM matchups
                 WHERE region_code = %s
@@ -943,6 +962,13 @@ class PostgresRepository:
             )
             poll_meta_rows = cur.fetchall() or []
 
+        election_by_office: dict[str, dict] = {}
+        for row in election_rows:
+            office_type = row.get("office_type")
+            if not isinstance(office_type, str):
+                continue
+            election_by_office[office_type] = row
+
         matchup_by_office: dict[str, dict] = {}
         for row in matchup_rows:
             office_type = row.get("office_type")
@@ -956,15 +982,24 @@ class PostgresRepository:
             if isinstance(row.get("office_type"), str)
         }
 
-        slots = ["광역자치단체장", "광역의회", "교육감"]
-        if normalize_text(region.get("admin_level")) in {"sigungu", "local"}:
-            slots.extend(["기초자치단체장", "기초의회"])
+        if election_by_office:
+            slots = sorted(
+                election_by_office.keys(),
+                key=lambda office: (
+                    office_order.index(office) if office in office_order else len(office_order),
+                    office,
+                ),
+            )
+        else:
+            slots = ["광역자치단체장", "광역의회", "교육감"]
+            if normalize_text(region.get("admin_level")) in {"sigungu", "local"}:
+                slots.extend(["기초자치단체장", "기초의회"])
 
-        if "재보궐" in matchup_by_office or "재보궐" in poll_meta_by_office:
-            slots.append("재보궐")
+            if "재보궐" in matchup_by_office or "재보궐" in poll_meta_by_office:
+                slots.append("재보궐")
 
         extra_offices = sorted(
-            (set(matchup_by_office.keys()) | set(poll_meta_by_office.keys())) - set(slots),
+            (set(election_by_office.keys()) | set(matchup_by_office.keys()) | set(poll_meta_by_office.keys())) - set(slots),
             key=lambda office: (
                 office_order.index(office) if office in office_order else len(office_order),
                 office,
@@ -976,13 +1011,29 @@ class PostgresRepository:
         result: list[dict] = []
         for office_type in slots:
             poll_meta = poll_meta_by_office.get(office_type, {})
+            election_row = election_by_office.get(office_type)
             has_poll_data = bool(poll_meta.get("has_poll_data", False))
+            if not has_poll_data and election_row is not None:
+                has_poll_data = bool(election_row.get("has_poll_data", False))
             has_candidate_data = bool(poll_meta.get("has_candidate_data", False))
             latest_survey_end_date = poll_meta.get("latest_survey_end_date")
             latest_matchup_id = poll_meta.get("latest_matchup_id")
+            if latest_matchup_id is None and election_row is not None:
+                latest_matchup_id = election_row.get("latest_matchup_id")
 
             matchup_row = matchup_by_office.get(office_type)
-            if matchup_row:
+            if election_row:
+                slot_matchup_id = election_row.get("slot_matchup_id")
+                matchup_id = latest_matchup_id or (matchup_row.get("matchup_id") if matchup_row else None) or slot_matchup_id
+                matchup_id = matchup_id or f"{election_id}|{office_type}|{region_code}"
+                title = (
+                    election_row.get("title")
+                    or (matchup_row.get("title") if matchup_row else None)
+                    or derive_placeholder_title(region, office_type)
+                )
+                is_active = bool(election_row.get("is_active", True))
+                is_placeholder = not has_poll_data
+            elif matchup_row:
                 matchup_id = matchup_row["matchup_id"]
                 title = matchup_row["title"]
                 is_active = bool(matchup_row.get("is_active", True))
@@ -1010,6 +1061,91 @@ class PostgresRepository:
             )
 
         return result
+
+    def upsert_election_slot(self, election_slot: dict) -> None:
+        payload = dict(election_slot)
+        payload.setdefault("source", "code_master")
+        payload.setdefault("has_poll_data", False)
+        payload.setdefault("latest_matchup_id", None)
+        payload.setdefault("is_active", True)
+        payload.setdefault("slot_matchup_id", f"master|{payload['office_type']}|{payload['region_code']}")
+        payload.setdefault("title", payload["office_type"])
+
+        with self.conn.cursor() as cur:
+            cur.execute(
+                """
+                INSERT INTO elections (
+                    region_code, office_type, slot_matchup_id, title,
+                    source, has_poll_data, latest_matchup_id, is_active
+                )
+                VALUES (
+                    %(region_code)s, %(office_type)s, %(slot_matchup_id)s, %(title)s,
+                    %(source)s, %(has_poll_data)s, %(latest_matchup_id)s, %(is_active)s
+                )
+                ON CONFLICT (region_code, office_type) DO UPDATE
+                SET slot_matchup_id=EXCLUDED.slot_matchup_id,
+                    title=EXCLUDED.title,
+                    source=EXCLUDED.source,
+                    has_poll_data=EXCLUDED.has_poll_data,
+                    latest_matchup_id=EXCLUDED.latest_matchup_id,
+                    is_active=EXCLUDED.is_active,
+                    updated_at=NOW()
+                """,
+                payload,
+            )
+        self.conn.commit()
+
+    def fetch_all_regions(self) -> list[dict]:
+        with self.conn.cursor() as cur:
+            cur.execute(
+                """
+                SELECT region_code, sido_name, sigungu_name, admin_level, parent_region_code
+                FROM regions
+                ORDER BY region_code
+                """
+            )
+            return cur.fetchall() or []
+
+    def fetch_latest_matchup_ids_by_region_office(self) -> dict[tuple[str, str], str]:
+        with self.conn.cursor() as cur:
+            cur.execute(
+                """
+                WITH ranked AS (
+                    SELECT
+                        region_code,
+                        office_type,
+                        matchup_id,
+                        ROW_NUMBER() OVER (
+                            PARTITION BY region_code, office_type
+                            ORDER BY survey_end_date DESC NULLS LAST, id DESC
+                        ) AS rn
+                    FROM poll_observations
+                    WHERE verified = TRUE
+                      AND matchup_id IS NOT NULL
+                )
+                SELECT region_code, office_type, matchup_id
+                FROM ranked
+                WHERE rn = 1
+                """
+            )
+            rows = cur.fetchall() or []
+        return {(str(row["region_code"]), str(row["office_type"])): str(row["matchup_id"]) for row in rows}
+
+    def fetch_observed_byelection_pairs(self) -> set[tuple[str, str]]:
+        with self.conn.cursor() as cur:
+            cur.execute(
+                """
+                SELECT DISTINCT region_code, office_type
+                FROM matchups
+                WHERE office_type LIKE '%%재보궐%%'
+                UNION
+                SELECT DISTINCT region_code, office_type
+                FROM poll_observations
+                WHERE office_type LIKE '%%재보궐%%'
+                """
+            )
+            rows = cur.fetchall() or []
+        return {(str(row["region_code"]), str(row["office_type"])) for row in rows}
 
     def _find_matchup_meta(self, matchup_id: str) -> dict | None:
         with self.conn.cursor() as cur:
