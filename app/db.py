@@ -16,6 +16,27 @@ class DatabaseConnectionError(RuntimeError):
     """Raised when a DB connection cannot be established."""
 
 
+def _classify_connection_error(exc: psycopg.Error) -> str:
+    sqlstate = str(getattr(exc, "sqlstate", "") or "").upper()
+    if sqlstate == "28P01":
+        return "auth_failed"
+    if sqlstate.startswith("28"):
+        return "auth_error"
+    if sqlstate in {"08001", "08006"}:
+        return "network_error"
+
+    message = str(exc).lower()
+    if "could not translate host name" in message:
+        return "invalid_host_or_uri"
+    if "connection refused" in message:
+        return "connection_refused"
+    if "timeout expired" in message or "timed out" in message:
+        return "network_timeout"
+    if "sslmode" in message or ("ssl" in message and "required" in message):
+        return "ssl_required"
+    return "unknown"
+
+
 def _normalize_database_url(database_url: str) -> str:
     text = str(database_url or "").strip()
     if not text:
@@ -55,7 +76,8 @@ def get_connection():
     try:
         conn = psycopg.connect(database_url, row_factory=dict_row)
     except psycopg.Error as exc:
-        raise DatabaseConnectionError("database connection failed") from exc
+        reason = _classify_connection_error(exc)
+        raise DatabaseConnectionError(f"database connection failed ({reason})") from exc
 
     try:
         yield conn
