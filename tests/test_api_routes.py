@@ -123,6 +123,20 @@ class FakeApiRepo:
             }
         ]
 
+    def search_regions_by_code(self, region_code, limit=20):  # noqa: ARG002
+        if region_code == "42-000":
+            return [
+                {
+                    "region_code": "42-000",
+                    "sido_name": "강원특별자치도",
+                    "sigungu_name": "전체",
+                    "admin_level": "sido",
+                    "has_data": True,
+                    "matchup_count": 1,
+                }
+            ]
+        return self.search_regions(query=region_code, limit=limit)
+
     def fetch_dashboard_map_latest(self, as_of, limit=100):
         return [
             {
@@ -765,6 +779,81 @@ def test_regions_search_normalizes_non_ascii_and_encoded_query_forms():
     full_width_space = client.get("/api/v1/regions/search", params={"q": "  서울　특별시  "})
     assert full_width_space.status_code == 200
     assert repo.last_query == "서울 특별시"
+
+    app.dependency_overrides.clear()
+
+
+def test_regions_search_normalizes_region_code_aliases_to_canonical_code():
+    class CaptureRegionCodeRepo(FakeApiRepo):
+        def __init__(self):
+            super().__init__()
+            self.last_region_code = None
+            self.last_query = None
+
+        def search_regions(self, query, limit=20):
+            self.last_query = query
+            return super().search_regions(query=query, limit=limit)
+
+        def search_regions_by_code(self, region_code, limit=20):
+            self.last_region_code = region_code
+            return super().search_regions_by_code(region_code=region_code, limit=limit)
+
+    repo = CaptureRegionCodeRepo()
+
+    def override_capture_repo():
+        yield repo
+
+    app.dependency_overrides[get_repository] = override_capture_repo
+    client = TestClient(app)
+
+    alias_response = client.get("/api/v1/regions/search", params={"q": "KR-32"})
+    assert alias_response.status_code == 200
+    assert alias_response.json()[0]["region_code"] == "42-000"
+    assert repo.last_region_code == "42-000"
+    assert repo.last_query is None
+
+    canonical_response = client.get("/api/v1/regions/search", params={"q": "42-000"})
+    assert canonical_response.status_code == 200
+    assert canonical_response.json() == alias_response.json()
+    assert repo.last_region_code == "42-000"
+
+    app.dependency_overrides.clear()
+
+
+def test_region_elections_normalizes_region_code_aliases():
+    class CaptureRegionElectionRepo(FakeApiRepo):
+        def __init__(self):
+            super().__init__()
+            self.last_region_code = None
+
+        def fetch_region_elections(self, region_code, topology="official", version_id=None):
+            self.last_region_code = region_code
+            return super().fetch_region_elections(region_code, topology=topology, version_id=version_id)
+
+    repo = CaptureRegionElectionRepo()
+
+    def override_capture_repo():
+        yield repo
+
+    app.dependency_overrides[get_repository] = override_capture_repo
+    client = TestClient(app)
+
+    response = client.get("/api/v1/regions/KR-32/elections")
+    assert response.status_code == 200
+    assert response.json()[0]["region_code"] == "42-000"
+    assert repo.last_region_code == "42-000"
+
+    app.dependency_overrides.clear()
+
+
+def test_matchup_normalizes_region_code_aliases_in_matchup_id():
+    app.dependency_overrides[get_repository] = override_repo
+    app.dependency_overrides[get_candidate_data_go_service] = override_candidate_data_go_service
+    client = TestClient(app)
+
+    response = client.get("/api/v1/matchups/20260603|광역자치단체장|KR-32")
+    assert response.status_code == 200
+    assert response.json()["matchup_id"] == "20260603|광역자치단체장|42-000"
 
     app.dependency_overrides.clear()
 

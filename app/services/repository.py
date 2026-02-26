@@ -813,6 +813,47 @@ class PostgresRepository:
             )
             return cur.fetchall()
 
+    def search_regions_by_code(self, region_code: str, limit: int = 20):
+        normalized_region_code = " ".join(region_code.split()).strip()
+        if not normalized_region_code:
+            return []
+
+        with self.conn.cursor() as cur:
+            cur.execute(
+                """
+                SELECT
+                    r.region_code,
+                    r.sido_name,
+                    r.sigungu_name,
+                    r.admin_level,
+                    COALESCE(o.observation_count, 0)::int > 0 AS has_data,
+                    COALESCE(m.matchup_count, 0)::int AS matchup_count
+                FROM regions r
+                LEFT JOIN (
+                    SELECT region_code, COUNT(*)::int AS matchup_count
+                    FROM matchups
+                    GROUP BY region_code
+                ) m ON m.region_code = r.region_code
+                LEFT JOIN (
+                    SELECT region_code, COUNT(*)::int AS observation_count
+                    FROM poll_observations
+                    GROUP BY region_code
+                ) o ON o.region_code = r.region_code
+                WHERE r.region_code = %s
+                ORDER BY
+                    CASE r.admin_level
+                        WHEN 'sido' THEN 0
+                        WHEN 'sigungu' THEN 1
+                        ELSE 2
+                    END,
+                    r.sido_name,
+                    r.sigungu_name
+                LIMIT %s
+                """,
+                (normalized_region_code, limit),
+            )
+            return cur.fetchall()
+
     def fetch_region_elections(
         self,
         region_code: str,
