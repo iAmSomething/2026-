@@ -23,7 +23,7 @@
   },
   "option_type_counts": {
     "party_support": 2,
-    "presidential_approval": 2,
+    "election_frame": 2,
     "candidate_matchup": 58
   },
   "local_candidate_party_fill_rate": 0.28,

@@ -11,6 +11,7 @@ class FakeRepo:
         self.articles = {}
         self.observations = {}
         self.options = set()
+        self.option_rows = []
         self.review = []
         self.policy_counters = []
 
@@ -39,6 +40,7 @@ class FakeRepo:
         return 1
 
     def upsert_poll_option(self, observation_id, option):
+        self.option_rows.append(option)
         self.options.add(
             (
                 observation_id,
@@ -48,6 +50,7 @@ class FakeRepo:
                 option.get("party_inferred"),
                 option.get("party_inference_source"),
                 option.get("party_inference_confidence"),
+                option.get("needs_manual_review"),
             )
         )
 
@@ -117,6 +120,7 @@ def test_idempotent_ingest_no_duplicate_records():
     assert len(repo.articles) == 1
     assert len(repo.observations) == 1
     assert len(repo.options) == 1
+    assert repo.option_rows[0]["option_type"] == "election_frame"
     assert repo.observations["obs-1"]["audience_scope"] == "national"
     assert repo.observations["obs-1"]["legal_filled_count"] == 6
     assert len(repo.observations["obs-1"]["poll_fingerprint"]) == 64
@@ -179,6 +183,20 @@ def test_low_party_inference_confidence_routes_review_queue():
 
     assert result.status == "success"
     assert any(row[2] == "party_inference_low_confidence" for row in repo.review)
+
+
+def test_ambiguous_presidential_option_routes_mapping_error_review_queue():
+    repo = FakeRepo()
+    payload_data = deepcopy(PAYLOAD)
+    payload_data["records"][0]["options"][0]["option_name"] = "국정안정 긍정평가"
+    payload = IngestPayload.model_validate(payload_data)
+
+    result = ingest_payload(payload, repo)
+
+    assert result.status == "success"
+    assert any(row[2] == "mapping_error" for row in repo.review)
+    assert repo.option_rows[0]["option_type"] == "presidential_approval"
+    assert repo.option_rows[0]["needs_manual_review"] is True
 
 
 def test_article_source_record_before_cutoff_is_blocked():
