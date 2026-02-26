@@ -1061,6 +1061,19 @@ class PostgresRepository:
                 region_out["admin_level"] = "sido"
             return region_out
 
+        def apply_official_title_overrides(region: dict, office_type: str, title: str | None) -> str:
+            normalized_title = normalize_text(title)
+            code = normalize_text(region.get("region_code"))
+
+            # 운영 회귀 보호: 29-000은 세종 라벨이 아닌 타 시도 라벨을 허용하지 않는다.
+            # 레거시/오염 타이틀이 들어오면 코드 기준 placeholder로 강제 복원한다.
+            if code == "29-000" and "세종" not in normalized_title:
+                return derive_placeholder_title(region, office_type)
+
+            if normalized_title:
+                return normalized_title
+            return derive_placeholder_title(region, office_type)
+
         office_order = ["광역자치단체장", "광역의회", "교육감", "기초자치단체장", "기초의회", "재보궐"]
         topology_mode = "scenario" if topology == "scenario" else "official"
 
@@ -1292,6 +1305,9 @@ class PostgresRepository:
                 is_placeholder = True
                 is_fallback = True
                 source = "generated"
+
+            if topology_mode == "official":
+                title = apply_official_title_overrides(region, office_type, title)
 
             result.append(
                 {
