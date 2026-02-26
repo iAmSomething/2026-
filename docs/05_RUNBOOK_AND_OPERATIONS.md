@@ -191,6 +191,41 @@
 4. 응답:
 - 최신 `review_queue` row를 반환하며 `status`가 `approved|rejected`로 갱신된다.
 
+## 7.2 매치업 단건 재처리 CLI (Issue #367)
+1. 목적:
+- 전체 ingest 없이 특정 `matchup_id`/`poll_fingerprint` 대상만 재처리
+- before/after 스냅샷과 diff artifact를 남겨 중복/회귀를 즉시 확인
+2. 엔트리포인트:
+- `scripts/qa/reprocess_single_matchup.py`
+3. dry-run 예시:
+```bash
+python scripts/qa/reprocess_single_matchup.py \
+  --matchup-id "20260603|광역자치단체장|11-000" \
+  --poll-fingerprint "<fingerprint>" \
+  --mode dry-run \
+  --output-dir data/single_matchup_reprocess
+```
+4. apply 예시(idempotency 2회 검증 포함):
+```bash
+python scripts/qa/reprocess_single_matchup.py \
+  --matchup-id "20260603|광역자치단체장|11-000" \
+  --poll-fingerprint "<fingerprint>" \
+  --mode apply \
+  --idempotency-check \
+  --output-dir data/single_matchup_reprocess
+```
+5. 기본 산출물:
+- `payload.json`
+- `before_snapshot.json`
+- `after_first_apply_snapshot.json` (`apply` 모드)
+- `after_snapshot.json`
+- `diff.json`
+- `report.json`
+6. idempotent PASS 기준:
+- `report.idempotent_ok == true`
+- `report.idempotency_evidence.new_observation_ids`가 빈 배열
+- `report.delta_after_first_to_after_second`의 집계 delta가 모두 0
+
 ## 8. 모니터링 체크리스트
 1. 배치 성공률
 2. 기사 수집량 대비 추출 성공률
