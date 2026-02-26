@@ -179,6 +179,8 @@ def test_normalize_options_filters_noise_candidate_tokens():
         {"option_name": "같은", "candidate_id": None, "scenario_key": "default", "value_mid": 28.0},
         {"option_name": "국힘", "candidate_id": None, "scenario_key": "default", "value_mid": 17.0},
         {"option_name": "차이", "candidate_id": None, "scenario_key": "default", "value_mid": 16.0},
+        {"option_name": "국정안정론", "candidate_id": "cand:국정안정론", "scenario_key": "default", "value_mid": 53.0},
+        {"option_name": "재정자립도", "candidate_id": "cand:재정자립도", "scenario_key": "default", "value_mid": 24.0},
         {"option_name": "정원오", "candidate_id": None, "scenario_key": "default", "value_mid": 44.0},
         {"option_name": "오세훈", "candidate_id": "cand-oh", "scenario_key": "default", "value_mid": 42.0},
         {"option_name": "김민주", "candidate_id": None, "scenario_key": "default", "value_mid": 12.0},

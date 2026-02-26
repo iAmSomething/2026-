@@ -24,6 +24,22 @@ _CANDIDATE_NOISE_EXACT_TOKENS = {
     "더불어민주당",
     "국힘",
     "국민의힘",
+    "지지",
+    "지지도",
+    "재정자립도",
+    "적합도",
+    "선호도",
+    "인지도",
+    "호감도",
+    "비호감도",
+    "국정안정론",
+    "국정견제론",
+    "정권교체",
+    "정권재창출",
+    "정권심판",
+    "정권지원",
+    "긍정평가",
+    "부정평가",
 }
 _CANDIDATE_NOISE_SUBSTRING_TOKENS = {
     "오차범위",
@@ -33,6 +49,12 @@ _CANDIDATE_NOISE_SUBSTRING_TOKENS = {
     "지지율",
     "신뢰수준",
     "표본",
+    "재정자립",
+    "안정론",
+    "견제론",
+    "정권",
+    "긍정평가",
+    "부정평가",
 }
 
 
@@ -46,8 +68,6 @@ def _is_noise_candidate_option(option_name: str | None, candidate_id: str | None
     token = _normalize_candidate_option_token(option_name)
     if not token:
         return True
-    if candidate_id:
-        return False
     if token in _CANDIDATE_NOISE_EXACT_TOKENS:
         return True
     if any(part in token for part in _CANDIDATE_NOISE_SUBSTRING_TOKENS):

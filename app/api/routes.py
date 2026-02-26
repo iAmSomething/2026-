@@ -99,18 +99,46 @@ MAP_LATEST_GENERIC_OPTION_EXACT_TOKENS = {
     "오차범위",
     "여론조사",
     "민주",
+    "민주당",
     "국힘",
+    "국민의힘",
     "같은",
     "차이",
     "외",
+    "지지",
+    "지지도",
+    "재정자립도",
+    "적합도",
+    "선호도",
+    "인지도",
+    "호감도",
+    "비호감도",
+    "국정안정론",
+    "국정견제론",
+    "정권교체",
+    "정권재창출",
+    "정권심판",
+    "정권지원",
+    "긍정평가",
+    "부정평가",
 }
 MAP_LATEST_GENERIC_OPTION_SUBSTRINGS = {
     "오차",
     "응답률",
     "지지율",
+    "지지도",
+    "지지",
     "표본오차",
     "오차범위",
     "여론조사",
+    "재정자립",
+    "적합도",
+    "선호도",
+    "안정론",
+    "견제론",
+    "정권",
+    "긍정평가",
+    "부정평가",
 }
 MAP_LATEST_LEGACY_TITLE_KEYWORDS = {
     "대통령선거",
@@ -642,6 +670,10 @@ def get_candidate(
     enriched = data_go_service.enrich_candidate(dict(candidate))
     source_meta = _derive_source_meta(enriched)
     payload = dict(enriched)
+    if not str(payload.get("name_ko") or "").strip():
+        payload["name_ko"] = candidate_id
+    if payload.get("party_name") is not None and not str(payload.get("party_name")).strip():
+        payload["party_name"] = None
     payload.update(source_meta)
     payload["source_channels"] = payload.get("source_channels") or []
     return CandidateOut(**payload)

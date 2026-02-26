@@ -816,6 +816,34 @@ def test_map_latest_sanity_filter_drops_invalid_candidate_and_legacy_title_rows(
                     "source_channel": "article",
                     "source_channels": ["article"],
                 },
+                {
+                    "region_code": "11-040",
+                    "office_type": "기초자치단체장",
+                    "title": "부천시 여론조사 요약",
+                    "value_mid": 24.0,
+                    "survey_end_date": date(2026, 2, 18),
+                    "option_name": "재정자립도",
+                    "audience_scope": "local",
+                    "audience_region_code": "11-040",
+                    "observation_updated_at": "2026-02-18T03:00:00+00:00",
+                    "article_published_at": "2026-02-18T01:00:00+00:00",
+                    "source_channel": "article",
+                    "source_channels": ["article"],
+                },
+                {
+                    "region_code": "11-050",
+                    "office_type": "기초자치단체장",
+                    "title": "지방선거 여론조사",
+                    "value_mid": 58.5,
+                    "survey_end_date": date(2026, 2, 18),
+                    "option_name": "지지",
+                    "audience_scope": "local",
+                    "audience_region_code": "11-050",
+                    "observation_updated_at": "2026-02-18T03:00:00+00:00",
+                    "article_published_at": "2026-02-18T01:00:00+00:00",
+                    "source_channel": "article",
+                    "source_channels": ["article"],
+                },
             ][:limit]
 
     def override_sanity_repo():
@@ -829,11 +857,11 @@ def test_map_latest_sanity_filter_drops_invalid_candidate_and_legacy_title_rows(
     body = res.json()
     assert len(body["items"]) == 1
     assert body["items"][0]["option_name"] == "오세훈"
-    assert body["filter_stats"]["total_count"] == 4
+    assert body["filter_stats"]["total_count"] == 6
     assert body["filter_stats"]["kept_count"] == 1
-    assert body["filter_stats"]["excluded_count"] == 3
+    assert body["filter_stats"]["excluded_count"] == 5
     assert body["filter_stats"]["reason_counts"]["invalid_candidate_name"] == 1
-    assert body["filter_stats"]["reason_counts"]["generic_option_token"] == 1
+    assert body["filter_stats"]["reason_counts"]["generic_option_token"] == 3
     assert body["filter_stats"]["reason_counts"]["legacy_title"] == 1
     assert body["scope_breakdown"] == {"national": 0, "regional": 1, "local": 0, "unknown": 0}
 
@@ -1739,5 +1767,26 @@ def test_candidate_endpoint_merges_data_go_fields():
     assert "official_release_at" in body
     assert "article_published_at" in body
     assert "is_official_confirmed" in body
+
+    app.dependency_overrides.clear()
+
+
+def test_candidate_endpoint_falls_back_name_when_missing():
+    class MissingNameRepo(FakeApiRepo):
+        def get_candidate(self, candidate_id):
+            row = super().get_candidate(candidate_id)
+            row["name_ko"] = "   "
+            row["party_name"] = " "
+            return row
+
+    app.dependency_overrides[get_repository] = lambda: MissingNameRepo()
+    app.dependency_overrides[get_candidate_data_go_service] = override_candidate_data_go_service
+    client = TestClient(app)
+
+    res = client.get("/api/v1/candidates/cand-jwo")
+    assert res.status_code == 200
+    body = res.json()
+    assert body["name_ko"] == "cand-jwo"
+    assert body["party_name"] is None
 
     app.dependency_overrides.clear()
