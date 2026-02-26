@@ -1,0 +1,18 @@
+{
+  "run_type": "collector_summary_nonempty_prod",
+  "summary_date_cutoff": "2025-12-01",
+  "observation_key": "obs-summary-nonempty-20260225-nbs",
+  "option_type_counts": {
+    "party_support": 6,
+    "president_job_approval": 2,
+    "election_frame": 2
+  },
+  "source_priority": "mixed",
+  "review_queue_candidate_count": 0,
+  "acceptance_checks": {
+    "summary_three_option_types_nonempty": true,
+    "national_scope_only": true,
+    "latest_not_before_2025_12_01": true,
+    "source_priority_allowed": true
+  }
+}
