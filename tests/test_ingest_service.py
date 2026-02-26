@@ -179,3 +179,35 @@ def test_low_party_inference_confidence_routes_review_queue():
 
     assert result.status == "success"
     assert any(row[2] == "party_inference_low_confidence" for row in repo.review)
+
+
+def test_article_source_record_before_cutoff_is_blocked():
+    repo = FakeRepo()
+    payload_data = deepcopy(PAYLOAD)
+    payload_data["records"][0]["article"]["published_at"] = "2025-11-30T23:59:59+09:00"
+    payload = IngestPayload.model_validate(payload_data)
+
+    result = ingest_payload(payload, repo)
+
+    assert result.status == "partial_success"
+    assert result.processed_count == 0
+    assert result.error_count == 1
+    assert len(repo.articles) == 0
+    assert len(repo.observations) == 0
+    assert any("ARTICLE_PUBLISHED_AT_CUTOFF_BLOCK" in row[3] for row in repo.review)
+
+
+def test_nesdc_source_record_without_article_published_at_is_allowed():
+    repo = FakeRepo()
+    payload_data = deepcopy(PAYLOAD)
+    payload_data["records"][0]["observation"]["source_channel"] = "nesdc"
+    payload_data["records"][0]["observation"]["source_channels"] = ["nesdc"]
+    payload_data["records"][0]["article"]["published_at"] = None
+    payload = IngestPayload.model_validate(payload_data)
+
+    result = ingest_payload(payload, repo)
+
+    assert result.status == "success"
+    assert result.processed_count == 1
+    assert result.error_count == 0
+    assert len(repo.articles) == 1

@@ -1,6 +1,12 @@
 from dataclasses import dataclass
 
 from app.models.schemas import IngestPayload, PollOptionInput
+from app.services.cutoff_policy import (
+    ARTICLE_PUBLISHED_AT_CUTOFF_ISO,
+    has_article_source,
+    parse_datetime_like,
+    published_at_cutoff_reason,
+)
 from app.services.errors import DuplicateConflictError
 from app.services.fingerprint import build_poll_fingerprint
 from app.services.normalization import normalize_percentage
@@ -53,6 +59,31 @@ def ingest_payload(payload: IngestPayload, repo) -> IngestResult:
 
     for record in payload.records:
         try:
+            article_source = has_article_source(
+                source_channel=record.observation.source_channel,
+                source_channels=record.observation.source_channels,
+            )
+            if article_source:
+                cutoff_reason = published_at_cutoff_reason(record.article.published_at)
+                if cutoff_reason != "PASS":
+                    error_count += 1
+                    parsed_published_at = parse_datetime_like(record.article.published_at)
+                    try:
+                        repo.insert_review_queue(
+                            entity_type="ingest_record",
+                            entity_id=record.observation.observation_key,
+                            issue_type="ingestion_error",
+                            review_note=(
+                                "ARTICLE_PUBLISHED_AT_CUTOFF_BLOCK "
+                                f"reason={cutoff_reason} "
+                                f"published_at={parsed_published_at.isoformat(timespec='seconds') if parsed_published_at else None} "
+                                f"cutoff={ARTICLE_PUBLISHED_AT_CUTOFF_ISO}"
+                            ),
+                        )
+                    except Exception:  # noqa: BLE001
+                        pass
+                    continue
+
             if record.region:
                 repo.upsert_region(record.region.model_dump())
 
