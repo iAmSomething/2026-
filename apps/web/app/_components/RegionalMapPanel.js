@@ -204,6 +204,20 @@ function formatMarginMeta(value) {
   return `오차 ${String(value)}`;
 }
 
+function freshnessBadge(hours) {
+  const numeric = Number(hours);
+  if (!Number.isFinite(numeric)) return { tone: "info", text: "신선도 -" };
+  if (numeric <= 48) return { tone: "ok", text: `신선도 ${numeric.toFixed(1)}h` };
+  if (numeric <= 96) return { tone: "info", text: `신선도 ${numeric.toFixed(1)}h` };
+  return { tone: "warn", text: `신선도 ${numeric.toFixed(1)}h` };
+}
+
+function sampleBadge(sampleSize) {
+  const numeric = Number(sampleSize);
+  if (!Number.isFinite(numeric) || numeric <= 0) return { tone: "info", text: "표본 미확인" };
+  return { tone: "info", text: `표본 ${numeric.toLocaleString("ko-KR")}명` };
+}
+
 export default function RegionalMapPanel({
   items,
   apiBase,
@@ -307,6 +321,8 @@ export default function RegionalMapPanel({
   const activeLatest = activeCode ? latestByRegion.get(activeCode) || null : null;
   const activeRegionName = activeFeature?.properties?.region_name || (activePrefix ? REGION_PREFIX_LABELS[activePrefix] : activeCode);
   const modeLabel = selectedCode ? "선택 고정" : focusedCode ? "키보드 포커스" : hoveredCode ? "hover 미리보기" : "대기";
+  const activeFreshness = freshnessBadge(activeLatest?.freshness_hours);
+  const activeSample = sampleBadge(activeLatest?.sample_size);
 
   useEffect(() => {
     if (!selectedApiCode) {
@@ -373,6 +389,7 @@ export default function RegionalMapPanel({
   return (
     <section className="panel region-layout">
       <div className="map-shell">
+        <div className="map-canvas">
         {geoState === "loading" ? <div className="empty-state">지도를 불러오는 중...</div> : null}
         {geoState === "error" ? <div className="empty-state">지도를 불러오지 못했습니다.</div> : null}
         {geoState === "ready" ? (
@@ -430,6 +447,16 @@ export default function RegionalMapPanel({
             })}
           </svg>
         ) : null}
+        </div>
+        <div className="map-guide">
+          <p className="guide-title">지도 읽기 가이드</p>
+          <div className="badge-row">
+            <span className="state-badge info">연한 청록: 최신 조사 있음</span>
+            <span className="state-badge warn">회색: 최신 조사 없음</span>
+            <span className="state-badge ok">진한 청록: 현재 선택</span>
+          </div>
+          <p className="muted-text">데스크톱은 hover 미리보기 + click 고정, 모바일은 tap으로 고정 선택합니다.</p>
+        </div>
       </div>
 
       <aside className="region-detail" aria-live="polite">
@@ -444,15 +471,22 @@ export default function RegionalMapPanel({
           </div>
         ) : null}
 
+        <div className="region-block region-guide-block">
+          <strong>빠른 확인 순서</strong>
+          <p className="muted-text">1) 지역 선택 상태 확인 → 2) 최신 조사/신선도 확인 → 3) 연결 선거 슬롯에서 상세 이동</p>
+        </div>
+
         {!activeCode ? <div className="empty-state">지역을 선택해 주세요.</div> : null}
 
         {activeCode ? (
-          <div className="region-block">
+          <div className="region-block region-summary-block">
             <p className="region-name">{activeRegionName || activeCode}</p>
             <p className="region-code">{activeApiCode || activeCode}</p>
-            <div className="badge-row">
+            <div className="badge-row region-summary-row">
               <span className={`state-badge ${activeLatest ? "ok" : "info"}`}>{modeLabel}</span>
               <span className={`state-badge ${activeLatest ? "ok" : "warn"}`}>{activeLatest ? "최신 조사 있음" : "최신 조사 없음"}</span>
+              <span className={`state-badge ${activeFreshness.tone}`}>{activeFreshness.text}</span>
+              <span className={`state-badge ${activeSample.tone}`}>{activeSample.text}</span>
             </div>
           </div>
         ) : null}
@@ -461,11 +495,28 @@ export default function RegionalMapPanel({
           <div className="region-block">
             <strong>{activeLatest.title}</strong>
             <p>대표값: {formatPercent(activeLatest.value_mid)}</p>
-            <p className="muted-text">최신 조사일: {formatDate(activeLatest.survey_end_date)}</p>
-            <p className="muted-text">조사기관: {activeLatest.pollster || "조사기관 미확인"}</p>
-            <p className="muted-text">{formatSampleMeta(activeLatest.sample_size)}</p>
-            <p className="muted-text">{formatMarginMeta(activeLatest.margin_of_error || activeLatest.moe)}</p>
-            <p className="muted-text">채널: {joinChannels(activeLatest.source_channels)}</p>
+            <dl className="region-meta-grid">
+              <div>
+                <dt>최신 조사일</dt>
+                <dd>{formatDate(activeLatest.survey_end_date)}</dd>
+              </div>
+              <div>
+                <dt>조사기관</dt>
+                <dd>{activeLatest.pollster || "조사기관 미확인"}</dd>
+              </div>
+              <div>
+                <dt>표본</dt>
+                <dd>{formatSampleMeta(activeLatest.sample_size)}</dd>
+              </div>
+              <div>
+                <dt>오차</dt>
+                <dd>{formatMarginMeta(activeLatest.margin_of_error || activeLatest.moe)}</dd>
+              </div>
+              <div>
+                <dt>채널</dt>
+                <dd>{joinChannels(activeLatest.source_channels)}</dd>
+              </div>
+            </dl>
           </div>
         ) : null}
 

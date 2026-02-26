@@ -248,6 +248,26 @@ main {
   background: linear-gradient(180deg, #f8fcff 0%, #f1f5f9 100%);
   min-height: 470px;
   padding: 8px;
+  display: grid;
+  gap: 8px;
+}
+
+.map-canvas {
+  min-height: 420px;
+}
+
+.map-guide {
+  border: 1px solid #d8e7f4;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.82);
+  padding: 8px 10px;
+}
+
+.guide-title {
+  margin: 0;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #334155;
 }
 
 .korea-map {
@@ -327,6 +347,36 @@ main {
 
 .region-slot-head {
   margin-bottom: 8px;
+}
+
+.region-summary-row {
+  margin-top: 6px;
+}
+
+.region-meta-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.region-meta-grid div {
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 6px 8px;
+  background: #f8fbff;
+}
+
+.region-meta-grid dt {
+  font-size: 0.74rem;
+  color: #64748b;
+  margin: 0;
+}
+
+.region-meta-grid dd {
+  margin: 2px 0 0;
+  font-size: 0.82rem;
+  color: #0f172a;
 }
 
 .slot-note {
@@ -1062,6 +1112,15 @@ main {
 
   .map-label.optional:not(.active) {
     display: none;
+  }
+
+  .map-canvas {
+    min-height: 320px;
+  }
+
+  .region-meta-grid {
+    grid-template-columns: 1fr;
+    gap: 6px;
   }
 
   .loading-skeleton-stack {
