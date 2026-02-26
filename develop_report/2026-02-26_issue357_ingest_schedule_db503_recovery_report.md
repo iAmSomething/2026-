@@ -78,3 +78,14 @@ source .venv313/bin/activate && pytest tests/test_db_url_normalization.py tests/
 3. 기대효과
 - Ingest Schedule 실패 시 runner detail에 `database connection failed (<reason>)` 노출
 - secret 오입력/호스트 오기입/네트워크 계열을 즉시 분기 가능
+
+## 9. API 503 detail 전달 개선
+1. 문제
+- `get_repository()`에서 `DatabaseConnectionError`를 항상 고정 문자열(`database connection failed`)로 변환해 reason 코드가 누락됨.
+
+2. 수정
+- `app/api/dependencies.py`
+  - `DatabaseConnectionError` 처리 시 `detail=str(exc)`로 전달하도록 변경.
+
+3. 결과
+- Ingest retry 로그의 `detail` 필드에 `database connection failed (<reason>)` 형식으로 분류코드가 노출됨.

@@ -19,7 +19,7 @@ def get_repository():
     except DatabaseConfigurationError as exc:
         raise HTTPException(status_code=503, detail="database is not configured") from exc
     except DatabaseConnectionError as exc:
-        raise HTTPException(status_code=503, detail="database connection failed") from exc
+        raise HTTPException(status_code=503, detail=str(exc)) from exc
     except psycopg.Error as exc:
         if is_schema_mismatch_sqlstate(getattr(exc, "sqlstate", None)):
             try:
