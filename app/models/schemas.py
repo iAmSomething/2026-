@@ -9,6 +9,8 @@ class RegionOut(BaseModel):
     sido_name: str
     sigungu_name: str
     admin_level: str
+    has_data: bool = False
+    matchup_count: int = 0
 
 
 class CandidateOut(BaseModel):
@@ -59,6 +61,7 @@ class ScopeBreakdownOut(BaseModel):
 
 class DashboardSummaryOut(BaseModel):
     as_of: date | None = None
+    data_source: Literal["official", "article", "mixed"] = "article"
     party_support: list[SummaryPoint]
     presidential_approval: list[SummaryPoint]
     scope_breakdown: ScopeBreakdownOut = Field(default_factory=ScopeBreakdownOut)
@@ -172,6 +175,7 @@ class MatchupOut(BaseModel):
     region_code: str
     office_type: str
     title: str
+    has_data: bool = True
     pollster: str | None = None
     survey_start_date: date | None = None
     survey_end_date: date | None = None
@@ -199,7 +203,7 @@ class MatchupOut(BaseModel):
     poll_fingerprint: str | None = None
     source_channel: Literal["article", "nesdc"] | None = None
     source_channels: list[Literal["article", "nesdc"]] | None = None
-    verified: bool
+    verified: bool = False
     options: list[MatchupOptionOut]
 
 

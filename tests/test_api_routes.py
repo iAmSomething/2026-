@@ -104,6 +104,8 @@ class FakeApiRepo:
                 "sido_name": "서울특별시",
                 "sigungu_name": "전체",
                 "admin_level": "sido",
+                "has_data": True,
+                "matchup_count": 1,
             }
         ]
 
@@ -156,11 +158,47 @@ class FakeApiRepo:
     def get_matchup(self, matchup_id):
         if matchup_id == "missing":
             return None
+        if matchup_id == "2026_local|기초자치단체장|26-710":
+            return {
+                "matchup_id": "20260603|기초자치단체장|26-710",
+                "region_code": "26-710",
+                "office_type": "기초자치단체장",
+                "title": "부산 중구청장 가상대결",
+                "has_data": False,
+                "pollster": None,
+                "survey_start_date": None,
+                "survey_end_date": None,
+                "confidence_level": None,
+                "sample_size": None,
+                "response_rate": None,
+                "margin_of_error": None,
+                "source_grade": None,
+                "audience_scope": None,
+                "audience_region_code": None,
+                "sampling_population_text": None,
+                "legal_completeness_score": None,
+                "legal_filled_count": None,
+                "legal_required_count": None,
+                "date_resolution": None,
+                "date_inference_mode": None,
+                "date_inference_confidence": None,
+                "observation_updated_at": None,
+                "article_published_at": None,
+                "official_release_at": None,
+                "nesdc_enriched": False,
+                "needs_manual_review": False,
+                "poll_fingerprint": None,
+                "source_channel": None,
+                "source_channels": [],
+                "verified": False,
+                "options": [],
+            }
         return {
             "matchup_id": matchup_id,
             "region_code": "11-000",
             "office_type": "광역자치단체장",
             "title": "서울시장 가상대결",
+            "has_data": True,
             "pollster": "KBS",
             "survey_start_date": date(2026, 2, 15),
             "survey_end_date": date(2026, 2, 18),
@@ -429,6 +467,7 @@ def test_api_contract_fields():
     body = summary.json()
     assert "party_support" in body
     assert "presidential_approval" in body
+    assert body["data_source"] == "mixed"
     assert "option_name" in body["party_support"][0]
     assert "value_mid" in body["party_support"][0]
     assert "source_channels" in body["party_support"][0]
@@ -448,6 +487,8 @@ def test_api_contract_fields():
     regions = client.get("/api/v1/regions/search", params={"q": "서울"})
     assert regions.status_code == 200
     assert regions.json()[0]["region_code"] == "11-000"
+    assert regions.json()[0]["has_data"] is True
+    assert regions.json()[0]["matchup_count"] == 1
     regions_query_alias = client.get("/api/v1/regions/search", params={"query": "서울"})
     assert regions_query_alias.status_code == 200
     assert regions_query_alias.json()[0]["region_code"] == "11-000"
@@ -503,6 +544,7 @@ def test_api_contract_fields():
 
     matchup = client.get("/api/v1/matchups/20260603|광역자치단체장|11-000")
     assert matchup.status_code == 200
+    assert matchup.json()["has_data"] is True
     assert matchup.json()["options"][0]["option_name"] == "정원오"
     assert matchup.json()["survey_start_date"] == "2026-02-15"
     assert matchup.json()["audience_scope"] == "regional"
@@ -529,6 +571,11 @@ def test_api_contract_fields():
     matchup_alias = client.get("/api/v1/matchups/m_2026_seoul_mayor")
     assert matchup_alias.status_code == 200
     assert matchup_alias.json()["matchup_id"] == "20260603|광역자치단체장|11-000"
+    matchup_meta_only = client.get("/api/v1/matchups/2026_local|기초자치단체장|26-710")
+    assert matchup_meta_only.status_code == 200
+    assert matchup_meta_only.json()["matchup_id"] == "20260603|기초자치단체장|26-710"
+    assert matchup_meta_only.json()["has_data"] is False
+    assert matchup_meta_only.json()["options"] == []
 
     candidate = client.get("/api/v1/candidates/cand-jwo")
     assert candidate.status_code == 200

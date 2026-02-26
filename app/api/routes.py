@@ -154,6 +154,42 @@ def _is_cutoff_eligible_row(row: dict) -> bool:
     return is_article_published_at_allowed(row.get("article_published_at"))
 
 
+def _derive_dashboard_data_source(rows: list[dict]) -> str:
+    channels: set[str] = set()
+    for row in rows:
+        if row.get("audience_scope") != "national":
+            continue
+        source_channel = str(row.get("source_channel") or "").strip().lower()
+        if source_channel:
+            channels.add(source_channel)
+        for ch in row.get("source_channels") or []:
+            normalized = str(ch).strip().lower()
+            if normalized:
+                channels.add(normalized)
+
+    has_article = "article" in channels
+    has_nesdc = "nesdc" in channels
+    if has_article and has_nesdc:
+        return "mixed"
+    if has_nesdc:
+        return "official"
+    return "article"
+
+
+def _normalize_matchup_id(raw_matchup_id: str) -> str:
+    text = unquote_plus(raw_matchup_id).strip()
+    if text in MATCHUP_ID_ALIASES:
+        return MATCHUP_ID_ALIASES[text]
+    parts = [p.strip() for p in text.split("|")]
+    if len(parts) != 3:
+        return text
+    election_id, office_type, region_code = parts
+    compact_region = region_code.replace("_", "-")
+    if compact_region.isdigit() and len(compact_region) == 5:
+        compact_region = f"{compact_region[:2]}-{compact_region[2:]}"
+    return f"{election_id}|{office_type}|{compact_region}"
+
+
 @router.get("/dashboard/summary", response_model=DashboardSummaryOut)
 def get_dashboard_summary(
     as_of: date | None = Query(default=None),
@@ -191,6 +227,7 @@ def get_dashboard_summary(
 
     return DashboardSummaryOut(
         as_of=as_of,
+        data_source=_derive_dashboard_data_source(eligible_rows),
         party_support=party_support,
         presidential_approval=presidential_approval,
         scope_breakdown=ScopeBreakdownOut(**_build_scope_breakdown(eligible_rows)),
@@ -328,7 +365,7 @@ def get_region_elections(region_code: str, repo=Depends(get_repository)):
 
 @router.get("/matchups/{matchup_id}", response_model=MatchupOut)
 def get_matchup(matchup_id: str, repo=Depends(get_repository)):
-    resolved_matchup_id = MATCHUP_ID_ALIASES.get(matchup_id, matchup_id)
+    resolved_matchup_id = _normalize_matchup_id(matchup_id)
     matchup = repo.get_matchup(resolved_matchup_id)
     if not matchup:
         raise HTTPException(status_code=404, detail="matchup not found")

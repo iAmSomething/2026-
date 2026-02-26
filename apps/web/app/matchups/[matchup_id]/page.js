@@ -201,6 +201,7 @@ export default async function MatchupPage({ params, searchParams }) {
           <span className={`state-badge ${sourceTone(matchup)}`}>{sourceLabel(matchup)}</span>
           <span className={`state-badge ${officialTone(matchup.is_official_confirmed)}`}>{officialLabel(matchup.is_official_confirmed)}</span>
           <span className={`state-badge ${freshnessTone(matchup.freshness_hours)}`}>{freshnessLabel(matchup.freshness_hours)}</span>
+          {matchup.has_data === false ? <span className="state-badge info">데이터 준비 중</span> : null}
           {matchup.needs_manual_review ? <span className="state-badge warn">검수대기</span> : null}
           {scenarioBadges.map((badge) => (
             <span key={badge.text} className={`state-badge ${badge.tone}`}>
@@ -218,7 +219,11 @@ export default async function MatchupPage({ params, searchParams }) {
         <article className="panel">
           <h3>후보별 최신 지표</h3>
           {options.length === 0 ? (
-            <div className="empty-state">데이터 없음: 후보별 지표가 아직 수집되지 않았습니다.</div>
+            <div className="empty-state">
+              {matchup.has_data === false
+                ? "데이터 준비 중: 관측치 수집 전이며 매치업 메타데이터만 먼저 노출됩니다."
+                : "데이터 없음: 후보별 지표가 아직 수집되지 않았습니다."}
+            </div>
           ) : (
             <ul className="option-bars">
               {options.map((option) => {
