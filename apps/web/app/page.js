@@ -159,6 +159,133 @@ function StatusBadge({ tone, text, help, optional = false }) {
   );
 }
 
+function scopeBadgeTone(scope) {
+  if (scope === "national") return "ok";
+  if (scope === "regional") return "info";
+  if (scope === "local") return "warn";
+  return "info";
+}
+
+function scopeBadgeLabel(scope) {
+  if (scope === "national") return "전국 스코프";
+  if (scope === "regional") return "광역 스코프";
+  if (scope === "local") return "기초 스코프";
+  return "스코프 미확인";
+}
+
+function inferScope(items) {
+  const counts = new Map();
+  for (const item of items || []) {
+    const scope = typeof item?.audience_scope === "string" ? item.audience_scope : "unknown";
+    counts.set(scope, (counts.get(scope) || 0) + 1);
+  }
+  if (counts.size === 0) return "unknown";
+  return [...counts.entries()].sort((a, b) => b[1] - a[1])[0][0];
+}
+
+function normalizeTrendPoints(raw) {
+  if (!Array.isArray(raw)) return [];
+  const normalized = raw
+    .map((point, index) => {
+      if (typeof point === "number") {
+        return { label: `P${index + 1}`, value: point };
+      }
+      if (point && typeof point === "object") {
+        const value = asNumber(point.value_mid ?? point.value ?? point.y ?? point.ratio);
+        const label = point.survey_end_date || point.date || point.as_of || `P${index + 1}`;
+        if (value === null) return null;
+        return { label, value };
+      }
+      return null;
+    })
+    .filter(Boolean);
+  return normalized.slice(-12);
+}
+
+function buildSampleTrendPoints(items) {
+  const values = (items || []).map((item) => asNumber(item?.value_mid)).filter((value) => value !== null);
+  const base = values.length > 0 ? values.reduce((acc, value) => acc + value, 0) / values.length : 50;
+  const offsets = [-1.8, -1.2, -0.6, 0, 0.5, 1.1];
+  return offsets.map((offset, index) => {
+    const bounded = Math.max(0, Math.min(100, Number((base + offset).toFixed(2))));
+    return { label: `T-${offsets.length - index}`, value: bounded };
+  });
+}
+
+function resolveTrendSeries(rawTrend, fallbackItems, useSample) {
+  const normalized = normalizeTrendPoints(rawTrend);
+  if (normalized.length >= 2) return { points: normalized, isSample: false };
+  if (useSample) return { points: buildSampleTrendPoints(fallbackItems), isSample: true };
+  return { points: [], isSample: false };
+}
+
+function TrendlineCard({ title, description, points, dataSource, scope, isSample }) {
+  if (!Array.isArray(points) || points.length < 2) {
+    return (
+      <article className="panel trend-card">
+        <header className="panel-header">
+          <div>
+            <h3>{title}</h3>
+            <p>{description}</p>
+            <div className="badge-row summary-badges">
+              <span className={`state-badge ${summaryDataSourceTone(dataSource)}`}>{summaryDataSourceLabel(dataSource)}</span>
+              <span className={`state-badge ${scopeBadgeTone(scope)}`}>{scopeBadgeLabel(scope)}</span>
+            </div>
+          </div>
+        </header>
+        <div className="empty-state">추세 데이터 연동 대기: 시계열 필드 수신 시 자동 렌더링됩니다.</div>
+      </article>
+    );
+  }
+
+  const width = 320;
+  const height = 96;
+  const padding = 10;
+  const values = points.map((point) => point.value);
+  const minValue = Math.min(...values);
+  const maxValue = Math.max(...values);
+  const range = Math.max(maxValue - minValue, 1);
+
+  const coordinates = points.map((point, index) => {
+    const x = padding + (index / (points.length - 1)) * (width - padding * 2);
+    const y = height - padding - ((point.value - minValue) / range) * (height - padding * 2);
+    return { x, y, value: point.value, label: point.label };
+  });
+  const pathData = coordinates.map((point, index) => `${index === 0 ? "M" : "L"} ${point.x.toFixed(2)} ${point.y.toFixed(2)}`).join(" ");
+
+  const first = values[0];
+  const last = values[values.length - 1];
+  const delta = Number((last - first).toFixed(1));
+  const deltaTone = delta > 0 ? "ok" : delta < 0 ? "warn" : "info";
+
+  return (
+    <article className="panel trend-card">
+      <header className="panel-header">
+        <div>
+          <h3>{title}</h3>
+          <p>{description}</p>
+          <div className="badge-row summary-badges">
+            <span className={`state-badge ${summaryDataSourceTone(dataSource)}`}>{summaryDataSourceLabel(dataSource)}</span>
+            <span className={`state-badge ${scopeBadgeTone(scope)}`}>{scopeBadgeLabel(scope)}</span>
+            {isSample ? <span className="state-badge warn">샘플 프레임</span> : null}
+          </div>
+        </div>
+      </header>
+      <svg viewBox={`0 0 ${width} ${height}`} role="img" aria-label={`${title} 추세선`} className="trend-sparkline">
+        <path d={pathData} className="trend-line" />
+        {coordinates.map((point, index) => (
+          <circle key={`${point.label}-${index}`} cx={point.x} cy={point.y} r="2.5" className="trend-dot" />
+        ))}
+      </svg>
+      <div className="trend-meta">
+        <span>{points[0].label}</span>
+        <strong>{formatPercent(last)}</strong>
+        <span className={`state-badge ${deltaTone}`}>변화 {delta > 0 ? "+" : ""}{delta}%p</span>
+      </div>
+    </article>
+  );
+}
+
 function SummaryColumn({ title, description, items, dataSource }) {
   return (
     <article className="panel">
@@ -558,6 +685,7 @@ function QualityPanel({ quality }) {
 export default async function HomePage({ searchParams }) {
   const resolved = await searchParams;
   const scopeMixEnabled = parseOnFlag(resolved?.scope_mix || "");
+  const trendDemoEnabled = parseOnFlag(resolved?.trend_demo || "");
   const regionScenario = normalizeRegionParam(resolved?.selected_region || "");
   const stateDemo = (resolved?.state_demo || "").toLowerCase().trim();
 
@@ -587,6 +715,13 @@ export default async function HomePage({ searchParams }) {
         : [];
   const electionFrameItems =
     summaryRes.ok && Array.isArray(summaryRes.body?.election_frame) ? summaryRes.body.election_frame : [];
+  const partyTrend = summaryRes.ok ? resolveTrendSeries(summaryRes.body?.party_support_trend, partyItems, trendDemoEnabled) : { points: [], isSample: false };
+  const approvalTrend = summaryRes.ok
+    ? resolveTrendSeries(summaryRes.body?.president_job_approval_trend, presidentJobItems, trendDemoEnabled)
+    : { points: [], isSample: false };
+  const frameTrend = summaryRes.ok
+    ? resolveTrendSeries(summaryRes.body?.election_frame_trend, electionFrameItems, trendDemoEnabled)
+    : { points: [], isSample: false };
   const mapItems = mapRes.ok && Array.isArray(mapRes.body?.items) ? mapRes.body.items : [];
   const bigMatchItemsRaw = bigMatchRes.ok && Array.isArray(bigMatchRes.body?.items) ? bigMatchRes.body.items : [];
   const qualityMetrics = qualityRes.ok && qualityRes.body ? qualityRes.body : null;
@@ -608,6 +743,9 @@ export default async function HomePage({ searchParams }) {
         "info"
       )
     );
+  }
+  if (trendDemoEnabled) {
+    scenarioBadges.push(toScenarioBadge("trend_demo=1", "info"));
   }
 
   return (
@@ -649,6 +787,33 @@ export default async function HomePage({ searchParams }) {
           <p>status: {summaryRes.status}</p>
         </section>
       ) : null}
+
+      <section className="trend-grid">
+        <TrendlineCard
+          title="추세선 카드 · 정당"
+          description="공통 프레임: 정당 지표 추세"
+          dataSource={summaryDataSource}
+          scope={inferScope(partyItems)}
+          points={partyTrend.points}
+          isSample={partyTrend.isSample}
+        />
+        <TrendlineCard
+          title="추세선 카드 · 직무평가"
+          description="공통 프레임: 직무평가 추세"
+          dataSource={summaryDataSource}
+          scope={inferScope(presidentJobItems)}
+          points={approvalTrend.points}
+          isSample={approvalTrend.isSample}
+        />
+        <TrendlineCard
+          title="추세선 카드 · 선거성격"
+          description="공통 프레임: 선거성격 추세"
+          dataSource={summaryDataSource}
+          scope={inferScope(electionFrameItems)}
+          points={frameTrend.points}
+          isSample={frameTrend.isSample}
+        />
+      </section>
 
       <section className="summary-grid">
         <SummaryColumn

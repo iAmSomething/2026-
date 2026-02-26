@@ -160,6 +160,49 @@ main {
   gap: 14px;
 }
 
+.trend-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.trend-card {
+  display: flex;
+  flex-direction: column;
+}
+
+.trend-sparkline {
+  width: 100%;
+  height: 96px;
+  border: 1px solid #dbe8f4;
+  border-radius: 10px;
+  background: linear-gradient(180deg, #f9fcff 0%, #f3f8fd 100%);
+}
+
+.trend-line {
+  fill: none;
+  stroke: #06b6d4;
+  stroke-width: 2.2;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+}
+
+.trend-dot {
+  fill: #0f766e;
+}
+
+.trend-meta {
+  margin-top: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.trend-meta strong {
+  color: #0f766e;
+}
+
 .summary-list {
   display: grid;
   gap: 10px;
@@ -900,6 +943,7 @@ main {
 
 @media (max-width: 980px) {
   .hero,
+  .trend-grid,
   .summary-grid,
   .region-layout,
   .search-layout,
@@ -939,6 +983,10 @@ main {
     height: 12px;
     margin-left: 4px;
     font-size: 0.64rem;
+  }
+
+  .trend-meta {
+    font-size: 0.82rem;
   }
 }
 
