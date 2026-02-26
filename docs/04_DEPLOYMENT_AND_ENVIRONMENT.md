@@ -57,15 +57,20 @@ pip install -r requirements.txt
 2. 권장 환경변수:
 - `DATA_GO_KR_KEY`
 - `COMMON_CODE_REGION_URL`
+- `COMMON_CODE_SIGUNGU_URL` (선택: 시군구 분리 endpoint 사용 시)
 - `COMMON_CODE_PARTY_URL`
 - `COMMON_CODE_ELECTION_URL`
 3. 실행 예시:
 ```bash
 PYTHONPATH=. .venv/bin/python scripts/sync_common_codes.py \
   --region-url "$COMMON_CODE_REGION_URL" \
+  --region-sigungu-url "$COMMON_CODE_SIGUNGU_URL" \
   --party-url "$COMMON_CODE_PARTY_URL" \
   --election-url "$COMMON_CODE_ELECTION_URL"
 ```
+4. 산출 리포트: `data/common_codes_sync_report.json`
+- `diff.added_count`, `diff.updated_count`, `diff.delete_candidate_count` 포함
+- 실패 시 `status=failed` + `review_queue(issue_type=code_sync_error)` 기록
 
 ### 선택
 1. `WinnerInfoInqireService2`

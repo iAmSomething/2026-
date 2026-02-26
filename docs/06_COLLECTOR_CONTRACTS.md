@@ -112,9 +112,14 @@ PYTHONPATH=. .venv/bin/python scripts/evaluate_collector_real_precision.py
 ```bash
 PYTHONPATH=. .venv/bin/python scripts/sync_common_codes.py \
   --region-url "$COMMON_CODE_REGION_URL" \
+  --region-sigungu-url "$COMMON_CODE_SIGUNGU_URL" \
   --party-url "$COMMON_CODE_PARTY_URL" \
   --election-url "$COMMON_CODE_ELECTION_URL"
 ```
+- 동기화 리포트: `data/common_codes_sync_report.json`
+  - `parsed_region_count`, `upserted_region_count`
+  - `diff.added_count`, `diff.updated_count`, `diff.delete_candidate_count`
+- 동기화 실패 시 `review_queue`에 `issue_type=code_sync_error` 기록
 
 5. discovery v1 실행(후속 classify 입력 생성):
 ```bash

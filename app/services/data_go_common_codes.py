@@ -89,7 +89,7 @@ class DataGoCommonCodeService:
         last_exc: Exception | None = None
         for attempt in range(attempts):
             try:
-                return self._fetch_once()
+                return self._fetch_all_pages()
             except Exception as exc:  # noqa: BLE001
                 last_exc = exc
                 if attempt + 1 >= attempts or not self._is_retryable(exc):
@@ -104,11 +104,35 @@ class DataGoCommonCodeService:
             return True
         return isinstance(exc, TimeoutError)
 
-    def _fetch_once(self) -> list[dict[str, Any]]:
+    def _fetch_all_pages(self) -> list[dict[str, Any]]:
+        all_items: list[dict[str, Any]] = []
+        page_no = 1
+        first_page_total: int | None = None
+
+        while True:
+            items, total_count = self._fetch_once(page_no=page_no)
+            if page_no == 1:
+                first_page_total = total_count
+            if not items:
+                break
+            all_items.extend(items)
+
+            if first_page_total is not None and len(all_items) >= first_page_total:
+                break
+            if len(items) < self.config.num_of_rows:
+                break
+
+            page_no += 1
+            if page_no > 200:
+                break
+
+        return all_items
+
+    def _fetch_once(self, *, page_no: int) -> tuple[list[dict[str, Any]], int | None]:
         self._wait_for_rate_limit()
         params = {
             "serviceKey": self.config.service_key or "",
-            "pageNo": "1",
+            "pageNo": str(page_no),
             "numOfRows": str(self.config.num_of_rows),
         }
         url = _append_params(self.config.endpoint_url, params)
@@ -126,18 +150,26 @@ class DataGoCommonCodeService:
         if wait_for > 0:
             time.sleep(wait_for)
 
-    def _parse_items(self, raw_text: str) -> list[dict[str, Any]]:
+    def _parse_items(self, raw_text: str) -> tuple[list[dict[str, Any]], int | None]:
         text = raw_text.lstrip()
         if text.startswith("{") or text.startswith("["):
             return self._parse_json_items(raw_text)
         return self._parse_xml_items(raw_text)
 
-    def _parse_xml_items(self, raw_text: str) -> list[dict[str, Any]]:
+    def _parse_xml_items(self, raw_text: str) -> tuple[list[dict[str, Any]], int | None]:
         root = ET.fromstring(raw_text)
         result_code = _norm_text(root.findtext(".//header/resultCode")) or _norm_text(root.findtext(".//resultCode"))
         result_msg = _norm_text(root.findtext(".//header/resultMsg")) or _norm_text(root.findtext(".//resultMsg"))
         if result_code and result_code not in {"00", "INFO-00"}:
             raise RuntimeError(f"data.go response error: {result_code} {result_msg or ''}".strip())
+        total_count_raw = (
+            _norm_text(root.findtext(".//body/totalCount"))
+            or _norm_text(root.findtext(".//totalCount"))
+            or _norm_text(root.findtext(".//totalCnt"))
+        )
+        total_count: int | None = None
+        if total_count_raw and total_count_raw.isdigit():
+            total_count = int(total_count_raw)
 
         items: list[dict[str, Any]] = []
         for elem in root.findall(".//item"):
@@ -147,14 +179,14 @@ class DataGoCommonCodeService:
                     row[child.tag] = child.text.strip()
             if row:
                 items.append(row)
-        return items
+        return items, total_count
 
-    def _parse_json_items(self, raw_text: str) -> list[dict[str, Any]]:
+    def _parse_json_items(self, raw_text: str) -> tuple[list[dict[str, Any]], int | None]:
         payload = json.loads(raw_text)
         if isinstance(payload, list):
-            return [x for x in payload if isinstance(x, dict)]
+            return [x for x in payload if isinstance(x, dict)], len(payload)
         if not isinstance(payload, dict):
-            return []
+            return [], None
 
         header = payload.get("response", {}).get("header", {})
         if isinstance(header, dict):
@@ -163,6 +195,17 @@ class DataGoCommonCodeService:
             if result_code and result_code not in {"00", "INFO-00"}:
                 raise RuntimeError(f"data.go response error: {result_code} {result_msg or ''}".strip())
 
+        total_count_raw = (
+            _norm_text(payload.get("response", {}).get("body", {}).get("totalCount"))
+            if isinstance(payload.get("response"), dict)
+            else None
+        )
+        if not total_count_raw:
+            total_count_raw = _norm_text(payload.get("totalCount"))
+        total_count: int | None = None
+        if total_count_raw and total_count_raw.isdigit():
+            total_count = int(total_count_raw)
+
         cur: Any = payload
         for key in ("response", "body", "items"):
             if isinstance(cur, dict) and key in cur:
@@ -170,10 +213,10 @@ class DataGoCommonCodeService:
         if isinstance(cur, dict) and "item" in cur:
             cur = cur["item"]
         if isinstance(cur, list):
-            return [x for x in cur if isinstance(x, dict)]
+            return [x for x in cur if isinstance(x, dict)], total_count
         if isinstance(cur, dict):
-            return [cur]
-        return []
+            return [cur], total_count
+        return [], total_count
 
 
 def build_region_rows(items: list[dict[str, Any]]) -> list[dict[str, Any]]:
