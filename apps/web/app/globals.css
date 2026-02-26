@@ -774,6 +774,24 @@ main {
   font-weight: 700;
 }
 
+.state-badge.badge-core {
+  border-width: 2px;
+}
+
+.badge-help {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 14px;
+  height: 14px;
+  margin-left: 6px;
+  border-radius: 999px;
+  border: 1px solid currentColor;
+  font-size: 0.68rem;
+  font-weight: 700;
+  opacity: 0.78;
+}
+
 .state-badge.info {
   border-color: #bae6fd;
   background: #ecfeff;
@@ -857,6 +875,26 @@ main {
 
   .scenario-card-grid {
     grid-template-columns: 1fr;
+  }
+
+  .state-badge.badge-optional {
+    display: none;
+  }
+
+  .summary-badges {
+    gap: 4px;
+  }
+
+  .state-badge {
+    font-size: 0.75rem;
+    padding: 3px 8px;
+  }
+
+  .badge-help {
+    width: 12px;
+    height: 12px;
+    margin-left: 4px;
+    font-size: 0.64rem;
   }
 }
 

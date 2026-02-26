@@ -65,6 +65,100 @@ function summaryDataSourceLabel(dataSource) {
   return "요약 출처: article";
 }
 
+function qualitySignalTone(item) {
+  const freshness = Number(item?.freshness_hours);
+  if (needsReview(item)) return "warn";
+  if (item?.is_official_confirmed === true && Number.isFinite(freshness) && freshness <= 48) return "ok";
+  if (item?.is_official_confirmed === false && Number.isFinite(freshness) && freshness > 96) return "warn";
+  return "info";
+}
+
+function qualitySignalLabel(item) {
+  if (needsReview(item)) return "품질 검수대기";
+  if (item?.is_official_confirmed === true) return "품질 확인됨";
+  return "품질 확인중";
+}
+
+function qualitySignalHelp(item) {
+  if (needsReview(item)) return "수동 검수 큐에 포함된 항목입니다.";
+  if (item?.is_official_confirmed === true) return "공식 확정되었고 품질 기준을 충족한 항목입니다.";
+  return "공식 확정 전 또는 신선도 경계 상태로 추가 확인이 필요합니다.";
+}
+
+function sourceHelp(item) {
+  const channels = Array.isArray(item?.source_channels) ? item.source_channels : [];
+  if (channels.includes("article") && channels.includes("nesdc")) {
+    return "기사와 NESDC 소스를 함께 사용한 혼합 소스입니다.";
+  }
+  if (item?.source_channel === "nesdc" || channels[0] === "nesdc") {
+    return "중앙선관위/NESDC 기준 소스입니다.";
+  }
+  if (item?.source_channel === "article" || channels[0] === "article") {
+    return "기사 기반 추정 소스입니다.";
+  }
+  return "출처 채널 정보가 명확하지 않습니다.";
+}
+
+function freshnessHelp(hours) {
+  const value = Number(hours);
+  if (!Number.isFinite(value)) return "신선도 데이터를 계산할 수 없습니다.";
+  if (value <= 48) return "최근 48시간 내 관측입니다.";
+  if (value <= 96) return "48시간 초과 관측으로 주의가 필요합니다.";
+  return "96시간 초과 관측으로 검수가 필요한 상태입니다.";
+}
+
+function officialHelp(confirmed) {
+  return confirmed ? "공식 출처로 확정된 상태입니다." : "공식 확정 대기 상태입니다.";
+}
+
+function prioritizedBadges(item) {
+  return [
+    {
+      key: "quality",
+      tone: qualitySignalTone(item),
+      text: qualitySignalLabel(item),
+      help: qualitySignalHelp(item),
+      optional: false
+    },
+    {
+      key: "source",
+      tone: sourceTone(item),
+      text: sourceLabel(item),
+      help: sourceHelp(item),
+      optional: false
+    },
+    {
+      key: "freshness",
+      tone: freshnessTone(item),
+      text: freshnessLabel(item),
+      help: freshnessHelp(item?.freshness_hours),
+      optional: false
+    },
+    {
+      key: "official",
+      tone: officialTone(item?.is_official_confirmed),
+      text: officialLabel(item?.is_official_confirmed),
+      help: officialHelp(item?.is_official_confirmed),
+      optional: true
+    }
+  ];
+}
+
+function StatusBadge({ tone, text, help, optional = false }) {
+  return (
+    <span
+      className={`state-badge ${tone} ${optional ? "badge-optional" : "badge-core"}`}
+      title={help}
+      aria-label={`${text}: ${help}`}
+    >
+      {text}
+      <span className="badge-help" aria-hidden="true">
+        i
+      </span>
+    </span>
+  );
+}
+
 function SummaryColumn({ title, description, items, dataSource }) {
   return (
     <article className="panel">
@@ -72,6 +166,7 @@ function SummaryColumn({ title, description, items, dataSource }) {
         <div>
           <h3>{title}</h3>
           <p>{description}</p>
+          <p className="muted-text">핵심 배지 우선순위: 품질 → 출처 → 신선도 (공식확정은 보조 배지)</p>
           <div className="badge-row summary-badges">
             <span className={`state-badge ${summaryDataSourceTone(dataSource)}`}>{summaryDataSourceLabel(dataSource)}</span>
           </div>
@@ -91,10 +186,9 @@ function SummaryColumn({ title, description, items, dataSource }) {
             </div>
             <div className="summary-value">{formatPercent(item.value_mid)}</div>
             <div className="badge-row summary-badges">
-              <span className={`state-badge ${sourceTone(item)}`}>{sourceLabel(item)}</span>
-              <span className={`state-badge ${officialTone(item.is_official_confirmed)}`}>{officialLabel(item.is_official_confirmed)}</span>
-              <span className={`state-badge ${freshnessTone(item.freshness_hours)}`}>{freshnessLabel(item.freshness_hours)}</span>
-              {needsReview(item) ? <span className="state-badge warn">검수대기</span> : null}
+              {prioritizedBadges(item).map((badge) => (
+                <StatusBadge key={`${item.option_name}-${badge.key}`} tone={badge.tone} text={badge.text} help={badge.help} optional={badge.optional} />
+              ))}
             </div>
             <p className="summary-meta">채널: {joinChannels(item.source_channels)}</p>
           </div>
@@ -131,10 +225,9 @@ function BigMatchCards({ items }) {
             <p>대표값 {formatPercent(item.value_mid)}</p>
             <p>조사 종료 {formatDate(item.survey_end_date)}</p>
             <div className="badge-row summary-badges">
-              <span className={`state-badge ${sourceTone(item)}`}>{sourceLabel(item)}</span>
-              <span className={`state-badge ${officialTone(item.is_official_confirmed)}`}>{officialLabel(item.is_official_confirmed)}</span>
-              <span className={`state-badge ${freshnessTone(item.freshness_hours)}`}>{freshnessLabel(item.freshness_hours)}</span>
-              {needsReview(item) ? <span className="state-badge warn">검수대기</span> : null}
+              {prioritizedBadges(item).map((badge) => (
+                <StatusBadge key={`${item.matchup_id}-${badge.key}`} tone={badge.tone} text={badge.text} help={badge.help} optional={badge.optional} />
+              ))}
             </div>
           </Link>
         ))}
