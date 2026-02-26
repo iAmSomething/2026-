@@ -46,14 +46,27 @@ function averageCenter(rings) {
 function pickLatestByRegion(items) {
   const map = new Map();
   for (const item of items || []) {
-    const existing = map.get(item.region_code);
-    if (!existing) {
-      map.set(item.region_code, item);
-      continue;
+    const candidates = new Set();
+    const rawRegionCode = typeof item?.region_code === "string" ? item.region_code.trim() : "";
+    const rawAudienceCode = typeof item?.audience_region_code === "string" ? item.audience_region_code.trim() : "";
+    if (rawRegionCode) {
+      candidates.add(rawRegionCode);
+      if (/^\d{2}-\d{3}$/.test(rawRegionCode)) candidates.add(`${rawRegionCode.slice(0, 2)}-000`);
     }
-    const existingDate = existing.survey_end_date || "";
-    const nextDate = item.survey_end_date || "";
-    if (nextDate >= existingDate) map.set(item.region_code, item);
+    if (rawAudienceCode) {
+      candidates.add(rawAudienceCode);
+      if (/^\d{2}-\d{3}$/.test(rawAudienceCode)) candidates.add(`${rawAudienceCode.slice(0, 2)}-000`);
+    }
+    for (const code of candidates) {
+      const existing = map.get(code);
+      if (!existing) {
+        map.set(code, item);
+        continue;
+      }
+      const existingDate = existing.survey_end_date || "";
+      const nextDate = item.survey_end_date || "";
+      if (nextDate >= existingDate) map.set(code, item);
+    }
   }
   return map;
 }
@@ -111,6 +124,24 @@ function fallbackElectionTitle(regionName, officeType) {
   return `${normalizedRegion} ${officeType}`;
 }
 
+function formatSurveyMeta(value) {
+  return formatDate(value);
+}
+
+function formatSampleMeta(value) {
+  if (value === null || value === undefined || value === "") return "표본 정보 없음";
+  const numeric = Number(value);
+  if (!Number.isFinite(numeric)) return "표본 정보 없음";
+  return `표본 ${numeric.toLocaleString("ko-KR")}명`;
+}
+
+function formatMarginMeta(value) {
+  if (value === null || value === undefined || value === "") return "오차 정보 없음";
+  const numeric = Number(value);
+  if (Number.isFinite(numeric)) return `오차 ±${numeric}%p`;
+  return `오차 ${String(value)}`;
+}
+
 function buildOfficialSlots(elections, { regionCode, regionName }) {
   const byOffice = new Map();
   for (const raw of elections || []) {
@@ -155,6 +186,7 @@ export default function RegionalMapPanel({
   selectedRegionHint = ""
 }) {
   const [hoveredCode, setHoveredCode] = useState(null);
+  const [focusedCode, setFocusedCode] = useState(null);
   const [selectedCode, setSelectedCode] = useState(initialSelectedRegionCode);
   const [geoState, setGeoState] = useState("loading");
   const [geoJson, setGeoJson] = useState(null);
@@ -221,9 +253,10 @@ export default function RegionalMapPanel({
     );
   }, [features]);
 
-  const activeCode = selectedCode || hoveredCode;
+  const activeCode = selectedCode || focusedCode || hoveredCode;
   const activeFeature = features.find((feature) => feature.properties.region_code === activeCode) || null;
   const activeLatest = activeCode ? latestByRegion.get(activeCode) || null : null;
+  const modeLabel = selectedCode ? "선택 고정" : focusedCode ? "키보드 포커스" : hoveredCode ? "hover 미리보기" : "대기";
 
   useEffect(() => {
     if (!selectedCode) {
@@ -282,10 +315,14 @@ export default function RegionalMapPanel({
               return (
                 <g
                   key={regionCode}
+                  className={`map-region ${focusedCode === regionCode ? "is-focused" : ""}`}
                   role="button"
                   tabIndex={0}
+                  aria-label={`${feature.properties.region_name || regionCode}, ${hasData ? "최신 조사 있음" : "최신 조사 없음"}`}
                   onMouseEnter={() => setHoveredCode(regionCode)}
                   onMouseLeave={() => setHoveredCode((prev) => (prev === regionCode ? null : prev))}
+                  onFocus={() => setFocusedCode(regionCode)}
+                  onBlur={() => setFocusedCode((prev) => (prev === regionCode ? null : prev))}
                   onClick={() => setSelectedCode((prev) => (prev === regionCode ? null : regionCode))}
                   onKeyDown={(event) => {
                     if (event.key === "Enter" || event.key === " ") {
@@ -325,6 +362,10 @@ export default function RegionalMapPanel({
           <div className="region-block">
             <p className="region-name">{activeFeature?.properties?.region_name || activeCode}</p>
             <p className="region-code">{activeCode}</p>
+            <div className="badge-row">
+              <span className={`state-badge ${activeLatest ? "ok" : "info"}`}>{modeLabel}</span>
+              <span className={`state-badge ${activeLatest ? "ok" : "warn"}`}>{activeLatest ? "최신 조사 있음" : "최신 조사 없음"}</span>
+            </div>
           </div>
         ) : null}
 
@@ -332,8 +373,22 @@ export default function RegionalMapPanel({
           <div className="region-block">
             <strong>{activeLatest.title}</strong>
             <p>대표값: {formatPercent(activeLatest.value_mid)}</p>
-            <p>조사 종료: {formatDate(activeLatest.survey_end_date)}</p>
+            <p className="muted-text">최신 조사일: {formatSurveyMeta(activeLatest.survey_end_date)}</p>
+            <p className="muted-text">조사기관: {activeLatest.pollster || "조사기관 미확인"}</p>
+            <p className="muted-text">{formatSampleMeta(activeLatest.sample_size)}</p>
+            <p className="muted-text">{formatMarginMeta(activeLatest.margin_of_error || activeLatest.moe)}</p>
             <p className="muted-text">채널: {joinChannels(activeLatest.source_channels)}</p>
+          </div>
+        ) : null}
+
+        {activeCode && !activeLatest ? (
+          <div className="region-block">
+            <strong>최신 조사 메타</strong>
+            <p className="muted-text">최신 조사일: -</p>
+            <p className="muted-text">조사기관: 조사 데이터 없음</p>
+            <p className="muted-text">표본 정보: 없음</p>
+            <p className="muted-text">오차 정보: 없음</p>
+            <p className="muted-text">안내: 이 지역은 최신 조사 데이터가 없어 placeholder 메타를 표시합니다.</p>
           </div>
         ) : null}
 

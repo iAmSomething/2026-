@@ -212,6 +212,20 @@ main {
   height: 100%;
 }
 
+.map-region {
+  cursor: pointer;
+}
+
+.map-region:focus-visible {
+  outline: none;
+}
+
+.map-region.is-focused path,
+.map-region:focus-visible path {
+  stroke: #0b3b6b;
+  stroke-width: 3;
+}
+
 .region-detail {
   border: 1px solid #d9e7f4;
   border-radius: 14px;
