@@ -76,6 +76,14 @@ ELECTION_FRAME_KEYWORDS = (
     "선거성격",
     "프레임",
 )
+ARTICLE_AGGREGATE_HINTS = ("집계", "aggregate", "평균", "메타", "종합")
+SOURCE_GRADE_SCORE = {
+    "S": 5,
+    "A": 4,
+    "B": 3,
+    "C": 2,
+    "D": 1,
+}
 MAP_LATEST_CANDIDATE_NAME_RE = re.compile(r"^[가-힣]{2,8}$")
 MAP_LATEST_GENERIC_OPTION_EXACT_TOKENS = {
     "양자대결",
@@ -271,6 +279,55 @@ def _classify_presidential_option(option_name: str) -> str:
     return "election_frame"
 
 
+def _summary_source_tier(row: dict) -> Literal["official", "nesdc", "article_aggregate", "article"]:
+    source_channel = str(row.get("source_channel") or "").strip().lower()
+    source_channels = {str(ch).strip().lower() for ch in (row.get("source_channels") or []) if ch is not None}
+
+    if source_channel == "official" or "official" in source_channels:
+        return "official"
+    if source_channel == "nesdc" or "nesdc" in source_channels:
+        return "nesdc"
+
+    pollster = str(row.get("pollster") or "").strip().lower()
+    if any(hint in pollster for hint in ARTICLE_AGGREGATE_HINTS):
+        return "article_aggregate"
+    return "article"
+
+
+def _summary_source_tier_score(tier: Literal["official", "nesdc", "article_aggregate", "article"]) -> int:
+    return {
+        "official": 4,
+        "nesdc": 3,
+        "article_aggregate": 2,
+        "article": 1,
+    }[tier]
+
+
+def _summary_reliability_score(row: dict) -> int:
+    source_grade = str(row.get("source_grade") or "").strip().upper()
+    if source_grade in SOURCE_GRADE_SCORE:
+        return SOURCE_GRADE_SCORE[source_grade]
+    return 0
+
+
+def _summary_row_sort_key(row: dict) -> tuple[int, float, int]:
+    tier = _summary_source_tier(row)
+    date_value = row.get("survey_end_date")
+    date_score = 0.0
+    if isinstance(date_value, date):
+        date_score = float(date_value.toordinal())
+    return (
+        _summary_source_tier_score(tier),
+        date_score,
+        _summary_reliability_score(row),
+    )
+
+
+def _select_summary_representative(rows: list[dict]) -> tuple[dict, str]:
+    selected = max(rows, key=_summary_row_sort_key)
+    return selected, _summary_source_tier(selected)
+
+
 def _normalize_map_candidate_token(option_name: str | None) -> str:
     token = re.sub(r"\s+", "", str(option_name or "").strip().lower())
     return re.sub(r"[^0-9a-z가-힣]", "", token)
@@ -321,43 +378,55 @@ def get_dashboard_summary(
     repo=Depends(get_repository),
 ):
     rows = repo.fetch_dashboard_summary(as_of=as_of)
-    party_support = []
-    president_job_approval = []
-    election_frame = []
+    party_support: list[SummaryPoint] = []
+    president_job_approval: list[SummaryPoint] = []
+    election_frame: list[SummaryPoint] = []
     eligible_rows = [row for row in rows if _is_cutoff_eligible_row(row)]
-
-    for row in eligible_rows:
-        if row.get("audience_scope") != "national":
+    national_rows = [row for row in eligible_rows if row.get("audience_scope") == "national"]
+    grouped: dict[tuple[str, str], list[dict]] = {}
+    for row in national_rows:
+        option_name = str(row.get("option_name") or "").strip()
+        if not option_name:
             continue
-        source_meta = _derive_source_meta(row)
+        if row["option_type"] == "party_support":
+            bucket = "party_support"
+        elif row["option_type"] == "president_job_approval":
+            bucket = "president_job_approval"
+        elif row["option_type"] == "election_frame":
+            bucket = "election_frame"
+        elif row["option_type"] == "presidential_approval":
+            bucket = _classify_presidential_option(option_name)
+        else:
+            continue
+        grouped.setdefault((bucket, option_name), []).append(row)
+
+    for (bucket, _option_name), candidates in sorted(grouped.items(), key=lambda x: (x[0][0], x[0][1])):
+        selected_row, selected_tier = _select_summary_representative(candidates)
+        source_meta = _derive_source_meta(selected_row)
         point = SummaryPoint(
-            option_name=row["option_name"],
-            value_mid=row["value_mid"],
-            pollster=row["pollster"],
-            survey_end_date=row["survey_end_date"],
-            audience_scope=row.get("audience_scope"),
-            audience_region_code=row.get("audience_region_code"),
+            option_name=selected_row["option_name"],
+            value_mid=selected_row["value_mid"],
+            pollster=selected_row["pollster"],
+            survey_end_date=selected_row["survey_end_date"],
+            audience_scope=selected_row.get("audience_scope"),
+            audience_region_code=selected_row.get("audience_region_code"),
             source_priority=source_meta["source_priority"],
+            selected_source_tier=selected_tier,
+            selected_source_channel=selected_row.get("source_channel"),
             official_release_at=source_meta["official_release_at"],
             article_published_at=source_meta["article_published_at"],
             freshness_hours=source_meta["freshness_hours"],
             is_official_confirmed=source_meta["is_official_confirmed"],
-            source_channel=row.get("source_channel"),
-            source_channels=row.get("source_channels") or [],
-            verified=row["verified"],
+            source_channel=selected_row.get("source_channel"),
+            source_channels=selected_row.get("source_channels") or [],
+            verified=selected_row["verified"],
         )
-        if row["option_type"] == "party_support":
+        if bucket == "party_support":
             party_support.append(point)
-        elif row["option_type"] == "president_job_approval":
+        elif bucket == "president_job_approval":
             president_job_approval.append(point)
-        elif row["option_type"] == "election_frame":
+        elif bucket == "election_frame":
             election_frame.append(point)
-        elif row["option_type"] == "presidential_approval":
-            bucket = _classify_presidential_option(point.option_name)
-            if bucket == "president_job_approval":
-                president_job_approval.append(point)
-            else:
-                election_frame.append(point)
 
     deprecated_presidential_approval = list(president_job_approval)
 

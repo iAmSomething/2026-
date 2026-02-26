@@ -840,6 +840,134 @@ def test_map_latest_sanity_filter_drops_invalid_candidate_and_legacy_title_rows(
     app.dependency_overrides.clear()
 
 
+def test_dashboard_summary_selects_single_representative_by_source_priority():
+    class SummaryRepresentativeRepo(FakeApiRepo):
+        def fetch_dashboard_summary(self, as_of):  # noqa: ARG002
+            return [
+                {
+                    "option_type": "party_support",
+                    "option_name": "더불어민주당",
+                    "value_mid": 35.0,
+                    "pollster": "기사집계센터",
+                    "survey_end_date": date(2026, 2, 20),
+                    "source_grade": "A",
+                    "audience_scope": "national",
+                    "audience_region_code": None,
+                    "observation_updated_at": "2026-02-20T03:00:00+00:00",
+                    "article_published_at": "2026-02-20T01:00:00+00:00",
+                    "source_channel": "article",
+                    "source_channels": ["article"],
+                    "verified": True,
+                },
+                {
+                    "option_type": "party_support",
+                    "option_name": "더불어민주당",
+                    "value_mid": 34.0,
+                    "pollster": "NBS",
+                    "survey_end_date": date(2026, 2, 18),
+                    "source_grade": "B",
+                    "audience_scope": "national",
+                    "audience_region_code": None,
+                    "observation_updated_at": "2026-02-18T03:00:00+00:00",
+                    "official_release_at": "2026-02-18T01:00:00+00:00",
+                    "article_published_at": None,
+                    "source_channel": "nesdc",
+                    "source_channels": ["nesdc"],
+                    "verified": True,
+                },
+                {
+                    "option_type": "party_support",
+                    "option_name": "국민의힘",
+                    "value_mid": 39.0,
+                    "pollster": "기사집계센터",
+                    "survey_end_date": date(2026, 2, 18),
+                    "source_grade": "B",
+                    "audience_scope": "national",
+                    "audience_region_code": None,
+                    "observation_updated_at": "2026-02-18T03:00:00+00:00",
+                    "article_published_at": "2026-02-18T01:00:00+00:00",
+                    "source_channel": "article",
+                    "source_channels": ["article"],
+                    "verified": True,
+                },
+                {
+                    "option_type": "party_support",
+                    "option_name": "국민의힘",
+                    "value_mid": 40.0,
+                    "pollster": "일반기사",
+                    "survey_end_date": date(2026, 2, 20),
+                    "source_grade": "A",
+                    "audience_scope": "national",
+                    "audience_region_code": None,
+                    "observation_updated_at": "2026-02-20T03:00:00+00:00",
+                    "article_published_at": "2026-02-20T01:00:00+00:00",
+                    "source_channel": "article",
+                    "source_channels": ["article"],
+                    "verified": True,
+                },
+                {
+                    "option_type": "president_job_approval",
+                    "option_name": "대통령 직무 긍정평가",
+                    "value_mid": 47.0,
+                    "pollster": "일반기사",
+                    "survey_end_date": date(2026, 2, 20),
+                    "source_grade": "B",
+                    "audience_scope": "national",
+                    "audience_region_code": None,
+                    "observation_updated_at": "2026-02-20T03:00:00+00:00",
+                    "article_published_at": "2026-02-20T01:00:00+00:00",
+                    "source_channel": "article",
+                    "source_channels": ["article"],
+                    "verified": True,
+                },
+                {
+                    "option_type": "president_job_approval",
+                    "option_name": "대통령 직무 긍정평가",
+                    "value_mid": 48.0,
+                    "pollster": "일반기사",
+                    "survey_end_date": date(2026, 2, 20),
+                    "source_grade": "A",
+                    "audience_scope": "national",
+                    "audience_region_code": None,
+                    "observation_updated_at": "2026-02-20T03:00:00+00:00",
+                    "article_published_at": "2026-02-20T01:00:00+00:00",
+                    "source_channel": "article",
+                    "source_channels": ["article"],
+                    "verified": True,
+                },
+            ]
+
+    def override_summary_repo():
+        yield SummaryRepresentativeRepo()
+
+    app.dependency_overrides[get_repository] = override_summary_repo
+    app.dependency_overrides[get_candidate_data_go_service] = override_candidate_data_go_service
+    client = TestClient(app)
+
+    res = client.get("/api/v1/dashboard/summary")
+    assert res.status_code == 200
+    body = res.json()
+
+    assert [x["option_name"] for x in body["party_support"]] == ["국민의힘", "더불어민주당"]
+
+    selected_dem = next(x for x in body["party_support"] if x["option_name"] == "더불어민주당")
+    assert selected_dem["source_channel"] == "nesdc"
+    assert selected_dem["selected_source_tier"] == "nesdc"
+    assert selected_dem["value_mid"] == 34.0
+
+    selected_kpp = next(x for x in body["party_support"] if x["option_name"] == "국민의힘")
+    assert selected_kpp["pollster"] == "기사집계센터"
+    assert selected_kpp["selected_source_tier"] == "article_aggregate"
+    assert selected_kpp["value_mid"] == 39.0
+
+    assert len(body["president_job_approval"]) == 1
+    assert body["president_job_approval"][0]["value_mid"] == 48.0
+    assert body["president_job_approval"][0]["selected_source_tier"] == "article"
+    assert body["president_job_approval"][0]["selected_source_channel"] == "article"
+
+    app.dependency_overrides.clear()
+
+
 def test_regions_search_normalizes_non_ascii_and_encoded_query_forms():
     class CaptureRegionQueryRepo(FakeApiRepo):
         def __init__(self):
