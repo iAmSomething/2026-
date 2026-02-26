@@ -1,0 +1,69 @@
+{
+  "query_source": "supabase_postgrest",
+  "observation_count": 3,
+  "option_row_count": 4,
+  "ranked_observations": [
+    {
+      "option_type": "party_support",
+      "observation_id": 673,
+      "observation_key": "demo-30d-party-1",
+      "pollster": "한국리서치",
+      "survey_end_date": "2026-02-23",
+      "source_channel": "article",
+      "source_channels": [
+        "article"
+      ],
+      "official_release_at": null,
+      "article_published_at": "2026-02-18T00:00:00+00:00",
+      "observation_updated_at": "2026-02-24T04:11:12.474574+00:00",
+      "freshness_anchor": "2026-02-18T00:00:00+00:00",
+      "source_priority_rank": 1,
+      "rn": 1
+    },
+    {
+      "option_type": "party_support",
+      "observation_id": 696,
+      "observation_key": "prod-summary-party-20260220",
+      "pollster": "collector",
+      "survey_end_date": "2026-02-20",
+      "source_channel": "article",
+      "source_channels": [
+        "article"
+      ],
+      "official_release_at": null,
+      "article_published_at": "2026-02-20T03:00:00+00:00",
+      "observation_updated_at": "2026-02-20T03:54:44.966689+00:00",
+      "freshness_anchor": "2026-02-20T03:00:00+00:00",
+      "source_priority_rank": 1,
+      "rn": 2
+    }
+  ],
+  "selected_options": [
+    {
+      "option_type": "party_support",
+      "option_name": "국민의힘",
+      "value_mid": 38,
+      "observation_id": 673,
+      "observation_key": "demo-30d-party-1",
+      "survey_end_date": "2026-02-23",
+      "pollster": "한국리서치",
+      "source_channel": "article",
+      "source_channels": [
+        "article"
+      ]
+    },
+    {
+      "option_type": "party_support",
+      "option_name": "더불어민주당",
+      "value_mid": 35,
+      "observation_id": 673,
+      "observation_key": "demo-30d-party-1",
+      "survey_end_date": "2026-02-23",
+      "pollster": "한국리서치",
+      "source_channel": "article",
+      "source_channels": [
+        "article"
+      ]
+    }
+  ]
+}

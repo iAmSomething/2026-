@@ -1,0 +1,58 @@
+{
+  "cards": {
+    "party_support": {
+      "pre_count": 2,
+      "post_count": 4,
+      "rows": [
+        {
+          "option_name": "국민의힘",
+          "pre_value_mid": 38.0,
+          "post_value_mid": 17.0,
+          "delta": -21.0
+        },
+        {
+          "option_name": "더불어민주당",
+          "pre_value_mid": 35.0,
+          "post_value_mid": 43.0,
+          "delta": 8.0
+        }
+      ]
+    },
+    "president_job_approval": {
+      "pre_count": 0,
+      "post_count": 4,
+      "rows": [
+        {
+          "option_name": "대통령 직무 긍정평가",
+          "pre_value_mid": null,
+          "post_value_mid": 67.0,
+          "delta": null
+        },
+        {
+          "option_name": "대통령 직무 부정평가",
+          "pre_value_mid": null,
+          "post_value_mid": 29.0,
+          "delta": null
+        }
+      ]
+    },
+    "election_frame": {
+      "pre_count": 2,
+      "post_count": 6,
+      "rows": [
+        {
+          "option_name": "국정견제론",
+          "pre_value_mid": 45.0,
+          "post_value_mid": 45.0,
+          "delta": 0.0
+        },
+        {
+          "option_name": "국정안정론",
+          "pre_value_mid": 47.0,
+          "post_value_mid": 47.0,
+          "delta": 0.0
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,240 @@
+{
+  "query_source": "supabase_postgrest",
+  "observation_count": 18,
+  "option_row_count": 94,
+  "ranked_observations": [
+    {
+      "option_type": "election_frame",
+      "observation_id": 6146,
+      "observation_key": "obs-issue328-national-2026-02-26-official-15",
+      "pollster": "NBS",
+      "survey_end_date": "2026-02-26",
+      "source_channel": "nesdc",
+      "source_channels": [
+        "nesdc"
+      ],
+      "official_release_at": "2026-02-26T00:00:00+00:00",
+      "article_published_at": "2026-02-26T00:00:00+00:00",
+      "observation_updated_at": "2026-02-26T09:27:20.701649+00:00",
+      "freshness_anchor": "2026-02-26T00:00:00+00:00",
+      "source_priority_rank": 2,
+      "rn": 1
+    },
+    {
+      "option_type": "election_frame",
+      "observation_id": 6145,
+      "observation_key": "obs-issue328-national-2026-02-26-article-14",
+      "pollster": "기사집계",
+      "survey_end_date": "2026-02-26",
+      "source_channel": "article",
+      "source_channels": [
+        "article"
+      ],
+      "official_release_at": null,
+      "article_published_at": "2026-02-26T00:00:00+00:00",
+      "observation_updated_at": "2026-02-26T09:27:11.976217+00:00",
+      "freshness_anchor": "2026-02-26T00:00:00+00:00",
+      "source_priority_rank": 1,
+      "rn": 2
+    },
+    {
+      "option_type": "election_frame",
+      "observation_id": 6144,
+      "observation_key": "obs-issue328-national-2026-02-25-official-13",
+      "pollster": "NBS",
+      "survey_end_date": "2026-02-25",
+      "source_channel": "nesdc",
+      "source_channels": [
+        "nesdc"
+      ],
+      "official_release_at": "2026-02-25T00:00:00+00:00",
+      "article_published_at": "2026-02-25T00:00:00+00:00",
+      "observation_updated_at": "2026-02-26T09:27:03.255124+00:00",
+      "freshness_anchor": "2026-02-25T00:00:00+00:00",
+      "source_priority_rank": 2,
+      "rn": 3
+    },
+    {
+      "option_type": "party_support",
+      "observation_id": 6146,
+      "observation_key": "obs-issue328-national-2026-02-26-official-15",
+      "pollster": "NBS",
+      "survey_end_date": "2026-02-26",
+      "source_channel": "nesdc",
+      "source_channels": [
+        "nesdc"
+      ],
+      "official_release_at": "2026-02-26T00:00:00+00:00",
+      "article_published_at": "2026-02-26T00:00:00+00:00",
+      "observation_updated_at": "2026-02-26T09:27:20.701649+00:00",
+      "freshness_anchor": "2026-02-26T00:00:00+00:00",
+      "source_priority_rank": 2,
+      "rn": 1
+    },
+    {
+      "option_type": "party_support",
+      "observation_id": 6145,
+      "observation_key": "obs-issue328-national-2026-02-26-article-14",
+      "pollster": "기사집계",
+      "survey_end_date": "2026-02-26",
+      "source_channel": "article",
+      "source_channels": [
+        "article"
+      ],
+      "official_release_at": null,
+      "article_published_at": "2026-02-26T00:00:00+00:00",
+      "observation_updated_at": "2026-02-26T09:27:11.976217+00:00",
+      "freshness_anchor": "2026-02-26T00:00:00+00:00",
+      "source_priority_rank": 1,
+      "rn": 2
+    },
+    {
+      "option_type": "party_support",
+      "observation_id": 6144,
+      "observation_key": "obs-issue328-national-2026-02-25-official-13",
+      "pollster": "NBS",
+      "survey_end_date": "2026-02-25",
+      "source_channel": "nesdc",
+      "source_channels": [
+        "nesdc"
+      ],
+      "official_release_at": "2026-02-25T00:00:00+00:00",
+      "article_published_at": "2026-02-25T00:00:00+00:00",
+      "observation_updated_at": "2026-02-26T09:27:03.255124+00:00",
+      "freshness_anchor": "2026-02-25T00:00:00+00:00",
+      "source_priority_rank": 2,
+      "rn": 3
+    },
+    {
+      "option_type": "president_job_approval",
+      "observation_id": 6146,
+      "observation_key": "obs-issue328-national-2026-02-26-official-15",
+      "pollster": "NBS",
+      "survey_end_date": "2026-02-26",
+      "source_channel": "nesdc",
+      "source_channels": [
+        "nesdc"
+      ],
+      "official_release_at": "2026-02-26T00:00:00+00:00",
+      "article_published_at": "2026-02-26T00:00:00+00:00",
+      "observation_updated_at": "2026-02-26T09:27:20.701649+00:00",
+      "freshness_anchor": "2026-02-26T00:00:00+00:00",
+      "source_priority_rank": 2,
+      "rn": 1
+    },
+    {
+      "option_type": "president_job_approval",
+      "observation_id": 6145,
+      "observation_key": "obs-issue328-national-2026-02-26-article-14",
+      "pollster": "기사집계",
+      "survey_end_date": "2026-02-26",
+      "source_channel": "article",
+      "source_channels": [
+        "article"
+      ],
+      "official_release_at": null,
+      "article_published_at": "2026-02-26T00:00:00+00:00",
+      "observation_updated_at": "2026-02-26T09:27:11.976217+00:00",
+      "freshness_anchor": "2026-02-26T00:00:00+00:00",
+      "source_priority_rank": 1,
+      "rn": 2
+    },
+    {
+      "option_type": "president_job_approval",
+      "observation_id": 6144,
+      "observation_key": "obs-issue328-national-2026-02-25-official-13",
+      "pollster": "NBS",
+      "survey_end_date": "2026-02-25",
+      "source_channel": "nesdc",
+      "source_channels": [
+        "nesdc"
+      ],
+      "official_release_at": "2026-02-25T00:00:00+00:00",
+      "article_published_at": "2026-02-25T00:00:00+00:00",
+      "observation_updated_at": "2026-02-26T09:27:03.255124+00:00",
+      "freshness_anchor": "2026-02-25T00:00:00+00:00",
+      "source_priority_rank": 2,
+      "rn": 3
+    }
+  ],
+  "selected_options": [
+    {
+      "option_type": "election_frame",
+      "option_name": "국정견제론",
+      "value_mid": 34,
+      "observation_id": 6146,
+      "observation_key": "obs-issue328-national-2026-02-26-official-15",
+      "survey_end_date": "2026-02-26",
+      "pollster": "NBS",
+      "source_channel": "nesdc",
+      "source_channels": [
+        "nesdc"
+      ]
+    },
+    {
+      "option_type": "election_frame",
+      "option_name": "국정안정론",
+      "value_mid": 53,
+      "observation_id": 6146,
+      "observation_key": "obs-issue328-national-2026-02-26-official-15",
+      "survey_end_date": "2026-02-26",
+      "pollster": "NBS",
+      "source_channel": "nesdc",
+      "source_channels": [
+        "nesdc"
+      ]
+    },
+    {
+      "option_type": "party_support",
+      "option_name": "국민의힘",
+      "value_mid": 17,
+      "observation_id": 6146,
+      "observation_key": "obs-issue328-national-2026-02-26-official-15",
+      "survey_end_date": "2026-02-26",
+      "pollster": "NBS",
+      "source_channel": "nesdc",
+      "source_channels": [
+        "nesdc"
+      ]
+    },
+    {
+      "option_type": "party_support",
+      "option_name": "더불어민주당",
+      "value_mid": 45,
+      "observation_id": 6146,
+      "observation_key": "obs-issue328-national-2026-02-26-official-15",
+      "survey_end_date": "2026-02-26",
+      "pollster": "NBS",
+      "source_channel": "nesdc",
+      "source_channels": [
+        "nesdc"
+      ]
+    },
+    {
+      "option_type": "president_job_approval",
+      "option_name": "대통령 직무 긍정평가",
+      "value_mid": 67,
+      "observation_id": 6146,
+      "observation_key": "obs-issue328-national-2026-02-26-official-15",
+      "survey_end_date": "2026-02-26",
+      "pollster": "NBS",
+      "source_channel": "nesdc",
+      "source_channels": [
+        "nesdc"
+      ]
+    },
+    {
+      "option_type": "president_job_approval",
+      "option_name": "대통령 직무 부정평가",
+      "value_mid": 25,
+      "observation_id": 6146,
+      "observation_key": "obs-issue328-national-2026-02-26-official-15",
+      "survey_end_date": "2026-02-26",
+      "pollster": "NBS",
+      "source_channel": "nesdc",
+      "source_channels": [
+        "nesdc"
+      ]
+    }
+  ]
+}

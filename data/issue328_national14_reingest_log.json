@@ -1,0 +1,43 @@
+{
+  "issue": 328,
+  "executed_at": "2026-02-26T09:27:32.877310+00:00",
+  "execution_mode": "remote_api_with_supabase_evidence",
+  "api_base": "https://2026-api-production.up.railway.app",
+  "as_of": "2026-02-26",
+  "window_days": 14,
+  "records_in_payload": 15,
+  "ingest_result": {
+    "run_id": 523,
+    "processed_count": 15,
+    "error_count": 0,
+    "status": "success"
+  },
+  "source_priority_policy": {
+    "selection_order": [
+      "survey_end_date DESC",
+      "COALESCE(official_release_at, article_published_at, observation_updated_at) DESC",
+      "source_rank(nesdc=2, article=1, none=0) DESC",
+      "observation_id DESC"
+    ],
+    "source_priority_derived": {
+      "official": "source_channels/source_channel includes nesdc only",
+      "mixed": "source_channels includes both nesdc and article",
+      "article": "article only"
+    }
+  },
+  "acceptance_checks": {
+    "party_support_non_empty": true,
+    "president_job_approval_non_empty": true,
+    "election_frame_non_empty": true,
+    "expected_party_support_level": false
+  },
+  "artifacts": {
+    "payload_path": "data/issue328_national14_reingest_payload.json",
+    "pre_summary_path": "data/issue328_summary_pre_snapshot.json",
+    "post_summary_path": "data/issue328_summary_post_snapshot.json",
+    "before_after_path": "data/issue328_summary_before_after_diff.json",
+    "expected_diff_path": "data/issue328_expected_vs_actual_diff.json",
+    "latest_evidence_before_path": "data/issue328_latest_selection_evidence_before.json",
+    "latest_evidence_after_path": "data/issue328_latest_selection_evidence_after.json"
+  }
+}

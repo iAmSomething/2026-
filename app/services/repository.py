@@ -480,13 +480,32 @@ class PostgresRepository:
             as_of_filter = "AND o.survey_end_date <= %s"
             params.append(as_of)
         query = f"""
-            WITH latest AS (
+            WITH ranked_latest AS (
                 SELECT
                     po.option_type,
+                    o.id AS observation_id,
                     o.audience_scope,
-                    MAX(o.survey_end_date) AS max_date
+                    ROW_NUMBER() OVER (
+                        PARTITION BY po.option_type, o.audience_scope
+                        ORDER BY
+                            o.survey_end_date DESC NULLS LAST,
+                            COALESCE(o.official_release_at, a.published_at, o.updated_at) DESC NULLS LAST,
+                            CASE
+                                WHEN (
+                                    o.source_channel = 'nesdc'
+                                    OR 'nesdc' = ANY(COALESCE(o.source_channels, ARRAY[]::text[]))
+                                ) THEN 2
+                                WHEN (
+                                    o.source_channel = 'article'
+                                    OR 'article' = ANY(COALESCE(o.source_channels, ARRAY[]::text[]))
+                                ) THEN 1
+                                ELSE 0
+                            END DESC,
+                            o.id DESC
+                    ) AS rn
                 FROM poll_options po
                 JOIN poll_observations o ON o.id = po.observation_id
+                LEFT JOIN articles a ON a.id = o.article_id
                 WHERE po.option_type IN (
                     'party_support',
                     'president_job_approval',
@@ -495,7 +514,16 @@ class PostgresRepository:
                 )
                   AND o.verified = TRUE
                   {as_of_filter}
-                GROUP BY po.option_type, o.audience_scope
+                GROUP BY
+                    po.option_type,
+                    o.id,
+                    o.audience_scope,
+                    o.survey_end_date,
+                    o.official_release_at,
+                    a.published_at,
+                    o.updated_at,
+                    o.source_channel,
+                    o.source_channels
             )
             SELECT
                 po.option_type,
@@ -515,16 +543,17 @@ class PostgresRepository:
             FROM poll_options po
             JOIN poll_observations o ON o.id = po.observation_id
             LEFT JOIN articles a ON a.id = o.article_id
-            JOIN latest l
-              ON l.option_type = po.option_type
-             AND l.max_date = o.survey_end_date
-             AND l.audience_scope IS NOT DISTINCT FROM o.audience_scope
+            JOIN ranked_latest rl
+              ON rl.option_type = po.option_type
+             AND rl.observation_id = o.id
+             AND rl.audience_scope IS NOT DISTINCT FROM o.audience_scope
             WHERE po.option_type IN (
                 'party_support',
                 'president_job_approval',
                 'election_frame',
                 'presidential_approval'
             )
+              AND rl.rn = 1
             ORDER BY po.option_type, po.option_name
         """
 

@@ -29,7 +29,7 @@ class _RecordingConn:
         return self._cursor
 
 
-def test_dashboard_summary_query_partitions_by_audience_scope():
+def test_dashboard_summary_query_uses_priority_tiebreak_within_scope():
     conn = _RecordingConn(rows=[])
     repo = PostgresRepository(conn)
 
@@ -37,8 +37,11 @@ def test_dashboard_summary_query_partitions_by_audience_scope():
 
     assert len(conn._cursor.executed) == 1
     query, params = conn._cursor.executed[0]
-    assert "GROUP BY po.option_type, o.audience_scope" in query
-    assert "l.audience_scope IS NOT DISTINCT FROM o.audience_scope" in query
+    assert "PARTITION BY po.option_type, o.audience_scope" in query
+    assert "COALESCE(o.official_release_at, a.published_at, o.updated_at) DESC NULLS LAST" in query
+    assert "'nesdc' = ANY(COALESCE(o.source_channels, ARRAY[]::text[]))" in query
+    assert "rl.audience_scope IS NOT DISTINCT FROM o.audience_scope" in query
+    assert "AND rl.rn = 1" in query
     assert params == [date(2026, 2, 19)]
 
 
@@ -51,4 +54,5 @@ def test_dashboard_summary_query_no_hardcoded_national_filter_without_as_of():
     query, params = conn._cursor.executed[0]
     assert "o.audience_scope = 'national'" not in query
     assert "IS NOT DISTINCT FROM o.audience_scope" in query
+    assert "ROW_NUMBER() OVER" in query
     assert params == []
