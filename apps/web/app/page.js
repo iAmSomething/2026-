@@ -3,7 +3,7 @@ import Link from "next/link";
 import { normalizeRegionParam, parseOnFlag, toScenarioBadge } from "./_components/demoParams";
 import RegionalMapPanel from "./_components/RegionalMapPanel";
 import { formatDate, formatDateTime, formatPercent, joinChannels } from "./_components/format";
-import { API_BASE, fetchApi } from "./_lib/api";
+import { API_BASE, fetchApi, isFixtureFallbackAllowed, loadJsonFixture } from "./_lib/api";
 
 // 품질 패널 고정 키워드: 운영 품질 / 신선도 / 공식확정 비율 / 검수대기
 
@@ -53,13 +53,28 @@ function needsReview(item) {
   return item?.is_official_confirmed === false && Number.isFinite(freshness) && freshness > 48;
 }
 
-function SummaryColumn({ title, description, items }) {
+function summaryDataSourceTone(dataSource) {
+  if (dataSource === "official") return "ok";
+  if (dataSource === "mixed") return "info";
+  return "warn";
+}
+
+function summaryDataSourceLabel(dataSource) {
+  if (dataSource === "official") return "요약 출처: official";
+  if (dataSource === "mixed") return "요약 출처: mixed";
+  return "요약 출처: article";
+}
+
+function SummaryColumn({ title, description, items, dataSource }) {
   return (
     <article className="panel">
       <header className="panel-header">
         <div>
           <h3>{title}</h3>
           <p>{description}</p>
+          <div className="badge-row summary-badges">
+            <span className={`state-badge ${summaryDataSourceTone(dataSource)}`}>{summaryDataSourceLabel(dataSource)}</span>
+          </div>
         </div>
       </header>
 
@@ -320,12 +335,22 @@ export default async function HomePage({ searchParams }) {
   const regionScenario = normalizeRegionParam(resolved?.selected_region || "");
   const stateDemo = (resolved?.state_demo || "").toLowerCase().trim();
 
-  const [summaryRes, mapRes, bigMatchRes, qualityRes] = await Promise.all([
+  const [summaryResRaw, mapRes, bigMatchRes, qualityRes] = await Promise.all([
     fetchApi("/api/v1/dashboard/summary"),
     fetchApi("/api/v1/dashboard/map-latest"),
     fetchApi("/api/v1/dashboard/big-matches"),
     fetchApi("/api/v1/dashboard/quality")
   ]);
+  let summaryRes = summaryResRaw;
+  if (!summaryRes.ok && isFixtureFallbackAllowed()) {
+    const fallbackBody = await loadJsonFixture("mock_fixtures_v0.2/dashboard_summary.json");
+    if (fallbackBody) {
+      summaryRes = { ok: true, status: 200, body: fallbackBody, url: "fixture://dashboard_summary.json" };
+    }
+  }
+
+  const summaryDataSource =
+    summaryRes.ok && typeof summaryRes.body?.data_source === "string" ? summaryRes.body.data_source : "article";
 
   const partyItems = summaryRes.ok && Array.isArray(summaryRes.body?.party_support) ? summaryRes.body.party_support : [];
   const presidentialItems =
@@ -397,6 +422,7 @@ export default async function HomePage({ searchParams }) {
         <SummaryColumn
           title="최신 정당 지지도"
           description="전국 스코프 기준 최신 조사"
+          dataSource={summaryDataSource}
           items={
             stateDemo === "empty"
               ? []
@@ -410,6 +436,7 @@ export default async function HomePage({ searchParams }) {
         <SummaryColumn
           title="대통령 지지율"
           description="전국 스코프 기준 최신 조사"
+          dataSource={summaryDataSource}
           items={
             stateDemo === "empty"
               ? []

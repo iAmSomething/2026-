@@ -731,15 +731,38 @@ class PostgresRepository:
         with self.conn.cursor() as cur:
             cur.execute(
                 """
-                SELECT region_code, sido_name, sigungu_name, admin_level
-                FROM regions
+                SELECT
+                    r.region_code,
+                    r.sido_name,
+                    r.sigungu_name,
+                    r.admin_level,
+                    COALESCE(o.observation_count, 0)::int > 0 AS has_data,
+                    COALESCE(m.matchup_count, 0)::int AS matchup_count
+                FROM regions r
+                LEFT JOIN (
+                    SELECT region_code, COUNT(*)::int AS matchup_count
+                    FROM matchups
+                    GROUP BY region_code
+                ) m ON m.region_code = r.region_code
+                LEFT JOIN (
+                    SELECT region_code, COUNT(*)::int AS observation_count
+                    FROM poll_observations
+                    GROUP BY region_code
+                ) o ON o.region_code = r.region_code
                 WHERE (sido_name || ' ' || sigungu_name) ILIKE %s
                    OR sido_name ILIKE %s
                    OR sigungu_name ILIKE %s
                    OR REPLACE((sido_name || sigungu_name), ' ', '') ILIKE %s
                    OR REPLACE(sido_name, ' ', '') ILIKE %s
                    OR REPLACE(sigungu_name, ' ', '') ILIKE %s
-                ORDER BY admin_level, sido_name, sigungu_name
+                ORDER BY
+                    CASE r.admin_level
+                        WHEN 'sido' THEN 0
+                        WHEN 'sigungu' THEN 1
+                        ELSE 2
+                    END,
+                    r.sido_name,
+                    r.sigungu_name
                 LIMIT %s
                 """,
                 (q, q, q, compact_q, compact_q, compact_q, limit),
@@ -778,7 +801,38 @@ class PostgresRepository:
             )
             return cur.fetchall()
 
-    def get_matchup(self, matchup_id: str):
+    def _find_matchup_meta(self, matchup_id: str) -> dict | None:
+        with self.conn.cursor() as cur:
+            cur.execute(
+                """
+                SELECT matchup_id, region_code, office_type, title, is_active
+                FROM matchups
+                WHERE matchup_id = %s
+                """,
+                (matchup_id,),
+            )
+            row = cur.fetchone()
+            if row:
+                return row
+
+            parts = [x.strip() for x in matchup_id.split("|")]
+            if len(parts) != 3:
+                return None
+            _, office_type, region_code = parts
+            cur.execute(
+                """
+                SELECT matchup_id, region_code, office_type, title, is_active
+                FROM matchups
+                WHERE office_type = %s
+                  AND region_code = %s
+                ORDER BY is_active DESC, updated_at DESC, matchup_id DESC
+                LIMIT 1
+                """,
+                (office_type, region_code),
+            )
+            return cur.fetchone()
+
+    def _fetch_latest_matchup_observation(self, matchup_id: str) -> dict | None:
         with self.conn.cursor() as cur:
             cur.execute(
                 """
@@ -852,52 +906,98 @@ class PostgresRepository:
                 """,
                 (matchup_id,),
             )
-            row = cur.fetchone()
-            if not row:
-                return None
+            return cur.fetchone()
 
-            options = row.get("options")
-            if isinstance(options, str):
-                try:
-                    options = json.loads(options)
-                except json.JSONDecodeError:
-                    options = []
-            if options is None:
+    @staticmethod
+    def _normalize_options(options_payload) -> list[dict]:
+        options = options_payload
+        if isinstance(options, str):
+            try:
+                options = json.loads(options)
+            except json.JSONDecodeError:
                 options = []
-            if not isinstance(options, list):
-                options = []
+        if options is None:
+            options = []
+        if not isinstance(options, list):
+            options = []
+        return options
 
+    def get_matchup(self, matchup_id: str):
+        matchup_meta = self._find_matchup_meta(matchup_id)
+        if not matchup_meta:
+            return None
+
+        canonical_matchup_id = matchup_meta["matchup_id"]
+        observation = self._fetch_latest_matchup_observation(canonical_matchup_id)
+        if not observation:
+            return {
+                "matchup_id": canonical_matchup_id,
+                "region_code": matchup_meta["region_code"],
+                "office_type": matchup_meta["office_type"],
+                "title": matchup_meta["title"] or canonical_matchup_id,
+                "has_data": False,
+                "pollster": None,
+                "survey_start_date": None,
+                "survey_end_date": None,
+                "confidence_level": None,
+                "sample_size": None,
+                "response_rate": None,
+                "margin_of_error": None,
+                "source_grade": None,
+                "audience_scope": None,
+                "audience_region_code": None,
+                "sampling_population_text": None,
+                "legal_completeness_score": None,
+                "legal_filled_count": None,
+                "legal_required_count": None,
+                "date_resolution": None,
+                "date_inference_mode": None,
+                "date_inference_confidence": None,
+                "observation_updated_at": None,
+                "official_release_at": None,
+                "article_published_at": None,
+                "nesdc_enriched": False,
+                "needs_manual_review": False,
+                "poll_fingerprint": None,
+                "source_channel": None,
+                "source_channels": [],
+                "verified": False,
+                "options": [],
+            }
+
+        options = self._normalize_options(observation.get("options"))
         return {
-            "matchup_id": row["matchup_id"],
-            "region_code": row["region_code"],
-            "office_type": row["office_type"],
-            "title": row["title"],
-            "pollster": row["pollster"],
-            "survey_start_date": row["survey_start_date"],
-            "survey_end_date": row["survey_end_date"],
-            "confidence_level": row["confidence_level"],
-            "sample_size": row["sample_size"],
-            "response_rate": row["response_rate"],
-            "margin_of_error": row["margin_of_error"],
-            "source_grade": row["source_grade"],
-            "audience_scope": row["audience_scope"],
-            "audience_region_code": row["audience_region_code"],
-            "sampling_population_text": row["sampling_population_text"],
-            "legal_completeness_score": row["legal_completeness_score"],
-            "legal_filled_count": row["legal_filled_count"],
-            "legal_required_count": row["legal_required_count"],
-            "date_resolution": row["date_resolution"],
-            "date_inference_mode": row["date_inference_mode"],
-            "date_inference_confidence": row["date_inference_confidence"],
-            "observation_updated_at": row["observation_updated_at"],
-            "official_release_at": row["official_release_at"],
-            "article_published_at": row["article_published_at"],
-            "nesdc_enriched": row["nesdc_enriched"],
-            "needs_manual_review": row["needs_manual_review"],
-            "poll_fingerprint": row["poll_fingerprint"],
-            "source_channel": row["source_channel"],
-            "source_channels": row["source_channels"],
-            "verified": row["verified"],
+            "matchup_id": observation["matchup_id"],
+            "region_code": observation["region_code"],
+            "office_type": observation["office_type"],
+            "title": observation["title"],
+            "has_data": True,
+            "pollster": observation["pollster"],
+            "survey_start_date": observation["survey_start_date"],
+            "survey_end_date": observation["survey_end_date"],
+            "confidence_level": observation["confidence_level"],
+            "sample_size": observation["sample_size"],
+            "response_rate": observation["response_rate"],
+            "margin_of_error": observation["margin_of_error"],
+            "source_grade": observation["source_grade"],
+            "audience_scope": observation["audience_scope"],
+            "audience_region_code": observation["audience_region_code"],
+            "sampling_population_text": observation["sampling_population_text"],
+            "legal_completeness_score": observation["legal_completeness_score"],
+            "legal_filled_count": observation["legal_filled_count"],
+            "legal_required_count": observation["legal_required_count"],
+            "date_resolution": observation["date_resolution"],
+            "date_inference_mode": observation["date_inference_mode"],
+            "date_inference_confidence": observation["date_inference_confidence"],
+            "observation_updated_at": observation["observation_updated_at"],
+            "official_release_at": observation["official_release_at"],
+            "article_published_at": observation["article_published_at"],
+            "nesdc_enriched": observation["nesdc_enriched"],
+            "needs_manual_review": observation["needs_manual_review"],
+            "poll_fingerprint": observation["poll_fingerprint"],
+            "source_channel": observation["source_channel"],
+            "source_channels": observation["source_channels"],
+            "verified": observation["verified"],
             "options": options,
         }
 

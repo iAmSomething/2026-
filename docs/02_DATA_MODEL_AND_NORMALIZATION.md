@@ -102,6 +102,9 @@
 2. `audience_scope IS NULL` 관측치는 summary 집계에서 제외한다.
 3. `audience_scope='regional'|'local'` 관측치는 summary 집계에서 제외한다.
 4. `GET /api/v1/dashboard/summary`, `GET /api/v1/dashboard/map-latest`, `GET /api/v1/dashboard/big-matches`는 `scope_breakdown`을 함께 노출한다.
+5. `GET /api/v1/dashboard/summary`는 응답 루트에 `data_source`(`official|article|mixed`)를 노출한다.
+6. `GET /api/v1/matchups/{matchup_id}`는 관측치가 없어도 `matchups` 메타가 존재하면 `200`을 반환하며 `has_data=false`, `options=[]`를 반환한다.
+7. `GET /api/v1/regions/search`는 `has_data`, `matchup_count` 보조 필드를 포함한다.
 
 ## 6.1 운영 품질 요약 규칙 (`GET /api/v1/dashboard/quality`)
 1. `freshness_p50_hours`, `freshness_p90_hours`는 검증 완료(`verified=true`) 관측치의 freshness 분포 백분위를 시간 단위로 노출한다.
