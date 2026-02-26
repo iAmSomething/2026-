@@ -454,7 +454,7 @@ main {
 
 .region-result-list li a {
   display: grid;
-  gap: 1px;
+  gap: 4px;
   border: 1px solid #d8e6f3;
   border-radius: 10px;
   background: #fff;
@@ -470,6 +470,39 @@ main {
 .region-result-list span {
   color: #5d6d7f;
   font-size: 0.85rem;
+}
+
+.region-result-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.region-result-head strong {
+  color: #0f172a;
+}
+
+.region-result-badges {
+  margin-top: 2px;
+}
+
+.result-cta {
+  display: inline-flex;
+  width: fit-content;
+  border-radius: 999px;
+  border: 1px solid #bfdbfe;
+  background: #eff6ff;
+  color: #1d4ed8;
+  padding: 3px 8px;
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.result-cta.disabled {
+  border-color: #d1d5db;
+  background: #f3f4f6;
+  color: #6b7280;
 }
 
 .tab-row {
@@ -496,6 +529,16 @@ main {
 
 .election-list.full li a {
   gap: 4px;
+}
+
+.election-list.full li > div {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #dbe8f4;
+  border-radius: 10px;
+  padding: 8px;
+  gap: 4px;
+  background: #fff;
 }
 
 .detail-grid {
