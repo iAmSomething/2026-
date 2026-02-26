@@ -599,6 +599,10 @@ def test_api_contract_fields():
     assert map_latest.json()["items"][0]["source_priority"] == "mixed"
     assert map_latest.json()["items"][0]["is_official_confirmed"] is True
     assert isinstance(map_latest.json()["items"][0]["freshness_hours"], float)
+    assert map_latest.json()["filter_stats"]["total_count"] == 1
+    assert map_latest.json()["filter_stats"]["kept_count"] == 1
+    assert map_latest.json()["filter_stats"]["excluded_count"] == 0
+    assert map_latest.json()["filter_stats"]["reason_counts"] == {}
 
     big_matches = client.get("/api/v1/dashboard/big-matches")
     assert big_matches.status_code == 200
@@ -748,6 +752,246 @@ def test_api_contract_fields():
     assert trends_body["bucket_hours"] == 6
     assert len(trends_body["points"]) == 1
     assert trends_body["points"][0]["error_code"] == "region_not_found"
+
+    app.dependency_overrides.clear()
+
+
+def test_map_latest_sanity_filter_drops_invalid_candidate_and_legacy_title_rows():
+    class MapSanityRepo(FakeApiRepo):
+        def fetch_dashboard_map_latest(self, as_of, limit=100):  # noqa: ARG002
+            return [
+                {
+                    "region_code": "11-000",
+                    "office_type": "광역자치단체장",
+                    "title": "서울시장 가상대결",
+                    "value_mid": 44.0,
+                    "survey_end_date": date(2026, 2, 18),
+                    "option_name": "오세훈",
+                    "audience_scope": "regional",
+                    "audience_region_code": "11-000",
+                    "observation_updated_at": "2026-02-18T03:00:00+00:00",
+                    "article_published_at": "2026-02-18T01:00:00+00:00",
+                    "source_channel": "nesdc",
+                    "source_channels": ["article", "nesdc"],
+                },
+                {
+                    "region_code": "11-010",
+                    "office_type": "기초자치단체장",
+                    "title": "종로구청장 가상대결",
+                    "value_mid": 40.0,
+                    "survey_end_date": date(2026, 2, 18),
+                    "option_name": "김A",
+                    "audience_scope": "local",
+                    "audience_region_code": "11-010",
+                    "observation_updated_at": "2026-02-18T03:00:00+00:00",
+                    "article_published_at": "2026-02-18T01:00:00+00:00",
+                    "source_channel": "article",
+                    "source_channels": ["article"],
+                },
+                {
+                    "region_code": "11-020",
+                    "office_type": "기초자치단체장",
+                    "title": "중구청장 가상대결",
+                    "value_mid": 39.0,
+                    "survey_end_date": date(2026, 2, 18),
+                    "option_name": "양자대결",
+                    "audience_scope": "local",
+                    "audience_region_code": "11-020",
+                    "observation_updated_at": "2026-02-18T03:00:00+00:00",
+                    "article_published_at": "2026-02-18T01:00:00+00:00",
+                    "source_channel": "article",
+                    "source_channels": ["article"],
+                },
+                {
+                    "region_code": "11-030",
+                    "office_type": "기초자치단체장",
+                    "title": "2022 서울시장 선거 가상대결",
+                    "value_mid": 38.0,
+                    "survey_end_date": date(2026, 2, 18),
+                    "option_name": "박형준",
+                    "audience_scope": "local",
+                    "audience_region_code": "11-030",
+                    "observation_updated_at": "2026-02-18T03:00:00+00:00",
+                    "article_published_at": "2026-02-18T01:00:00+00:00",
+                    "source_channel": "article",
+                    "source_channels": ["article"],
+                },
+                {
+                    "region_code": "11-040",
+                    "office_type": "기초자치단체장",
+                    "title": "부천시 여론조사 요약",
+                    "value_mid": 24.0,
+                    "survey_end_date": date(2026, 2, 18),
+                    "option_name": "재정자립도",
+                    "audience_scope": "local",
+                    "audience_region_code": "11-040",
+                    "observation_updated_at": "2026-02-18T03:00:00+00:00",
+                    "article_published_at": "2026-02-18T01:00:00+00:00",
+                    "source_channel": "article",
+                    "source_channels": ["article"],
+                },
+                {
+                    "region_code": "11-050",
+                    "office_type": "기초자치단체장",
+                    "title": "지방선거 여론조사",
+                    "value_mid": 58.5,
+                    "survey_end_date": date(2026, 2, 18),
+                    "option_name": "지지",
+                    "audience_scope": "local",
+                    "audience_region_code": "11-050",
+                    "observation_updated_at": "2026-02-18T03:00:00+00:00",
+                    "article_published_at": "2026-02-18T01:00:00+00:00",
+                    "source_channel": "article",
+                    "source_channels": ["article"],
+                },
+            ][:limit]
+
+    def override_sanity_repo():
+        yield MapSanityRepo()
+
+    app.dependency_overrides[get_repository] = override_sanity_repo
+    client = TestClient(app)
+
+    res = client.get("/api/v1/dashboard/map-latest")
+    assert res.status_code == 200
+    body = res.json()
+    assert len(body["items"]) == 1
+    assert body["items"][0]["option_name"] == "오세훈"
+    assert body["filter_stats"]["total_count"] == 6
+    assert body["filter_stats"]["kept_count"] == 1
+    assert body["filter_stats"]["excluded_count"] == 5
+    assert body["filter_stats"]["reason_counts"]["invalid_candidate_name"] == 1
+    assert body["filter_stats"]["reason_counts"]["generic_option_token"] == 3
+    assert body["filter_stats"]["reason_counts"]["legacy_title"] == 1
+    assert body["scope_breakdown"] == {"national": 0, "regional": 1, "local": 0, "unknown": 0}
+
+    app.dependency_overrides.clear()
+
+
+def test_dashboard_summary_selects_single_representative_by_source_priority():
+    class SummaryRepresentativeRepo(FakeApiRepo):
+        def fetch_dashboard_summary(self, as_of):  # noqa: ARG002
+            return [
+                {
+                    "option_type": "party_support",
+                    "option_name": "더불어민주당",
+                    "value_mid": 35.0,
+                    "pollster": "기사집계센터",
+                    "survey_end_date": date(2026, 2, 20),
+                    "source_grade": "A",
+                    "audience_scope": "national",
+                    "audience_region_code": None,
+                    "observation_updated_at": "2026-02-20T03:00:00+00:00",
+                    "article_published_at": "2026-02-20T01:00:00+00:00",
+                    "source_channel": "article",
+                    "source_channels": ["article"],
+                    "verified": True,
+                },
+                {
+                    "option_type": "party_support",
+                    "option_name": "더불어민주당",
+                    "value_mid": 34.0,
+                    "pollster": "NBS",
+                    "survey_end_date": date(2026, 2, 18),
+                    "source_grade": "B",
+                    "audience_scope": "national",
+                    "audience_region_code": None,
+                    "observation_updated_at": "2026-02-18T03:00:00+00:00",
+                    "official_release_at": "2026-02-18T01:00:00+00:00",
+                    "article_published_at": None,
+                    "source_channel": "nesdc",
+                    "source_channels": ["nesdc"],
+                    "verified": True,
+                },
+                {
+                    "option_type": "party_support",
+                    "option_name": "국민의힘",
+                    "value_mid": 39.0,
+                    "pollster": "기사집계센터",
+                    "survey_end_date": date(2026, 2, 18),
+                    "source_grade": "B",
+                    "audience_scope": "national",
+                    "audience_region_code": None,
+                    "observation_updated_at": "2026-02-18T03:00:00+00:00",
+                    "article_published_at": "2026-02-18T01:00:00+00:00",
+                    "source_channel": "article",
+                    "source_channels": ["article"],
+                    "verified": True,
+                },
+                {
+                    "option_type": "party_support",
+                    "option_name": "국민의힘",
+                    "value_mid": 40.0,
+                    "pollster": "일반기사",
+                    "survey_end_date": date(2026, 2, 20),
+                    "source_grade": "A",
+                    "audience_scope": "national",
+                    "audience_region_code": None,
+                    "observation_updated_at": "2026-02-20T03:00:00+00:00",
+                    "article_published_at": "2026-02-20T01:00:00+00:00",
+                    "source_channel": "article",
+                    "source_channels": ["article"],
+                    "verified": True,
+                },
+                {
+                    "option_type": "president_job_approval",
+                    "option_name": "대통령 직무 긍정평가",
+                    "value_mid": 47.0,
+                    "pollster": "일반기사",
+                    "survey_end_date": date(2026, 2, 20),
+                    "source_grade": "B",
+                    "audience_scope": "national",
+                    "audience_region_code": None,
+                    "observation_updated_at": "2026-02-20T03:00:00+00:00",
+                    "article_published_at": "2026-02-20T01:00:00+00:00",
+                    "source_channel": "article",
+                    "source_channels": ["article"],
+                    "verified": True,
+                },
+                {
+                    "option_type": "president_job_approval",
+                    "option_name": "대통령 직무 긍정평가",
+                    "value_mid": 48.0,
+                    "pollster": "일반기사",
+                    "survey_end_date": date(2026, 2, 20),
+                    "source_grade": "A",
+                    "audience_scope": "national",
+                    "audience_region_code": None,
+                    "observation_updated_at": "2026-02-20T03:00:00+00:00",
+                    "article_published_at": "2026-02-20T01:00:00+00:00",
+                    "source_channel": "article",
+                    "source_channels": ["article"],
+                    "verified": True,
+                },
+            ]
+
+    def override_summary_repo():
+        yield SummaryRepresentativeRepo()
+
+    app.dependency_overrides[get_repository] = override_summary_repo
+    app.dependency_overrides[get_candidate_data_go_service] = override_candidate_data_go_service
+    client = TestClient(app)
+
+    res = client.get("/api/v1/dashboard/summary")
+    assert res.status_code == 200
+    body = res.json()
+
+    assert [x["option_name"] for x in body["party_support"]] == ["국민의힘", "더불어민주당"]
+
+    selected_dem = next(x for x in body["party_support"] if x["option_name"] == "더불어민주당")
+    assert selected_dem["source_channel"] == "nesdc"
+    assert selected_dem["selected_source_tier"] == "nesdc"
+    assert selected_dem["value_mid"] == 34.0
+
+    selected_kpp = next(x for x in body["party_support"] if x["option_name"] == "국민의힘")
+    assert selected_kpp["pollster"] == "기사집계센터"
+    assert selected_kpp["selected_source_tier"] == "article_aggregate"
+    assert selected_kpp["value_mid"] == 39.0
+
+    assert len(body["president_job_approval"]) == 1
+    assert body["president_job_approval"][0]["value_mid"] == 48.0
+    assert body["president_job_approval"][0]["selected_source_tier"] == "article"
+    assert body["president_job_approval"][0]["selected_source_channel"] == "article"
 
     app.dependency_overrides.clear()
 
@@ -1523,5 +1767,26 @@ def test_candidate_endpoint_merges_data_go_fields():
     assert "official_release_at" in body
     assert "article_published_at" in body
     assert "is_official_confirmed" in body
+
+    app.dependency_overrides.clear()
+
+
+def test_candidate_endpoint_falls_back_name_when_missing():
+    class MissingNameRepo(FakeApiRepo):
+        def get_candidate(self, candidate_id):
+            row = super().get_candidate(candidate_id)
+            row["name_ko"] = "   "
+            row["party_name"] = " "
+            return row
+
+    app.dependency_overrides[get_repository] = lambda: MissingNameRepo()
+    app.dependency_overrides[get_candidate_data_go_service] = override_candidate_data_go_service
+    client = TestClient(app)
+
+    res = client.get("/api/v1/candidates/cand-jwo")
+    assert res.status_code == 200
+    body = res.json()
+    assert body["name_ko"] == "cand-jwo"
+    assert body["party_name"] is None
 
     app.dependency_overrides.clear()

@@ -43,6 +43,8 @@ class SummaryPoint(BaseModel):
     audience_scope: Literal["national", "regional", "local"] | None = None
     audience_region_code: str | None = None
     source_priority: Literal["official", "article", "mixed"] = "article"
+    selected_source_tier: Literal["official", "nesdc", "article_aggregate", "article"] | None = None
+    selected_source_channel: str | None = None
     official_release_at: datetime | None = None
     article_published_at: datetime | None = None
     freshness_hours: float | None = None
@@ -88,10 +90,18 @@ class MapLatestPoint(BaseModel):
     source_channels: list[Literal["article", "nesdc"]] = Field(default_factory=list)
 
 
+class DashboardFilterStatsOut(BaseModel):
+    total_count: int = 0
+    kept_count: int = 0
+    excluded_count: int = 0
+    reason_counts: dict[str, int] = Field(default_factory=dict)
+
+
 class DashboardMapLatestOut(BaseModel):
     as_of: date | None = None
     items: list[MapLatestPoint]
     scope_breakdown: ScopeBreakdownOut = Field(default_factory=ScopeBreakdownOut)
+    filter_stats: DashboardFilterStatsOut = Field(default_factory=DashboardFilterStatsOut)
 
 
 class BigMatchPoint(BaseModel):

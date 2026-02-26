@@ -1,8 +1,80 @@
 import json
+import re
 from datetime import date
 
 from app.services.errors import DuplicateConflictError
 from app.services.fingerprint import merge_observation_by_priority
+
+_CANDIDATE_NAME_RE = re.compile(r"^[가-힣]{2,8}$")
+_CANDIDATE_NOISE_EXACT_TOKENS = {
+    "오차는",
+    "응답률은",
+    "지지율은",
+    "오차범위",
+    "표본오차",
+    "응답률",
+    "조사기관",
+    "여론조사",
+    "지지율",
+    "차이",
+    "같은",
+    "외",
+    "민주",
+    "민주당",
+    "더불어민주당",
+    "국힘",
+    "국민의힘",
+    "지지",
+    "지지도",
+    "재정자립도",
+    "적합도",
+    "선호도",
+    "인지도",
+    "호감도",
+    "비호감도",
+    "국정안정론",
+    "국정견제론",
+    "정권교체",
+    "정권재창출",
+    "정권심판",
+    "정권지원",
+    "긍정평가",
+    "부정평가",
+}
+_CANDIDATE_NOISE_SUBSTRING_TOKENS = {
+    "오차범위",
+    "표본오차",
+    "응답률",
+    "여론조사",
+    "지지율",
+    "신뢰수준",
+    "표본",
+    "재정자립",
+    "안정론",
+    "견제론",
+    "정권",
+    "긍정평가",
+    "부정평가",
+}
+
+
+def _normalize_candidate_option_token(value: str | None) -> str:
+    token = re.sub(r"\s+", "", str(value or "").strip().lower())
+    token = re.sub(r"[^0-9a-z가-힣]", "", token)
+    return token
+
+
+def _is_noise_candidate_option(option_name: str | None, candidate_id: str | None) -> bool:
+    token = _normalize_candidate_option_token(option_name)
+    if not token:
+        return True
+    if token in _CANDIDATE_NOISE_EXACT_TOKENS:
+        return True
+    if any(part in token for part in _CANDIDATE_NOISE_SUBSTRING_TOKENS):
+        return True
+    if any(ch.isdigit() for ch in token):
+        return True
+    return _CANDIDATE_NAME_RE.fullmatch(token) is None
 
 
 class PostgresRepository:
@@ -459,6 +531,7 @@ class PostgresRepository:
                 po.value_mid,
                 o.pollster,
                 o.survey_end_date,
+                o.source_grade,
                 o.audience_scope,
                 o.audience_region_code,
                 o.updated_at AS observation_updated_at,
@@ -1002,6 +1075,34 @@ class PostgresRepository:
                 "admin_level": "sido",
             }
 
+        def apply_official_region_overrides(region: dict) -> dict:
+            region_out = dict(region)
+            code = normalize_text(region_out.get("region_code"))
+            if re.fullmatch(r"\d{2}-000", code):
+                region_out["admin_level"] = "sido"
+                if normalize_text(region_out.get("sigungu_name")) in {"", "전체"}:
+                    region_out["sigungu_name"] = "전체"
+
+            if code == "29-000":
+                # 운영 회귀 보호: 29-000은 공식 토폴로지에서 세종으로 고정한다.
+                region_out["sido_name"] = "세종특별자치시"
+                region_out["sigungu_name"] = "전체"
+                region_out["admin_level"] = "sido"
+            return region_out
+
+        def apply_official_title_overrides(region: dict, office_type: str, title: str | None) -> str:
+            normalized_title = normalize_text(title)
+            code = normalize_text(region.get("region_code"))
+
+            # 운영 회귀 보호: 29-000은 세종 라벨이 아닌 타 시도 라벨을 허용하지 않는다.
+            # 레거시/오염 타이틀이 들어오면 코드 기준 placeholder로 강제 복원한다.
+            if code == "29-000" and "세종" not in normalized_title:
+                return derive_placeholder_title(region, office_type)
+
+            if normalized_title:
+                return normalized_title
+            return derive_placeholder_title(region, office_type)
+
         office_order = ["광역자치단체장", "광역의회", "교육감", "기초자치단체장", "기초의회", "재보궐"]
         topology_mode = "scenario" if topology == "scenario" else "official"
 
@@ -1073,6 +1174,8 @@ class PostgresRepository:
                 region = build_scenario_parent_region(effective_region_code, topology_version_id, cur)
             if not region:
                 return []
+            if topology_mode == "official":
+                region = apply_official_region_overrides(region)
 
             cur.execute(
                 """
@@ -1170,7 +1273,9 @@ class PostgresRepository:
                 ),
             )
         else:
-            if normalize_text(region.get("admin_level")) in {"sigungu", "local"}:
+            resolved_region_code = normalize_text(region.get("region_code"))
+            is_sido_code = bool(re.fullmatch(r"\d{2}-000", resolved_region_code))
+            if not is_sido_code and normalize_text(region.get("admin_level")) in {"sigungu", "local"}:
                 slots = ["기초자치단체장", "기초의회"]
             else:
                 slots = ["광역자치단체장", "광역의회", "교육감"]
@@ -1229,6 +1334,9 @@ class PostgresRepository:
                 is_placeholder = True
                 is_fallback = True
                 source = "generated"
+
+            if topology_mode == "official":
+                title = apply_official_title_overrides(region, office_type, title)
 
             result.append(
                 {
@@ -1520,6 +1628,16 @@ class PostgresRepository:
             if isinstance(candidate_id, str):
                 candidate_id = candidate_id.strip() or None
             row["candidate_id"] = candidate_id
+
+            option_name = row.get("option_name")
+            if isinstance(option_name, str):
+                option_name = option_name.strip()
+            else:
+                option_name = str(option_name or "").strip()
+            row["option_name"] = option_name
+
+            if _is_noise_candidate_option(option_name, candidate_id):
+                continue
 
             party_name = row.get("party_name")
             if isinstance(party_name, str):
