@@ -610,7 +610,12 @@ def test_api_contract_fields():
 
     region_elections = client.get("/api/v1/regions/11-000/elections")
     assert region_elections.status_code == 200
-    assert region_elections.json()[0]["is_active"] is True
+    region_election_row = region_elections.json()[0]
+    assert region_election_row["is_active"] is True
+    assert "has_poll_data" in region_election_row
+    assert "latest_survey_end_date" in region_election_row
+    assert "latest_matchup_id" in region_election_row
+    assert "status" in region_election_row
 
     matchup = client.get("/api/v1/matchups/20260603|광역자치단체장|11-000")
     assert matchup.status_code == 200
