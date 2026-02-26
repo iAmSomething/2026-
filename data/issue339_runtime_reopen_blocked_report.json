@@ -1,0 +1,115 @@
+{
+  "issue": 339,
+  "executed_at": "2026-02-26T10:58:37.244407+00:00",
+  "workflow_run": {
+    "id": 22439048888,
+    "url": "https://github.com/iAmSomething/2026-/actions/runs/22439048888",
+    "conclusion": "failure",
+    "failure_reason": "database connection failed (run-ingest step)"
+  },
+  "runtime_before": {
+    "scenario_keys": [
+      "default"
+    ],
+    "scenario_count": 1,
+    "options": [
+      {
+        "option_name": "김도읍",
+        "value_mid": 33.2,
+        "scenario_key": "default",
+        "scenario_type": "multi_candidate",
+        "scenario_title": "다자대결: 김도읍, 박형준, 전재수"
+      },
+      {
+        "option_name": "박형준",
+        "value_mid": 32.3,
+        "scenario_key": "default",
+        "scenario_type": "multi_candidate",
+        "scenario_title": "다자대결: 김도읍, 박형준, 전재수"
+      },
+      {
+        "option_name": "전재수",
+        "value_mid": 26.8,
+        "scenario_key": "default",
+        "scenario_type": "multi_candidate",
+        "scenario_title": "다자대결: 김도읍, 박형준, 전재수"
+      }
+    ]
+  },
+  "runtime_after": {
+    "scenario_keys": [
+      "default"
+    ],
+    "scenario_count": 1,
+    "options": [
+      {
+        "option_name": "김도읍",
+        "value_mid": 33.2,
+        "scenario_key": "default",
+        "scenario_type": "multi_candidate",
+        "scenario_title": "다자대결: 김도읍, 박형준, 전재수"
+      },
+      {
+        "option_name": "박형준",
+        "value_mid": 32.3,
+        "scenario_key": "default",
+        "scenario_type": "multi_candidate",
+        "scenario_title": "다자대결: 김도읍, 박형준, 전재수"
+      },
+      {
+        "option_name": "전재수",
+        "value_mid": 26.8,
+        "scenario_key": "default",
+        "scenario_type": "multi_candidate",
+        "scenario_title": "다자대결: 김도읍, 박형준, 전재수"
+      }
+    ]
+  },
+  "expected_after_reingest": {
+    "scenario_keys": [
+      "h2h-전재수-김도읍",
+      "multi-전재수"
+    ],
+    "scenario_count": 2,
+    "options": [
+      {
+        "option_name": "박형준",
+        "value_mid": 32.3,
+        "scenario_key": "multi-전재수",
+        "scenario_type": "multi_candidate",
+        "scenario_title": "다자대결"
+      },
+      {
+        "option_name": "전재수",
+        "value_mid": 43.8,
+        "scenario_key": "h2h-전재수-김도읍",
+        "scenario_type": "head_to_head",
+        "scenario_title": "전재수 vs 김도읍"
+      },
+      {
+        "option_name": "김도읍",
+        "value_mid": 33.2,
+        "scenario_key": "h2h-전재수-김도읍",
+        "scenario_type": "head_to_head",
+        "scenario_title": "전재수 vs 김도읍"
+      },
+      {
+        "option_name": "전재수",
+        "value_mid": 26.8,
+        "scenario_key": "multi-전재수",
+        "scenario_type": "multi_candidate",
+        "scenario_title": "다자대결"
+      }
+    ]
+  },
+  "acceptance_checks": {
+    "runtime_after_scenario_count_ge_2": false,
+    "runtime_has_h2h_and_multi": false,
+    "runtime_still_default_only": true
+  },
+  "artifacts": {
+    "runtime_before_capture": "data/issue339_runtime_before_capture.json",
+    "runtime_after_capture": "data/issue339_runtime_after_capture_blocked.json",
+    "expected_after_reingest": "data/issue339_scenario_mix_after.json"
+  }
+}
