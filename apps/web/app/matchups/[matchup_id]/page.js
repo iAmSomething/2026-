@@ -110,6 +110,9 @@ export default async function MatchupPage({ params, searchParams }) {
   }
 
   const matchup = payload.body;
+  const canonicalTitle = matchup.canonical_title || matchup.title || matchup.matchup_id;
+  const articleSubtitle =
+    matchup.article_title && matchup.article_title !== canonicalTitle ? matchup.article_title : null;
   let scenarios = Array.isArray(matchup.scenarios) && matchup.scenarios.length > 0
     ? matchup.scenarios.map((scenario) => ({
         ...scenario,
@@ -200,7 +203,8 @@ export default async function MatchupPage({ params, searchParams }) {
       <section className="panel detail-hero">
         <div>
           <p className="kicker">MATCHUP DETAIL</p>
-          <h1>{matchup.title || matchup.matchup_id}</h1>
+          <h1>{canonicalTitle}</h1>
+          {articleSubtitle ? <p className="muted-text">기사 제목: {articleSubtitle}</p> : null}
           <p>
             {matchup.pollster || "조사기관 미상"} · {formatDate(matchup.survey_start_date)} ~ {formatDate(matchup.survey_end_date)}
           </p>

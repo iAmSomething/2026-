@@ -651,6 +651,8 @@ def test_api_contract_fields():
     matchup = client.get("/api/v1/matchups/20260603|광역자치단체장|11-000")
     assert matchup.status_code == 200
     assert matchup.json()["has_data"] is True
+    assert "canonical_title" in matchup.json()
+    assert "article_title" in matchup.json()
     assert matchup.json()["options"][0]["option_name"] == "정원오"
     assert matchup.json()["survey_start_date"] == "2026-02-15"
     assert matchup.json()["audience_scope"] == "regional"

@@ -213,6 +213,8 @@ class MatchupOut(BaseModel):
     region_code: str
     office_type: str
     title: str
+    canonical_title: str | None = None
+    article_title: str | None = None
     has_data: bool = True
     pollster: str | None = None
     survey_start_date: date | None = None

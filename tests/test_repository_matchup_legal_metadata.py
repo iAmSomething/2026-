@@ -24,7 +24,7 @@ class _Cursor:
                 "matchup_id": "m1",
                 "region_code": "11-000",
                 "office_type": "광역자치단체장",
-                "title": "서울시장 가상대결",
+                "title": "서울특별시장 선거",
                 "is_active": True,
             }
         if self._step == 1:
@@ -33,7 +33,7 @@ class _Cursor:
                 "matchup_id": "m1",
                 "region_code": "11-000",
                 "office_type": "광역자치단체장",
-                "title": "서울시장 가상대결",
+                "title": "[여론조사] 서울시장 양자대결 정원오-오세훈",
                 "pollster": "KBS",
                 "survey_start_date": date(2026, 2, 15),
                 "survey_end_date": date(2026, 2, 18),
@@ -98,6 +98,9 @@ def test_get_matchup_returns_legal_metadata_fields():
     out = repo.get_matchup("m1")
 
     assert out is not None
+    assert out["title"] == "서울특별시장 선거"
+    assert out["canonical_title"] == "서울특별시장 선거"
+    assert out["article_title"] == "[여론조사] 서울시장 양자대결 정원오-오세훈"
     assert out["survey_start_date"] == date(2026, 2, 15)
     assert out["confidence_level"] == 95.0
     assert out["sample_size"] == 1000
