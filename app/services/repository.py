@@ -1130,6 +1130,8 @@ class PostgresRepository:
             if isinstance(row.get("office_type"), str)
         }
 
+        is_master_empty = len(election_by_office) == 0
+
         if election_by_office:
             slots = sorted(
                 election_by_office.keys(),
@@ -1139,9 +1141,10 @@ class PostgresRepository:
                 ),
             )
         else:
-            slots = ["광역자치단체장", "광역의회", "교육감"]
             if normalize_text(region.get("admin_level")) in {"sigungu", "local"}:
-                slots.extend(["기초자치단체장", "기초의회"])
+                slots = ["기초자치단체장", "기초의회"]
+            else:
+                slots = ["광역자치단체장", "광역의회", "교육감"]
 
             if "재보궐" in matchup_by_office or "재보궐" in poll_meta_by_office:
                 slots.append("재보궐")
@@ -1181,16 +1184,22 @@ class PostgresRepository:
                 )
                 is_active = bool(election_row.get("is_active", True))
                 is_placeholder = not has_poll_data
+                is_fallback = False
+                source = normalize_text(election_row.get("source")) or "master"
             elif matchup_row:
                 matchup_id = matchup_row["matchup_id"]
                 title = matchup_row["title"]
                 is_active = bool(matchup_row.get("is_active", True))
                 is_placeholder = False
+                is_fallback = is_master_empty
+                source = "generated" if is_master_empty else "matchups"
             else:
                 matchup_id = latest_matchup_id or f"{election_id}|{office_type}|{resolved_region_code}"
                 title = derive_placeholder_title(region, office_type)
                 is_active = True
                 is_placeholder = True
+                is_fallback = True
+                source = "generated"
 
             result.append(
                 {
@@ -1200,6 +1209,8 @@ class PostgresRepository:
                     "title": title,
                     "is_active": is_active,
                     "is_placeholder": is_placeholder,
+                    "is_fallback": is_fallback,
+                    "source": source,
                     "has_poll_data": has_poll_data,
                     "has_candidate_data": has_candidate_data,
                     "latest_survey_end_date": latest_survey_end_date,
