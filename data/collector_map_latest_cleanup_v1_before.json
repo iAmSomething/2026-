@@ -1,0 +1,555 @@
+{
+  "as_of": null,
+  "items": [
+    {
+      "region_code": "11-000",
+      "office_type": "광역자치단체장",
+      "title": "전국지표조사(NBS) 2026-02-26",
+      "value_mid": 45.0,
+      "survey_end_date": "2026-02-21",
+      "option_name": "김A",
+      "audience_scope": "regional",
+      "audience_region_code": "11-000",
+      "source_priority": "article",
+      "official_release_at": null,
+      "article_published_at": "2026-02-16T00:00:00Z",
+      "freshness_hours": 249.77,
+      "is_official_confirmed": false,
+      "source_channel": "article",
+      "source_channels": [
+        "article"
+      ]
+    },
+    {
+      "region_code": "11-110",
+      "office_type": "기초자치단체장",
+      "title": "서울시장 가상대결서 정원오 45.2%·오세훈 38.1%...오차범위 밖",
+      "value_mid": 45.2,
+      "survey_end_date": "2026-02-14",
+      "option_name": "정원오",
+      "audience_scope": "local",
+      "audience_region_code": "11-110",
+      "source_priority": "article",
+      "official_release_at": "2026-02-15T12:00:00Z",
+      "article_published_at": "2026-02-14T03:00:00Z",
+      "freshness_hours": 261.77,
+      "is_official_confirmed": false,
+      "source_channel": "article",
+      "source_channels": [
+        "article"
+      ]
+    },
+    {
+      "region_code": "11-620",
+      "office_type": "기초자치단체장",
+      "title": "[조원씨앤아이] 서울시장 가상 1대1 대결, 정원오 40.1% vs 오세훈 37.5%",
+      "value_mid": 40.1,
+      "survey_end_date": "2026-01-30",
+      "option_name": "정원오",
+      "audience_scope": "local",
+      "audience_region_code": "11-620",
+      "source_priority": "article",
+      "official_release_at": "2026-02-13T19:00:00Z",
+      "article_published_at": "2026-01-30T03:00:00Z",
+      "freshness_hours": 302.77,
+      "is_official_confirmed": false,
+      "source_channel": "article",
+      "source_channels": [
+        "article"
+      ]
+    },
+    {
+      "region_code": "11-680",
+      "office_type": "기초자치단체장",
+      "title": "강남구청장 가상대결",
+      "value_mid": 46.0,
+      "survey_end_date": "2026-02-10",
+      "option_name": "오G",
+      "audience_scope": "local",
+      "audience_region_code": "11-680",
+      "source_priority": "article",
+      "official_release_at": null,
+      "article_published_at": "2026-02-10T00:00:00Z",
+      "freshness_hours": 393.77,
+      "is_official_confirmed": false,
+      "source_channel": "article",
+      "source_channels": [
+        "article"
+      ]
+    },
+    {
+      "region_code": "11-710",
+      "office_type": "기초자치단체장",
+      "title": "서울시장 여론조사 가상대결 박주민 41.9% vs 오세훈 35.3%:서울의 소리",
+      "value_mid": 41.9,
+      "survey_end_date": "2026-02-19",
+      "option_name": "박주민",
+      "audience_scope": "local",
+      "audience_region_code": "11-710",
+      "source_priority": "mixed",
+      "official_release_at": "2026-02-19T02:00:00Z",
+      "article_published_at": "2026-02-19T03:00:00Z",
+      "freshness_hours": 175.77,
+      "is_official_confirmed": true,
+      "source_channel": "nesdc",
+      "source_channels": [
+        "article",
+        "nesdc"
+      ]
+    },
+    {
+      "region_code": "26-000",
+      "office_type": "광역자치단체장",
+      "title": "부산시장 가상대결",
+      "value_mid": 44.0,
+      "survey_end_date": "2026-02-24",
+      "option_name": "박C",
+      "audience_scope": "regional",
+      "audience_region_code": "26-000",
+      "source_priority": "article",
+      "official_release_at": null,
+      "article_published_at": "2026-02-14T00:00:00Z",
+      "freshness_hours": 297.77,
+      "is_official_confirmed": false,
+      "source_channel": "article",
+      "source_channels": [
+        "article"
+      ]
+    },
+    {
+      "region_code": "26-350",
+      "office_type": "기초자치단체장",
+      "title": "'40% 벽'에 막힌 박형준… 전재수, 양자대결 8.3%p 앞서",
+      "value_mid": 8.3,
+      "survey_end_date": "2026-02-15",
+      "option_name": "양자대결",
+      "audience_scope": "local",
+      "audience_region_code": "26-350",
+      "source_priority": "article",
+      "official_release_at": "2026-02-15T20:00:00Z",
+      "article_published_at": "2026-02-15T03:00:00Z",
+      "freshness_hours": 253.77,
+      "is_official_confirmed": false,
+      "source_channel": "article",
+      "source_channels": [
+        "article"
+      ]
+    },
+    {
+      "region_code": "26-530",
+      "office_type": "기초자치단체장",
+      "title": "부산 사상구청장 가상대결…서태경 38.1%·이대훈 24.7%·조병길 13.2%",
+      "value_mid": 38.1,
+      "survey_end_date": "2026-02-14",
+      "option_name": "서태경",
+      "audience_scope": "local",
+      "audience_region_code": "26-530",
+      "source_priority": "mixed",
+      "official_release_at": "2026-02-18T09:00:00Z",
+      "article_published_at": "2026-02-14T03:00:00Z",
+      "freshness_hours": 192.77,
+      "is_official_confirmed": true,
+      "source_channel": "nesdc",
+      "source_channels": [
+        "article",
+        "nesdc"
+      ]
+    },
+    {
+      "region_code": "26-710",
+      "office_type": "기초자치단체장",
+      "title": "[2026지방선거] 부산시장, 전재수 43.4-박형준 32.3%, 전재수 43.8%-김도읍33.2%...다자대결 전재수26.8% 선두",
+      "value_mid": 33.2,
+      "survey_end_date": "2026-02-10",
+      "option_name": "김도읍",
+      "audience_scope": "local",
+      "audience_region_code": "26-710",
+      "source_priority": "mixed",
+      "official_release_at": "2026-02-15T16:00:00Z",
+      "article_published_at": "2026-02-10T03:00:00Z",
+      "freshness_hours": 257.77,
+      "is_official_confirmed": true,
+      "source_channel": "nesdc",
+      "source_channels": [
+        "article",
+        "nesdc"
+      ]
+    },
+    {
+      "region_code": "28-450",
+      "office_type": "기초자치단체장",
+      "title": "[여론조사] 인천시장 양자대결 박찬대 51.2%, 유정복 37.1% 오차 밖 앞서",
+      "value_mid": 28.0,
+      "survey_end_date": "2026-02-11",
+      "option_name": "도성훈",
+      "audience_scope": "local",
+      "audience_region_code": "28-450",
+      "source_priority": "mixed",
+      "official_release_at": "2026-02-17T07:00:00Z",
+      "article_published_at": "2026-02-11T03:00:00Z",
+      "freshness_hours": 218.77,
+      "is_official_confirmed": true,
+      "source_channel": "nesdc",
+      "source_channels": [
+        "article",
+        "nesdc"
+      ]
+    },
+    {
+      "region_code": "28-650",
+      "office_type": "기초자치단체장",
+      "title": "[2022 지방선거] 인천 서구청장 여론조사 김종인 40.2% vs 강범석 38.5%",
+      "value_mid": 40.2,
+      "survey_end_date": "2026-02-21",
+      "option_name": "김종인",
+      "audience_scope": "local",
+      "audience_region_code": "28-650",
+      "source_priority": "article",
+      "official_release_at": "2026-02-17T20:00:00Z",
+      "article_published_at": "2026-02-20T03:00:00Z",
+      "freshness_hours": 205.77,
+      "is_official_confirmed": false,
+      "source_channel": "article",
+      "source_channels": [
+        "article"
+      ]
+    },
+    {
+      "region_code": "41-000",
+      "office_type": "광역자치단체장",
+      "title": "경기지사 가상대결",
+      "value_mid": 43.0,
+      "survey_end_date": "2026-02-23",
+      "option_name": "최E",
+      "audience_scope": "regional",
+      "audience_region_code": "41-000",
+      "source_priority": "article",
+      "official_release_at": null,
+      "article_published_at": "2026-02-12T00:00:00Z",
+      "freshness_hours": 345.77,
+      "is_official_confirmed": false,
+      "source_channel": "article",
+      "source_channels": [
+        "article"
+      ]
+    },
+    {
+      "region_code": "41-110",
+      "office_type": "기초자치단체장",
+      "title": "수원시장 선호도 민주 이재준 42% '1위'…국힘 '혼전'",
+      "value_mid": 42.0,
+      "survey_end_date": "2026-02-19",
+      "option_name": "이재준",
+      "audience_scope": "local",
+      "audience_region_code": "41-110",
+      "source_priority": "mixed",
+      "official_release_at": "2026-02-16T08:00:00Z",
+      "article_published_at": "2026-02-19T03:00:00Z",
+      "freshness_hours": 241.77,
+      "is_official_confirmed": true,
+      "source_channel": "nesdc",
+      "source_channels": [
+        "article",
+        "nesdc"
+      ]
+    },
+    {
+      "region_code": "41-130",
+      "office_type": "기초자치단체장",
+      "title": "[6·3 지방선거 여론조사-성남시] 민주당 성남시장 후보 적합도…김병욱 36.2%로 선두",
+      "value_mid": 36.2,
+      "survey_end_date": "2026-02-18",
+      "option_name": "김병욱",
+      "audience_scope": "local",
+      "audience_region_code": "41-130",
+      "source_priority": "mixed",
+      "official_release_at": "2026-02-17T11:00:00Z",
+      "article_published_at": "2026-02-18T03:00:00Z",
+      "freshness_hours": 214.77,
+      "is_official_confirmed": true,
+      "source_channel": "nesdc",
+      "source_channels": [
+        "article",
+        "nesdc"
+      ]
+    },
+    {
+      "region_code": "41-190",
+      "office_type": "기초자치단체장",
+      "title": "[6.1지방선거 팩트체크] 부천시 재정자립도 24%? ‘31.2%’",
+      "value_mid": 24.0,
+      "survey_end_date": "2026-02-11",
+      "option_name": "재정자립도",
+      "audience_scope": "local",
+      "audience_region_code": "41-190",
+      "source_priority": "article",
+      "official_release_at": "2026-02-15T16:00:00Z",
+      "article_published_at": "2026-02-11T03:00:00Z",
+      "freshness_hours": 257.77,
+      "is_official_confirmed": false,
+      "source_channel": "article",
+      "source_channels": [
+        "article"
+      ]
+    },
+    {
+      "region_code": "41-270",
+      "office_type": "기초자치단체장",
+      "title": "김동연 47.5%, 김은혜 44.8%…2.7%p 차 오차범위 내 접전[시사저널 여론조사]",
+      "value_mid": 47.5,
+      "survey_end_date": "2026-01-31",
+      "option_name": "김동연",
+      "audience_scope": "local",
+      "audience_region_code": "41-270",
+      "source_priority": "article",
+      "official_release_at": "2026-02-13T19:00:00Z",
+      "article_published_at": "2026-01-31T03:00:00Z",
+      "freshness_hours": 302.77,
+      "is_official_confirmed": false,
+      "source_channel": "article",
+      "source_channels": [
+        "article"
+      ]
+    },
+    {
+      "region_code": "41-280",
+      "office_type": "기초자치단체장",
+      "title": "[서울시장 후보 지지도] 정원오 30.8%-박주민 13.1%...정 49.0%-오 37.2%, 박 48.2%-오 35.2% - 오마이뉴스",
+      "value_mid": 30.8,
+      "survey_end_date": "2026-02-09",
+      "option_name": "정원오",
+      "audience_scope": "local",
+      "audience_region_code": "41-280",
+      "source_priority": "article",
+      "official_release_at": "2026-02-15T20:00:00Z",
+      "article_published_at": "2026-02-09T03:00:00Z",
+      "freshness_hours": 253.77,
+      "is_official_confirmed": false,
+      "source_channel": "article",
+      "source_channels": [
+        "article"
+      ]
+    },
+    {
+      "region_code": "41-390",
+      "office_type": "기초자치단체장",
+      "title": "[6·3 지방선거 여론조사-시흥시] 시흥시장 임병택 27.3%-김윤식 22.3%…오차 내 박빙",
+      "value_mid": 27.3,
+      "survey_end_date": "2026-02-22",
+      "option_name": "임병택",
+      "audience_scope": "local",
+      "audience_region_code": "41-390",
+      "source_priority": "article",
+      "official_release_at": "2026-02-19T11:00:00Z",
+      "article_published_at": "2026-02-21T03:00:00Z",
+      "freshness_hours": 166.77,
+      "is_official_confirmed": false,
+      "source_channel": "article",
+      "source_channels": [
+        "article"
+      ]
+    },
+    {
+      "region_code": "41-460",
+      "office_type": "기초자치단체장",
+      "title": "[오산시장 여론조사] 국힘 이권재 47.2% vs 민주 장인수 32.4%",
+      "value_mid": 47.2,
+      "survey_end_date": "2026-02-01",
+      "option_name": "이권재",
+      "audience_scope": "local",
+      "audience_region_code": "41-460",
+      "source_priority": "mixed",
+      "official_release_at": "2026-02-15T14:00:00Z",
+      "article_published_at": "2026-02-01T03:00:00Z",
+      "freshness_hours": 259.77,
+      "is_official_confirmed": true,
+      "source_channel": "nesdc",
+      "source_channels": [
+        "article",
+        "nesdc"
+      ]
+    },
+    {
+      "region_code": "42-110",
+      "office_type": "기초자치단체장",
+      "title": "[강원도지사] 이광재 49.5%-김진태 37.0%...우상호 46.3%-김진태 38.1%",
+      "value_mid": 49.5,
+      "survey_end_date": "2026-02-18",
+      "option_name": "이광재",
+      "audience_scope": "local",
+      "audience_region_code": "42-110",
+      "source_priority": "article",
+      "official_release_at": "2026-02-16T00:00:00Z",
+      "article_published_at": "2026-02-18T03:00:00Z",
+      "freshness_hours": 249.77,
+      "is_official_confirmed": false,
+      "source_channel": "article",
+      "source_channels": [
+        "article"
+      ]
+    },
+    {
+      "region_code": "43-110",
+      "office_type": "기초자치단체장",
+      "title": "'충북도지사 지지도' 김영환 10% 오차범위 내 1위... 2위와 단 1% 차",
+      "value_mid": 10.0,
+      "survey_end_date": "2026-02-08",
+      "option_name": "김영환",
+      "audience_scope": "local",
+      "audience_region_code": "43-110",
+      "source_priority": "article",
+      "official_release_at": "2026-02-15T14:00:00Z",
+      "article_published_at": "2026-02-08T03:00:00Z",
+      "freshness_hours": 259.77,
+      "is_official_confirmed": false,
+      "source_channel": "article",
+      "source_channels": [
+        "article"
+      ]
+    },
+    {
+      "region_code": "44-130",
+      "office_type": "기초자치단체장",
+      "title": "제주교육감 선거 김광수 30%…49%는 없거나 선택미뤄",
+      "value_mid": 30.0,
+      "survey_end_date": "2026-02-12",
+      "option_name": "김광수",
+      "audience_scope": "local",
+      "audience_region_code": "44-130",
+      "source_priority": "article",
+      "official_release_at": "2026-02-16T16:00:00Z",
+      "article_published_at": "2026-02-12T03:00:00Z",
+      "freshness_hours": 233.77,
+      "is_official_confirmed": false,
+      "source_channel": "article",
+      "source_channels": [
+        "article"
+      ]
+    },
+    {
+      "region_code": "45-110",
+      "office_type": "기초자치단체장",
+      "title": "[6·1 지선 여론조사] 전북지사- 송하진 23.6% 오차범위밖 우세",
+      "value_mid": 23.6,
+      "survey_end_date": "2026-02-13",
+      "option_name": "송하진",
+      "audience_scope": "local",
+      "audience_region_code": "45-110",
+      "source_priority": "mixed",
+      "official_release_at": "2026-02-17T16:00:00Z",
+      "article_published_at": "2026-02-13T03:00:00Z",
+      "freshness_hours": 209.77,
+      "is_official_confirmed": true,
+      "source_channel": "nesdc",
+      "source_channels": [
+        "article",
+        "nesdc"
+      ]
+    },
+    {
+      "region_code": "46-110",
+      "office_type": "기초자치단체장",
+      "title": "강성휘 30.5% 오차범위 밖 선두…전경선 20.7% [KBC 전남 목포시장 여론조사]",
+      "value_mid": 48.1,
+      "survey_end_date": "2026-02-16",
+      "option_name": "전재수",
+      "audience_scope": "local",
+      "audience_region_code": "46-110",
+      "source_priority": "mixed",
+      "official_release_at": "2026-02-15T15:00:00Z",
+      "article_published_at": "2026-02-16T03:00:00Z",
+      "freshness_hours": 258.77,
+      "is_official_confirmed": true,
+      "source_channel": "nesdc",
+      "source_channels": [
+        "article",
+        "nesdc"
+      ]
+    },
+    {
+      "region_code": "47-110",
+      "office_type": "기초자치단체장",
+      "title": "[국힘 포항시장 지지도 조사] 김병욱 15.8% 박승호 14.9% 공원식 10.9% 박용선 10.5%",
+      "value_mid": 31.8,
+      "survey_end_date": "2026-02-09",
+      "option_name": "김병욱",
+      "audience_scope": "local",
+      "audience_region_code": "47-110",
+      "source_priority": "mixed",
+      "official_release_at": "2026-02-15T07:00:00Z",
+      "article_published_at": "2026-02-09T03:00:00Z",
+      "freshness_hours": 266.77,
+      "is_official_confirmed": true,
+      "source_channel": "nesdc",
+      "source_channels": [
+        "article",
+        "nesdc"
+      ]
+    },
+    {
+      "region_code": "48-110",
+      "office_type": "기초자치단체장",
+      "title": "[2026지방선거] 경남지사, 가상대결 민주당 김경수 38.1%, 국힘 박완수 38.3%로 초접전",
+      "value_mid": 38.3,
+      "survey_end_date": "2026-02-17",
+      "option_name": "박완수",
+      "audience_scope": "local",
+      "audience_region_code": "48-110",
+      "source_priority": "article",
+      "official_release_at": "2026-02-18T18:00:00Z",
+      "article_published_at": "2026-02-17T03:00:00Z",
+      "freshness_hours": 183.77,
+      "is_official_confirmed": false,
+      "source_channel": "article",
+      "source_channels": [
+        "article"
+      ]
+    },
+    {
+      "region_code": "50-110",
+      "office_type": "기초자치단체장",
+      "title": "[여론조사] 차기 제주도지사 지지도, '김한규 19% vs 오영훈 11%'",
+      "value_mid": 19.0,
+      "survey_end_date": "2026-02-16",
+      "option_name": "김한규",
+      "audience_scope": "local",
+      "audience_region_code": "50-110",
+      "source_priority": "mixed",
+      "official_release_at": "2026-02-18T18:00:00Z",
+      "article_published_at": "2026-02-16T03:00:00Z",
+      "freshness_hours": 183.77,
+      "is_official_confirmed": true,
+      "source_channel": "nesdc",
+      "source_channels": [
+        "article",
+        "nesdc"
+      ]
+    },
+    {
+      "region_code": "50-130",
+      "office_type": "기초자치단체장",
+      "title": "[여론조사] 내년 지방 선거, 여당 지지 58.5% 야당 36.2%",
+      "value_mid": 58.5,
+      "survey_end_date": "2026-02-07",
+      "option_name": "지지",
+      "audience_scope": "local",
+      "audience_region_code": "50-130",
+      "source_priority": "mixed",
+      "official_release_at": "2026-02-16T16:00:00Z",
+      "article_published_at": "2026-02-07T03:00:00Z",
+      "freshness_hours": 233.77,
+      "is_official_confirmed": true,
+      "source_channel": "nesdc",
+      "source_channels": [
+        "article",
+        "nesdc"
+      ]
+    }
+  ],
+  "scope_breakdown": {
+    "national": 0,
+    "regional": 3,
+    "local": 25,
+    "unknown": 0
+  }
+}

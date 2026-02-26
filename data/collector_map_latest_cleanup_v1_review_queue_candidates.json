@@ -1,0 +1,173 @@
+[
+  {
+    "id": "rvq_2ecdb5e9ee062921",
+    "entity_type": "map_latest_item",
+    "entity_id": "11-000|광역자치단체장|2026-02-21|김A",
+    "issue_type": "classify_error",
+    "stage": "map_latest_cleanup_v1",
+    "error_code": "MAP_LATEST_INVALID_OPTION_NAME",
+    "error_message": "invalid_candidate_option_name",
+    "source_url": null,
+    "payload": {
+      "region_code": "11-000",
+      "office_type": "광역자치단체장",
+      "title": "전국지표조사(NBS) 2026-02-26",
+      "survey_end_date": "2026-02-21",
+      "option_name": "김A"
+    },
+    "status": "pending",
+    "created_at": "2026-02-26T09:45:59.578043+00:00"
+  },
+  {
+    "id": "rvq_382146ca04843cac",
+    "entity_type": "map_latest_item",
+    "entity_id": "11-680|기초자치단체장|2026-02-10|오G",
+    "issue_type": "classify_error",
+    "stage": "map_latest_cleanup_v1",
+    "error_code": "MAP_LATEST_INVALID_OPTION_NAME",
+    "error_message": "invalid_candidate_option_name",
+    "source_url": null,
+    "payload": {
+      "region_code": "11-680",
+      "office_type": "기초자치단체장",
+      "title": "강남구청장 가상대결",
+      "survey_end_date": "2026-02-10",
+      "option_name": "오G"
+    },
+    "status": "pending",
+    "created_at": "2026-02-26T09:45:59.578136+00:00"
+  },
+  {
+    "id": "rvq_a624fcb2d63a6c1a",
+    "entity_type": "map_latest_item",
+    "entity_id": "26-000|광역자치단체장|2026-02-24|박C",
+    "issue_type": "classify_error",
+    "stage": "map_latest_cleanup_v1",
+    "error_code": "MAP_LATEST_INVALID_OPTION_NAME",
+    "error_message": "invalid_candidate_option_name",
+    "source_url": null,
+    "payload": {
+      "region_code": "26-000",
+      "office_type": "광역자치단체장",
+      "title": "부산시장 가상대결",
+      "survey_end_date": "2026-02-24",
+      "option_name": "박C"
+    },
+    "status": "pending",
+    "created_at": "2026-02-26T09:45:59.578157+00:00"
+  },
+  {
+    "id": "rvq_0aa8437fad0c2d3c",
+    "entity_type": "map_latest_item",
+    "entity_id": "26-350|기초자치단체장|2026-02-15|양자대결",
+    "issue_type": "classify_error",
+    "stage": "map_latest_cleanup_v1",
+    "error_code": "MAP_LATEST_INVALID_OPTION_NAME",
+    "error_message": "invalid_candidate_option_name",
+    "source_url": null,
+    "payload": {
+      "region_code": "26-350",
+      "office_type": "기초자치단체장",
+      "title": "'40% 벽'에 막힌 박형준… 전재수, 양자대결 8.3%p 앞서",
+      "survey_end_date": "2026-02-15",
+      "option_name": "양자대결"
+    },
+    "status": "pending",
+    "created_at": "2026-02-26T09:45:59.578172+00:00"
+  },
+  {
+    "id": "rvq_6ff1b3a2c548568b",
+    "entity_type": "map_latest_item",
+    "entity_id": "26-710|기초자치단체장|2026-02-10|김도읍",
+    "issue_type": "mapping_error",
+    "stage": "map_latest_cleanup_v1",
+    "error_code": "MAP_LATEST_LEGACY_TITLE_BLOCK",
+    "error_message": "legacy_matchup_title",
+    "source_url": null,
+    "payload": {
+      "region_code": "26-710",
+      "office_type": "기초자치단체장",
+      "title": "[2026지방선거] 부산시장, 전재수 43.4-박형준 32.3%, 전재수 43.8%-김도읍33.2%...다자대결 전재수26.8% 선두",
+      "survey_end_date": "2026-02-10",
+      "option_name": "김도읍"
+    },
+    "status": "pending",
+    "created_at": "2026-02-26T09:45:59.578185+00:00"
+  },
+  {
+    "id": "rvq_4e4ede13ee3bb8f1",
+    "entity_type": "map_latest_item",
+    "entity_id": "28-650|기초자치단체장|2026-02-21|김종인",
+    "issue_type": "mapping_error",
+    "stage": "map_latest_cleanup_v1",
+    "error_code": "MAP_LATEST_LEGACY_TITLE_BLOCK",
+    "error_message": "legacy_matchup_title",
+    "source_url": null,
+    "payload": {
+      "region_code": "28-650",
+      "office_type": "기초자치단체장",
+      "title": "[2022 지방선거] 인천 서구청장 여론조사 김종인 40.2% vs 강범석 38.5%",
+      "survey_end_date": "2026-02-21",
+      "option_name": "김종인"
+    },
+    "status": "pending",
+    "created_at": "2026-02-26T09:45:59.578197+00:00"
+  },
+  {
+    "id": "rvq_67520f2f116f7bb8",
+    "entity_type": "map_latest_item",
+    "entity_id": "41-000|광역자치단체장|2026-02-23|최E",
+    "issue_type": "classify_error",
+    "stage": "map_latest_cleanup_v1",
+    "error_code": "MAP_LATEST_INVALID_OPTION_NAME",
+    "error_message": "invalid_candidate_option_name",
+    "source_url": null,
+    "payload": {
+      "region_code": "41-000",
+      "office_type": "광역자치단체장",
+      "title": "경기지사 가상대결",
+      "survey_end_date": "2026-02-23",
+      "option_name": "최E"
+    },
+    "status": "pending",
+    "created_at": "2026-02-26T09:45:59.578206+00:00"
+  },
+  {
+    "id": "rvq_4f99d62e8be97fb2",
+    "entity_type": "map_latest_item",
+    "entity_id": "41-190|기초자치단체장|2026-02-11|재정자립도",
+    "issue_type": "classify_error",
+    "stage": "map_latest_cleanup_v1",
+    "error_code": "MAP_LATEST_INVALID_OPTION_NAME",
+    "error_message": "invalid_candidate_option_name",
+    "source_url": null,
+    "payload": {
+      "region_code": "41-190",
+      "office_type": "기초자치단체장",
+      "title": "[6.1지방선거 팩트체크] 부천시 재정자립도 24%? ‘31.2%’",
+      "survey_end_date": "2026-02-11",
+      "option_name": "재정자립도"
+    },
+    "status": "pending",
+    "created_at": "2026-02-26T09:45:59.578223+00:00"
+  },
+  {
+    "id": "rvq_51b3137c8313e4bd",
+    "entity_type": "map_latest_item",
+    "entity_id": "48-110|기초자치단체장|2026-02-17|박완수",
+    "issue_type": "mapping_error",
+    "stage": "map_latest_cleanup_v1",
+    "error_code": "MAP_LATEST_LEGACY_TITLE_BLOCK",
+    "error_message": "legacy_matchup_title",
+    "source_url": null,
+    "payload": {
+      "region_code": "48-110",
+      "office_type": "기초자치단체장",
+      "title": "[2026지방선거] 경남지사, 가상대결 민주당 김경수 38.1%, 국힘 박완수 38.3%로 초접전",
+      "survey_end_date": "2026-02-17",
+      "option_name": "박완수"
+    },
+    "status": "pending",
+    "created_at": "2026-02-26T09:45:59.578264+00:00"
+  }
+]
