@@ -255,6 +255,23 @@ def test_candidate_noise_token_routes_manual_review_mapping_error():
     assert any(row[2] == "mapping_error" and "CANDIDATE_TOKEN_NOISE" in row[3] for row in repo.review)
 
 
+def test_candidate_party_alias_token_routes_manual_review_mapping_error():
+    repo = FakeRepo()
+    payload_data = deepcopy(PAYLOAD)
+    payload_data["records"][0]["options"] = [
+        {"option_type": "candidate_matchup", "option_name": "민주", "value_raw": "45%"}
+    ]
+    payload = IngestPayload.model_validate(payload_data)
+
+    result = ingest_payload(payload, repo)
+
+    assert result.status == "success"
+    assert repo.option_rows[0]["candidate_verified"] is False
+    assert repo.option_rows[0]["candidate_verify_source"] == "manual"
+    assert repo.option_rows[0]["needs_manual_review"] is True
+    assert any(row[2] == "mapping_error" and "CANDIDATE_TOKEN_NOISE" in row[3] for row in repo.review)
+
+
 def test_candidate_data_go_verified_sets_data_go_source(monkeypatch):
     class _FakeVerifier:
         def enrich_candidate(self, candidate):  # noqa: ANN001

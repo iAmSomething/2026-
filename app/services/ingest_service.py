@@ -17,10 +17,26 @@ from app.services.ingest_input_normalization import normalize_option_type
 from app.services.normalization import normalize_percentage
 
 PARTY_INFERENCE_REVIEW_THRESHOLD = 0.8
-CANDIDATE_NOISE_TOKENS = {
+CANDIDATE_NOISE_EXACT_TOKENS = {
     "오차는",
     "응답률은",
     "지지율은",
+    "오차범위",
+    "표본오차",
+    "응답률",
+    "조사기관",
+    "여론조사",
+    "지지율",
+    "민주",
+    "민주당",
+    "더불어민주당",
+    "국힘",
+    "국민의힘",
+    "차이",
+    "같은",
+    "외",
+}
+CANDIDATE_NOISE_CONTAINS_TOKENS = {
     "오차범위",
     "표본오차",
     "응답률",
@@ -78,9 +94,9 @@ def _looks_like_noise_candidate(option_name: str) -> bool:
     token = _normalize_candidate_token(option_name)
     if not token:
         return True
-    if token in CANDIDATE_NOISE_TOKENS:
+    if token in CANDIDATE_NOISE_EXACT_TOKENS:
         return True
-    if any(part in token for part in CANDIDATE_NOISE_TOKENS):
+    if any(part in token for part in CANDIDATE_NOISE_CONTAINS_TOKENS):
         return True
     if any(ch.isdigit() for ch in token):
         return True

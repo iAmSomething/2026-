@@ -1,8 +1,60 @@
 import json
+import re
 from datetime import date
 
 from app.services.errors import DuplicateConflictError
 from app.services.fingerprint import merge_observation_by_priority
+
+_CANDIDATE_NAME_RE = re.compile(r"^[가-힣]{2,8}$")
+_CANDIDATE_NOISE_EXACT_TOKENS = {
+    "오차는",
+    "응답률은",
+    "지지율은",
+    "오차범위",
+    "표본오차",
+    "응답률",
+    "조사기관",
+    "여론조사",
+    "지지율",
+    "차이",
+    "같은",
+    "외",
+    "민주",
+    "민주당",
+    "더불어민주당",
+    "국힘",
+    "국민의힘",
+}
+_CANDIDATE_NOISE_SUBSTRING_TOKENS = {
+    "오차범위",
+    "표본오차",
+    "응답률",
+    "여론조사",
+    "지지율",
+    "신뢰수준",
+    "표본",
+}
+
+
+def _normalize_candidate_option_token(value: str | None) -> str:
+    token = re.sub(r"\s+", "", str(value or "").strip().lower())
+    token = re.sub(r"[^0-9a-z가-힣]", "", token)
+    return token
+
+
+def _is_noise_candidate_option(option_name: str | None, candidate_id: str | None) -> bool:
+    token = _normalize_candidate_option_token(option_name)
+    if not token:
+        return True
+    if candidate_id:
+        return False
+    if token in _CANDIDATE_NOISE_EXACT_TOKENS:
+        return True
+    if any(part in token for part in _CANDIDATE_NOISE_SUBSTRING_TOKENS):
+        return True
+    if any(ch.isdigit() for ch in token):
+        return True
+    return _CANDIDATE_NAME_RE.fullmatch(token) is None
 
 
 class PostgresRepository:
@@ -1491,6 +1543,16 @@ class PostgresRepository:
             if isinstance(candidate_id, str):
                 candidate_id = candidate_id.strip() or None
             row["candidate_id"] = candidate_id
+
+            option_name = row.get("option_name")
+            if isinstance(option_name, str):
+                option_name = option_name.strip()
+            else:
+                option_name = str(option_name or "").strip()
+            row["option_name"] = option_name
+
+            if _is_noise_candidate_option(option_name, candidate_id):
+                continue
 
             party_name = row.get("party_name")
             if isinstance(party_name, str):

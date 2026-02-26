@@ -170,3 +170,21 @@ def test_get_matchup_groups_options_by_scenario_without_overwrite():
     assert unknown_party_count == 1
     assert all(scenario["scenario_type"] in {"head_to_head", "multi_candidate"} for scenario in out["scenarios"])
     assert len(out["options"]) == 2
+
+
+def test_normalize_options_filters_noise_candidate_tokens():
+    options = [
+        {"option_name": "오차는", "candidate_id": None, "scenario_key": "default", "value_mid": 95.0},
+        {"option_name": "민주", "candidate_id": None, "scenario_key": "default", "value_mid": 45.0},
+        {"option_name": "같은", "candidate_id": None, "scenario_key": "default", "value_mid": 28.0},
+        {"option_name": "국힘", "candidate_id": None, "scenario_key": "default", "value_mid": 17.0},
+        {"option_name": "차이", "candidate_id": None, "scenario_key": "default", "value_mid": 16.0},
+        {"option_name": "정원오", "candidate_id": None, "scenario_key": "default", "value_mid": 44.0},
+        {"option_name": "오세훈", "candidate_id": "cand-oh", "scenario_key": "default", "value_mid": 42.0},
+        {"option_name": "김민주", "candidate_id": None, "scenario_key": "default", "value_mid": 12.0},
+    ]
+
+    normalized = PostgresRepository._normalize_options(options)
+    names = [row["option_name"] for row in normalized]
+
+    assert names == ["정원오", "오세훈", "김민주"]
