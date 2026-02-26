@@ -19,6 +19,7 @@ from app.services.data_go_common_codes import (  # noqa: E402
     build_region_rows,
 )
 from app.services.repository import PostgresRepository  # noqa: E402
+from scripts.sync_elections_master import run_elections_master_sync  # noqa: E402
 
 
 def parse_args() -> argparse.Namespace:
@@ -36,6 +37,12 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--num-of-rows", type=int, default=2000)
     parser.add_argument("--dry-run", action="store_true", help="Fetch and parse only. Do not write DB.")
     parser.add_argument("--report-path", default="data/common_codes_sync_report.json")
+    parser.add_argument("--elections-report-path", default="data/elections_master_sync_report.json")
+    parser.add_argument(
+        "--skip-elections-sync",
+        action="store_true",
+        help="Do not run elections master sync after region code sync.",
+    )
     return parser.parse_args()
 
 
@@ -190,6 +197,13 @@ def main() -> None:
                     repo.upsert_region(row)
                     upserted += 1
 
+        elections_sync: dict[str, Any] | None = None
+        if not args.skip_elections_sync:
+            elections_sync = run_elections_master_sync(
+                dry_run=args.dry_run,
+                report_path=args.elections_report_path,
+            )
+
         report = {
             "status": "success",
             "executed_at": datetime.now(timezone.utc).isoformat(),
@@ -200,6 +214,9 @@ def main() -> None:
             "dry_run": args.dry_run,
             "parsed_region_count": len(rows),
             "upserted_region_count": upserted,
+            "skip_elections_sync": args.skip_elections_sync,
+            "elections_sync_report_path": args.elections_report_path,
+            "elections_sync": elections_sync,
             "diff": diff,
             "sample": rows[:5],
         }

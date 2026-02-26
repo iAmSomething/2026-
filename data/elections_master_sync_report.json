@@ -1,0 +1,129 @@
+{
+  "status": "success",
+  "executed_at": "2026-02-26T05:05:51.175969+00:00",
+  "dry_run": true,
+  "region_count": 32,
+  "slot_count": 72,
+  "upserted_slot_count": 0,
+  "with_poll_data_slot_count": 28,
+  "without_poll_data_slot_count": 44,
+  "observed_byelection_pair_count": 2,
+  "missing_default_slot_pairs": 0,
+  "sample_checks": {
+    "region_32_000_slot_count": 0,
+    "region_42_000_slot_count": 0,
+    "region_26_710_slot_count": 2
+  },
+  "acceptance_checks": {
+    "default_slot_pairs_complete": true,
+    "slots_queryable_even_without_poll": true,
+    "sample_metro_region_ge_3": true,
+    "sample_region_26_710_ge_2": true
+  },
+  "acceptance_meta": {
+    "metro_sample_region_present": false,
+    "metro_sample_slot_count": 0
+  },
+  "sample_slots": [
+    {
+      "region_code": "11-000",
+      "office_type": "광역자치단체장",
+      "slot_matchup_id": "master|광역자치단체장|11-000",
+      "title": "서울특별시 광역자치단체장",
+      "source": "code_master",
+      "has_poll_data": true,
+      "latest_matchup_id": "20260603|광역자치단체장|11-000",
+      "is_active": true
+    },
+    {
+      "region_code": "11-000",
+      "office_type": "광역의회",
+      "slot_matchup_id": "master|광역의회|11-000",
+      "title": "서울특별시 광역의회",
+      "source": "code_master",
+      "has_poll_data": false,
+      "latest_matchup_id": null,
+      "is_active": true
+    },
+    {
+      "region_code": "11-000",
+      "office_type": "교육감",
+      "slot_matchup_id": "master|교육감|11-000",
+      "title": "서울특별시 교육감",
+      "source": "code_master",
+      "has_poll_data": false,
+      "latest_matchup_id": null,
+      "is_active": true
+    },
+    {
+      "region_code": "11-000",
+      "office_type": "재보궐",
+      "slot_matchup_id": "master|재보궐|11-000",
+      "title": "서울특별시 재보궐",
+      "source": "code_master",
+      "has_poll_data": false,
+      "latest_matchup_id": null,
+      "is_active": true
+    },
+    {
+      "region_code": "11-110",
+      "office_type": "기초자치단체장",
+      "slot_matchup_id": "master|기초자치단체장|11-110",
+      "title": "서울특별시 종로구 기초자치단체장",
+      "source": "code_master",
+      "has_poll_data": true,
+      "latest_matchup_id": "2026_local|기초자치단체장|11-110",
+      "is_active": true
+    },
+    {
+      "region_code": "11-110",
+      "office_type": "기초의회",
+      "slot_matchup_id": "master|기초의회|11-110",
+      "title": "서울특별시 종로구 기초의회",
+      "source": "code_master",
+      "has_poll_data": false,
+      "latest_matchup_id": null,
+      "is_active": true
+    },
+    {
+      "region_code": "11-140",
+      "office_type": "기초자치단체장",
+      "slot_matchup_id": "master|기초자치단체장|11-140",
+      "title": "서울특별시 중구 기초자치단체장",
+      "source": "code_master",
+      "has_poll_data": false,
+      "latest_matchup_id": null,
+      "is_active": true
+    },
+    {
+      "region_code": "11-140",
+      "office_type": "기초의회",
+      "slot_matchup_id": "master|기초의회|11-140",
+      "title": "서울특별시 중구 기초의회",
+      "source": "code_master",
+      "has_poll_data": false,
+      "latest_matchup_id": null,
+      "is_active": true
+    },
+    {
+      "region_code": "11-620",
+      "office_type": "기초자치단체장",
+      "slot_matchup_id": "master|기초자치단체장|11-620",
+      "title": "서울특별시 관악구 기초자치단체장",
+      "source": "code_master",
+      "has_poll_data": true,
+      "latest_matchup_id": "2026_local|기초자치단체장|11-620",
+      "is_active": true
+    },
+    {
+      "region_code": "11-620",
+      "office_type": "기초의회",
+      "slot_matchup_id": "master|기초의회|11-620",
+      "title": "서울특별시 관악구 기초의회",
+      "source": "code_master",
+      "has_poll_data": false,
+      "latest_matchup_id": null,
+      "is_active": true
+    }
+  ]
+}

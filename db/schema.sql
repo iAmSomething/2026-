@@ -240,6 +240,48 @@ CREATE TABLE IF NOT EXISTS matchups (
     updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 
+CREATE TABLE IF NOT EXISTS elections (
+    region_code TEXT NOT NULL REFERENCES regions(region_code) ON DELETE CASCADE,
+    office_type TEXT NOT NULL,
+    slot_matchup_id TEXT NOT NULL,
+    title TEXT NOT NULL,
+    source TEXT NOT NULL DEFAULT 'code_master',
+    has_poll_data BOOLEAN NOT NULL DEFAULT FALSE,
+    latest_matchup_id TEXT NULL,
+    is_active BOOLEAN NOT NULL DEFAULT TRUE,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    PRIMARY KEY (region_code, office_type)
+);
+
+ALTER TABLE elections
+    ADD COLUMN IF NOT EXISTS slot_matchup_id TEXT,
+    ADD COLUMN IF NOT EXISTS title TEXT,
+    ADD COLUMN IF NOT EXISTS source TEXT NOT NULL DEFAULT 'code_master',
+    ADD COLUMN IF NOT EXISTS has_poll_data BOOLEAN NOT NULL DEFAULT FALSE,
+    ADD COLUMN IF NOT EXISTS latest_matchup_id TEXT NULL,
+    ADD COLUMN IF NOT EXISTS is_active BOOLEAN NOT NULL DEFAULT TRUE;
+
+UPDATE elections
+SET slot_matchup_id = COALESCE(slot_matchup_id, 'master|' || office_type || '|' || region_code),
+    title = COALESCE(title, office_type)
+WHERE slot_matchup_id IS NULL
+   OR title IS NULL;
+
+DO $$
+BEGIN
+    IF NOT EXISTS (
+        SELECT 1
+        FROM pg_constraint
+        WHERE conname = 'elections_source_check'
+    ) THEN
+        ALTER TABLE elections
+            ADD CONSTRAINT elections_source_check
+            CHECK (source IN ('code_master', 'observed'));
+    END IF;
+END;
+$$;
+
 CREATE TABLE IF NOT EXISTS poll_options (
     id BIGSERIAL PRIMARY KEY,
     observation_id BIGINT NOT NULL REFERENCES poll_observations(id) ON DELETE CASCADE,
@@ -381,6 +423,8 @@ CREATE INDEX IF NOT EXISTS idx_poll_observations_scope_date ON poll_observations
 CREATE INDEX IF NOT EXISTS idx_poll_observations_fingerprint ON poll_observations (poll_fingerprint);
 CREATE INDEX IF NOT EXISTS idx_poll_observations_source_channels ON poll_observations USING GIN (source_channels);
 CREATE INDEX IF NOT EXISTS idx_candidates_source_channels ON candidates USING GIN (source_channels);
+CREATE INDEX IF NOT EXISTS idx_elections_region_active ON elections (region_code, is_active, office_type);
+CREATE INDEX IF NOT EXISTS idx_elections_latest_matchup ON elections (latest_matchup_id);
 CREATE INDEX IF NOT EXISTS idx_poll_options_type ON poll_options (option_type);
 CREATE INDEX IF NOT EXISTS idx_poll_options_observation_value
     ON poll_options (observation_id, value_mid DESC, option_name);
