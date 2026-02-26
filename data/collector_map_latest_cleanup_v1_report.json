@@ -1,0 +1,23 @@
+{
+  "run_type": "collector_map_latest_cleanup_v1",
+  "executed_at": "2026-02-26T09:45:59.578366+00:00",
+  "api_base": "https://2026-api-production.up.railway.app",
+  "sample_limit": 30,
+  "stats": {
+    "before_count": 28,
+    "after_count": 19,
+    "excluded_count": 9,
+    "non_human_option_count_before": 6,
+    "non_human_option_count_after": 0,
+    "legacy_title_count_before": 3,
+    "legacy_title_count_after": 0
+  },
+  "excluded_reason_counts": {
+    "invalid_candidate_option_name": 6,
+    "legacy_matchup_title": 3
+  },
+  "acceptance_checks": {
+    "top30_non_human_option_zero_after": true,
+    "top30_legacy_title_zero_after": true
+  }
+}

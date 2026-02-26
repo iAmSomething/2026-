@@ -76,6 +76,20 @@ ELECTION_FRAME_KEYWORDS = (
     "선거성격",
     "프레임",
 )
+MAP_LATEST_NOISE_TOKENS = {
+    "양자대결",
+    "오차는",
+    "오차범위",
+    "표본오차",
+    "응답률",
+    "조사기관",
+    "여론조사",
+    "지지율",
+    "가상대결",
+}
+MAP_LATEST_CANDIDATE_RE = re.compile(r"^[가-힣]{2,4}$")
+MAP_LATEST_LEGACY_TITLE_RE = re.compile(r"\[(?:19|20)\d{2}[^]]*선거[^]]*\]")
+MAP_LATEST_SURVEY_CUTOFF = date(2025, 12, 1)
 ARTICLE_AGGREGATE_HINTS = ("집계", "aggregate", "평균", "메타", "종합")
 SOURCE_GRADE_SCORE = {
     "S": 5,
@@ -251,6 +265,73 @@ def _is_cutoff_eligible_row(row: dict) -> bool:
     ):
         return True
     return is_article_published_at_allowed(row.get("article_published_at"))
+
+
+def _normalize_candidate_token(value: str | None) -> str:
+    return re.sub(r"\s+", "", str(value or "").strip())
+
+
+def _is_map_latest_noise_option_name(option_name: str | None) -> bool:
+    token = _normalize_candidate_token(option_name)
+    if not token:
+        return True
+    if token in MAP_LATEST_NOISE_TOKENS:
+        return True
+    if any(noise in token for noise in MAP_LATEST_NOISE_TOKENS):
+        return True
+    if any(ch.isdigit() for ch in token):
+        return True
+    if "%" in token:
+        return True
+    if not MAP_LATEST_CANDIDATE_RE.fullmatch(token):
+        return True
+    return False
+
+
+def _is_legacy_matchup_title(title: str | None) -> bool:
+    text = str(title or "").strip()
+    if not text:
+        return False
+    if MAP_LATEST_LEGACY_TITLE_RE.search(text):
+        return True
+    if "[2022" in text:
+        return True
+    return False
+
+
+def _survey_end_before_cutoff(survey_end_date: date | str | None) -> bool:
+    if survey_end_date is None:
+        return False
+    if isinstance(survey_end_date, date):
+        survey_end = survey_end_date
+    else:
+        text = str(survey_end_date).strip()
+        if not text:
+            return False
+        if "T" in text:
+            text = text.split("T", 1)[0]
+        try:
+            survey_end = date.fromisoformat(text)
+        except ValueError:
+            return False
+    return survey_end < MAP_LATEST_SURVEY_CUTOFF
+
+
+def _map_latest_exclusion_reason(row: dict) -> str | None:
+    if _survey_end_before_cutoff(row.get("survey_end_date")):
+        return "survey_end_date_before_cutoff"
+    drop_reason = _map_latest_drop_reason(row)
+    if drop_reason == "cutoff_blocked":
+        return "article_published_at_before_cutoff"
+    if drop_reason in {"generic_option_token", "invalid_candidate_name"}:
+        return "invalid_candidate_option_name"
+    if drop_reason == "legacy_title":
+        return "legacy_matchup_title"
+    if _is_legacy_matchup_title(row.get("title")):
+        return "legacy_matchup_title"
+    if _is_map_latest_noise_option_name(row.get("option_name")):
+        return "invalid_candidate_option_name"
+    return None
 
 
 def _derive_dashboard_data_source(rows: list[dict]) -> str:
@@ -481,9 +562,11 @@ def get_dashboard_map_latest(
     kept_rows = []
     reason_counts: dict[str, int] = {}
     for row in rows:
-        drop_reason = _map_latest_drop_reason(row)
-        if drop_reason is not None:
-            reason_counts[drop_reason] = reason_counts.get(drop_reason, 0) + 1
+        exclusion_reason = _map_latest_exclusion_reason(row)
+        if exclusion_reason is not None:
+            drop_reason = _map_latest_drop_reason(row)
+            reason_key = drop_reason or exclusion_reason
+            reason_counts[reason_key] = reason_counts.get(reason_key, 0) + 1
             continue
         kept_rows.append(row)
 
