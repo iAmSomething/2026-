@@ -1,0 +1,115 @@
+{
+  "regions_by_level": {
+    "sido": 17,
+    "sigungu": 240
+  },
+  "regions_total": 257,
+  "elections_master_columns_ready": true,
+  "region_samples": {
+    "42-000": {
+      "region_code": "42-000",
+      "sido_name": "강원특별자치도",
+      "sigungu_name": "전체",
+      "admin_level": "sido",
+      "parent_region_code": null
+    },
+    "11-000": {
+      "region_code": "11-000",
+      "sido_name": "서울특별시",
+      "sigungu_name": "전체",
+      "admin_level": "sido",
+      "parent_region_code": null
+    },
+    "26-710": {
+      "region_code": "26-710",
+      "sido_name": "부산광역시",
+      "sigungu_name": "기장군",
+      "admin_level": "sigungu",
+      "parent_region_code": "26-000"
+    }
+  },
+  "elections_total": 533,
+  "election_samples": [
+    {
+      "region_code": "11-000",
+      "office_type": "광역의회",
+      "slot_matchup_id": "master|광역의회|11-000",
+      "latest_matchup_id": null,
+      "has_poll_data": false,
+      "source": "code_master",
+      "is_active": true
+    },
+    {
+      "region_code": "11-000",
+      "office_type": "광역자치단체장",
+      "slot_matchup_id": "master|광역자치단체장|11-000",
+      "latest_matchup_id": "20260603|광역자치단체장|11-000",
+      "has_poll_data": true,
+      "source": "code_master",
+      "is_active": true
+    },
+    {
+      "region_code": "11-000",
+      "office_type": "교육감",
+      "slot_matchup_id": "master|교육감|11-000",
+      "latest_matchup_id": null,
+      "has_poll_data": false,
+      "source": "code_master",
+      "is_active": true
+    },
+    {
+      "region_code": "11-000",
+      "office_type": "재보궐",
+      "slot_matchup_id": "master|재보궐|11-000",
+      "latest_matchup_id": null,
+      "has_poll_data": false,
+      "source": "code_master",
+      "is_active": true
+    },
+    {
+      "region_code": "26-710",
+      "office_type": "기초의회",
+      "slot_matchup_id": "master|기초의회|26-710",
+      "latest_matchup_id": null,
+      "has_poll_data": false,
+      "source": "code_master",
+      "is_active": true
+    },
+    {
+      "region_code": "26-710",
+      "office_type": "기초자치단체장",
+      "slot_matchup_id": "master|기초자치단체장|26-710",
+      "latest_matchup_id": "2026_local|기초자치단체장|26-710",
+      "has_poll_data": true,
+      "source": "code_master",
+      "is_active": true
+    },
+    {
+      "region_code": "42-000",
+      "office_type": "광역의회",
+      "slot_matchup_id": "master|광역의회|42-000",
+      "latest_matchup_id": null,
+      "has_poll_data": false,
+      "source": "code_master",
+      "is_active": true
+    },
+    {
+      "region_code": "42-000",
+      "office_type": "광역자치단체장",
+      "slot_matchup_id": "master|광역자치단체장|42-000",
+      "latest_matchup_id": null,
+      "has_poll_data": false,
+      "source": "code_master",
+      "is_active": true
+    },
+    {
+      "region_code": "42-000",
+      "office_type": "교육감",
+      "slot_matchup_id": "master|교육감|42-000",
+      "latest_matchup_id": null,
+      "has_poll_data": false,
+      "source": "code_master",
+      "is_active": true
+    }
+  ]
+}
