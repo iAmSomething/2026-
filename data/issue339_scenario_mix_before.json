@@ -1,0 +1,47 @@
+{
+  "records": [
+    {
+      "observation_key": "live30d-v2-12-obs_b61d10f49a5d5fdd",
+      "region_code": "26-710",
+      "survey_name": "[2026지방선거] 부산시장, 전재수 43.4-박형준 32.3%, 전재수 43.8%-김도읍33.2%...다자대결 전재수26.8% 선두",
+      "options": [
+        {
+          "option_type": "candidate_matchup",
+          "option_name": "박형준",
+          "value_raw": "32.3%",
+          "value_min": 32.3,
+          "value_max": 32.3,
+          "value_mid": 32.3,
+          "is_missing": false
+        },
+        {
+          "option_type": "candidate_matchup",
+          "option_name": "전재수",
+          "value_raw": "43.8%",
+          "value_min": 43.8,
+          "value_max": 43.8,
+          "value_mid": 43.8,
+          "is_missing": false
+        },
+        {
+          "option_type": "candidate_matchup",
+          "option_name": "김도읍",
+          "value_raw": "33.2%",
+          "value_min": 33.2,
+          "value_max": 33.2,
+          "value_mid": 33.2,
+          "is_missing": false
+        },
+        {
+          "option_type": "candidate_matchup",
+          "option_name": "전재수",
+          "value_raw": "26.8%",
+          "value_min": 26.8,
+          "value_max": 26.8,
+          "value_mid": 26.8,
+          "is_missing": false
+        }
+      ]
+    }
+  ]
+}

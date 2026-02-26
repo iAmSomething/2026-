@@ -44,6 +44,7 @@ CANDIDATE_NOISE_CONTAINS_TOKENS = {
     "여론조사",
     "지지율",
 }
+SCENARIO_NAME_RE = re.compile(r"[가-힣]{2,6}")
 DEFAULT_SG_TYPECODES = ("3", "4", "5")
 OFFICE_TYPE_TO_SG_TYPECODES = {
     "광역자치단체장": ("3", "4"),
@@ -330,6 +331,98 @@ def _normalize_option(option: PollOptionInput) -> tuple[dict, str | None]:
     return payload, classification_reason
 
 
+def _scenario_name_token(value: Any) -> str:
+    text = str(value or "").strip()
+    if not text:
+        return ""
+    match = SCENARIO_NAME_RE.search(text)
+    return match.group(0) if match else text
+
+
+def _scenario_value(option: dict[str, Any]) -> float:
+    value_mid = option.get("value_mid")
+    if value_mid is None:
+        return float("-inf")
+    try:
+        return float(value_mid)
+    except (TypeError, ValueError):
+        return float("-inf")
+
+
+def _repair_candidate_matchup_scenarios(
+    *,
+    survey_name: str | None,
+    options: list[dict[str, Any]],
+) -> bool:
+    text = str(survey_name or "")
+    if "다자대결" not in text and "양자대결" not in text:
+        return False
+
+    candidate_indexes = [i for i, row in enumerate(options) if row.get("option_type") == "candidate_matchup"]
+    if len(candidate_indexes) < 3:
+        return False
+
+    # Respect explicit scenario annotations from extractor.
+    if any(str(options[i].get("scenario_key") or "").strip() not in {"", "default"} for i in candidate_indexes):
+        return False
+
+    names_by_index = {i: _scenario_name_token(options[i].get("option_name")) for i in candidate_indexes}
+    counts: dict[str, int] = {}
+    for idx in candidate_indexes:
+        name = names_by_index[idx]
+        if not name:
+            continue
+        counts[name] = counts.get(name, 0) + 1
+
+    duplicate_names = [name for name, cnt in counts.items() if cnt >= 2]
+    if not duplicate_names:
+        return False
+
+    duplicate_names.sort(
+        key=lambda name: max(_scenario_value(options[i]) for i in candidate_indexes if names_by_index[i] == name),
+        reverse=True,
+    )
+    anchor_name = duplicate_names[0]
+    anchor_indexes = [i for i in candidate_indexes if names_by_index[i] == anchor_name]
+    anchor_indexes.sort(key=lambda i: _scenario_value(options[i]), reverse=True)
+    anchor_h2h_idx = anchor_indexes[0]
+    anchor_multi_idx = anchor_indexes[-1]
+
+    partner_candidates = [i for i in candidate_indexes if names_by_index[i] != anchor_name]
+    if not partner_candidates:
+        return False
+    partner_candidates.sort(key=lambda i: _scenario_value(options[i]), reverse=True)
+    partner_h2h_idx = partner_candidates[0]
+    partner_name = names_by_index[partner_h2h_idx] or "후보"
+
+    h2h_key = f"h2h-{anchor_name}-{partner_name}"
+    h2h_title = f"{anchor_name} vs {partner_name}"
+    multi_key = f"multi-{anchor_name}"
+    multi_title = "다자대결"
+
+    for idx in (anchor_h2h_idx, partner_h2h_idx):
+        row = options[idx]
+        row["scenario_key"] = h2h_key
+        row["scenario_type"] = "head_to_head"
+        row["scenario_title"] = h2h_title
+
+    for idx in candidate_indexes:
+        if idx in {anchor_h2h_idx, partner_h2h_idx}:
+            continue
+        row = options[idx]
+        row["scenario_key"] = multi_key
+        row["scenario_type"] = "multi_candidate"
+        row["scenario_title"] = multi_title
+
+    if anchor_multi_idx not in {anchor_h2h_idx, partner_h2h_idx}:
+        row = options[anchor_multi_idx]
+        row["scenario_key"] = multi_key
+        row["scenario_type"] = "multi_candidate"
+        row["scenario_title"] = multi_title
+
+    return True
+
+
 def ingest_payload(payload: IngestPayload, repo) -> IngestResult:
     run_id = repo.create_ingestion_run(payload.run_type, payload.extractor_version, payload.llm_model)
     processed_count = 0
@@ -440,8 +533,18 @@ def ingest_payload(payload: IngestPayload, repo) -> IngestResult:
             party_inference_low_confidence: list[tuple[str, float]] = []
             option_type_manual_review: list[tuple[str, str]] = []
             candidate_verify_manual_review: list[tuple[str, str]] = []
+            normalized_rows: list[tuple[dict[str, Any], str | None]] = []
             for option in record.options:
                 normalized_option, classification_reason = _normalize_option(option)
+                normalized_rows.append((normalized_option, classification_reason))
+
+            normalized_options = [row for row, _ in normalized_rows]
+            _repair_candidate_matchup_scenarios(
+                survey_name=record.observation.survey_name,
+                options=normalized_options,
+            )
+
+            for normalized_option, classification_reason in normalized_rows:
                 candidate_verify_reason = _apply_candidate_verification(
                     option_payload=normalized_option,
                     record=record,

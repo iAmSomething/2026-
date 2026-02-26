@@ -1,0 +1,36 @@
+{
+  "issue": 339,
+  "executed_at": "2026-02-26T10:19:21.827136+00:00",
+  "source_payload": "data/collector_live_coverage_v2_payload.json",
+  "target_record_count": 1,
+  "changed_record_count": 1,
+  "scenario_option_counts_after": {
+    "multi-전재수": 2,
+    "h2h-전재수-김도읍": 2
+  },
+  "candidate_mapping_loss": {
+    "before_candidate_names": [
+      "김도읍",
+      "박형준",
+      "전재수"
+    ],
+    "after_candidate_names": [
+      "김도읍",
+      "박형준",
+      "전재수"
+    ],
+    "lost_names": [],
+    "added_names": [],
+    "loss_detected": false
+  },
+  "acceptance_checks": {
+    "target_records_changed": true,
+    "has_head_to_head_and_multi": true,
+    "candidate_mapping_not_lost": true
+  },
+  "artifacts": {
+    "before_path": "data/issue339_scenario_mix_before.json",
+    "after_path": "data/issue339_scenario_mix_after.json",
+    "reingest_payload_path": "data/issue339_scenario_mix_reingest_payload.json"
+  }
+}

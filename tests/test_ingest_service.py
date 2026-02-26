@@ -393,3 +393,36 @@ def test_candidate_profile_incomplete_routes_mapping_error(monkeypatch):
         row[0] == "candidate" and row[1] == "cand-jwo" and row[2] == "mapping_error" and "CANDIDATE_PROFILE_INCOMPLETE" in row[3]
         for row in repo.review
     )
+
+
+def test_candidate_matchup_scenarios_are_split_when_default_would_mix_groups() -> None:
+    repo = FakeRepo()
+    payload_data = deepcopy(PAYLOAD)
+    payload_data["records"][0]["observation"]["survey_name"] = (
+        "[2026지방선거] 부산시장, 전재수 43.4-박형준 32.3%, "
+        "전재수 43.8%-김도읍33.2%...다자대결 전재수26.8% 선두"
+    )
+    payload_data["records"][0]["candidates"] = [
+        {"candidate_id": "cand-js", "name_ko": "전재수", "party_name": "더불어민주당"},
+        {"candidate_id": "cand-phj", "name_ko": "박형준", "party_name": "국민의힘"},
+        {"candidate_id": "cand-kdy", "name_ko": "김도읍", "party_name": "국민의힘"},
+    ]
+    payload_data["records"][0]["options"] = [
+        {"option_type": "candidate_matchup", "option_name": "박형준", "value_raw": "32.3%"},
+        {"option_type": "candidate_matchup", "option_name": "전재수", "value_raw": "43.8%"},
+        {"option_type": "candidate_matchup", "option_name": "김도읍", "value_raw": "33.2%"},
+        {"option_type": "candidate_matchup", "option_name": "전재수", "value_raw": "26.8%"},
+    ]
+    payload = IngestPayload.model_validate(payload_data)
+
+    result = ingest_payload(payload, repo)
+
+    assert result.status == "success"
+    option_rows = [row for row in repo.option_rows if row["option_type"] == "candidate_matchup"]
+    scenario_keys = {row.get("scenario_key") for row in option_rows}
+    scenario_types = {row.get("scenario_type") for row in option_rows}
+    assert "default" not in scenario_keys
+    assert len(scenario_keys) >= 2
+    assert "head_to_head" in scenario_types
+    assert "multi_candidate" in scenario_types
+    assert {row["option_name"] for row in option_rows} == {"전재수", "박형준", "김도읍"}
