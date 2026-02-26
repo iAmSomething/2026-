@@ -2,17 +2,25 @@ from functools import lru_cache
 from secrets import compare_digest
 
 from fastapi import Depends, Header, HTTPException
+import psycopg
 
 from app.config import get_settings
 
-from app.db import get_connection
+from app.db import DatabaseConfigurationError, DatabaseConnectionError, get_connection
 from app.services.data_go_candidate import DataGoCandidateConfig, DataGoCandidateService
 from app.services.repository import PostgresRepository
 
 
 def get_repository():
-    with get_connection() as conn:
-        yield PostgresRepository(conn)
+    try:
+        with get_connection() as conn:
+            yield PostgresRepository(conn)
+    except DatabaseConfigurationError as exc:
+        raise HTTPException(status_code=503, detail="database is not configured") from exc
+    except DatabaseConnectionError as exc:
+        raise HTTPException(status_code=503, detail="database connection failed") from exc
+    except psycopg.Error as exc:
+        raise HTTPException(status_code=503, detail=f"database query failed ({exc.sqlstate or 'unknown'})") from exc
 
 
 @lru_cache(maxsize=1)
