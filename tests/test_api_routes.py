@@ -599,6 +599,10 @@ def test_api_contract_fields():
     assert map_latest.json()["items"][0]["source_priority"] == "mixed"
     assert map_latest.json()["items"][0]["is_official_confirmed"] is True
     assert isinstance(map_latest.json()["items"][0]["freshness_hours"], float)
+    assert map_latest.json()["filter_stats"]["total_count"] == 1
+    assert map_latest.json()["filter_stats"]["kept_count"] == 1
+    assert map_latest.json()["filter_stats"]["excluded_count"] == 0
+    assert map_latest.json()["filter_stats"]["reason_counts"] == {}
 
     big_matches = client.get("/api/v1/dashboard/big-matches")
     assert big_matches.status_code == 200
@@ -748,6 +752,90 @@ def test_api_contract_fields():
     assert trends_body["bucket_hours"] == 6
     assert len(trends_body["points"]) == 1
     assert trends_body["points"][0]["error_code"] == "region_not_found"
+
+    app.dependency_overrides.clear()
+
+
+def test_map_latest_sanity_filter_drops_invalid_candidate_and_legacy_title_rows():
+    class MapSanityRepo(FakeApiRepo):
+        def fetch_dashboard_map_latest(self, as_of, limit=100):  # noqa: ARG002
+            return [
+                {
+                    "region_code": "11-000",
+                    "office_type": "광역자치단체장",
+                    "title": "서울시장 가상대결",
+                    "value_mid": 44.0,
+                    "survey_end_date": date(2026, 2, 18),
+                    "option_name": "오세훈",
+                    "audience_scope": "regional",
+                    "audience_region_code": "11-000",
+                    "observation_updated_at": "2026-02-18T03:00:00+00:00",
+                    "article_published_at": "2026-02-18T01:00:00+00:00",
+                    "source_channel": "nesdc",
+                    "source_channels": ["article", "nesdc"],
+                },
+                {
+                    "region_code": "11-010",
+                    "office_type": "기초자치단체장",
+                    "title": "종로구청장 가상대결",
+                    "value_mid": 40.0,
+                    "survey_end_date": date(2026, 2, 18),
+                    "option_name": "김A",
+                    "audience_scope": "local",
+                    "audience_region_code": "11-010",
+                    "observation_updated_at": "2026-02-18T03:00:00+00:00",
+                    "article_published_at": "2026-02-18T01:00:00+00:00",
+                    "source_channel": "article",
+                    "source_channels": ["article"],
+                },
+                {
+                    "region_code": "11-020",
+                    "office_type": "기초자치단체장",
+                    "title": "중구청장 가상대결",
+                    "value_mid": 39.0,
+                    "survey_end_date": date(2026, 2, 18),
+                    "option_name": "양자대결",
+                    "audience_scope": "local",
+                    "audience_region_code": "11-020",
+                    "observation_updated_at": "2026-02-18T03:00:00+00:00",
+                    "article_published_at": "2026-02-18T01:00:00+00:00",
+                    "source_channel": "article",
+                    "source_channels": ["article"],
+                },
+                {
+                    "region_code": "11-030",
+                    "office_type": "기초자치단체장",
+                    "title": "2022 서울시장 선거 가상대결",
+                    "value_mid": 38.0,
+                    "survey_end_date": date(2026, 2, 18),
+                    "option_name": "박형준",
+                    "audience_scope": "local",
+                    "audience_region_code": "11-030",
+                    "observation_updated_at": "2026-02-18T03:00:00+00:00",
+                    "article_published_at": "2026-02-18T01:00:00+00:00",
+                    "source_channel": "article",
+                    "source_channels": ["article"],
+                },
+            ][:limit]
+
+    def override_sanity_repo():
+        yield MapSanityRepo()
+
+    app.dependency_overrides[get_repository] = override_sanity_repo
+    client = TestClient(app)
+
+    res = client.get("/api/v1/dashboard/map-latest")
+    assert res.status_code == 200
+    body = res.json()
+    assert len(body["items"]) == 1
+    assert body["items"][0]["option_name"] == "오세훈"
+    assert body["filter_stats"]["total_count"] == 4
+    assert body["filter_stats"]["kept_count"] == 1
+    assert body["filter_stats"]["excluded_count"] == 3
+    assert body["filter_stats"]["reason_counts"]["invalid_candidate_name"] == 1
+    assert body["filter_stats"]["reason_counts"]["generic_option_token"] == 1
+    assert body["filter_stats"]["reason_counts"]["legacy_title"] == 1
+    assert body["scope_breakdown"] == {"national": 0, "regional": 1, "local": 0, "unknown": 0}
 
     app.dependency_overrides.clear()
 

@@ -13,6 +13,7 @@ from app.models.schemas import (
     BigMatchPoint,
     CandidateOut,
     DashboardBigMatchesOut,
+    DashboardFilterStatsOut,
     DashboardQualityFreshnessOut,
     DashboardQualityOfficialOut,
     DashboardQualityOut,
@@ -75,6 +76,42 @@ ELECTION_FRAME_KEYWORDS = (
     "선거성격",
     "프레임",
 )
+MAP_LATEST_CANDIDATE_NAME_RE = re.compile(r"^[가-힣]{2,8}$")
+MAP_LATEST_GENERIC_OPTION_EXACT_TOKENS = {
+    "양자대결",
+    "다자대결",
+    "가상대결",
+    "오차",
+    "오차는",
+    "응답률",
+    "응답률은",
+    "지지율",
+    "지지율은",
+    "표본오차",
+    "오차범위",
+    "여론조사",
+    "민주",
+    "국힘",
+    "같은",
+    "차이",
+    "외",
+}
+MAP_LATEST_GENERIC_OPTION_SUBSTRINGS = {
+    "오차",
+    "응답률",
+    "지지율",
+    "표본오차",
+    "오차범위",
+    "여론조사",
+}
+MAP_LATEST_LEGACY_TITLE_KEYWORDS = {
+    "대통령선거",
+    "대통령 선거",
+    "총선",
+    "국회의원",
+    "국회의원선거",
+}
+MAP_LATEST_TARGET_YEAR = "2026"
 
 
 def _build_scope_breakdown(rows: list[dict]) -> dict[str, int]:
@@ -234,6 +271,50 @@ def _classify_presidential_option(option_name: str) -> str:
     return "election_frame"
 
 
+def _normalize_map_candidate_token(option_name: str | None) -> str:
+    token = re.sub(r"\s+", "", str(option_name or "").strip().lower())
+    return re.sub(r"[^0-9a-z가-힣]", "", token)
+
+
+def _is_generic_map_option_name(option_name: str | None) -> bool:
+    token = _normalize_map_candidate_token(option_name)
+    if not token:
+        return True
+    if token in MAP_LATEST_GENERIC_OPTION_EXACT_TOKENS:
+        return True
+    return any(part in token for part in MAP_LATEST_GENERIC_OPTION_SUBSTRINGS)
+
+
+def _is_legacy_map_title(title: str | None) -> bool:
+    text = str(title or "").strip()
+    if not text:
+        return True
+
+    for year in re.findall(r"(?:19|20)\d{2}", text):
+        if year != MAP_LATEST_TARGET_YEAR:
+            return True
+
+    return any(keyword in text for keyword in MAP_LATEST_LEGACY_TITLE_KEYWORDS)
+
+
+def _map_latest_drop_reason(row: dict) -> str | None:
+    if not _is_cutoff_eligible_row(row):
+        return "cutoff_blocked"
+
+    option_name = str(row.get("option_name") or "").strip()
+    if _is_generic_map_option_name(option_name):
+        return "generic_option_token"
+
+    normalized_name = re.sub(r"\s+", "", option_name)
+    if MAP_LATEST_CANDIDATE_NAME_RE.fullmatch(normalized_name) is None:
+        return "invalid_candidate_name"
+
+    if _is_legacy_map_title(row.get("title")):
+        return "legacy_title"
+
+    return None
+
+
 @router.get("/dashboard/summary", response_model=DashboardSummaryOut)
 def get_dashboard_summary(
     as_of: date | None = Query(default=None),
@@ -300,8 +381,24 @@ def get_dashboard_map_latest(
 ):
     rows = repo.fetch_dashboard_map_latest(as_of=as_of, limit=limit)
     items = []
-    eligible_rows = [row for row in rows if _is_cutoff_eligible_row(row)]
-    for row in eligible_rows:
+    kept_rows = []
+    reason_counts: dict[str, int] = {}
+    for row in rows:
+        drop_reason = _map_latest_drop_reason(row)
+        if drop_reason is not None:
+            reason_counts[drop_reason] = reason_counts.get(drop_reason, 0) + 1
+            continue
+        kept_rows.append(row)
+
+    logger.info(
+        "dashboard_map_latest_sanity total=%d kept=%d excluded=%d reason_counts=%s",
+        len(rows),
+        len(kept_rows),
+        len(rows) - len(kept_rows),
+        reason_counts,
+    )
+
+    for row in kept_rows:
         source_meta = _derive_source_meta(row)
         items.append(
             MapLatestPoint(
@@ -325,7 +422,13 @@ def get_dashboard_map_latest(
     return DashboardMapLatestOut(
         as_of=as_of,
         items=items,
-        scope_breakdown=ScopeBreakdownOut(**_build_scope_breakdown(eligible_rows)),
+        scope_breakdown=ScopeBreakdownOut(**_build_scope_breakdown(kept_rows)),
+        filter_stats=DashboardFilterStatsOut(
+            total_count=len(rows),
+            kept_count=len(kept_rows),
+            excluded_count=len(rows) - len(kept_rows),
+            reason_counts=reason_counts,
+        ),
     )
 
 
