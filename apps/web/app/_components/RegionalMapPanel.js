@@ -5,7 +5,33 @@ import { useEffect, useMemo, useState } from "react";
 
 import { formatDate, formatPercent, joinChannels } from "./format";
 
-const OFFICIAL_SIDO_OFFICES = ["광역자치단체장", "광역의회", "교육감"];
+const REGION_PREFIX_LABELS = {
+  "11": "서울특별시",
+  "21": "부산광역시",
+  "22": "대구광역시",
+  "23": "인천광역시",
+  "24": "광주광역시",
+  "25": "대전광역시",
+  "26": "울산광역시",
+  "29": "세종특별자치시",
+  "31": "경기도",
+  "32": "강원특별자치도",
+  "33": "충청북도",
+  "34": "충청남도",
+  "35": "전북특별자치도",
+  "36": "전라남도",
+  "37": "경상북도",
+  "38": "경상남도",
+  "39": "제주특별자치도"
+};
+
+const SLOT_ORDER = ["metro_mayor", "metro_council", "superintendent"];
+
+const SLOT_LABELS = {
+  metro_mayor: "광역자치단체장",
+  metro_council: "광역의회",
+  superintendent: "교육감"
+};
 
 function getLonLatPoints(feature) {
   if (feature.geometry.type === "Polygon") {
@@ -71,61 +97,65 @@ function pickLatestByRegion(items) {
   return map;
 }
 
+function regionPrefix(value) {
+  if (!value) return null;
+  const match = String(value).trim().match(/(?:KR-)?(\d{2})/i);
+  return match ? match[1] : null;
+}
+
+function toMapRegionCode(value) {
+  const prefix = regionPrefix(value);
+  return prefix ? `KR-${prefix}` : null;
+}
+
+function toApiRegionCode(value) {
+  const prefix = regionPrefix(value);
+  return prefix ? `${prefix}-000` : null;
+}
+
 function normalizeOfficeType(value) {
-  return typeof value === "string" ? value.trim() : "";
+  const normalized = String(value || "").trim().toLowerCase();
+  if (["metro_mayor", "광역자치단체장", "시도지사", "도지사"].includes(normalized)) return "metro_mayor";
+  if (["metro_council", "광역의회", "시도의회"].includes(normalized)) return "metro_council";
+  if (["superintendent", "교육감"].includes(normalized)) return "superintendent";
+  return null;
 }
 
-function toSortableDate(value) {
-  if (typeof value !== "string" || !value.trim()) return "";
-  return value.trim();
+function toDateValue(value) {
+  if (!value) return 0;
+  const timestamp = Date.parse(value);
+  return Number.isFinite(timestamp) ? timestamp : 0;
 }
 
-function electionPriority(row) {
-  const source = typeof row?.source === "string" ? row.source.trim().toLowerCase() : "";
-  let score = 0;
-  if ((row?.topology || "official") === "official") score += 100;
-  if (source === "master" || source === "code_master") score += 50;
-  if (!row?.is_fallback) score += 20;
-  if (!row?.is_placeholder) score += 12;
-  if (row?.has_poll_data) score += 8;
-  if (row?.has_candidate_data) score += 4;
-  if (row?.is_active) score += 2;
-  return score;
+function chooseRepresentative(elections) {
+  const sorted = [...elections].sort((a, b) => {
+    const aHasData = a.has_poll_data ? 1 : 0;
+    const bHasData = b.has_poll_data ? 1 : 0;
+    if (aHasData !== bHasData) return bHasData - aHasData;
+    return toDateValue(b.latest_survey_end_date) - toDateValue(a.latest_survey_end_date);
+  });
+  return sorted[0] || null;
 }
 
-function pickRepresentativeElection(prev, next) {
-  if (!prev) return next;
-  const prevPriority = electionPriority(prev);
-  const nextPriority = electionPriority(next);
-  if (nextPriority !== prevPriority) return nextPriority > prevPriority ? next : prev;
-
-  const prevDate = toSortableDate(prev.latest_survey_end_date);
-  const nextDate = toSortableDate(next.latest_survey_end_date);
-  if (nextDate !== prevDate) return nextDate > prevDate ? next : prev;
-
-  const prevMatchup = typeof prev.matchup_id === "string" ? prev.matchup_id : "";
-  const nextMatchup = typeof next.matchup_id === "string" ? next.matchup_id : "";
-  return nextMatchup > prevMatchup ? next : prev;
-}
-
-function normalizeElectionStatus(row) {
-  if (typeof row?.status === "string" && row.status.trim()) return row.status.trim();
-  return row?.has_poll_data ? "데이터 준비 완료" : "조사 데이터 없음";
-}
-
-function fallbackElectionTitle(regionName, officeType) {
-  const normalizedRegion = typeof regionName === "string" ? regionName.trim() : "";
-  if (normalizedRegion.includes("세종")) {
-    if (officeType === "광역자치단체장") return "세종시장";
-    if (officeType === "광역의회") return "세종시의회";
-    if (officeType === "교육감") return "세종교육감";
+function buildSlotTitle({ slotKey, regionName, regionCode, election }) {
+  if (election?.title) return election.title;
+  const prefix = regionPrefix(regionCode);
+  if (prefix === "29") {
+    if (slotKey === "metro_mayor") return "세종시장";
+    if (slotKey === "metro_council") return "세종시의회";
+    if (slotKey === "superintendent") return "세종교육감";
   }
-  if (!normalizedRegion) return officeType;
-  return `${normalizedRegion} ${officeType}`;
+  const base = regionName || (prefix ? REGION_PREFIX_LABELS[prefix] : null) || regionCode || "선택 지역";
+  if (slotKey === "metro_mayor") return `${base} 광역자치단체장`;
+  if (slotKey === "metro_council") return `${base} 광역의회`;
+  return `${base} 교육감`;
 }
 
-function formatSurveyMeta(value) {
-  return formatDate(value);
+function slotStatus({ electionsState, election }) {
+  if (electionsState === "loading") return { tone: "info", text: "불러오는 중" };
+  if (electionsState === "error") return { tone: "warn", text: "조회 실패" };
+  if (election?.has_poll_data) return { tone: "ok", text: "조사 데이터 있음" };
+  return { tone: "warn", text: "조사 데이터 없음" };
 }
 
 function formatSampleMeta(value) {
@@ -142,43 +172,6 @@ function formatMarginMeta(value) {
   return `오차 ${String(value)}`;
 }
 
-function buildOfficialSlots(elections, { regionCode, regionName }) {
-  const byOffice = new Map();
-  for (const raw of elections || []) {
-    const officeType = normalizeOfficeType(raw?.office_type);
-    if (!officeType || !OFFICIAL_SIDO_OFFICES.includes(officeType)) continue;
-
-    const normalized = {
-      ...raw,
-      office_type: officeType,
-      status: normalizeElectionStatus(raw)
-    };
-    byOffice.set(officeType, pickRepresentativeElection(byOffice.get(officeType), normalized));
-  }
-
-  return OFFICIAL_SIDO_OFFICES.map((officeType) => {
-    const picked = byOffice.get(officeType);
-    if (picked) return picked;
-    return {
-      matchup_id: `placeholder|${officeType}|${regionCode}`,
-      region_code: regionCode,
-      office_type: officeType,
-      title: fallbackElectionTitle(regionName, officeType),
-      is_active: true,
-      topology: "official",
-      topology_version_id: null,
-      is_placeholder: true,
-      is_fallback: true,
-      source: "generated",
-      has_poll_data: false,
-      has_candidate_data: false,
-      latest_survey_end_date: null,
-      latest_matchup_id: null,
-      status: "조사 데이터 없음"
-    };
-  });
-}
-
 export default function RegionalMapPanel({
   items,
   apiBase,
@@ -187,14 +180,14 @@ export default function RegionalMapPanel({
 }) {
   const [hoveredCode, setHoveredCode] = useState(null);
   const [focusedCode, setFocusedCode] = useState(null);
-  const [selectedCode, setSelectedCode] = useState(initialSelectedRegionCode);
+  const [selectedCode, setSelectedCode] = useState(toMapRegionCode(initialSelectedRegionCode));
   const [geoState, setGeoState] = useState("loading");
   const [geoJson, setGeoJson] = useState(null);
   const [electionsState, setElectionsState] = useState("idle");
   const [elections, setElections] = useState([]);
 
   useEffect(() => {
-    setSelectedCode(initialSelectedRegionCode || null);
+    setSelectedCode(toMapRegionCode(initialSelectedRegionCode));
   }, [initialSelectedRegionCode]);
 
   useEffect(() => {
@@ -254,12 +247,16 @@ export default function RegionalMapPanel({
   }, [features]);
 
   const activeCode = selectedCode || focusedCode || hoveredCode;
+  const activePrefix = regionPrefix(activeCode);
+  const activeApiCode = toApiRegionCode(activeCode);
+  const selectedApiCode = toApiRegionCode(selectedCode);
   const activeFeature = features.find((feature) => feature.properties.region_code === activeCode) || null;
   const activeLatest = activeCode ? latestByRegion.get(activeCode) || null : null;
+  const activeRegionName = activeFeature?.properties?.region_name || (activePrefix ? REGION_PREFIX_LABELS[activePrefix] : activeCode);
   const modeLabel = selectedCode ? "선택 고정" : focusedCode ? "키보드 포커스" : hoveredCode ? "hover 미리보기" : "대기";
 
   useEffect(() => {
-    if (!selectedCode) {
+    if (!selectedApiCode) {
       setElections([]);
       setElectionsState("idle");
       return;
@@ -268,10 +265,7 @@ export default function RegionalMapPanel({
     const loadElections = async () => {
       setElectionsState("loading");
       try {
-        const params = new URLSearchParams({ topology: "official" });
-        const res = await fetch(`${apiBase}/api/v1/regions/${encodeURIComponent(selectedCode)}/elections?${params.toString()}`, {
-          cache: "no-store"
-        });
+        const res = await fetch(`${apiBase}/api/v1/regions/${encodeURIComponent(selectedApiCode)}/elections`, { cache: "no-store" });
         if (!res.ok) throw new Error("elections fetch failed");
         const body = await res.json();
         if (cancelled) return;
@@ -287,15 +281,41 @@ export default function RegionalMapPanel({
     return () => {
       cancelled = true;
     };
-  }, [apiBase, selectedCode]);
+  }, [apiBase, selectedApiCode]);
 
-  const selectedFeature =
-    (selectedCode && features.find((feature) => feature.properties.region_code === selectedCode)) || null;
-  const visibleElections = useMemo(() => {
-    if (!selectedCode) return [];
-    const regionName = selectedFeature?.properties?.region_name || "";
-    return buildOfficialSlots(elections, { regionCode: selectedCode, regionName });
-  }, [elections, selectedCode, selectedFeature]);
+  const electionsForRegion = useMemo(() => {
+    const selectedPrefix = regionPrefix(selectedCode);
+    if (!selectedPrefix) return [];
+    return elections.filter((item) => regionPrefix(item.region_code) === selectedPrefix);
+  }, [elections, selectedCode]);
+
+  const excludedMismatchCount = Math.max(0, elections.length - electionsForRegion.length);
+
+  const slotItems = useMemo(
+    () =>
+      SLOT_ORDER.map((slotKey) => {
+        const candidates = electionsForRegion.filter((item) => normalizeOfficeType(item.office_type) === slotKey);
+        const election = chooseRepresentative(candidates);
+        const status = slotStatus({ electionsState, election });
+        const title = buildSlotTitle({
+          slotKey,
+          regionName: activeRegionName,
+          regionCode: selectedCode,
+          election
+        });
+        const hrefId = election?.latest_matchup_id || election?.matchup_id || null;
+        const href = hrefId && !String(hrefId).startsWith("master|") ? `/matchups/${encodeURIComponent(hrefId)}` : null;
+        return {
+          slotKey,
+          slotLabel: SLOT_LABELS[slotKey],
+          title,
+          election,
+          status,
+          href
+        };
+      }),
+    [activeRegionName, electionsForRegion, electionsState, selectedCode]
+  );
 
   return (
     <section className="panel region-layout">
@@ -360,8 +380,8 @@ export default function RegionalMapPanel({
 
         {activeCode ? (
           <div className="region-block">
-            <p className="region-name">{activeFeature?.properties?.region_name || activeCode}</p>
-            <p className="region-code">{activeCode}</p>
+            <p className="region-name">{activeRegionName || activeCode}</p>
+            <p className="region-code">{activeApiCode || activeCode}</p>
             <div className="badge-row">
               <span className={`state-badge ${activeLatest ? "ok" : "info"}`}>{modeLabel}</span>
               <span className={`state-badge ${activeLatest ? "ok" : "warn"}`}>{activeLatest ? "최신 조사 있음" : "최신 조사 없음"}</span>
@@ -373,7 +393,7 @@ export default function RegionalMapPanel({
           <div className="region-block">
             <strong>{activeLatest.title}</strong>
             <p>대표값: {formatPercent(activeLatest.value_mid)}</p>
-            <p className="muted-text">최신 조사일: {formatSurveyMeta(activeLatest.survey_end_date)}</p>
+            <p className="muted-text">최신 조사일: {formatDate(activeLatest.survey_end_date)}</p>
             <p className="muted-text">조사기관: {activeLatest.pollster || "조사기관 미확인"}</p>
             <p className="muted-text">{formatSampleMeta(activeLatest.sample_size)}</p>
             <p className="muted-text">{formatMarginMeta(activeLatest.margin_of_error || activeLatest.moe)}</p>
@@ -392,41 +412,38 @@ export default function RegionalMapPanel({
           </div>
         ) : null}
 
-        {selectedCode ? (
+        {selectedApiCode ? (
           <div className="region-block">
-            <strong>연결 선거</strong>
-            {electionsState === "loading" ? <p className="muted-text">불러오는 중...</p> : null}
-            {electionsState === "error" ? <p className="muted-text">선거 목록을 불러오지 못했습니다.</p> : null}
-            {electionsState === "ready" && visibleElections.length === 0 ? <p className="muted-text">연결된 선거가 없습니다.</p> : null}
-            {electionsState === "ready" && visibleElections.length > 0 ? (
-              <ul className="election-list">
-                {visibleElections.map((election) => {
-                  const navigationMatchupId =
-                    election.latest_matchup_id || (election.is_placeholder ? "" : election.matchup_id || "");
-                  const canNavigate = Boolean(navigationMatchupId);
-                  const statusText = normalizeElectionStatus(election);
-                  const key = `${election.office_type}:${election.matchup_id || election.region_code || "unknown"}`;
-
-                  return (
-                    <li key={key}>
-                      {canNavigate ? (
-                        <Link href={`/matchups/${encodeURIComponent(navigationMatchupId)}`}>
-                          <span>{election.office_type}</span>
-                          <strong>{election.title}</strong>
-                          <span>{statusText}</span>
-                        </Link>
-                      ) : (
-                        <div>
-                          <span>{election.office_type}</span>
-                          <strong>{election.title}</strong>
-                          <span>{statusText}</span>
-                        </div>
-                      )}
-                    </li>
-                  );
-                })}
-              </ul>
+            <div className="region-slot-head">
+              <strong>연결 선거 (광역 3슬롯 고정)</strong>
+              <p className="muted-text">단체장 → 의회 → 교육감 순서로 고정 노출합니다.</p>
+            </div>
+            {excludedMismatchCount > 0 ? (
+              <p className="slot-note warn">선택 지역과 다른 코드 {excludedMismatchCount}건은 표시에서 제외했습니다.</p>
             ) : null}
+            <ul className="region-slot-list">
+              {slotItems.map((slot) => (
+                <li key={slot.slotKey} className="slot-card">
+                  <div className="slot-card-head">
+                    <strong>{slot.slotLabel}</strong>
+                    <span className={`state-badge ${slot.status.tone}`}>{slot.status.text}</span>
+                  </div>
+                  <p className="slot-title">{slot.title}</p>
+                  <p className="muted-text">최신 조사일: {formatDate(slot.election?.latest_survey_end_date)}</p>
+                  <div className="badge-row">
+                    {slot.election?.is_placeholder ? <span className="state-badge warn">placeholder</span> : null}
+                    {slot.election?.has_candidate_data ? <span className="state-badge info">후보 데이터 있음</span> : null}
+                  </div>
+                  {slot.href ? (
+                    <Link href={slot.href} className="text-link small">
+                      매치업 상세 보기
+                    </Link>
+                  ) : (
+                    <span className="muted-text">매치업 상세 없음</span>
+                  )}
+                </li>
+              ))}
+            </ul>
           </div>
         ) : null}
       </aside>

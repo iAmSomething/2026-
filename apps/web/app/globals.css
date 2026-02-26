@@ -262,6 +262,50 @@ main {
   color: #64748b;
 }
 
+.region-slot-head {
+  margin-bottom: 8px;
+}
+
+.slot-note {
+  margin: 6px 0 10px;
+  font-size: 0.8rem;
+  color: #526172;
+}
+
+.slot-note.warn {
+  color: #9a3412;
+}
+
+.region-slot-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 8px;
+}
+
+.slot-card {
+  border: 1px solid #dbe8f4;
+  border-radius: 10px;
+  background: #fff;
+  padding: 9px;
+  display: grid;
+  gap: 6px;
+}
+
+.slot-card-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+}
+
+.slot-title {
+  margin: 0;
+  font-weight: 700;
+  color: #0f172a;
+}
+
 .region-chip-grid {
   display: flex;
   flex-wrap: wrap;
