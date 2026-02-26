@@ -1722,13 +1722,16 @@ class PostgresRepository:
             return None
 
         canonical_matchup_id = matchup_meta["matchup_id"]
+        canonical_title = str(matchup_meta.get("title") or "").strip() or canonical_matchup_id
         observation = self._fetch_latest_matchup_observation(canonical_matchup_id)
         if not observation:
             return {
                 "matchup_id": canonical_matchup_id,
                 "region_code": matchup_meta["region_code"],
                 "office_type": matchup_meta["office_type"],
-                "title": matchup_meta["title"] or canonical_matchup_id,
+                "title": canonical_title,
+                "canonical_title": canonical_title,
+                "article_title": None,
                 "has_data": False,
                 "pollster": None,
                 "survey_start_date": None,
@@ -1762,11 +1765,19 @@ class PostgresRepository:
 
         options = self._normalize_options(observation.get("options"))
         scenarios, primary_options = self._build_matchup_scenarios(options)
+        observation_title = str(observation.get("title") or "").strip()
+        if not canonical_title:
+            canonical_title = observation_title or canonical_matchup_id
+        article_title = observation_title or None
+        if article_title and article_title == canonical_title:
+            article_title = None
         return {
             "matchup_id": observation["matchup_id"],
             "region_code": observation["region_code"],
             "office_type": observation["office_type"],
-            "title": observation["title"],
+            "title": canonical_title,
+            "canonical_title": canonical_title,
+            "article_title": article_title,
             "has_data": True,
             "pollster": observation["pollster"],
             "survey_start_date": observation["survey_start_date"],
