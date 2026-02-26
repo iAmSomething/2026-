@@ -7,6 +7,7 @@ import psycopg
 from app.config import get_settings
 
 from app.db import DatabaseConfigurationError, DatabaseConnectionError, get_connection
+from app.runtime_db_guard import heal_schema_once, is_schema_mismatch_sqlstate
 from app.services.data_go_candidate import DataGoCandidateConfig, DataGoCandidateService
 from app.services.repository import PostgresRepository
 
@@ -20,6 +21,14 @@ def get_repository():
     except DatabaseConnectionError as exc:
         raise HTTPException(status_code=503, detail="database connection failed") from exc
     except psycopg.Error as exc:
+        if is_schema_mismatch_sqlstate(getattr(exc, "sqlstate", None)):
+            try:
+                healed = heal_schema_once()
+            except Exception:  # noqa: BLE001
+                healed = False
+            if healed:
+                raise HTTPException(status_code=503, detail="database schema auto-healed; retry request") from exc
+            raise HTTPException(status_code=503, detail="database schema mismatch detected") from exc
         raise HTTPException(status_code=503, detail=f"database query failed ({exc.sqlstate or 'unknown'})") from exc
 
 
