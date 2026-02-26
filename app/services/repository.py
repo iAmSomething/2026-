@@ -483,6 +483,7 @@ class PostgresRepository:
                 po.value_mid,
                 o.pollster,
                 o.survey_end_date,
+                o.source_grade,
                 o.audience_scope,
                 o.audience_region_code,
                 o.updated_at AS observation_updated_at,
