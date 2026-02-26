@@ -826,6 +826,32 @@ def test_matchup_before_cutoff_returns_not_found():
     app.dependency_overrides.clear()
 
 
+def test_matchup_option_candidate_id_key_is_present_even_when_value_is_null():
+    class NullableCandidateRepo(FakeApiRepo):
+        def get_matchup(self, matchup_id):  # noqa: ARG002
+            row = super().get_matchup("20260603|광역자치단체장|11-000")
+            row["options"][0]["candidate_id"] = None
+            row["scenarios"][0]["options"][0]["candidate_id"] = None
+            return row
+
+    def override_nullable_candidate_repo():
+        yield NullableCandidateRepo()
+
+    app.dependency_overrides[get_repository] = override_nullable_candidate_repo
+    app.dependency_overrides[get_candidate_data_go_service] = override_candidate_data_go_service
+    client = TestClient(app)
+
+    res = client.get("/api/v1/matchups/20260603|광역자치단체장|11-000")
+    assert res.status_code == 200
+    body = res.json()
+    assert "candidate_id" in body["options"][0]
+    assert body["options"][0]["candidate_id"] is None
+    assert "candidate_id" in body["scenarios"][0]["options"][0]
+    assert body["scenarios"][0]["options"][0]["candidate_id"] is None
+
+    app.dependency_overrides.clear()
+
+
 @pytest.mark.parametrize(
     ("summary", "expected_state", "expected_warning"),
     [

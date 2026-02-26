@@ -12,6 +12,8 @@ export default async function CandidatePage({ params, searchParams }) {
   const resolvedParams = await params;
   const resolvedSearch = await searchParams;
   const requestedCandidateId = resolvedParams.candidate_id;
+  const fromSource = (resolvedSearch?.from || "").trim().toLowerCase();
+  const fromMatchupId = (resolvedSearch?.matchup_id || "").trim();
 
   const partyDemo = (resolvedSearch?.party_demo || "").trim().toLowerCase();
   const confirmDemo = (resolvedSearch?.confirm_demo || "").trim().toLowerCase();
@@ -52,6 +54,10 @@ export default async function CandidatePage({ params, searchParams }) {
     RELATED_MATCHUP_ALIAS_BY_CANDIDATE[effectiveCandidateId] ||
     RELATED_MATCHUP_ALIAS_BY_CANDIDATE[requestedCandidateId] ||
     "m_2026_seoul_mayor";
+  const returnMatchupHref =
+    fromSource === "matchup" && fromMatchupId
+      ? `/matchups/${encodeURIComponent(fromMatchupId)}`
+      : null;
 
   const relatedMatchup = await fetchApi(`/api/v1/matchups/${encodeURIComponent(relatedAlias)}`);
 
@@ -96,6 +102,11 @@ export default async function CandidatePage({ params, searchParams }) {
           </p>
         </div>
         <div className="hero-actions">
+          {returnMatchupHref ? (
+            <Link href={returnMatchupHref} className="text-link">
+              매치업으로 복귀
+            </Link>
+          ) : null}
           <Link href="/search" className="text-link">
             지역 검색
           </Link>
