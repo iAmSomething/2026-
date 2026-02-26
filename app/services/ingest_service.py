@@ -9,6 +9,7 @@ from app.services.cutoff_policy import (
 )
 from app.services.errors import DuplicateConflictError
 from app.services.fingerprint import build_poll_fingerprint
+from app.services.ingest_input_normalization import normalize_option_type
 from app.services.normalization import normalize_percentage
 
 PARTY_INFERENCE_REVIEW_THRESHOLD = 0.8
@@ -30,8 +31,14 @@ def _infer_election_id(matchup_id: str) -> str:
     return "unknown"
 
 
-def _normalize_option(option: PollOptionInput) -> dict:
+def _normalize_option(option: PollOptionInput) -> tuple[dict, str | None]:
     payload = option.model_dump()
+    normalized_option_type, classification_needs_review, classification_reason = normalize_option_type(
+        payload.get("option_type"),
+        payload.get("option_name"),
+    )
+    payload["option_type"] = normalized_option_type
+
     if payload["value_min"] is None and payload["value_max"] is None and payload["value_mid"] is None:
         normalized = normalize_percentage(payload.get("value_raw"))
         payload["value_min"] = normalized.value_min
@@ -47,7 +54,10 @@ def _normalize_option(option: PollOptionInput) -> dict:
             payload["needs_manual_review"] = False
     else:
         payload["needs_manual_review"] = bool(payload.get("needs_manual_review", False))
-    return payload
+
+    if classification_needs_review:
+        payload["needs_manual_review"] = True
+    return payload, classification_reason
 
 
 def ingest_payload(payload: IngestPayload, repo) -> IngestResult:
@@ -125,9 +135,14 @@ def ingest_payload(payload: IngestPayload, repo) -> IngestResult:
             )
 
             party_inference_low_confidence: list[tuple[str, float]] = []
+            option_type_manual_review: list[tuple[str, str]] = []
             for option in record.options:
-                normalized_option = _normalize_option(option)
+                normalized_option, classification_reason = _normalize_option(option)
                 repo.upsert_poll_option(observation_id, normalized_option)
+                if classification_reason:
+                    option_type_manual_review.append(
+                        (normalized_option.get("option_name", "unknown"), classification_reason)
+                    )
 
                 confidence = normalized_option.get("party_inference_confidence")
                 if not normalized_option.get("party_inferred") or confidence is None:
@@ -162,6 +177,17 @@ def ingest_payload(payload: IngestPayload, repo) -> IngestResult:
                         entity_id=record.observation.observation_key,
                         issue_type="party_inference_low_confidence",
                         review_note=f"party inference confidence below {PARTY_INFERENCE_REVIEW_THRESHOLD}: {detail}",
+                    )
+                except Exception:  # noqa: BLE001
+                    pass
+            if option_type_manual_review:
+                detail = ", ".join(f"{name}:{reason}" for name, reason in option_type_manual_review)
+                try:
+                    repo.insert_review_queue(
+                        entity_type="poll_observation",
+                        entity_id=record.observation.observation_key,
+                        issue_type="mapping_error",
+                        review_note=f"option_type manual review required: {detail}",
                     )
                 except Exception:  # noqa: BLE001
                     pass

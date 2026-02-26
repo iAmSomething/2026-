@@ -383,7 +383,12 @@ class PostgresRepository:
                     MAX(o.survey_end_date) AS max_date
                 FROM poll_options po
                 JOIN poll_observations o ON o.id = po.observation_id
-                WHERE po.option_type IN ('party_support', 'presidential_approval')
+                WHERE po.option_type IN (
+                    'party_support',
+                    'president_job_approval',
+                    'election_frame',
+                    'presidential_approval'
+                )
                   AND o.verified = TRUE
                   {as_of_filter}
                 GROUP BY po.option_type, o.audience_scope
@@ -409,7 +414,12 @@ class PostgresRepository:
               ON l.option_type = po.option_type
              AND l.max_date = o.survey_end_date
              AND l.audience_scope IS NOT DISTINCT FROM o.audience_scope
-            WHERE po.option_type IN ('party_support', 'presidential_approval')
+            WHERE po.option_type IN (
+                'party_support',
+                'president_job_approval',
+                'election_frame',
+                'presidential_approval'
+            )
             ORDER BY po.option_type, po.option_name
         """
 

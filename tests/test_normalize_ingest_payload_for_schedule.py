@@ -138,3 +138,45 @@ def test_normalize_payload_scope_and_margin_and_option_party_fields() -> None:
     validated = IngestPayload.model_validate(out)
     assert validated.records[0].observation.audience_scope == "national"
     assert validated.records[0].observation.margin_of_error == 3.1
+
+
+def test_normalize_payload_splits_presidential_option_type() -> None:
+    payload = {
+        "records": [
+            {
+                "options": [
+                    {
+                        "option_type": "presidential_approval",
+                        "option_name": "국정안정론",
+                        "value_raw": "47%",
+                    }
+                ]
+            }
+        ]
+    }
+
+    out = normalize_payload(payload)
+    option = out["records"][0]["options"][0]
+    assert option["option_type"] == "election_frame"
+    assert option.get("needs_manual_review", False) is False
+
+
+def test_normalize_payload_marks_ambiguous_presidential_option_type_for_manual_review() -> None:
+    payload = {
+        "records": [
+            {
+                "options": [
+                    {
+                        "option_type": "presidential_approval",
+                        "option_name": "국정안정 긍정평가",
+                        "value_raw": "47%",
+                    }
+                ]
+            }
+        ]
+    }
+
+    out = normalize_payload(payload)
+    option = out["records"][0]["options"][0]
+    assert option["option_type"] == "presidential_approval"
+    assert option["needs_manual_review"] is True

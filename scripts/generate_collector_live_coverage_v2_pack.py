@@ -7,6 +7,7 @@ from pathlib import Path
 import re
 from typing import Any
 
+from app.services.ingest_input_normalization import normalize_option_type
 from src.pipeline.contracts import new_review_queue_item
 
 INPUT_WEB_DEMO = "data/collector_web_demo_datapack_30d.json"
@@ -79,9 +80,17 @@ def _normalize_demo_record(row: dict[str, Any]) -> dict[str, Any]:
     out = deepcopy(row)
     obs = out.get("observation") or {}
     region = out.get("region") or {}
-    option_types = {str(o.get("option_type") or "") for o in out.get("options") or []}
+    option_types: set[str] = set()
+    for option in out.get("options") or []:
+        normalized_type, _, _ = normalize_option_type(
+            option.get("option_type"),
+            option.get("option_name"),
+            question_text=option.get("question_text") or option.get("evidence_text"),
+        )
+        option["option_type"] = normalized_type
+        option_types.add(normalized_type)
 
-    if "party_support" in option_types or "presidential_approval" in option_types:
+    if "party_support" in option_types or "president_job_approval" in option_types or "election_frame" in option_types:
         obs["audience_scope"] = "national"
         obs["audience_region_code"] = None
     elif region.get("admin_level") == "sigungu":
@@ -288,7 +297,11 @@ def build_live_coverage_v2_pack(*, as_of: date = date(2026, 2, 22)) -> dict[str,
         "records_ge_30": len(merged) >= TARGET_TOTAL_RECORDS,
         "dual_source_present": source_channel_counts.get("article", 0) > 0 and source_channel_counts.get("nesdc", 0) > 0,
         "national_indicator_present": option_type_counts.get("party_support", 0) > 0
-        and option_type_counts.get("presidential_approval", 0) > 0,
+        and (
+            option_type_counts.get("president_job_approval", 0) > 0
+            or option_type_counts.get("election_frame", 0) > 0
+            or option_type_counts.get("presidential_approval", 0) > 0
+        ),
         "metro_matchup_present": office_type_counts.get("광역자치단체장", 0) > 0,
         "local_sigungu_ge_12": len(unique_local_regions) >= MIN_LOCAL_UNIQUE_REGIONS,
         "unique_matchup_ge_24": len(unique_matchups) >= 24,

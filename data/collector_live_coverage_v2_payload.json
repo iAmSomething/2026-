@@ -95,13 +95,13 @@
       },
       "options": [
         {
-          "option_type": "presidential_approval",
+          "option_type": "election_frame",
           "option_name": "국정안정론",
           "value_raw": "47.0%",
           "is_missing": false
         },
         {
-          "option_type": "presidential_approval",
+          "option_type": "election_frame",
           "option_name": "국정견제론",
           "value_raw": "45.0%",
           "is_missing": false

@@ -29,6 +29,8 @@ def test_build_live_coverage_v2_pack_required_meta_and_party_fill() -> None:
         assert obs["margin_of_error"] is not None
 
     assert out["report"]["local_candidate_party_fill_rate"] >= 0.2
+    assert out["report"]["option_type_counts"].get("presidential_approval", 0) == 0
+    assert out["report"]["option_type_counts"].get("election_frame", 0) >= 1
 
 
 def test_build_live_coverage_v2_pack_idempotent_for_fixed_date() -> None:

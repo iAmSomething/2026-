@@ -68,7 +68,7 @@ class FakeApiRepo:
                 "verified": True,
             },
             {
-                "option_type": "presidential_approval",
+                "option_type": "president_job_approval",
                 "option_name": "대통령 직무 긍정평가",
                 "value_mid": 51.0,
                 "pollster": "KBS",
@@ -82,7 +82,7 @@ class FakeApiRepo:
                 "verified": True,
             },
             {
-                "option_type": "presidential_approval",
+                "option_type": "election_frame",
                 "option_name": "국정안정론",
                 "value_mid": 54.0,
                 "pollster": "KBS",
@@ -1098,6 +1098,91 @@ def test_run_ingest_normalizes_candidate_payload_before_validation(monkeypatch: 
     assert repo.captured_observations[0]["audience_scope"] == "national"
     assert repo.captured_observations[0]["audience_region_code"] is None
     assert repo.captured_observations[0]["margin_of_error"] == 3.1
+
+    app.dependency_overrides.clear()
+    get_settings.cache_clear()
+
+
+def test_run_ingest_normalizes_presidential_option_type_and_routes_ambiguous_review(
+    monkeypatch: pytest.MonkeyPatch,
+):
+    monkeypatch.setenv("SUPABASE_URL", "https://example.supabase.co")
+    monkeypatch.setenv("SUPABASE_SERVICE_ROLE_KEY", "test-service-role")
+    monkeypatch.setenv("DATA_GO_KR_KEY", "test-data-go-key")
+    monkeypatch.setenv("DATABASE_URL", "postgresql://localhost/test")
+    monkeypatch.setenv("INTERNAL_JOB_TOKEN", "dev-internal-token")
+    get_settings.cache_clear()
+
+    class CaptureOptionRepo(FakeApiRepo):
+        def __init__(self):
+            super().__init__()
+            self.captured_options: list[dict] = []
+            self.captured_review: list[tuple[str, str, str, str]] = []
+
+        def upsert_poll_option(self, observation_id, option):  # noqa: ARG002
+            self.captured_options.append(option)
+            return None
+
+        def insert_review_queue(self, entity_type, entity_id, issue_type, review_note):
+            self.captured_review.append((entity_type, entity_id, issue_type, review_note))
+            return None
+
+    repo = CaptureOptionRepo()
+
+    def override_capture_repo():
+        yield repo
+
+    app.dependency_overrides[get_repository] = override_capture_repo
+    app.dependency_overrides[get_candidate_data_go_service] = override_candidate_data_go_service
+    client = TestClient(app)
+
+    payload = {
+        "run_type": "manual",
+        "extractor_version": "manual-v1",
+        "records": [
+            {
+                "article": {"url": "https://example.com/1", "title": "sample", "publisher": "pub"},
+                "region": {
+                    "region_code": "11-000",
+                    "sido_name": "서울특별시",
+                    "sigungu_name": "전체",
+                    "admin_level": "sido",
+                },
+                "observation": {
+                    "observation_key": "obs-282",
+                    "survey_name": "survey",
+                    "pollster": "MBC",
+                    "region_code": "11-000",
+                    "office_type": "광역자치단체장",
+                    "matchup_id": "20260603|광역자치단체장|11-000",
+                },
+                "options": [
+                    {"option_type": "presidential_approval", "option_name": "국정안정론", "value_raw": "53~55%"},
+                    {
+                        "option_type": "presidential_approval",
+                        "option_name": "국정안정 긍정평가",
+                        "value_raw": "44%",
+                    },
+                ],
+            }
+        ],
+    }
+
+    response = client.post(
+        "/api/v1/jobs/run-ingest",
+        json=payload,
+        headers={"Authorization": "Bearer dev-internal-token"},
+    )
+
+    assert response.status_code == 200
+    assert response.json()["status"] == "success"
+    assert repo.captured_options
+    option_types = [row["option_type"] for row in repo.captured_options]
+    assert "election_frame" in option_types
+    assert "presidential_approval" in option_types
+    ambiguous = next(row for row in repo.captured_options if row["option_name"] == "국정안정 긍정평가")
+    assert ambiguous["needs_manual_review"] is True
+    assert any(row[2] == "mapping_error" for row in repo.captured_review)
 
     app.dependency_overrides.clear()
     get_settings.cache_clear()

@@ -254,6 +254,10 @@ def get_dashboard_summary(
         )
         if row["option_type"] == "party_support":
             party_support.append(point)
+        elif row["option_type"] == "president_job_approval":
+            president_job_approval.append(point)
+        elif row["option_type"] == "election_frame":
+            election_frame.append(point)
         elif row["option_type"] == "presidential_approval":
             bucket = _classify_presidential_option(point.option_name)
             if bucket == "president_job_approval":
@@ -261,13 +265,15 @@ def get_dashboard_summary(
             else:
                 election_frame.append(point)
 
+    deprecated_presidential_approval = list(president_job_approval)
+
     return DashboardSummaryOut(
         as_of=as_of,
         data_source=_derive_dashboard_data_source(eligible_rows),
         party_support=party_support,
         president_job_approval=president_job_approval,
         election_frame=election_frame,
-        presidential_approval=president_job_approval,
+        presidential_approval=deprecated_presidential_approval,
         presidential_approval_deprecated=True,
         scope_breakdown=ScopeBreakdownOut(**_build_scope_breakdown(eligible_rows)),
     )
