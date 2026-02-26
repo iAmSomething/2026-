@@ -1026,6 +1026,21 @@ class PostgresRepository:
                 "admin_level": "sido",
             }
 
+        def apply_official_region_overrides(region: dict) -> dict:
+            region_out = dict(region)
+            code = normalize_text(region_out.get("region_code"))
+            if re.fullmatch(r"\d{2}-000", code):
+                region_out["admin_level"] = "sido"
+                if normalize_text(region_out.get("sigungu_name")) in {"", "전체"}:
+                    region_out["sigungu_name"] = "전체"
+
+            if code == "29-000":
+                # 운영 회귀 보호: 29-000은 공식 토폴로지에서 세종으로 고정한다.
+                region_out["sido_name"] = "세종특별자치시"
+                region_out["sigungu_name"] = "전체"
+                region_out["admin_level"] = "sido"
+            return region_out
+
         office_order = ["광역자치단체장", "광역의회", "교육감", "기초자치단체장", "기초의회", "재보궐"]
         topology_mode = "scenario" if topology == "scenario" else "official"
 
@@ -1097,6 +1112,8 @@ class PostgresRepository:
                 region = build_scenario_parent_region(effective_region_code, topology_version_id, cur)
             if not region:
                 return []
+            if topology_mode == "official":
+                region = apply_official_region_overrides(region)
 
             cur.execute(
                 """
@@ -1194,7 +1211,9 @@ class PostgresRepository:
                 ),
             )
         else:
-            if normalize_text(region.get("admin_level")) in {"sigungu", "local"}:
+            resolved_region_code = normalize_text(region.get("region_code"))
+            is_sido_code = bool(re.fullmatch(r"\d{2}-000", resolved_region_code))
+            if not is_sido_code and normalize_text(region.get("admin_level")) in {"sigungu", "local"}:
                 slots = ["기초자치단체장", "기초의회"]
             else:
                 slots = ["광역자치단체장", "광역의회", "교육감"]
