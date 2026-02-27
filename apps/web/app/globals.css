@@ -770,6 +770,27 @@ main {
   margin-top: 10px;
 }
 
+.scenario-tab-row {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin: 8px 0 10px;
+}
+
+.scenario-tab {
+  border: 1px solid #bfdbfe;
+  background: #eff6ff;
+  color: #1d4ed8;
+  border-radius: 999px;
+  padding: 4px 10px;
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+.scenario-tab:hover {
+  background: #dbeafe;
+}
+
 .scenario-group {
   border: 1px solid #d6e4f1;
   border-radius: 12px;
@@ -850,6 +871,10 @@ main {
   display: grid;
   grid-template-columns: 138px 1fr;
   gap: 6px 12px;
+}
+
+.matchup-meta-priority {
+  margin: 6px 0 10px;
 }
 
 .meta-grid dt {

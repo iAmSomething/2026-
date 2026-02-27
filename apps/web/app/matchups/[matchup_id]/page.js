@@ -13,6 +13,32 @@ const REGIONAL_OFFICE_TYPES = new Set([
   "재보궐"
 ]);
 
+const REGION_PREFIX_LABELS = {
+  "11": "서울특별시",
+  "21": "부산광역시",
+  "22": "대구광역시",
+  "23": "인천광역시",
+  "24": "광주광역시",
+  "25": "대전광역시",
+  "26": "울산광역시",
+  "29": "세종특별자치시",
+  "31": "경기도",
+  "32": "강원특별자치도",
+  "33": "충청북도",
+  "34": "충청남도",
+  "35": "전북특별자치도",
+  "36": "전라남도",
+  "37": "경상북도",
+  "38": "경상남도",
+  "39": "제주특별자치도"
+};
+
+function regionPrefix(value) {
+  if (!value) return null;
+  const match = String(value).trim().match(/(?:KR-)?(\d{2})/i);
+  return match ? match[1] : null;
+}
+
 function resolveScope({ audienceScope, officeType, regionCode }) {
   if (audienceScope === "national" || audienceScope === "regional" || audienceScope === "local") {
     return audienceScope;
@@ -112,6 +138,49 @@ function cloneOption(option, nextValueMid) {
     value_raw: `${nextValueMid}%`
   };
 }
+
+function inferRegionLabel(matchup) {
+  const directCandidates = [
+    matchup?.region_name,
+    matchup?.audience_region_name,
+    matchup?.region_label,
+    matchup?.sido_name
+  ];
+  const direct = directCandidates.find((value) => typeof value === "string" && value.trim().length > 0);
+  if (direct) return direct.trim();
+  const prefix = regionPrefix(matchup?.region_code);
+  return prefix ? REGION_PREFIX_LABELS[prefix] || null : null;
+}
+
+function metroMayorTitle(regionLabel) {
+  if (!regionLabel) return "광역자치단체장 선거";
+  if (regionLabel.endsWith("특별시")) return `${regionLabel.replace("특별시", "")}시장`;
+  if (regionLabel.endsWith("광역시")) return `${regionLabel.replace("광역시", "")}시장`;
+  if (regionLabel.endsWith("특별자치시")) return `${regionLabel.replace("특별자치시", "")}시장`;
+  if (regionLabel.endsWith("특별자치도")) return `${regionLabel.replace("특별자치도", "")}도지사`;
+  if (regionLabel.endsWith("도")) return `${regionLabel.replace("도", "")}도지사`;
+  return `${regionLabel} 단체장 선거`;
+}
+
+function officeElectionLabel(officeType, regionLabel) {
+  if (officeType === "광역자치단체장") return metroMayorTitle(regionLabel);
+  if (officeType === "광역의회") return regionLabel ? `${regionLabel} 광역의회` : "광역의회 선거";
+  if (officeType === "교육감") return regionLabel ? `${regionLabel} 교육감` : "교육감 선거";
+  if (officeType === "기초자치단체장") return regionLabel ? `${regionLabel} 기초자치단체장` : "기초자치단체장 선거";
+  if (officeType === "기초의회") return regionLabel ? `${regionLabel} 기초의회` : "기초의회 선거";
+  if (officeType === "재보궐") return regionLabel ? `${regionLabel} 재보궐` : "재보궐 선거";
+  return officeType || "선거";
+}
+
+function buildSurveySubtitle(matchup, articleSubtitle) {
+  const parts = [];
+  if (articleSubtitle) parts.push(`기사: ${articleSubtitle}`);
+  const pollster = matchup?.pollster || "조사기관 미상";
+  const period = `${formatDate(matchup?.survey_start_date)} ~ ${formatDate(matchup?.survey_end_date)}`;
+  parts.push(`${pollster} · ${period}`);
+  return parts.join(" / ");
+}
+
 export default async function MatchupPage({ params, searchParams }) {
   const resolvedParams = await params;
   const resolvedSearch = await searchParams;
@@ -145,6 +214,9 @@ export default async function MatchupPage({ params, searchParams }) {
   const canonicalTitle = matchup.canonical_title || matchup.title || matchup.matchup_id;
   const articleSubtitle =
     matchup.article_title && matchup.article_title !== canonicalTitle ? matchup.article_title : null;
+  const regionLabel = inferRegionLabel(matchup);
+  const electionTitle = officeElectionLabel(matchup.office_type, regionLabel);
+  const surveySubtitle = buildSurveySubtitle(matchup, articleSubtitle);
   let scenarios = Array.isArray(matchup.scenarios) && matchup.scenarios.length > 0
     ? matchup.scenarios.map((scenario) => ({
         ...scenario,
@@ -326,11 +398,11 @@ export default async function MatchupPage({ params, searchParams }) {
       <section className="panel detail-hero">
         <div>
           <p className="kicker">MATCHUP DETAIL</p>
-          <h1>{canonicalTitle}</h1>
-          {articleSubtitle ? <p className="muted-text">기사 제목: {articleSubtitle}</p> : null}
-          <p>
-            {matchup.pollster || "조사기관 미상"} · {formatDate(matchup.survey_start_date)} ~ {formatDate(matchup.survey_end_date)}
-          </p>
+          <h1>{electionTitle}</h1>
+          <p>{surveySubtitle}</p>
+          {canonicalTitle && canonicalTitle !== electionTitle ? (
+            <p className="muted-text">표준 제목(canonical): {canonicalTitle}</p>
+          ) : null}
         </div>
         <div className="hero-actions">
           <Link href="/search" className="text-link">
@@ -367,7 +439,19 @@ export default async function MatchupPage({ params, searchParams }) {
 
       <section className="detail-grid">
         <article className="panel">
-          <h3>후보별 최신 지표</h3>
+          <header className="panel-header">
+            <div>
+              <h3>시나리오 섹션</h3>
+              <p>양자/다자 시나리오를 분리해 동일 매치업 내부 구도를 비교합니다.</p>
+            </div>
+          </header>
+          <div className="scenario-tab-row" role="tablist" aria-label="시나리오 유형">
+            {groupedScenarios.map((group) => (
+              <a key={group.groupKey} href={`#scenario-${group.groupKey}`} className="scenario-tab">
+                {group.groupLabel} ({group.items.length})
+              </a>
+            ))}
+          </div>
           {totalOptionCount === 0 ? (
             <div className="empty-state">
               {matchup.has_data === false
@@ -377,7 +461,7 @@ export default async function MatchupPage({ params, searchParams }) {
           ) : (
             <div className="scenario-group-stack">
               {groupedScenarios.map((group) => (
-                <section key={group.groupKey} className="scenario-group">
+                <section id={`scenario-${group.groupKey}`} key={group.groupKey} className="scenario-group">
                   <header className="scenario-group-head">
                     <h4>{group.groupLabel}</h4>
                     <span className="state-badge info">{group.items.length}개 시나리오</span>
@@ -449,13 +533,13 @@ export default async function MatchupPage({ params, searchParams }) {
 
         <article className="panel">
           <h3>조사 메타데이터</h3>
+          <div className="badge-row matchup-meta-priority">
+            <span className="state-badge ok">조사기관 {matchup.pollster || "-"}</span>
+            <span className="state-badge info">표본 {matchup.sample_size || "-"}명</span>
+            <span className="state-badge info">응답률 {matchup.response_rate ? `${matchup.response_rate}%` : "-"}</span>
+            <span className="state-badge warn">오차 {matchup.margin_of_error ? `±${matchup.margin_of_error}%p` : "-"}</span>
+          </div>
           <dl className="meta-grid">
-            <dt>matchup_id</dt>
-            <dd>{matchup.matchup_id}</dd>
-            <dt>region_code</dt>
-            <dd>{matchup.region_code || "-"}</dd>
-            <dt>office_type</dt>
-            <dd>{matchup.office_type || "-"}</dd>
             <dt>표본수</dt>
             <dd>{matchup.sample_size || "-"}</dd>
             <dt>응답률</dt>
@@ -470,6 +554,12 @@ export default async function MatchupPage({ params, searchParams }) {
             <dd>{formatDateTime(matchup.article_published_at || matchup.official_release_at)}</dd>
             <dt>source_channels</dt>
             <dd>{joinChannels(matchup.source_channels)}</dd>
+            <dt>region_code</dt>
+            <dd>{matchup.region_code || "-"}</dd>
+            <dt>office_type</dt>
+            <dd>{matchup.office_type || "-"}</dd>
+            <dt>matchup_id</dt>
+            <dd>{matchup.matchup_id}</dd>
           </dl>
         </article>
       </section>
