@@ -649,21 +649,52 @@ main {
   background: #f9fcff;
 }
 
+.search-summary-bar {
+  margin-top: 10px;
+  border: 1px solid #d5e6f4;
+  border-radius: 12px;
+  background: #f2f8ff;
+  padding: 8px;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.search-summary-item {
+  border: 1px solid #dbe8f4;
+  border-radius: 10px;
+  background: #fff;
+  padding: 8px 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.search-summary-item span {
+  font-size: 0.78rem;
+  color: #5d6d7f;
+}
+
+.search-summary-item strong {
+  font-size: 0.94rem;
+  color: #0f172a;
+}
+
 .region-result-list {
   margin: 8px 0 0;
   padding: 0;
   list-style: none;
   display: grid;
-  gap: 6px;
+  gap: 8px;
 }
 
 .region-result-list li a {
   display: grid;
-  gap: 4px;
+  gap: 6px;
   border: 1px solid #d8e6f3;
   border-radius: 10px;
   background: #fff;
-  padding: 9px;
+  padding: 10px;
 }
 
 .region-result-list li a.active,
@@ -684,12 +715,39 @@ main {
   gap: 8px;
 }
 
+.region-result-head.stacked {
+  align-items: flex-start;
+  justify-content: flex-start;
+  flex-direction: column;
+  gap: 2px;
+}
+
 .region-result-head strong {
   color: #0f172a;
 }
 
+.region-result-title {
+  font-size: 0.95rem;
+}
+
+.region-result-code {
+  color: #64748b;
+  font-size: 0.78rem;
+}
+
+.region-result-status-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
 .region-result-badges {
   margin-top: 2px;
+}
+
+.region-result-badges.compact {
+  gap: 4px;
 }
 
 .result-cta {
@@ -881,6 +939,11 @@ main {
 .muted-text {
   color: #64748b;
   font-size: 0.84rem;
+}
+
+.muted-text.compact {
+  font-size: 0.8rem;
+  margin: 0;
 }
 
 .error-panel {
@@ -1121,6 +1184,31 @@ main {
   .region-meta-grid {
     grid-template-columns: 1fr;
     gap: 6px;
+  }
+
+  .search-summary-bar {
+    grid-template-columns: 1fr;
+    padding: 7px;
+    gap: 6px;
+  }
+
+  .region-result-list {
+    gap: 6px;
+  }
+
+  .region-result-list li a {
+    padding: 9px;
+    gap: 5px;
+  }
+
+  .region-result-status-row {
+    align-items: center;
+    gap: 6px;
+  }
+
+  .region-result-badges.compact .state-badge {
+    font-size: 0.72rem;
+    padding: 2px 7px;
   }
 
   .loading-skeleton-stack {
