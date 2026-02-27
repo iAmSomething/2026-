@@ -1,0 +1,31 @@
+{
+  "success": true,
+  "attempts": [
+    {
+      "attempt": 1,
+      "http_status": 200,
+      "job_status": "success",
+      "failure_class": null,
+      "failure_type": null,
+      "retryable": false,
+      "request_timeout_seconds": 90.0,
+      "error": null,
+      "detail": null,
+      "cause_code": null,
+      "started_at": "2026-02-27T01:12:28.155889+00:00",
+      "finished_at": "2026-02-27T01:13:19.654889+00:00",
+      "duration_seconds": 51.499,
+      "next_backoff_seconds": null
+    }
+  ],
+  "run_ids": [
+    537
+  ],
+  "started_at": "2026-02-27T01:12:28.155830+00:00",
+  "finished_at": "2026-02-27T01:13:19.654995+00:00",
+  "elapsed_seconds": 51.499,
+  "failure_class": null,
+  "failure_type": null,
+  "cause_code": null,
+  "failure_reason": null
+}

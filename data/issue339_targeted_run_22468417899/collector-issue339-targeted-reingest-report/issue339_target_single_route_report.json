@@ -1,0 +1,7 @@
+{
+  "source_mode": "collector_issue339_target_single",
+  "canonical_payload": "data/issue339_target_single_reingest_payload.json",
+  "record_count": 1,
+  "run_type": "collector_issue339_target_single",
+  "extractor_version": "collector-issue339-target-single-v1"
+}
