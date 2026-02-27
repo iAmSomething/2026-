@@ -430,6 +430,11 @@ def _clone_candidate_option(
     return len(options) - 1
 
 
+def _scenario_key_is_default(value: Any) -> bool:
+    key = str(value or "").strip()
+    return key in {"", "default"}
+
+
 def _repair_candidate_matchup_scenarios(
     *,
     survey_name: str | None,
@@ -443,10 +448,6 @@ def _repair_candidate_matchup_scenarios(
     if len(candidate_indexes) < 3:
         return False
 
-    # Respect explicit scenario annotations from extractor.
-    if any(str(options[i].get("scenario_key") or "").strip() not in {"", "default"} for i in candidate_indexes):
-        return False
-
     names_by_index = {i: _scenario_name_token(options[i].get("option_name")) for i in candidate_indexes}
     counts: dict[str, int] = {}
     for idx in candidate_indexes:
@@ -454,6 +455,95 @@ def _repair_candidate_matchup_scenarios(
         if not name:
             continue
         counts[name] = counts.get(name, 0) + 1
+
+    default_candidate_indexes = [i for i in candidate_indexes if _scenario_key_is_default(options[i].get("scenario_key"))]
+    explicit_candidate_indexes = [i for i in candidate_indexes if i not in default_candidate_indexes]
+
+    # Respect explicit scenario annotations from extractor when they are complete.
+    if explicit_candidate_indexes and not default_candidate_indexes:
+        return False
+
+    # Canonicalization for partially split payloads:
+    # if explicit scenario rows exist together with default rows, move default rows into multi
+    # and remove default candidate rows to avoid mixed/default leakage.
+    if explicit_candidate_indexes and default_candidate_indexes:
+        multi_key = ""
+        multi_title = "다자대결"
+        for idx in explicit_candidate_indexes:
+            row = options[idx]
+            key = str(row.get("scenario_key") or "").strip()
+            scenario_type = str(row.get("scenario_type") or "").strip()
+            if scenario_type == "multi_candidate" or key.startswith("multi-"):
+                multi_key = key or multi_key
+                title = str(row.get("scenario_title") or "").strip()
+                if title:
+                    multi_title = title
+                break
+
+        if not multi_key:
+            anchor_name = ""
+            for idx in explicit_candidate_indexes:
+                key = str(options[idx].get("scenario_key") or "").strip()
+                if key.startswith("h2h-"):
+                    parts = [part for part in key.split("-")[1:] if part]
+                    if parts:
+                        anchor_name = parts[0]
+                        break
+            if not anchor_name:
+                for idx in explicit_candidate_indexes:
+                    if names_by_index.get(idx):
+                        anchor_name = names_by_index[idx]
+                        break
+            if not anchor_name:
+                for idx in default_candidate_indexes:
+                    if names_by_index.get(idx):
+                        anchor_name = names_by_index[idx]
+                        break
+            multi_key = f"multi-{anchor_name or '후보'}"
+
+        default_name_to_row: dict[str, dict[str, Any]] = {}
+        for idx in default_candidate_indexes:
+            row = dict(options[idx])
+            name = names_by_index.get(idx) or _scenario_name_token(row.get("option_name"))
+            if not name:
+                continue
+            row["option_name"] = name
+            existing = default_name_to_row.get(name)
+            if existing is None or _scenario_value(row) > _scenario_value(existing):
+                default_name_to_row[name] = row
+
+        default_index_set = set(default_candidate_indexes)
+        options[:] = [row for i, row in enumerate(options) if i not in default_index_set]
+
+        existing_multi_names: set[str] = set()
+        for row in options:
+            if row.get("option_type") != "candidate_matchup":
+                continue
+            key = str(row.get("scenario_key") or "").strip()
+            if key != multi_key:
+                continue
+            row["scenario_type"] = "multi_candidate"
+            row["scenario_title"] = multi_title
+            name = _scenario_name_token(row.get("option_name"))
+            if not name:
+                continue
+            row["option_name"] = name
+            existing_multi_names.add(name)
+
+        changed = bool(default_index_set)
+        for name, template_row in default_name_to_row.items():
+            if name in existing_multi_names:
+                continue
+            new_row = dict(template_row)
+            new_row["option_name"] = name
+            new_row["scenario_key"] = multi_key
+            new_row["scenario_type"] = "multi_candidate"
+            new_row["scenario_title"] = multi_title
+            options.append(new_row)
+            existing_multi_names.add(name)
+            changed = True
+
+        return changed
 
     # Enhanced split: when survey text includes multiple explicit h2h pairs + multi,
     # materialize separate scenario groups (h2h/h2h/multi) even if source options are under default.
