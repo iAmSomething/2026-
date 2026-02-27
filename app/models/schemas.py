@@ -83,6 +83,7 @@ class SummaryPoint(BaseModel):
     source_channels: list[Literal["article", "nesdc"]] = Field(default_factory=list, deprecated=True)
     source_trace: SourceTraceOut = Field(default_factory=SourceTraceOut)
     selection_trace: dict[str, Any] = Field(default_factory=dict)
+    selected_reason: Literal["official_preferred", "latest_fallback"] = "latest_fallback"
     verified: bool
 
 
@@ -95,6 +96,7 @@ class ScopeBreakdownOut(BaseModel):
 
 class DashboardSummaryOut(BaseModel):
     as_of: date | None = None
+    selection_policy_version: str = "summary_single_set_v1"
     data_source: Literal["official", "article", "mixed"] = "article"
     party_support: list[SummaryPoint]
     president_job_approval: list[SummaryPoint] = Field(default_factory=list)
