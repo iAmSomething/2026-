@@ -1,0 +1,489 @@
+targeted-reingest	Set up job	﻿2026-02-27T01:12:05.5273776Z Current runner version: '2.331.0'
+targeted-reingest	Set up job	2026-02-27T01:12:05.5301211Z ##[group]Runner Image Provisioner
+targeted-reingest	Set up job	2026-02-27T01:12:05.5302245Z Hosted Compute Agent
+targeted-reingest	Set up job	2026-02-27T01:12:05.5303012Z Version: 20260213.493
+targeted-reingest	Set up job	2026-02-27T01:12:05.5303794Z Commit: 5c115507f6dd24b8de37d8bbe0bb4509d0cc0fa3
+targeted-reingest	Set up job	2026-02-27T01:12:05.5304593Z Build Date: 2026-02-13T00:28:41Z
+targeted-reingest	Set up job	2026-02-27T01:12:05.5305424Z Worker ID: {82842d11-fed8-447b-89f1-7c445f86b239}
+targeted-reingest	Set up job	2026-02-27T01:12:05.5306245Z Azure Region: northcentralus
+targeted-reingest	Set up job	2026-02-27T01:12:05.5306929Z ##[endgroup]
+targeted-reingest	Set up job	2026-02-27T01:12:05.5308881Z ##[group]Operating System
+targeted-reingest	Set up job	2026-02-27T01:12:05.5309710Z Ubuntu
+targeted-reingest	Set up job	2026-02-27T01:12:05.5310393Z 24.04.3
+targeted-reingest	Set up job	2026-02-27T01:12:05.5311003Z LTS
+targeted-reingest	Set up job	2026-02-27T01:12:05.5311608Z ##[endgroup]
+targeted-reingest	Set up job	2026-02-27T01:12:05.5312303Z ##[group]Runner Image
+targeted-reingest	Set up job	2026-02-27T01:12:05.5312969Z Image: ubuntu-24.04
+targeted-reingest	Set up job	2026-02-27T01:12:05.5313737Z Version: 20260224.36.1
+targeted-reingest	Set up job	2026-02-27T01:12:05.5315085Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20260224.36/images/ubuntu/Ubuntu2404-Readme.md
+targeted-reingest	Set up job	2026-02-27T01:12:05.5316968Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20260224.36
+targeted-reingest	Set up job	2026-02-27T01:12:05.5318076Z ##[endgroup]
+targeted-reingest	Set up job	2026-02-27T01:12:05.5319542Z ##[group]GITHUB_TOKEN Permissions
+targeted-reingest	Set up job	2026-02-27T01:12:05.5321925Z Contents: read
+targeted-reingest	Set up job	2026-02-27T01:12:05.5322649Z Metadata: read
+targeted-reingest	Set up job	2026-02-27T01:12:05.5323368Z Packages: read
+targeted-reingest	Set up job	2026-02-27T01:12:05.5324074Z ##[endgroup]
+targeted-reingest	Set up job	2026-02-27T01:12:05.5326286Z Secret source: Actions
+targeted-reingest	Set up job	2026-02-27T01:12:05.5327557Z Prepare workflow directory
+targeted-reingest	Set up job	2026-02-27T01:12:05.5866449Z Prepare all required actions
+targeted-reingest	Set up job	2026-02-27T01:12:05.5906568Z Getting action download info
+targeted-reingest	Set up job	2026-02-27T01:12:05.9482678Z Download action repository 'actions/checkout@v4' (SHA:34e114876b0b11c390a56381ad16ebd13914f8d5)
+targeted-reingest	Set up job	2026-02-27T01:12:06.1441122Z Download action repository 'actions/setup-python@v5' (SHA:a26af69be951a213d495a4c3e4e4022e16d87065)
+targeted-reingest	Set up job	2026-02-27T01:12:06.2776594Z Download action repository 'actions/upload-artifact@v4' (SHA:ea165f8d65b6e75b540449e92b4886f43607fa02)
+targeted-reingest	Set up job	2026-02-27T01:12:06.6295213Z Complete job name: targeted-reingest
+targeted-reingest	Checkout	﻿2026-02-27T01:12:06.7142314Z ##[group]Run actions/checkout@v4
+targeted-reingest	Checkout	2026-02-27T01:12:06.7143721Z with:
+targeted-reingest	Checkout	2026-02-27T01:12:06.7144549Z   repository: iAmSomething/2026-
+targeted-reingest	Checkout	2026-02-27T01:12:06.7145888Z   token: ***
+targeted-reingest	Checkout	2026-02-27T01:12:06.7146690Z   ssh-strict: true
+targeted-reingest	Checkout	2026-02-27T01:12:06.7147512Z   ssh-user: git
+targeted-reingest	Checkout	2026-02-27T01:12:06.7148624Z   persist-credentials: true
+targeted-reingest	Checkout	2026-02-27T01:12:06.7149736Z   clean: true
+targeted-reingest	Checkout	2026-02-27T01:12:06.7150591Z   sparse-checkout-cone-mode: true
+targeted-reingest	Checkout	2026-02-27T01:12:06.7151623Z   fetch-depth: 1
+targeted-reingest	Checkout	2026-02-27T01:12:06.7152440Z   fetch-tags: false
+targeted-reingest	Checkout	2026-02-27T01:12:06.7153295Z   show-progress: true
+targeted-reingest	Checkout	2026-02-27T01:12:06.7154137Z   lfs: false
+targeted-reingest	Checkout	2026-02-27T01:12:06.7154910Z   submodules: false
+targeted-reingest	Checkout	2026-02-27T01:12:06.7155752Z   set-safe-directory: true
+targeted-reingest	Checkout	2026-02-27T01:12:06.7156981Z env:
+targeted-reingest	Checkout	2026-02-27T01:12:06.7158068Z   SUPABASE_URL: ***
+targeted-reingest	Checkout	2026-02-27T01:12:06.7159523Z   SUPABASE_SERVICE_ROLE_KEY: ***
+targeted-reingest	Checkout	2026-02-27T01:12:06.7161040Z   DATA_GO_KR_KEY: ***
+targeted-reingest	Checkout	2026-02-27T01:12:06.7163451Z   DATABASE_URL: ***
+targeted-reingest	Checkout	2026-02-27T01:12:06.7164464Z   INTERNAL_JOB_TOKEN: ***
+targeted-reingest	Checkout	2026-02-27T01:12:06.7165467Z   API_BASE_URL: http://127.0.0.1:8100
+targeted-reingest	Checkout	2026-02-27T01:12:06.7166834Z   TARGET_PAYLOAD: data/issue339_target_single_reingest_payload.json
+targeted-reingest	Checkout	2026-02-27T01:12:06.7168184Z ##[endgroup]
+targeted-reingest	Checkout	2026-02-27T01:12:06.8339646Z Syncing repository: iAmSomething/2026-
+targeted-reingest	Checkout	2026-02-27T01:12:06.8343353Z ##[group]Getting Git version info
+targeted-reingest	Checkout	2026-02-27T01:12:06.8344711Z Working directory is '/home/runner/work/2026-/2026-'
+targeted-reingest	Checkout	2026-02-27T01:12:06.8346588Z [command]/usr/bin/git version
+targeted-reingest	Checkout	2026-02-27T01:12:06.8414518Z git version 2.53.0
+targeted-reingest	Checkout	2026-02-27T01:12:06.8443708Z ##[endgroup]
+targeted-reingest	Checkout	2026-02-27T01:12:06.8461693Z Temporarily overriding HOME='/home/runner/work/_temp/6c57e50b-11af-4e6f-8f40-57391aee7e16' before making global git config changes
+targeted-reingest	Checkout	2026-02-27T01:12:06.8466560Z Adding repository directory to the temporary git global config as a safe directory
+targeted-reingest	Checkout	2026-02-27T01:12:06.8478578Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/2026-/2026-
+targeted-reingest	Checkout	2026-02-27T01:12:06.8525246Z Deleting the contents of '/home/runner/work/2026-/2026-'
+targeted-reingest	Checkout	2026-02-27T01:12:06.8529624Z ##[group]Initializing the repository
+targeted-reingest	Checkout	2026-02-27T01:12:06.8535067Z [command]/usr/bin/git init /home/runner/work/2026-/2026-
+targeted-reingest	Checkout	2026-02-27T01:12:06.8667128Z hint: Using 'master' as the name for the initial branch. This default branch name
+targeted-reingest	Checkout	2026-02-27T01:12:06.8669870Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+targeted-reingest	Checkout	2026-02-27T01:12:06.8672506Z hint: to use in all of your new repositories, which will suppress this warning,
+targeted-reingest	Checkout	2026-02-27T01:12:06.8675153Z hint: call:
+targeted-reingest	Checkout	2026-02-27T01:12:06.8676512Z hint:
+targeted-reingest	Checkout	2026-02-27T01:12:06.8678225Z hint: 	git config --global init.defaultBranch <name>
+targeted-reingest	Checkout	2026-02-27T01:12:06.8680816Z hint:
+targeted-reingest	Checkout	2026-02-27T01:12:06.8682712Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+targeted-reingest	Checkout	2026-02-27T01:12:06.8686011Z hint: 'development'. The just-created branch can be renamed via this command:
+targeted-reingest	Checkout	2026-02-27T01:12:06.8688861Z hint:
+targeted-reingest	Checkout	2026-02-27T01:12:06.8690232Z hint: 	git branch -m <name>
+targeted-reingest	Checkout	2026-02-27T01:12:06.8691728Z hint:
+targeted-reingest	Checkout	2026-02-27T01:12:06.8694007Z hint: Disable this message with "git config set advice.defaultBranchName false"
+targeted-reingest	Checkout	2026-02-27T01:12:06.8696087Z Initialized empty Git repository in /home/runner/work/2026-/2026-/.git/
+targeted-reingest	Checkout	2026-02-27T01:12:06.8699521Z [command]/usr/bin/git remote add origin https://github.com/iAmSomething/2026-
+targeted-reingest	Checkout	2026-02-27T01:12:06.9086659Z ##[endgroup]
+targeted-reingest	Checkout	2026-02-27T01:12:06.9089994Z ##[group]Disabling automatic garbage collection
+targeted-reingest	Checkout	2026-02-27T01:12:06.9092847Z [command]/usr/bin/git config --local gc.auto 0
+targeted-reingest	Checkout	2026-02-27T01:12:06.9128864Z ##[endgroup]
+targeted-reingest	Checkout	2026-02-27T01:12:06.9131331Z ##[group]Setting up auth
+targeted-reingest	Checkout	2026-02-27T01:12:06.9137591Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+targeted-reingest	Checkout	2026-02-27T01:12:06.9174982Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+targeted-reingest	Checkout	2026-02-27T01:12:07.0528235Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+targeted-reingest	Checkout	2026-02-27T01:12:07.0562094Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+targeted-reingest	Checkout	2026-02-27T01:12:07.0806486Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+targeted-reingest	Checkout	2026-02-27T01:12:07.0841591Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+targeted-reingest	Checkout	2026-02-27T01:12:07.1093887Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+targeted-reingest	Checkout	2026-02-27T01:12:07.1133081Z ##[endgroup]
+targeted-reingest	Checkout	2026-02-27T01:12:07.1134561Z ##[group]Fetching the repository
+targeted-reingest	Checkout	2026-02-27T01:12:07.1142591Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +d4e0fd5dfe3bf986da9951836811330eeddc134d:refs/remotes/origin/main
+targeted-reingest	Checkout	2026-02-27T01:12:10.8894716Z From https://github.com/iAmSomething/2026-
+targeted-reingest	Checkout	2026-02-27T01:12:10.8897373Z  * [new ref]         d4e0fd5dfe3bf986da9951836811330eeddc134d -> origin/main
+targeted-reingest	Checkout	2026-02-27T01:12:10.8997005Z ##[endgroup]
+targeted-reingest	Checkout	2026-02-27T01:12:10.8997692Z ##[group]Determining the checkout info
+targeted-reingest	Checkout	2026-02-27T01:12:10.8999436Z ##[endgroup]
+targeted-reingest	Checkout	2026-02-27T01:12:10.9004803Z [command]/usr/bin/git sparse-checkout disable
+targeted-reingest	Checkout	2026-02-27T01:12:10.9242722Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+targeted-reingest	Checkout	2026-02-27T01:12:10.9274401Z ##[group]Checking out the ref
+targeted-reingest	Checkout	2026-02-27T01:12:10.9279470Z [command]/usr/bin/git checkout --progress --force -B main refs/remotes/origin/main
+targeted-reingest	Checkout	2026-02-27T01:12:11.3470865Z Switched to a new branch 'main'
+targeted-reingest	Checkout	2026-02-27T01:12:11.3471624Z branch 'main' set up to track 'origin/main'.
+targeted-reingest	Checkout	2026-02-27T01:12:11.3515783Z ##[endgroup]
+targeted-reingest	Checkout	2026-02-27T01:12:11.3561091Z [command]/usr/bin/git log -1 --format=%H
+targeted-reingest	Checkout	2026-02-27T01:12:11.3586233Z d4e0fd5dfe3bf986da9951836811330eeddc134d
+targeted-reingest	Secret preflight (fail-fast)	﻿2026-02-27T01:12:11.3773308Z ##[group]Run scripts/qa/preflight_required_secrets.sh
+targeted-reingest	Secret preflight (fail-fast)	2026-02-27T01:12:11.3773848Z [36;1mscripts/qa/preflight_required_secrets.sh[0m
+targeted-reingest	Secret preflight (fail-fast)	2026-02-27T01:12:11.3829512Z shell: /usr/bin/bash -e {0}
+targeted-reingest	Secret preflight (fail-fast)	2026-02-27T01:12:11.3829834Z env:
+targeted-reingest	Secret preflight (fail-fast)	2026-02-27T01:12:11.3830347Z   SUPABASE_URL: ***
+targeted-reingest	Secret preflight (fail-fast)	2026-02-27T01:12:11.3830738Z   SUPABASE_SERVICE_ROLE_KEY: ***
+targeted-reingest	Secret preflight (fail-fast)	2026-02-27T01:12:11.3831157Z   DATA_GO_KR_KEY: ***
+targeted-reingest	Secret preflight (fail-fast)	2026-02-27T01:12:11.3831955Z   DATABASE_URL: ***
+targeted-reingest	Secret preflight (fail-fast)	2026-02-27T01:12:11.3832239Z   INTERNAL_JOB_TOKEN: ***
+targeted-reingest	Secret preflight (fail-fast)	2026-02-27T01:12:11.3832516Z   API_BASE_URL: http://127.0.0.1:8100
+targeted-reingest	Secret preflight (fail-fast)	2026-02-27T01:12:11.3832894Z   TARGET_PAYLOAD: data/issue339_target_single_reingest_payload.json
+targeted-reingest	Secret preflight (fail-fast)	2026-02-27T01:12:11.3833268Z ##[endgroup]
+targeted-reingest	Secret preflight (fail-fast)	2026-02-27T01:12:11.3955474Z [OK] SUPABASE_URL is set (len=40)
+targeted-reingest	Secret preflight (fail-fast)	2026-02-27T01:12:11.3956187Z [OK] SUPABASE_SERVICE_ROLE_KEY is set (len=41)
+targeted-reingest	Secret preflight (fail-fast)	2026-02-27T01:12:11.3956813Z [OK] DATA_GO_KR_KEY is set (len=64)
+targeted-reingest	Secret preflight (fail-fast)	2026-02-27T01:12:11.3957344Z [OK] DATABASE_URL is set (len=127)
+targeted-reingest	Secret preflight (fail-fast)	2026-02-27T01:12:11.3957931Z [OK] INTERNAL_JOB_TOKEN is set (len=32)
+targeted-reingest	Secret preflight (fail-fast)	2026-02-27T01:12:11.3960397Z [PASS] Required secrets preflight passed
+targeted-reingest	Setup Python 3.13	﻿2026-02-27T01:12:11.4122085Z ##[group]Run actions/setup-python@v5
+targeted-reingest	Setup Python 3.13	2026-02-27T01:12:11.4122448Z with:
+targeted-reingest	Setup Python 3.13	2026-02-27T01:12:11.4122667Z   python-version: 3.13
+targeted-reingest	Setup Python 3.13	2026-02-27T01:12:11.4122907Z   check-latest: false
+targeted-reingest	Setup Python 3.13	2026-02-27T01:12:11.4123355Z   token: ***
+targeted-reingest	Setup Python 3.13	2026-02-27T01:12:11.4123569Z   update-environment: true
+targeted-reingest	Setup Python 3.13	2026-02-27T01:12:11.4123819Z   allow-prereleases: false
+targeted-reingest	Setup Python 3.13	2026-02-27T01:12:11.4124049Z   freethreaded: false
+targeted-reingest	Setup Python 3.13	2026-02-27T01:12:11.4124259Z env:
+targeted-reingest	Setup Python 3.13	2026-02-27T01:12:11.4124545Z   SUPABASE_URL: ***
+targeted-reingest	Setup Python 3.13	2026-02-27T01:12:11.4124889Z   SUPABASE_SERVICE_ROLE_KEY: ***
+targeted-reingest	Setup Python 3.13	2026-02-27T01:12:11.4125287Z   DATA_GO_KR_KEY: ***
+targeted-reingest	Setup Python 3.13	2026-02-27T01:12:11.4125978Z   DATABASE_URL: ***
+targeted-reingest	Setup Python 3.13	2026-02-27T01:12:11.4126247Z   INTERNAL_JOB_TOKEN: ***
+targeted-reingest	Setup Python 3.13	2026-02-27T01:12:11.4126500Z   API_BASE_URL: http://127.0.0.1:8100
+targeted-reingest	Setup Python 3.13	2026-02-27T01:12:11.4126861Z   TARGET_PAYLOAD: data/issue339_target_single_reingest_payload.json
+targeted-reingest	Setup Python 3.13	2026-02-27T01:12:11.4127234Z ##[endgroup]
+targeted-reingest	Setup Python 3.13	2026-02-27T01:12:11.5881068Z ##[group]Installed versions
+targeted-reingest	Setup Python 3.13	2026-02-27T01:12:11.6524451Z Successfully set up CPython (3.13.12)
+targeted-reingest	Setup Python 3.13	2026-02-27T01:12:11.6525559Z ##[endgroup]
+targeted-reingest	Create venv and install deps	﻿2026-02-27T01:12:11.6633694Z ##[group]Run python -m venv .venv
+targeted-reingest	Create venv and install deps	2026-02-27T01:12:11.6634072Z [36;1mpython -m venv .venv[0m
+targeted-reingest	Create venv and install deps	2026-02-27T01:12:11.6634383Z [36;1m.venv/bin/pip install -r requirements.txt[0m
+targeted-reingest	Create venv and install deps	2026-02-27T01:12:11.6766042Z shell: /usr/bin/bash -e {0}
+targeted-reingest	Create venv and install deps	2026-02-27T01:12:11.6766356Z env:
+targeted-reingest	Create venv and install deps	2026-02-27T01:12:11.6766846Z   SUPABASE_URL: ***
+targeted-reingest	Create venv and install deps	2026-02-27T01:12:11.6767223Z   SUPABASE_SERVICE_ROLE_KEY: ***
+targeted-reingest	Create venv and install deps	2026-02-27T01:12:11.6767670Z   DATA_GO_KR_KEY: ***
+targeted-reingest	Create venv and install deps	2026-02-27T01:12:11.6768717Z   DATABASE_URL: ***
+targeted-reingest	Create venv and install deps	2026-02-27T01:12:11.6769028Z   INTERNAL_JOB_TOKEN: ***
+targeted-reingest	Create venv and install deps	2026-02-27T01:12:11.6769309Z   API_BASE_URL: http://127.0.0.1:8100
+targeted-reingest	Create venv and install deps	2026-02-27T01:12:11.6769726Z   TARGET_PAYLOAD: data/issue339_target_single_reingest_payload.json
+targeted-reingest	Create venv and install deps	2026-02-27T01:12:11.6770207Z   pythonLocation: /opt/hostedtoolcache/Python/3.13.12/x64
+targeted-reingest	Create venv and install deps	2026-02-27T01:12:11.6770731Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.13.12/x64/lib/pkgconfig
+targeted-reingest	Create venv and install deps	2026-02-27T01:12:11.6771215Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.13.12/x64
+targeted-reingest	Create venv and install deps	2026-02-27T01:12:11.6771661Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.13.12/x64
+targeted-reingest	Create venv and install deps	2026-02-27T01:12:11.6772151Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.13.12/x64
+targeted-reingest	Create venv and install deps	2026-02-27T01:12:11.6772555Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.13.12/x64/lib
+targeted-reingest	Create venv and install deps	2026-02-27T01:12:11.6772888Z ##[endgroup]
+targeted-reingest	Create venv and install deps	2026-02-27T01:12:17.2041683Z Collecting fastapi==0.116.1 (from -r requirements.txt (line 1))
+targeted-reingest	Create venv and install deps	2026-02-27T01:12:17.3190213Z   Downloading fastapi-0.116.1-py3-none-any.whl.metadata (28 kB)
+targeted-reingest	Create venv and install deps	2026-02-27T01:12:17.3719307Z Collecting uvicorn==0.35.0 (from uvicorn[standard]==0.35.0->-r requirements.txt (line 2))
+targeted-reingest	Create venv and install deps	2026-02-27T01:12:17.3943599Z   Downloading uvicorn-0.35.0-py3-none-any.whl.metadata (6.5 kB)
+targeted-reingest	Create venv and install deps	2026-02-27T01:12:17.4190649Z Collecting psycopg==3.2.13 (from psycopg[binary]==3.2.13->-r requirements.txt (line 3))
+targeted-reingest	Create venv and install deps	2026-02-27T01:12:17.4414061Z   Downloading psycopg-3.2.13-py3-none-any.whl.metadata (4.5 kB)
+targeted-reingest	Create venv and install deps	2026-02-27T01:12:17.5683514Z Collecting pydantic==2.11.7 (from -r requirements.txt (line 4))
+targeted-reingest	Create venv and install deps	2026-02-27T01:12:17.5911220Z   Downloading pydantic-2.11.7-py3-none-any.whl.metadata (67 kB)
+targeted-reingest	Create venv and install deps	2026-02-27T01:12:17.6326762Z Collecting pydantic-settings==2.10.1 (from -r requirements.txt (line 5))
+targeted-reingest	Create venv and install deps	2026-02-27T01:12:17.6552829Z   Downloading pydantic_settings-2.10.1-py3-none-any.whl.metadata (3.4 kB)
+targeted-reingest	Create venv and install deps	2026-02-27T01:12:17.6782138Z Collecting python-dotenv==1.0.1 (from -r requirements.txt (line 6))
+targeted-reingest	Create venv and install deps	2026-02-27T01:12:17.7004872Z   Downloading python_dotenv-1.0.1-py3-none-any.whl.metadata (23 kB)
+targeted-reingest	Create venv and install deps	2026-02-27T01:12:17.7369618Z Collecting pytest==8.4.2 (from -r requirements.txt (line 8))
+targeted-reingest	Create venv and install deps	2026-02-27T01:12:17.7593442Z   Downloading pytest-8.4.2-py3-none-any.whl.metadata (7.7 kB)
+targeted-reingest	Create venv and install deps	2026-02-27T01:12:17.7813653Z Collecting httpx==0.28.1 (from -r requirements.txt (line 9))
+targeted-reingest	Create venv and install deps	2026-02-27T01:12:17.8040287Z   Downloading httpx-0.28.1-py3-none-any.whl.metadata (7.1 kB)
+targeted-reingest	Create venv and install deps	2026-02-27T01:12:17.8395553Z Collecting starlette<0.48.0,>=0.40.0 (from fastapi==0.116.1->-r requirements.txt (line 1))
+targeted-reingest	Create venv and install deps	2026-02-27T01:12:17.8617419Z   Downloading starlette-0.47.3-py3-none-any.whl.metadata (6.2 kB)
+targeted-reingest	Create venv and install deps	2026-02-27T01:12:17.9187142Z Collecting typing-extensions>=4.8.0 (from fastapi==0.116.1->-r requirements.txt (line 1))
+targeted-reingest	Create venv and install deps	2026-02-27T01:12:17.9409817Z   Downloading typing_extensions-4.15.0-py3-none-any.whl.metadata (3.3 kB)
+targeted-reingest	Create venv and install deps	2026-02-27T01:12:17.9532199Z Collecting annotated-types>=0.6.0 (from pydantic==2.11.7->-r requirements.txt (line 4))
+targeted-reingest	Create venv and install deps	2026-02-27T01:12:17.9754997Z   Downloading annotated_types-0.7.0-py3-none-any.whl.metadata (15 kB)
+targeted-reingest	Create venv and install deps	2026-02-27T01:12:18.6124881Z Collecting pydantic-core==2.33.2 (from pydantic==2.11.7->-r requirements.txt (line 4))
+targeted-reingest	Create venv and install deps	2026-02-27T01:12:18.6353610Z   Downloading pydantic_core-2.33.2-cp313-cp313-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (6.8 kB)
+targeted-reingest	Create venv and install deps	2026-02-27T01:12:18.6509498Z Collecting typing-inspection>=0.4.0 (from pydantic==2.11.7->-r requirements.txt (line 4))
+targeted-reingest	Create venv and install deps	2026-02-27T01:12:18.6735029Z   Downloading typing_inspection-0.4.2-py3-none-any.whl.metadata (2.6 kB)
+targeted-reingest	Create venv and install deps	2026-02-27T01:12:18.6970329Z Collecting click>=7.0 (from uvicorn==0.35.0->uvicorn[standard]==0.35.0->-r requirements.txt (line 2))
+targeted-reingest	Create venv and install deps	2026-02-27T01:12:18.7195709Z   Downloading click-8.3.1-py3-none-any.whl.metadata (2.6 kB)
+targeted-reingest	Create venv and install deps	2026-02-27T01:12:18.7336226Z Collecting h11>=0.8 (from uvicorn==0.35.0->uvicorn[standard]==0.35.0->-r requirements.txt (line 2))
+targeted-reingest	Create venv and install deps	2026-02-27T01:12:18.7560499Z   Downloading h11-0.16.0-py3-none-any.whl.metadata (8.3 kB)
+targeted-reingest	Create venv and install deps	2026-02-27T01:12:18.8099164Z Collecting iniconfig>=1 (from pytest==8.4.2->-r requirements.txt (line 8))
+targeted-reingest	Create venv and install deps	2026-02-27T01:12:18.8324989Z   Downloading iniconfig-2.3.0-py3-none-any.whl.metadata (2.5 kB)
+targeted-reingest	Create venv and install deps	2026-02-27T01:12:18.8539591Z Collecting packaging>=20 (from pytest==8.4.2->-r requirements.txt (line 8))
+targeted-reingest	Create venv and install deps	2026-02-27T01:12:18.8767268Z   Downloading packaging-26.0-py3-none-any.whl.metadata (3.3 kB)
+targeted-reingest	Create venv and install deps	2026-02-27T01:12:18.8996376Z Collecting pluggy<2,>=1.5 (from pytest==8.4.2->-r requirements.txt (line 8))
+targeted-reingest	Create venv and install deps	2026-02-27T01:12:18.9222096Z   Downloading pluggy-1.6.0-py3-none-any.whl.metadata (4.8 kB)
+targeted-reingest	Create venv and install deps	2026-02-27T01:12:18.9434252Z Collecting pygments>=2.7.2 (from pytest==8.4.2->-r requirements.txt (line 8))
+targeted-reingest	Create venv and install deps	2026-02-27T01:12:18.9658083Z   Downloading pygments-2.19.2-py3-none-any.whl.metadata (2.5 kB)
+targeted-reingest	Create venv and install deps	2026-02-27T01:12:18.9887633Z Collecting anyio (from httpx==0.28.1->-r requirements.txt (line 9))
+targeted-reingest	Create venv and install deps	2026-02-27T01:12:19.0111403Z   Downloading anyio-4.12.1-py3-none-any.whl.metadata (4.3 kB)
+targeted-reingest	Create venv and install deps	2026-02-27T01:12:19.0329293Z Collecting certifi (from httpx==0.28.1->-r requirements.txt (line 9))
+targeted-reingest	Create venv and install deps	2026-02-27T01:12:19.0552477Z   Downloading certifi-2026.2.25-py3-none-any.whl.metadata (2.5 kB)
+targeted-reingest	Create venv and install deps	2026-02-27T01:12:19.0757057Z Collecting httpcore==1.* (from httpx==0.28.1->-r requirements.txt (line 9))
+targeted-reingest	Create venv and install deps	2026-02-27T01:12:19.0981355Z   Downloading httpcore-1.0.9-py3-none-any.whl.metadata (21 kB)
+targeted-reingest	Create venv and install deps	2026-02-27T01:12:19.1157283Z Collecting idna (from httpx==0.28.1->-r requirements.txt (line 9))
+targeted-reingest	Create venv and install deps	2026-02-27T01:12:19.1382887Z   Downloading idna-3.11-py3-none-any.whl.metadata (8.4 kB)
+targeted-reingest	Create venv and install deps	2026-02-27T01:12:19.3037628Z Collecting psycopg-binary==3.2.13 (from psycopg[binary]==3.2.13->-r requirements.txt (line 3))
+targeted-reingest	Create venv and install deps	2026-02-27T01:12:19.3263782Z   Downloading psycopg_binary-3.2.13-cp313-cp313-manylinux2014_x86_64.manylinux_2_17_x86_64.whl.metadata (2.9 kB)
+targeted-reingest	Create venv and install deps	2026-02-27T01:12:19.3660278Z Collecting httptools>=0.6.3 (from uvicorn[standard]==0.35.0->-r requirements.txt (line 2))
+targeted-reingest	Create venv and install deps	2026-02-27T01:12:19.3883263Z   Downloading httptools-0.7.1-cp313-cp313-manylinux1_x86_64.manylinux_2_28_x86_64.manylinux_2_5_x86_64.whl.metadata (3.5 kB)
+targeted-reingest	Create venv and install deps	2026-02-27T01:12:19.4341376Z Collecting pyyaml>=5.1 (from uvicorn[standard]==0.35.0->-r requirements.txt (line 2))
+targeted-reingest	Create venv and install deps	2026-02-27T01:12:19.4565744Z   Downloading pyyaml-6.0.3-cp313-cp313-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (2.4 kB)
+targeted-reingest	Create venv and install deps	2026-02-27T01:12:19.4961846Z Collecting uvloop>=0.15.1 (from uvicorn[standard]==0.35.0->-r requirements.txt (line 2))
+targeted-reingest	Create venv and install deps	2026-02-27T01:12:19.5185384Z   Downloading uvloop-0.22.1-cp313-cp313-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (4.9 kB)
+targeted-reingest	Create venv and install deps	2026-02-27T01:12:19.6338243Z Collecting watchfiles>=0.13 (from uvicorn[standard]==0.35.0->-r requirements.txt (line 2))
+targeted-reingest	Create venv and install deps	2026-02-27T01:12:19.6565115Z   Downloading watchfiles-1.1.1-cp313-cp313-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (4.9 kB)
+targeted-reingest	Create venv and install deps	2026-02-27T01:12:19.7456399Z Collecting websockets>=10.4 (from uvicorn[standard]==0.35.0->-r requirements.txt (line 2))
+targeted-reingest	Create venv and install deps	2026-02-27T01:12:19.7682708Z   Downloading websockets-16.0-cp313-cp313-manylinux1_x86_64.manylinux_2_28_x86_64.manylinux_2_5_x86_64.whl.metadata (6.8 kB)
+targeted-reingest	Create venv and install deps	2026-02-27T01:12:19.8321802Z Downloading fastapi-0.116.1-py3-none-any.whl (95 kB)
+targeted-reingest	Create venv and install deps	2026-02-27T01:12:19.8633788Z Downloading pydantic-2.11.7-py3-none-any.whl (444 kB)
+targeted-reingest	Create venv and install deps	2026-02-27T01:12:19.9162902Z Downloading uvicorn-0.35.0-py3-none-any.whl (66 kB)
+targeted-reingest	Create venv and install deps	2026-02-27T01:12:19.9414959Z Downloading psycopg-3.2.13-py3-none-any.whl (206 kB)
+targeted-reingest	Create venv and install deps	2026-02-27T01:12:19.9692547Z Downloading pydantic_settings-2.10.1-py3-none-any.whl (45 kB)
+targeted-reingest	Create venv and install deps	2026-02-27T01:12:19.9938333Z Downloading python_dotenv-1.0.1-py3-none-any.whl (19 kB)
+targeted-reingest	Create venv and install deps	2026-02-27T01:12:20.0184663Z Downloading pytest-8.4.2-py3-none-any.whl (365 kB)
+targeted-reingest	Create venv and install deps	2026-02-27T01:12:20.0482258Z Downloading httpx-0.28.1-py3-none-any.whl (73 kB)
+targeted-reingest	Create venv and install deps	2026-02-27T01:12:20.0733235Z Downloading psycopg_binary-3.2.13-cp313-cp313-manylinux2014_x86_64.manylinux_2_17_x86_64.whl (4.4 MB)
+targeted-reingest	Create venv and install deps	2026-02-27T01:12:20.1357879Z    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 4.4/4.4 MB 71.9 MB/s  0:00:00
+targeted-reingest	Create venv and install deps	2026-02-27T01:12:20.1591039Z Downloading pydantic_core-2.33.2-cp313-cp313-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (2.0 MB)
+targeted-reingest	Create venv and install deps	2026-02-27T01:12:20.1719538Z    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 2.0/2.0 MB 179.6 MB/s  0:00:00
+targeted-reingest	Create venv and install deps	2026-02-27T01:12:20.1945518Z Downloading httpcore-1.0.9-py3-none-any.whl (78 kB)
+targeted-reingest	Create venv and install deps	2026-02-27T01:12:20.2195443Z Downloading pluggy-1.6.0-py3-none-any.whl (20 kB)
+targeted-reingest	Create venv and install deps	2026-02-27T01:12:20.2445420Z Downloading starlette-0.47.3-py3-none-any.whl (72 kB)
+targeted-reingest	Create venv and install deps	2026-02-27T01:12:20.2695432Z Downloading anyio-4.12.1-py3-none-any.whl (113 kB)
+targeted-reingest	Create venv and install deps	2026-02-27T01:12:20.2944976Z Downloading annotated_types-0.7.0-py3-none-any.whl (13 kB)
+targeted-reingest	Create venv and install deps	2026-02-27T01:12:20.3192576Z Downloading click-8.3.1-py3-none-any.whl (108 kB)
+targeted-reingest	Create venv and install deps	2026-02-27T01:12:20.3478799Z Downloading h11-0.16.0-py3-none-any.whl (37 kB)
+targeted-reingest	Create venv and install deps	2026-02-27T01:12:20.3737085Z Downloading httptools-0.7.1-cp313-cp313-manylinux1_x86_64.manylinux_2_28_x86_64.manylinux_2_5_x86_64.whl (478 kB)
+targeted-reingest	Create venv and install deps	2026-02-27T01:12:20.4022433Z Downloading idna-3.11-py3-none-any.whl (71 kB)
+targeted-reingest	Create venv and install deps	2026-02-27T01:12:20.4272407Z Downloading iniconfig-2.3.0-py3-none-any.whl (7.5 kB)
+targeted-reingest	Create venv and install deps	2026-02-27T01:12:20.4518835Z Downloading packaging-26.0-py3-none-any.whl (74 kB)
+targeted-reingest	Create venv and install deps	2026-02-27T01:12:20.4772306Z Downloading pygments-2.19.2-py3-none-any.whl (1.2 MB)
+targeted-reingest	Create venv and install deps	2026-02-27T01:12:20.4867884Z    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.2/1.2 MB 148.9 MB/s  0:00:00
+targeted-reingest	Create venv and install deps	2026-02-27T01:12:20.5101653Z Downloading pyyaml-6.0.3-cp313-cp313-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (801 kB)
+targeted-reingest	Create venv and install deps	2026-02-27T01:12:20.5181011Z    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 801.6/801.6 kB 102.8 MB/s  0:00:00
+targeted-reingest	Create venv and install deps	2026-02-27T01:12:20.5411390Z Downloading typing_extensions-4.15.0-py3-none-any.whl (44 kB)
+targeted-reingest	Create venv and install deps	2026-02-27T01:12:20.5670216Z Downloading typing_inspection-0.4.2-py3-none-any.whl (14 kB)
+targeted-reingest	Create venv and install deps	2026-02-27T01:12:20.5920660Z Downloading uvloop-0.22.1-cp313-cp313-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (4.4 MB)
+targeted-reingest	Create venv and install deps	2026-02-27T01:12:20.6247071Z    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 4.4/4.4 MB 138.6 MB/s  0:00:00
+targeted-reingest	Create venv and install deps	2026-02-27T01:12:20.6470257Z Downloading watchfiles-1.1.1-cp313-cp313-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (456 kB)
+targeted-reingest	Create venv and install deps	2026-02-27T01:12:20.6755881Z Downloading websockets-16.0-cp313-cp313-manylinux1_x86_64.manylinux_2_28_x86_64.manylinux_2_5_x86_64.whl (184 kB)
+targeted-reingest	Create venv and install deps	2026-02-27T01:12:20.7016876Z Downloading certifi-2026.2.25-py3-none-any.whl (153 kB)
+targeted-reingest	Create venv and install deps	2026-02-27T01:12:20.7900009Z Installing collected packages: websockets, uvloop, typing-extensions, pyyaml, python-dotenv, pygments, psycopg-binary, psycopg, pluggy, packaging, iniconfig, idna, httptools, h11, click, certifi, annotated-types, uvicorn, typing-inspection, pytest, pydantic-core, httpcore, anyio, watchfiles, starlette, pydantic, httpx, pydantic-settings, fastapi
+targeted-reingest	Create venv and install deps	2026-02-27T01:12:23.5341726Z 
+targeted-reingest	Create venv and install deps	2026-02-27T01:12:23.5383365Z Successfully installed annotated-types-0.7.0 anyio-4.12.1 certifi-2026.2.25 click-8.3.1 fastapi-0.116.1 h11-0.16.0 httpcore-1.0.9 httptools-0.7.1 httpx-0.28.1 idna-3.11 iniconfig-2.3.0 packaging-26.0 pluggy-1.6.0 psycopg-3.2.13 psycopg-binary-3.2.13 pydantic-2.11.7 pydantic-core-2.33.2 pydantic-settings-2.10.1 pygments-2.19.2 pytest-8.4.2 python-dotenv-1.0.1 pyyaml-6.0.3 starlette-0.47.3 typing-extensions-4.15.0 typing-inspection-0.4.2 uvicorn-0.35.0 uvloop-0.22.1 watchfiles-1.1.1 websockets-16.0
+targeted-reingest	Create venv and install deps	2026-02-27T01:12:23.6484164Z 
+targeted-reingest	Create venv and install deps	2026-02-27T01:12:23.6484876Z [notice] A new release of pip is available: 25.3 -> 26.0.1
+targeted-reingest	Create venv and install deps	2026-02-27T01:12:23.6485664Z [notice] To update, run: /home/runner/work/2026-/2026-/.venv/bin/python -m pip install --upgrade pip
+targeted-reingest	Build issue339 targeted payload (single record)	﻿2026-02-27T01:12:23.9353096Z ##[group]Run .venv/bin/python - <<'PY'
+targeted-reingest	Build issue339 targeted payload (single record)	2026-02-27T01:12:23.9353504Z [36;1m.venv/bin/python - <<'PY'[0m
+targeted-reingest	Build issue339 targeted payload (single record)	2026-02-27T01:12:23.9353772Z [36;1mimport json[0m
+targeted-reingest	Build issue339 targeted payload (single record)	2026-02-27T01:12:23.9353998Z [36;1mfrom pathlib import Path[0m
+targeted-reingest	Build issue339 targeted payload (single record)	2026-02-27T01:12:23.9354250Z [36;1m[0m
+targeted-reingest	Build issue339 targeted payload (single record)	2026-02-27T01:12:23.9354551Z [36;1msrc = Path("data/issue339_scenario_mix_reingest_payload.json")[0m
+targeted-reingest	Build issue339 targeted payload (single record)	2026-02-27T01:12:23.9355012Z [36;1mdst = Path("data/issue339_target_single_reingest_payload.json")[0m
+targeted-reingest	Build issue339 targeted payload (single record)	2026-02-27T01:12:23.9355443Z [36;1mpayload = json.loads(src.read_text(encoding="utf-8"))[0m
+targeted-reingest	Build issue339 targeted payload (single record)	2026-02-27T01:12:23.9355821Z [36;1mrecords = payload.get("records") or [][0m
+targeted-reingest	Build issue339 targeted payload (single record)	2026-02-27T01:12:23.9356098Z [36;1m[0m
+targeted-reingest	Build issue339 targeted payload (single record)	2026-02-27T01:12:23.9356280Z [36;1mtargets = [][0m
+targeted-reingest	Build issue339 targeted payload (single record)	2026-02-27T01:12:23.9356497Z [36;1mfor row in records:[0m
+targeted-reingest	Build issue339 targeted payload (single record)	2026-02-27T01:12:23.9356755Z [36;1m    obs = row.get("observation") or {}[0m
+targeted-reingest	Build issue339 targeted payload (single record)	2026-02-27T01:12:23.9357080Z [36;1m    if str(obs.get("region_code") or "") != "26-710":[0m
+targeted-reingest	Build issue339 targeted payload (single record)	2026-02-27T01:12:23.9357402Z [36;1m        continue[0m
+targeted-reingest	Build issue339 targeted payload (single record)	2026-02-27T01:12:23.9357705Z [36;1m    if str(obs.get("office_type") or "") != "기초자치단체장":[0m
+targeted-reingest	Build issue339 targeted payload (single record)	2026-02-27T01:12:23.9358026Z [36;1m        continue[0m
+targeted-reingest	Build issue339 targeted payload (single record)	2026-02-27T01:12:23.9358259Z [36;1m    targets.append(row)[0m
+targeted-reingest	Build issue339 targeted payload (single record)	2026-02-27T01:12:23.9358729Z [36;1m[0m
+targeted-reingest	Build issue339 targeted payload (single record)	2026-02-27T01:12:23.9358926Z [36;1mif len(targets) != 1:[0m
+targeted-reingest	Build issue339 targeted payload (single record)	2026-02-27T01:12:23.9359376Z [36;1m    raise SystemExit(f"expected exactly one target record for 26-710, got {len(targets)}")[0m
+targeted-reingest	Build issue339 targeted payload (single record)	2026-02-27T01:12:23.9359832Z [36;1m[0m
+targeted-reingest	Build issue339 targeted payload (single record)	2026-02-27T01:12:23.9360011Z [36;1mout = {[0m
+targeted-reingest	Build issue339 targeted payload (single record)	2026-02-27T01:12:23.9360268Z [36;1m    "run_type": "collector_issue339_target_single",[0m
+targeted-reingest	Build issue339 targeted payload (single record)	2026-02-27T01:12:23.9360674Z [36;1m    "extractor_version": "collector-issue339-target-single-v1",[0m
+targeted-reingest	Build issue339 targeted payload (single record)	2026-02-27T01:12:23.9361040Z [36;1m    "llm_model": None,[0m
+targeted-reingest	Build issue339 targeted payload (single record)	2026-02-27T01:12:23.9361288Z [36;1m    "records": targets,[0m
+targeted-reingest	Build issue339 targeted payload (single record)	2026-02-27T01:12:23.9361522Z [36;1m}[0m
+targeted-reingest	Build issue339 targeted payload (single record)	2026-02-27T01:12:23.9361773Z [36;1mdst.parent.mkdir(parents=True, exist_ok=True)[0m
+targeted-reingest	Build issue339 targeted payload (single record)	2026-02-27T01:12:23.9362449Z [36;1mdst.write_text(json.dumps(out, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")[0m
+targeted-reingest	Build issue339 targeted payload (single record)	2026-02-27T01:12:23.9363091Z [36;1mprint(json.dumps({"target_payload": str(dst), "record_count": len(targets)}, ensure_ascii=False))[0m
+targeted-reingest	Build issue339 targeted payload (single record)	2026-02-27T01:12:23.9363553Z [36;1mPY[0m
+targeted-reingest	Build issue339 targeted payload (single record)	2026-02-27T01:12:23.9363736Z [36;1m[0m
+targeted-reingest	Build issue339 targeted payload (single record)	2026-02-27T01:12:23.9364089Z [36;1mPYTHONPATH="." .venv/bin/python scripts/qa/normalize_ingest_payload_for_schedule.py \[0m
+targeted-reingest	Build issue339 targeted payload (single record)	2026-02-27T01:12:23.9364545Z [36;1m  --input "$TARGET_PAYLOAD" \[0m
+targeted-reingest	Build issue339 targeted payload (single record)	2026-02-27T01:12:23.9364826Z [36;1m  --output "$TARGET_PAYLOAD"[0m
+targeted-reingest	Build issue339 targeted payload (single record)	2026-02-27T01:12:23.9365072Z [36;1m[0m
+targeted-reingest	Build issue339 targeted payload (single record)	2026-02-27T01:12:23.9365272Z [36;1m.venv/bin/python - <<'PY'[0m
+targeted-reingest	Build issue339 targeted payload (single record)	2026-02-27T01:12:23.9365524Z [36;1mimport json[0m
+targeted-reingest	Build issue339 targeted payload (single record)	2026-02-27T01:12:23.9365749Z [36;1mfrom pathlib import Path[0m
+targeted-reingest	Build issue339 targeted payload (single record)	2026-02-27T01:12:23.9365985Z [36;1m[0m
+targeted-reingest	Build issue339 targeted payload (single record)	2026-02-27T01:12:23.9366300Z [36;1mpayload_path = Path("data/issue339_target_single_reingest_payload.json")[0m
+targeted-reingest	Build issue339 targeted payload (single record)	2026-02-27T01:12:23.9366800Z [36;1mroute_path = Path("data/issue339_target_single_route_report.json")[0m
+targeted-reingest	Build issue339 targeted payload (single record)	2026-02-27T01:12:23.9367264Z [36;1mpayload = json.loads(payload_path.read_text(encoding="utf-8"))[0m
+targeted-reingest	Build issue339 targeted payload (single record)	2026-02-27T01:12:23.9367610Z [36;1mroute = {[0m
+targeted-reingest	Build issue339 targeted payload (single record)	2026-02-27T01:12:23.9367881Z [36;1m    "source_mode": "collector_issue339_target_single",[0m
+targeted-reingest	Build issue339 targeted payload (single record)	2026-02-27T01:12:23.9368234Z [36;1m    "canonical_payload": str(payload_path),[0m
+targeted-reingest	Build issue339 targeted payload (single record)	2026-02-27T01:12:23.9368922Z [36;1m    "record_count": len(payload.get("records") or []),[0m
+targeted-reingest	Build issue339 targeted payload (single record)	2026-02-27T01:12:23.9369272Z [36;1m    "run_type": payload.get("run_type"),[0m
+targeted-reingest	Build issue339 targeted payload (single record)	2026-02-27T01:12:23.9369631Z [36;1m    "extractor_version": payload.get("extractor_version"),[0m
+targeted-reingest	Build issue339 targeted payload (single record)	2026-02-27T01:12:23.9369958Z [36;1m}[0m
+targeted-reingest	Build issue339 targeted payload (single record)	2026-02-27T01:12:23.9370346Z [36;1mroute_path.write_text(json.dumps(route, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")[0m
+targeted-reingest	Build issue339 targeted payload (single record)	2026-02-27T01:12:23.9370853Z [36;1mprint(json.dumps(route, ensure_ascii=False))[0m
+targeted-reingest	Build issue339 targeted payload (single record)	2026-02-27T01:12:23.9371143Z [36;1mPY[0m
+targeted-reingest	Build issue339 targeted payload (single record)	2026-02-27T01:12:23.9420678Z shell: /usr/bin/bash -e {0}
+targeted-reingest	Build issue339 targeted payload (single record)	2026-02-27T01:12:23.9421182Z env:
+targeted-reingest	Build issue339 targeted payload (single record)	2026-02-27T01:12:23.9421756Z   SUPABASE_URL: ***
+targeted-reingest	Build issue339 targeted payload (single record)	2026-02-27T01:12:23.9422100Z   SUPABASE_SERVICE_ROLE_KEY: ***
+targeted-reingest	Build issue339 targeted payload (single record)	2026-02-27T01:12:23.9422489Z   DATA_GO_KR_KEY: ***
+targeted-reingest	Build issue339 targeted payload (single record)	2026-02-27T01:12:23.9423200Z   DATABASE_URL: ***
+targeted-reingest	Build issue339 targeted payload (single record)	2026-02-27T01:12:23.9423475Z   INTERNAL_JOB_TOKEN: ***
+targeted-reingest	Build issue339 targeted payload (single record)	2026-02-27T01:12:23.9423730Z   API_BASE_URL: http://127.0.0.1:8100
+targeted-reingest	Build issue339 targeted payload (single record)	2026-02-27T01:12:23.9424086Z   TARGET_PAYLOAD: data/issue339_target_single_reingest_payload.json
+targeted-reingest	Build issue339 targeted payload (single record)	2026-02-27T01:12:23.9424516Z   pythonLocation: /opt/hostedtoolcache/Python/3.13.12/x64
+targeted-reingest	Build issue339 targeted payload (single record)	2026-02-27T01:12:23.9424939Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.13.12/x64/lib/pkgconfig
+targeted-reingest	Build issue339 targeted payload (single record)	2026-02-27T01:12:23.9425446Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.13.12/x64
+targeted-reingest	Build issue339 targeted payload (single record)	2026-02-27T01:12:23.9425857Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.13.12/x64
+targeted-reingest	Build issue339 targeted payload (single record)	2026-02-27T01:12:23.9426230Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.13.12/x64
+targeted-reingest	Build issue339 targeted payload (single record)	2026-02-27T01:12:23.9426610Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.13.12/x64/lib
+targeted-reingest	Build issue339 targeted payload (single record)	2026-02-27T01:12:23.9426942Z ##[endgroup]
+targeted-reingest	Build issue339 targeted payload (single record)	2026-02-27T01:12:23.9750243Z {"target_payload": "data/issue339_target_single_reingest_payload.json", "record_count": 1}
+targeted-reingest	Build issue339 targeted payload (single record)	2026-02-27T01:12:24.0470593Z {"source_mode": "collector_issue339_target_single", "canonical_payload": "data/issue339_target_single_reingest_payload.json", "record_count": 1, "run_type": "collector_issue339_target_single", "extractor_version": "collector-issue339-target-single-v1"}
+targeted-reingest	Start API server	﻿2026-02-27T01:12:24.0542147Z ##[group]Run nohup .venv/bin/uvicorn app.main:app --host 127.0.0.1 --port 8100 >/tmp/collector-issue339-targeted-api.log 2>&1 &
+targeted-reingest	Start API server	2026-02-27T01:12:24.0543115Z [36;1mnohup .venv/bin/uvicorn app.main:app --host 127.0.0.1 --port 8100 >/tmp/collector-issue339-targeted-api.log 2>&1 &[0m
+targeted-reingest	Start API server	2026-02-27T01:12:24.0543690Z [36;1mfor _ in $(seq 1 30); do[0m
+targeted-reingest	Start API server	2026-02-27T01:12:24.0544083Z [36;1m  if curl -fsS http://127.0.0.1:8100/health >/dev/null 2>&1; then[0m
+targeted-reingest	Start API server	2026-02-27T01:12:24.0544472Z [36;1m    exit 0[0m
+targeted-reingest	Start API server	2026-02-27T01:12:24.0544697Z [36;1m  fi[0m
+targeted-reingest	Start API server	2026-02-27T01:12:24.0545101Z [36;1m  sleep 1[0m
+targeted-reingest	Start API server	2026-02-27T01:12:24.0545315Z [36;1mdone[0m
+targeted-reingest	Start API server	2026-02-27T01:12:24.0545563Z [36;1mecho "::error::API server failed to start"[0m
+targeted-reingest	Start API server	2026-02-27T01:12:24.0545870Z [36;1mexit 1[0m
+targeted-reingest	Start API server	2026-02-27T01:12:24.0595716Z shell: /usr/bin/bash -e {0}
+targeted-reingest	Start API server	2026-02-27T01:12:24.0595991Z env:
+targeted-reingest	Start API server	2026-02-27T01:12:24.0596373Z   SUPABASE_URL: ***
+targeted-reingest	Start API server	2026-02-27T01:12:24.0596736Z   SUPABASE_SERVICE_ROLE_KEY: ***
+targeted-reingest	Start API server	2026-02-27T01:12:24.0597156Z   DATA_GO_KR_KEY: ***
+targeted-reingest	Start API server	2026-02-27T01:12:24.0597976Z   DATABASE_URL: ***
+targeted-reingest	Start API server	2026-02-27T01:12:24.0598270Z   INTERNAL_JOB_TOKEN: ***
+targeted-reingest	Start API server	2026-02-27T01:12:24.0598819Z   API_BASE_URL: http://127.0.0.1:8100
+targeted-reingest	Start API server	2026-02-27T01:12:24.0599218Z   TARGET_PAYLOAD: data/issue339_target_single_reingest_payload.json
+targeted-reingest	Start API server	2026-02-27T01:12:24.0599685Z   pythonLocation: /opt/hostedtoolcache/Python/3.13.12/x64
+targeted-reingest	Start API server	2026-02-27T01:12:24.0600138Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.13.12/x64/lib/pkgconfig
+targeted-reingest	Start API server	2026-02-27T01:12:24.0600586Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.13.12/x64
+targeted-reingest	Start API server	2026-02-27T01:12:24.0601002Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.13.12/x64
+targeted-reingest	Start API server	2026-02-27T01:12:24.0601403Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.13.12/x64
+targeted-reingest	Start API server	2026-02-27T01:12:24.0601807Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.13.12/x64/lib
+targeted-reingest	Start API server	2026-02-27T01:12:24.0602142Z ##[endgroup]
+targeted-reingest	DB preflight via health/db	﻿2026-02-27T01:12:26.1150586Z ##[group]Run DB_HEALTH_STATUS="$(curl -sS -o /tmp/collector-issue339-health-db.json -w "%{http_code}" http://127.0.0.1:8100/health/db || true)"
+targeted-reingest	DB preflight via health/db	2026-02-27T01:12:26.1151666Z [36;1mDB_HEALTH_STATUS="$(curl -sS -o /tmp/collector-issue339-health-db.json -w "%{http_code}" http://127.0.0.1:8100/health/db || true)"[0m
+targeted-reingest	DB preflight via health/db	2026-02-27T01:12:26.1152349Z [36;1mecho "health_db_http_status=${DB_HEALTH_STATUS}"[0m
+targeted-reingest	DB preflight via health/db	2026-02-27T01:12:26.1152766Z [36;1mecho "===== /tmp/collector-issue339-health-db.json ====="[0m
+targeted-reingest	DB preflight via health/db	2026-02-27T01:12:26.1153196Z [36;1mcat /tmp/collector-issue339-health-db.json || true[0m
+targeted-reingest	DB preflight via health/db	2026-02-27T01:12:26.1153568Z [36;1mif [ "${DB_HEALTH_STATUS}" != "200" ]; then[0m
+targeted-reingest	DB preflight via health/db	2026-02-27T01:12:26.1154022Z [36;1m  echo "::error::DB preflight failed (/health/db status=${DB_HEALTH_STATUS})"[0m
+targeted-reingest	DB preflight via health/db	2026-02-27T01:12:26.1154465Z [36;1m  exit 1[0m
+targeted-reingest	DB preflight via health/db	2026-02-27T01:12:26.1154683Z [36;1mfi[0m
+targeted-reingest	DB preflight via health/db	2026-02-27T01:12:26.1204636Z shell: /usr/bin/bash -e {0}
+targeted-reingest	DB preflight via health/db	2026-02-27T01:12:26.1204920Z env:
+targeted-reingest	DB preflight via health/db	2026-02-27T01:12:26.1205304Z   SUPABASE_URL: ***
+targeted-reingest	DB preflight via health/db	2026-02-27T01:12:26.1205729Z   SUPABASE_SERVICE_ROLE_KEY: ***
+targeted-reingest	DB preflight via health/db	2026-02-27T01:12:26.1206154Z   DATA_GO_KR_KEY: ***
+targeted-reingest	DB preflight via health/db	2026-02-27T01:12:26.1206913Z   DATABASE_URL: ***
+targeted-reingest	DB preflight via health/db	2026-02-27T01:12:26.1207200Z   INTERNAL_JOB_TOKEN: ***
+targeted-reingest	DB preflight via health/db	2026-02-27T01:12:26.1207464Z   API_BASE_URL: http://127.0.0.1:8100
+targeted-reingest	DB preflight via health/db	2026-02-27T01:12:26.1207852Z   TARGET_PAYLOAD: data/issue339_target_single_reingest_payload.json
+targeted-reingest	DB preflight via health/db	2026-02-27T01:12:26.1208328Z   pythonLocation: /opt/hostedtoolcache/Python/3.13.12/x64
+targeted-reingest	DB preflight via health/db	2026-02-27T01:12:26.1209264Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.13.12/x64/lib/pkgconfig
+targeted-reingest	DB preflight via health/db	2026-02-27T01:12:26.1209764Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.13.12/x64
+targeted-reingest	DB preflight via health/db	2026-02-27T01:12:26.1210197Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.13.12/x64
+targeted-reingest	DB preflight via health/db	2026-02-27T01:12:26.1210615Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.13.12/x64
+targeted-reingest	DB preflight via health/db	2026-02-27T01:12:26.1211036Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.13.12/x64/lib
+targeted-reingest	DB preflight via health/db	2026-02-27T01:12:26.1211386Z ##[endgroup]
+targeted-reingest	DB preflight via health/db	2026-02-27T01:12:28.0221752Z health_db_http_status=200
+targeted-reingest	DB preflight via health/db	2026-02-27T01:12:28.0222433Z ===== /tmp/collector-issue339-health-db.json =====
+targeted-reingest	DB preflight via health/db	2026-02-27T01:12:28.0237749Z {"status":"ok","db":"ok","ping":true,"bootstrap":{"enabled":false,"attempted":false,"ok":null,"detail":"disabled"}}
+targeted-reingest	Run issue339 targeted ingest with retry	﻿2026-02-27T01:12:28.0264535Z ##[group]Run .venv/bin/python scripts/qa/run_ingest_with_retry.py \
+targeted-reingest	Run issue339 targeted ingest with retry	2026-02-27T01:12:28.0265054Z [36;1m.venv/bin/python scripts/qa/run_ingest_with_retry.py \[0m
+targeted-reingest	Run issue339 targeted ingest with retry	2026-02-27T01:12:28.0265422Z [36;1m  --api-base "$API_BASE_URL" \[0m
+targeted-reingest	Run issue339 targeted ingest with retry	2026-02-27T01:12:28.0265711Z [36;1m  --input "$TARGET_PAYLOAD" \[0m
+targeted-reingest	Run issue339 targeted ingest with retry	2026-02-27T01:12:28.0265983Z [36;1m  --max-retries 2 \[0m
+targeted-reingest	Run issue339 targeted ingest with retry	2026-02-27T01:12:28.0266231Z [36;1m  --backoff-seconds 1 \[0m
+targeted-reingest	Run issue339 targeted ingest with retry	2026-02-27T01:12:28.0266654Z [36;1m  --timeout 90 \[0m
+targeted-reingest	Run issue339 targeted ingest with retry	2026-02-27T01:12:28.0266905Z [36;1m  --timeout-scale-on-timeout 1.5 \[0m
+targeted-reingest	Run issue339 targeted ingest with retry	2026-02-27T01:12:28.0267192Z [36;1m  --timeout-max 240 \[0m
+targeted-reingest	Run issue339 targeted ingest with retry	2026-02-27T01:12:28.0267598Z [36;1m  --classification-artifact data/issue339_targeted_failure_classification.json \[0m
+targeted-reingest	Run issue339 targeted ingest with retry	2026-02-27T01:12:28.0268185Z [36;1m  --comment-template-path data/issue339_targeted_failure_comment_template.md \[0m
+targeted-reingest	Run issue339 targeted ingest with retry	2026-02-27T01:12:28.0268926Z [36;1m  --dead-letter-dir data/dead_letter \[0m
+targeted-reingest	Run issue339 targeted ingest with retry	2026-02-27T01:12:28.0269280Z [36;1m  --report data/issue339_targeted_ingest_report.json[0m
+targeted-reingest	Run issue339 targeted ingest with retry	2026-02-27T01:12:28.0320709Z shell: /usr/bin/bash -e {0}
+targeted-reingest	Run issue339 targeted ingest with retry	2026-02-27T01:12:28.0320970Z env:
+targeted-reingest	Run issue339 targeted ingest with retry	2026-02-27T01:12:28.0321330Z   SUPABASE_URL: ***
+targeted-reingest	Run issue339 targeted ingest with retry	2026-02-27T01:12:28.0321669Z   SUPABASE_SERVICE_ROLE_KEY: ***
+targeted-reingest	Run issue339 targeted ingest with retry	2026-02-27T01:12:28.0322061Z   DATA_GO_KR_KEY: ***
+targeted-reingest	Run issue339 targeted ingest with retry	2026-02-27T01:12:28.0322761Z   DATABASE_URL: ***
+targeted-reingest	Run issue339 targeted ingest with retry	2026-02-27T01:12:28.0323078Z   INTERNAL_JOB_TOKEN: ***
+targeted-reingest	Run issue339 targeted ingest with retry	2026-02-27T01:12:28.0323328Z   API_BASE_URL: http://127.0.0.1:8100
+targeted-reingest	Run issue339 targeted ingest with retry	2026-02-27T01:12:28.0323718Z   TARGET_PAYLOAD: data/issue339_target_single_reingest_payload.json
+targeted-reingest	Run issue339 targeted ingest with retry	2026-02-27T01:12:28.0324143Z   pythonLocation: /opt/hostedtoolcache/Python/3.13.12/x64
+targeted-reingest	Run issue339 targeted ingest with retry	2026-02-27T01:12:28.0324561Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.13.12/x64/lib/pkgconfig
+targeted-reingest	Run issue339 targeted ingest with retry	2026-02-27T01:12:28.0324984Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.13.12/x64
+targeted-reingest	Run issue339 targeted ingest with retry	2026-02-27T01:12:28.0325366Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.13.12/x64
+targeted-reingest	Run issue339 targeted ingest with retry	2026-02-27T01:12:28.0325745Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.13.12/x64
+targeted-reingest	Run issue339 targeted ingest with retry	2026-02-27T01:12:28.0326132Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.13.12/x64/lib
+targeted-reingest	Run issue339 targeted ingest with retry	2026-02-27T01:12:28.0326465Z ##[endgroup]
+targeted-reingest	Run issue339 targeted ingest with retry	2026-02-27T01:12:28.1562587Z {"channel": "ingest_runner_heartbeat", "event": "script_start", "ts": "2026-02-27T01:12:28.155761+00:00", "source_input_path": "data/issue339_target_single_reingest_payload.json", "report_path": "data/issue339_targeted_ingest_report.json"}
+targeted-reingest	Run issue339 targeted ingest with retry	2026-02-27T01:12:28.1564994Z {"channel": "ingest_runner_heartbeat", "ts": "2026-02-27T01:12:28.155858+00:00", "event": "run_start", "api_base_url": "http://127.0.0.1:8100", "max_attempts": 3, "max_retries": 2, "initial_request_timeout_seconds": 90.0, "timeout_max_seconds": 240.0}
+targeted-reingest	Run issue339 targeted ingest with retry	2026-02-27T01:12:28.1566842Z {"channel": "ingest_runner_heartbeat", "ts": "2026-02-27T01:12:28.155894+00:00", "event": "attempt_start", "attempt": 1, "max_attempts": 3, "request_timeout_seconds": 90.0}
+targeted-reingest	Run issue339 targeted ingest with retry	2026-02-27T01:12:58.1568011Z {"channel": "ingest_runner_heartbeat", "ts": "2026-02-27T01:12:58.156362+00:00", "event": "attempt_waiting", "attempt": 1, "heartbeat_tick": 1, "elapsed_seconds": 30.0, "request_timeout_seconds": 90.0}
+targeted-reingest	Run issue339 targeted ingest with retry	2026-02-27T01:13:19.6552897Z {"channel": "ingest_runner_heartbeat", "ts": "2026-02-27T01:13:19.654928+00:00", "event": "attempt_result", "attempt": 1, "http_status": 200, "job_status": "success", "failure_class": null, "failure_type": null, "cause_code": null, "retryable": false, "duration_seconds": 51.499, "next_backoff_seconds": null, "error": null, "detail": null}
+targeted-reingest	Run issue339 targeted ingest with retry	2026-02-27T01:13:19.6555850Z {"channel": "ingest_runner_heartbeat", "ts": "2026-02-27T01:13:19.654977+00:00", "event": "run_end", "success": true, "elapsed_seconds": 51.499, "attempt_count": 1}
+targeted-reingest	Run issue339 targeted ingest with retry	2026-02-27T01:13:19.6559138Z {"success": true, "raw_success": true, "report": "data/issue339_targeted_ingest_report.json", "attempt_count": 1, "failure_class": null, "failure_type": null, "cause_code": null, "failure_reason": null, "last_attempt": {"attempt": 1, "http_status": 200, "job_status": "success", "cause_code": null, "error": null, "detail": null}, "classification_artifact": "data/issue339_targeted_failure_classification.json", "elapsed_seconds": 51.5}
+targeted-reingest	Upload targeted ingest artifact	﻿2026-02-27T01:13:19.6894419Z ##[group]Run actions/upload-artifact@v4
+targeted-reingest	Upload targeted ingest artifact	2026-02-27T01:13:19.6894742Z with:
+targeted-reingest	Upload targeted ingest artifact	2026-02-27T01:13:19.6894989Z   name: collector-issue339-targeted-reingest-report
+targeted-reingest	Upload targeted ingest artifact	2026-02-27T01:13:19.6896085Z   path: data/issue339_target_single_reingest_payload.json
+targeted-reingest	Upload targeted ingest artifact	data/issue339_target_single_route_report.json
+targeted-reingest	Upload targeted ingest artifact	data/issue339_targeted_ingest_report.json
+targeted-reingest	Upload targeted ingest artifact	data/issue339_targeted_failure_classification.json
+targeted-reingest	Upload targeted ingest artifact	data/issue339_targeted_failure_comment_template.md
+targeted-reingest	Upload targeted ingest artifact	data/dead_letter/*.json
+targeted-reingest	Upload targeted ingest artifact	
+targeted-reingest	Upload targeted ingest artifact	2026-02-27T01:13:19.6897350Z   if-no-files-found: ignore
+targeted-reingest	Upload targeted ingest artifact	2026-02-27T01:13:19.6897588Z   compression-level: 6
+targeted-reingest	Upload targeted ingest artifact	2026-02-27T01:13:19.6897802Z   overwrite: false
+targeted-reingest	Upload targeted ingest artifact	2026-02-27T01:13:19.6898010Z   include-hidden-files: false
+targeted-reingest	Upload targeted ingest artifact	2026-02-27T01:13:19.6898236Z env:
+targeted-reingest	Upload targeted ingest artifact	2026-02-27T01:13:19.6898835Z   SUPABASE_URL: ***
+targeted-reingest	Upload targeted ingest artifact	2026-02-27T01:13:19.6899157Z   SUPABASE_SERVICE_ROLE_KEY: ***
+targeted-reingest	Upload targeted ingest artifact	2026-02-27T01:13:19.6899535Z   DATA_GO_KR_KEY: ***
+targeted-reingest	Upload targeted ingest artifact	2026-02-27T01:13:19.6900194Z   DATABASE_URL: ***
+targeted-reingest	Upload targeted ingest artifact	2026-02-27T01:13:19.6900460Z   INTERNAL_JOB_TOKEN: ***
+targeted-reingest	Upload targeted ingest artifact	2026-02-27T01:13:19.6900704Z   API_BASE_URL: http://127.0.0.1:8100
+targeted-reingest	Upload targeted ingest artifact	2026-02-27T01:13:19.6901096Z   TARGET_PAYLOAD: data/issue339_target_single_reingest_payload.json
+targeted-reingest	Upload targeted ingest artifact	2026-02-27T01:13:19.6901510Z   pythonLocation: /opt/hostedtoolcache/Python/3.13.12/x64
+targeted-reingest	Upload targeted ingest artifact	2026-02-27T01:13:19.6901915Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.13.12/x64/lib/pkgconfig
+targeted-reingest	Upload targeted ingest artifact	2026-02-27T01:13:19.6902334Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.13.12/x64
+targeted-reingest	Upload targeted ingest artifact	2026-02-27T01:13:19.6902704Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.13.12/x64
+targeted-reingest	Upload targeted ingest artifact	2026-02-27T01:13:19.6903072Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.13.12/x64
+targeted-reingest	Upload targeted ingest artifact	2026-02-27T01:13:19.6903442Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.13.12/x64/lib
+targeted-reingest	Upload targeted ingest artifact	2026-02-27T01:13:19.6903754Z ##[endgroup]
+targeted-reingest	Upload targeted ingest artifact	2026-02-27T01:13:19.9222428Z Multiple search paths detected. Calculating the least common ancestor of all paths
+targeted-reingest	Upload targeted ingest artifact	2026-02-27T01:13:19.9230271Z The least common ancestor is /home/runner/work/2026-/2026-/data. This will be the root directory of the artifact
+targeted-reingest	Upload targeted ingest artifact	2026-02-27T01:13:19.9230845Z With the provided path, there will be 4 files uploaded
+targeted-reingest	Upload targeted ingest artifact	2026-02-27T01:13:19.9232259Z Artifact name is valid!
+targeted-reingest	Upload targeted ingest artifact	2026-02-27T01:13:19.9234196Z Root directory input is valid!
+targeted-reingest	Upload targeted ingest artifact	2026-02-27T01:13:20.0401400Z Beginning upload of artifact content to blob storage
+targeted-reingest	Upload targeted ingest artifact	2026-02-27T01:13:20.1678939Z Uploaded bytes 3722
+targeted-reingest	Upload targeted ingest artifact	2026-02-27T01:13:20.2008522Z Finished uploading artifact content to blob storage!
+targeted-reingest	Upload targeted ingest artifact	2026-02-27T01:13:20.2011532Z SHA256 digest of uploaded artifact zip is 89a4aa6441543b5eb50774238e158b69bfe0f023b8e048e4305c2342dd5fe726
+targeted-reingest	Upload targeted ingest artifact	2026-02-27T01:13:20.2013090Z Finalizing artifact upload
+targeted-reingest	Upload targeted ingest artifact	2026-02-27T01:13:20.3302247Z Artifact collector-issue339-targeted-reingest-report.zip successfully finalized. Artifact ID 5683177791
+targeted-reingest	Upload targeted ingest artifact	2026-02-27T01:13:20.3304077Z Artifact collector-issue339-targeted-reingest-report has been successfully uploaded! Final size is 3722 bytes. Artifact ID is 5683177791
+targeted-reingest	Upload targeted ingest artifact	2026-02-27T01:13:20.3310925Z Artifact download URL: https://github.com/iAmSomething/2026-/actions/runs/22468417899/artifacts/5683177791
+targeted-reingest	Post Setup Python 3.13	﻿2026-02-27T01:13:20.3440193Z Post job cleanup.
+targeted-reingest	Post Checkout	﻿2026-02-27T01:13:20.5196136Z Post job cleanup.
+targeted-reingest	Post Checkout	2026-02-27T01:13:20.6200018Z [command]/usr/bin/git version
+targeted-reingest	Post Checkout	2026-02-27T01:13:20.6238969Z git version 2.53.0
+targeted-reingest	Post Checkout	2026-02-27T01:13:20.6287337Z Temporarily overriding HOME='/home/runner/work/_temp/2059e384-b083-4f0f-87cb-b3d2b27e9249' before making global git config changes
+targeted-reingest	Post Checkout	2026-02-27T01:13:20.6288530Z Adding repository directory to the temporary git global config as a safe directory
+targeted-reingest	Post Checkout	2026-02-27T01:13:20.6304067Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/2026-/2026-
+targeted-reingest	Post Checkout	2026-02-27T01:13:20.6344688Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+targeted-reingest	Post Checkout	2026-02-27T01:13:20.6380324Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+targeted-reingest	Post Checkout	2026-02-27T01:13:20.6705344Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+targeted-reingest	Post Checkout	2026-02-27T01:13:20.6730256Z http.https://github.com/.extraheader
+targeted-reingest	Post Checkout	2026-02-27T01:13:20.6743544Z [command]/usr/bin/git config --local --unset-all http.https://github.com/.extraheader
+targeted-reingest	Post Checkout	2026-02-27T01:13:20.6776253Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+targeted-reingest	Post Checkout	2026-02-27T01:13:20.7025118Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+targeted-reingest	Post Checkout	2026-02-27T01:13:20.7058986Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+targeted-reingest	Complete job	﻿2026-02-27T01:13:20.7422634Z Cleaning up orphan processes
+targeted-reingest	Complete job	2026-02-27T01:13:20.7726126Z Terminate orphan process: pid (2366) (uvicorn)
