@@ -264,3 +264,33 @@ def test_safe_collect_periodical_uses_48h_release_gate(tmp_path: Path) -> None:
     assert out["report"]["counts"]["eligible_48h_total"] == 0
     assert out["report"]["counts"]["pending_official_release_count"] == 1
     assert out["data"]["pending_records"][0]["collect_status"] == "pending_official_release"
+    pending = out["data"]["pending_records"][0]
+    assert pending["pending_reason_code"] == "release_not_open"
+    assert pending["retry_schedule_hours"] == [2, 6, 24]
+    assert pending["retry_plan"][0]["retry_after_hours"] == 2
+    assert pending["retry_plan"][0]["due"] is False
+    assert pending["earliest_release_at_kst"] is not None
+    assert out["report"]["pending_reason_counts"]["release_not_open"] == 1
+
+
+def test_safe_collect_missing_adapter_routes_pdf_pending_reason(tmp_path: Path) -> None:
+    registry = {"records": [_registry_row(ntt_id="1", pollster="A", eligible=True)]}
+    adapter = {"records": []}
+
+    reg_path = tmp_path / "registry.json"
+    adp_path = tmp_path / "adapter.json"
+    reg_path.write_text(json.dumps(registry, ensure_ascii=False), encoding="utf-8")
+    adp_path.write_text(json.dumps(adapter, ensure_ascii=False), encoding="utf-8")
+
+    out = generate_nesdc_safe_collect_v1(
+        registry_path=str(reg_path),
+        adapter_path=str(adp_path),
+        as_of_kst=datetime(2026, 2, 23, 12, 0, tzinfo=KST),
+    )
+
+    assert out["report"]["counts"]["pdf_pending_count"] == 1
+    assert out["report"]["pending_reason_counts"]["pdf_pending"] == 1
+    record = out["data"]["records"][0]
+    assert record["pending_reason_code"] == "pdf_pending"
+    assert record["retry_schedule_hours"] == [2, 6, 24]
+    assert out["review_queue_candidates"][0]["error_code"] == "pdf_pending"

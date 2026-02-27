@@ -9,11 +9,20 @@
       "first_publish_at_kst": "2026-02-16 08:00",
       "release_policy_hours": 24,
       "release_at_kst": "2026-02-18T08:00:00+09:00",
+      "earliest_release_at_kst": "2026-02-18T08:00:00+09:00",
       "release_gate_passed": true,
       "collect_status": "collected",
       "safe_window_eligible": true,
+      "pending_reason_code": null,
       "source_channel": "nesdc",
       "detail_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17457&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=1",
+      "retry_schedule_hours": [
+        2,
+        6,
+        24
+      ],
+      "retry_plan": [],
+      "next_retry_at_kst": null,
       "legal_meta": {
         "survey_datetime": "2026-02-14 12 시 45 분 ~ 21 시 50 분 2026-02-15 11 시 10 분 ~ 15 시 05 분",
         "survey_population": "전국 만 18세 이상 남녀",
@@ -278,11 +287,20 @@
       "first_publish_at_kst": "2026-02-16 00:00",
       "release_policy_hours": 24,
       "release_at_kst": "2026-02-18T00:00:00+09:00",
+      "earliest_release_at_kst": "2026-02-18T00:00:00+09:00",
       "release_gate_passed": true,
       "collect_status": "collected_template_fallback",
       "safe_window_eligible": true,
+      "pending_reason_code": null,
       "source_channel": "nesdc",
       "detail_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17456&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=1",
+      "retry_schedule_hours": [
+        2,
+        6,
+        24
+      ],
+      "retry_plan": [],
+      "next_retry_at_kst": null,
       "legal_meta": {
         "survey_datetime": "2026-02-13 14 시 30 분 ~ 21 시 00 분 2026-02-14 13 시 00 분 ~ 18 시 15 분",
         "survey_population": "경상북도 포항시에 거주하는 만 18세 이상 남녀",
@@ -547,11 +565,20 @@
       "first_publish_at_kst": "2026-02-15 20:00",
       "release_policy_hours": 24,
       "release_at_kst": "2026-02-17T20:00:00+09:00",
+      "earliest_release_at_kst": "2026-02-17T20:00:00+09:00",
       "release_gate_passed": true,
       "collect_status": "collected_template_fallback",
       "safe_window_eligible": true,
+      "pending_reason_code": null,
       "source_channel": "nesdc",
       "detail_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17399&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=1",
+      "retry_schedule_hours": [
+        2,
+        6,
+        24
+      ],
+      "retry_plan": [],
+      "next_retry_at_kst": null,
       "legal_meta": {
         "survey_datetime": "2026-02-10 10 시 01 분 ~ 20 시 32 분 2026-02-11 10 시 05 분 ~ 15 시 26 분",
         "survey_population": "광주광역시, 전라남도에 거주하는 만 18세 이상 남녀",
@@ -816,11 +843,36 @@
       "first_publish_at_kst": "2026-02-15 12:00",
       "release_policy_hours": 24,
       "release_at_kst": "2026-02-17T12:00:00+09:00",
+      "earliest_release_at_kst": "2026-02-17T12:00:00+09:00",
       "release_gate_passed": true,
       "collect_status": "fallback_collected",
       "safe_window_eligible": true,
+      "pending_reason_code": "pdf_pending",
       "source_channel": "nesdc",
       "detail_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17453&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=1",
+      "retry_schedule_hours": [
+        2,
+        6,
+        24
+      ],
+      "retry_plan": [
+        {
+          "retry_after_hours": 2,
+          "retry_at_kst": "2026-02-17T14:00:00+09:00",
+          "due": true
+        },
+        {
+          "retry_after_hours": 6,
+          "retry_at_kst": "2026-02-17T18:00:00+09:00",
+          "due": true
+        },
+        {
+          "retry_after_hours": 24,
+          "retry_at_kst": "2026-02-18T12:00:00+09:00",
+          "due": true
+        }
+      ],
+      "next_retry_at_kst": null,
       "legal_meta": {
         "survey_datetime": "2026-02-13 10 시 00 분 ~ 21 시 00 분 2026-02-14 10 시 00 분 ~ 20 시 00 분",
         "survey_population": "전북특별자치도 전주시 거주하는 만 18세 이상 남녀",
@@ -844,11 +896,36 @@
       "first_publish_at_kst": "2026-02-16 16:00",
       "release_policy_hours": 24,
       "release_at_kst": "2026-02-18T16:00:00+09:00",
+      "earliest_release_at_kst": "2026-02-18T16:00:00+09:00",
       "release_gate_passed": true,
       "collect_status": "fallback_collected",
       "safe_window_eligible": true,
+      "pending_reason_code": "pdf_pending",
       "source_channel": "nesdc",
       "detail_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17451&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=1",
+      "retry_schedule_hours": [
+        2,
+        6,
+        24
+      ],
+      "retry_plan": [
+        {
+          "retry_after_hours": 2,
+          "retry_at_kst": "2026-02-18T18:00:00+09:00",
+          "due": true
+        },
+        {
+          "retry_after_hours": 6,
+          "retry_at_kst": "2026-02-18T22:00:00+09:00",
+          "due": true
+        },
+        {
+          "retry_after_hours": 24,
+          "retry_at_kst": "2026-02-19T16:00:00+09:00",
+          "due": true
+        }
+      ],
+      "next_retry_at_kst": null,
       "legal_meta": {
         "survey_datetime": "2026-02-12 13 시 00 분 ~ 15 시 50 분 2026-02-13 09 시 50 분 ~ 21 시 10 분 2026-02-14 09 시 50 분 ~ 16 시 50 분",
         "survey_population": "전국에 거주하는 만 18세 이상 남녀",
@@ -872,11 +949,36 @@
       "first_publish_at_kst": "2026-02-15 16:00",
       "release_policy_hours": 24,
       "release_at_kst": "2026-02-17T16:00:00+09:00",
+      "earliest_release_at_kst": "2026-02-17T16:00:00+09:00",
       "release_gate_passed": true,
       "collect_status": "fallback_collected",
       "safe_window_eligible": true,
+      "pending_reason_code": "pdf_pending",
       "source_channel": "nesdc",
       "detail_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17449&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=2",
+      "retry_schedule_hours": [
+        2,
+        6,
+        24
+      ],
+      "retry_plan": [
+        {
+          "retry_after_hours": 2,
+          "retry_at_kst": "2026-02-17T18:00:00+09:00",
+          "due": true
+        },
+        {
+          "retry_after_hours": 6,
+          "retry_at_kst": "2026-02-17T22:00:00+09:00",
+          "due": true
+        },
+        {
+          "retry_after_hours": 24,
+          "retry_at_kst": "2026-02-18T16:00:00+09:00",
+          "due": true
+        }
+      ],
+      "next_retry_at_kst": null,
       "legal_meta": {
         "survey_datetime": "2026-02-11 10 시 20 분 ~ 21 시 40 분 2026-02-12 10 시 10 분 ~ 21 시 40 분 2026-02-13 13 시 50 분 ~ 14 시 30 분",
         "survey_population": "경기도에 거주하는 만 18세 이상 남녀",
@@ -900,11 +1002,36 @@
       "first_publish_at_kst": "2026-02-15 16:00",
       "release_policy_hours": 24,
       "release_at_kst": "2026-02-17T16:00:00+09:00",
+      "earliest_release_at_kst": "2026-02-17T16:00:00+09:00",
       "release_gate_passed": true,
       "collect_status": "fallback_collected",
       "safe_window_eligible": true,
+      "pending_reason_code": "pdf_pending",
       "source_channel": "nesdc",
       "detail_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17448&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=2",
+      "retry_schedule_hours": [
+        2,
+        6,
+        24
+      ],
+      "retry_plan": [
+        {
+          "retry_after_hours": 2,
+          "retry_at_kst": "2026-02-17T18:00:00+09:00",
+          "due": true
+        },
+        {
+          "retry_after_hours": 6,
+          "retry_at_kst": "2026-02-17T22:00:00+09:00",
+          "due": true
+        },
+        {
+          "retry_after_hours": 24,
+          "retry_at_kst": "2026-02-18T16:00:00+09:00",
+          "due": true
+        }
+      ],
+      "next_retry_at_kst": null,
       "legal_meta": {
         "survey_datetime": "2026-02-11 10 시 20 분 ~ 21 시 40 분 2026-02-12 10 시 00 분 ~ 21 시 40 분 2026-02-13 13 시 00 분 ~ 13 시 50 분",
         "survey_population": "서울특별시에 거주하는 만 18세 이상 남녀",
@@ -928,11 +1055,36 @@
       "first_publish_at_kst": "2026-02-15 20:00",
       "release_policy_hours": 24,
       "release_at_kst": "2026-02-17T20:00:00+09:00",
+      "earliest_release_at_kst": "2026-02-17T20:00:00+09:00",
       "release_gate_passed": true,
       "collect_status": "fallback_collected",
       "safe_window_eligible": true,
+      "pending_reason_code": "pdf_pending",
       "source_channel": "nesdc",
       "detail_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17450&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=2",
+      "retry_schedule_hours": [
+        2,
+        6,
+        24
+      ],
+      "retry_plan": [
+        {
+          "retry_after_hours": 2,
+          "retry_at_kst": "2026-02-17T22:00:00+09:00",
+          "due": true
+        },
+        {
+          "retry_after_hours": 6,
+          "retry_at_kst": "2026-02-18T02:00:00+09:00",
+          "due": true
+        },
+        {
+          "retry_after_hours": 24,
+          "retry_at_kst": "2026-02-18T20:00:00+09:00",
+          "due": true
+        }
+      ],
+      "next_retry_at_kst": null,
       "legal_meta": {
         "survey_datetime": "2026-02-13 17 시 00 분 ~ 21 시 00 분 2026-02-14 14 시 00 분 ~ 17 시 00 분",
         "survey_population": "전북특별자치도 익산시에 거주하는 만18세 이상 남ㆍ녀",
@@ -956,11 +1108,36 @@
       "first_publish_at_kst": "2026-02-15 14:00",
       "release_policy_hours": 24,
       "release_at_kst": "2026-02-17T14:00:00+09:00",
+      "earliest_release_at_kst": "2026-02-17T14:00:00+09:00",
       "release_gate_passed": true,
       "collect_status": "fallback_collected",
       "safe_window_eligible": true,
+      "pending_reason_code": "pdf_pending",
       "source_channel": "nesdc",
       "detail_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17445&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=2",
+      "retry_schedule_hours": [
+        2,
+        6,
+        24
+      ],
+      "retry_plan": [
+        {
+          "retry_after_hours": 2,
+          "retry_at_kst": "2026-02-17T16:00:00+09:00",
+          "due": true
+        },
+        {
+          "retry_after_hours": 6,
+          "retry_at_kst": "2026-02-17T20:00:00+09:00",
+          "due": true
+        },
+        {
+          "retry_after_hours": 24,
+          "retry_at_kst": "2026-02-18T14:00:00+09:00",
+          "due": true
+        }
+      ],
+      "next_retry_at_kst": null,
       "legal_meta": {
         "survey_datetime": "2026-02-13 12 시 49 분 ~ 16 시 05 분",
         "survey_population": "전남 함평군에 거주하는 만 18세 이상 남녀",
@@ -984,11 +1161,20 @@
       "first_publish_at_kst": "2026-02-16 16:00",
       "release_policy_hours": 24,
       "release_at_kst": "2026-02-18T16:00:00+09:00",
+      "earliest_release_at_kst": "2026-02-18T16:00:00+09:00",
       "release_gate_passed": true,
       "collect_status": "collected",
       "safe_window_eligible": true,
+      "pending_reason_code": null,
       "source_channel": "nesdc",
       "detail_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17446&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=2",
+      "retry_schedule_hours": [
+        2,
+        6,
+        24
+      ],
+      "retry_plan": [],
+      "next_retry_at_kst": null,
       "legal_meta": {
         "survey_datetime": "2026-02-11 13 시 00 분 ~ 21 시 10 분 2026-02-12 10 시 00 분 ~ 21 시 00 분 2026-02-13 09 시 30 분 ~ 12 시 00 분",
         "survey_population": "전국에 거주하는 만 18세 이상 남녀",
@@ -1253,11 +1439,20 @@
       "first_publish_at_kst": "2026-02-15 16:00",
       "release_policy_hours": 24,
       "release_at_kst": "2026-02-17T16:00:00+09:00",
+      "earliest_release_at_kst": "2026-02-17T16:00:00+09:00",
       "release_gate_passed": true,
       "collect_status": "collected_template_fallback",
       "safe_window_eligible": true,
+      "pending_reason_code": null,
       "source_channel": "nesdc",
       "detail_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17444&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=2",
+      "retry_schedule_hours": [
+        2,
+        6,
+        24
+      ],
+      "retry_plan": [],
+      "next_retry_at_kst": null,
       "legal_meta": {
         "survey_datetime": "2026-02-11 13 시 00 분 ~ 21 시 10 분 2026-02-12 10 시 00 분 ~ 21 시 00 분 2026-02-13 09 시 30 분 ~ 12 시 00 분",
         "survey_population": "전국에 거주하는 만 18세 이상 남녀",
@@ -1522,11 +1717,20 @@
       "first_publish_at_kst": "2026-02-14 16:00",
       "release_policy_hours": 24,
       "release_at_kst": "2026-02-16T16:00:00+09:00",
+      "earliest_release_at_kst": "2026-02-16T16:00:00+09:00",
       "release_gate_passed": true,
       "collect_status": "collected_template_fallback",
       "safe_window_eligible": true,
+      "pending_reason_code": null,
       "source_channel": "nesdc",
       "detail_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17443&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=2",
+      "retry_schedule_hours": [
+        2,
+        6,
+        24
+      ],
+      "retry_plan": [],
+      "next_retry_at_kst": null,
       "legal_meta": {
         "survey_datetime": "2026-02-11 13 시 00 분 ~ 21 시 00 분 2026-02-12 10 시 00 분 ~ 21 시 00 분 2026-02-13 11 시 48 분 ~ 18 시 08 분",
         "survey_population": "서울특별시에 거주하는 만 18세 이상 남녀",
@@ -1791,11 +1995,36 @@
       "first_publish_at_kst": "2026-02-15 05:00",
       "release_policy_hours": 24,
       "release_at_kst": "2026-02-17T05:00:00+09:00",
+      "earliest_release_at_kst": "2026-02-17T05:00:00+09:00",
       "release_gate_passed": true,
       "collect_status": "fallback_collected",
       "safe_window_eligible": true,
+      "pending_reason_code": "pdf_pending",
       "source_channel": "nesdc",
       "detail_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17442&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=2",
+      "retry_schedule_hours": [
+        2,
+        6,
+        24
+      ],
+      "retry_plan": [
+        {
+          "retry_after_hours": 2,
+          "retry_at_kst": "2026-02-17T07:00:00+09:00",
+          "due": true
+        },
+        {
+          "retry_after_hours": 6,
+          "retry_at_kst": "2026-02-17T11:00:00+09:00",
+          "due": true
+        },
+        {
+          "retry_after_hours": 24,
+          "retry_at_kst": "2026-02-18T05:00:00+09:00",
+          "due": true
+        }
+      ],
+      "next_retry_at_kst": null,
       "legal_meta": {
         "survey_datetime": "2026-02-12 11 시 30 분 ~ 20 시 58 분 2026-02-13 11 시 00 분 ~ 20 시 50 분",
         "survey_population": "강원특별자치도에 거주하는 만 18세 이상 남녀",
@@ -1819,11 +2048,36 @@
       "first_publish_at_kst": "2026-02-15 09:00",
       "release_policy_hours": 24,
       "release_at_kst": "2026-02-17T09:00:00+09:00",
+      "earliest_release_at_kst": "2026-02-17T09:00:00+09:00",
       "release_gate_passed": true,
       "collect_status": "fallback_collected",
       "safe_window_eligible": true,
+      "pending_reason_code": "pdf_pending",
       "source_channel": "nesdc",
       "detail_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17437&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=2",
+      "retry_schedule_hours": [
+        2,
+        6,
+        24
+      ],
+      "retry_plan": [
+        {
+          "retry_after_hours": 2,
+          "retry_at_kst": "2026-02-17T11:00:00+09:00",
+          "due": true
+        },
+        {
+          "retry_after_hours": 6,
+          "retry_at_kst": "2026-02-17T15:00:00+09:00",
+          "due": true
+        },
+        {
+          "retry_after_hours": 24,
+          "retry_at_kst": "2026-02-18T09:00:00+09:00",
+          "due": true
+        }
+      ],
+      "next_retry_at_kst": null,
       "legal_meta": {
         "survey_datetime": "2026-02-12 13 시 50 분 ~ 20 시 59 분 2026-02-13 13 시 55 분 ~ 19 시 53 분",
         "survey_population": "경북 예천군에 거주하는 만18세 이상 남·여",
@@ -1847,11 +2101,36 @@
       "first_publish_at_kst": "2026-02-14 13:00",
       "release_policy_hours": 24,
       "release_at_kst": "2026-02-16T13:00:00+09:00",
+      "earliest_release_at_kst": "2026-02-16T13:00:00+09:00",
       "release_gate_passed": true,
       "collect_status": "fallback_collected",
       "safe_window_eligible": true,
+      "pending_reason_code": "pdf_pending",
       "source_channel": "nesdc",
       "detail_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17439&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=2",
+      "retry_schedule_hours": [
+        2,
+        6,
+        24
+      ],
+      "retry_plan": [
+        {
+          "retry_after_hours": 2,
+          "retry_at_kst": "2026-02-16T15:00:00+09:00",
+          "due": true
+        },
+        {
+          "retry_after_hours": 6,
+          "retry_at_kst": "2026-02-16T19:00:00+09:00",
+          "due": true
+        },
+        {
+          "retry_after_hours": 24,
+          "retry_at_kst": "2026-02-17T13:00:00+09:00",
+          "due": true
+        }
+      ],
+      "next_retry_at_kst": null,
       "legal_meta": {
         "survey_datetime": "2026-02-12 14 시 00 분 ~ 18 시 00 분 2026-02-13 13 시 00 분 ~ 14 시 00 분",
         "survey_population": "전북특별자치도 임실군에 거주하는 만 18세 이상 남녀",
@@ -1875,11 +2154,20 @@
       "first_publish_at_kst": "2026-02-15 14:00",
       "release_policy_hours": 24,
       "release_at_kst": "2026-02-17T14:00:00+09:00",
+      "earliest_release_at_kst": "2026-02-17T14:00:00+09:00",
       "release_gate_passed": true,
       "collect_status": "collected_template_fallback",
       "safe_window_eligible": true,
+      "pending_reason_code": null,
       "source_channel": "nesdc",
       "detail_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17436&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=3",
+      "retry_schedule_hours": [
+        2,
+        6,
+        24
+      ],
+      "retry_plan": [],
+      "next_retry_at_kst": null,
       "legal_meta": {
         "survey_datetime": "2026-02-12 12 시 00 분 ~ 17 시 15 분 2026-02-13 12 시 05 분 ~ 16 시 45 분",
         "survey_population": "전국에 거주하는 만 18세 이상 남녀",
@@ -2144,11 +2432,20 @@
       "first_publish_at_kst": "2026-02-13 19:00",
       "release_policy_hours": 24,
       "release_at_kst": "2026-02-15T19:00:00+09:00",
+      "earliest_release_at_kst": "2026-02-15T19:00:00+09:00",
       "release_gate_passed": true,
       "collect_status": "collected",
       "safe_window_eligible": true,
+      "pending_reason_code": null,
       "source_channel": "nesdc",
       "detail_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17435&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=3",
+      "retry_schedule_hours": [
+        2,
+        6,
+        24
+      ],
+      "retry_plan": [],
+      "next_retry_at_kst": null,
       "legal_meta": {
         "survey_datetime": "2026-02-10 10 시 00 분 ~ 22 시 00 분 2026-02-11 10 시 00 분 ~ 22 시 00 분 2026-02-12 10 시 00 분 ~ 21 시 40 분",
         "survey_population": "강원특별자치도에 거주하는 만 18세 이상 남녀",
@@ -2413,11 +2710,20 @@
       "first_publish_at_kst": "2026-02-13 19:00",
       "release_policy_hours": 24,
       "release_at_kst": "2026-02-15T19:00:00+09:00",
+      "earliest_release_at_kst": "2026-02-15T19:00:00+09:00",
       "release_gate_passed": true,
       "collect_status": "collected_template_fallback",
       "safe_window_eligible": true,
+      "pending_reason_code": null,
       "source_channel": "nesdc",
       "detail_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17375&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=3",
+      "retry_schedule_hours": [
+        2,
+        6,
+        24
+      ],
+      "retry_plan": [],
+      "next_retry_at_kst": null,
       "legal_meta": {
         "survey_datetime": "2026-02-10 10 시 00 분 ~ 22 시 00 분 2026-02-11 10 시 00 분 ~ 22 시 00 분 2026-02-12 10 시 00 분 ~ 22 시 00 분",
         "survey_population": "충청남도에 거주하는 만 18세 이상 남녀",
@@ -2682,11 +2988,20 @@
       "first_publish_at_kst": "2026-02-13 19:00",
       "release_policy_hours": 24,
       "release_at_kst": "2026-02-15T19:00:00+09:00",
+      "earliest_release_at_kst": "2026-02-15T19:00:00+09:00",
       "release_gate_passed": true,
       "collect_status": "collected_template_fallback",
       "safe_window_eligible": true,
+      "pending_reason_code": null,
       "source_channel": "nesdc",
       "detail_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17374&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=3",
+      "retry_schedule_hours": [
+        2,
+        6,
+        24
+      ],
+      "retry_plan": [],
+      "next_retry_at_kst": null,
       "legal_meta": {
         "survey_datetime": "2026-02-10 10 시 00 분 ~ 22 시 00 분 2026-02-11 10 시 00 분 ~ 22 시 00 분 2026-02-12 10 시 00 분 ~ 21 시 50 분",
         "survey_population": "대전광역시에 거주하는 만 18세 이상 남녀",
@@ -2951,11 +3266,20 @@
       "first_publish_at_kst": "2026-02-13 19:00",
       "release_policy_hours": 24,
       "release_at_kst": "2026-02-15T19:00:00+09:00",
+      "earliest_release_at_kst": "2026-02-15T19:00:00+09:00",
       "release_gate_passed": true,
       "collect_status": "collected_template_fallback",
       "safe_window_eligible": true,
+      "pending_reason_code": null,
       "source_channel": "nesdc",
       "detail_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17373&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=3",
+      "retry_schedule_hours": [
+        2,
+        6,
+        24
+      ],
+      "retry_plan": [],
+      "next_retry_at_kst": null,
       "legal_meta": {
         "survey_datetime": "2026-02-10 10 시 00 분 ~ 22 시 00 분 2026-02-11 10 시 00 분 ~ 22 시 00 분 2026-02-12 10 시 00 분 ~ 21 시 40 분",
         "survey_population": "경상남도에 거주하는 만 18세 이상 남녀",
@@ -3220,11 +3544,20 @@
       "first_publish_at_kst": "2026-02-13 19:00",
       "release_policy_hours": 24,
       "release_at_kst": "2026-02-15T19:00:00+09:00",
+      "earliest_release_at_kst": "2026-02-15T19:00:00+09:00",
       "release_gate_passed": true,
       "collect_status": "collected_template_fallback",
       "safe_window_eligible": true,
+      "pending_reason_code": null,
       "source_channel": "nesdc",
       "detail_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17371&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=3",
+      "retry_schedule_hours": [
+        2,
+        6,
+        24
+      ],
+      "retry_plan": [],
+      "next_retry_at_kst": null,
       "legal_meta": {
         "survey_datetime": "2026-02-10 10 시 00 분 ~ 22 시 00 분 2026-02-11 10 시 00 분 ~ 22 시 00 분 2026-02-12 10 시 00 분 ~ 20 시 50 분",
         "survey_population": "부산광역시에 거주하는 만 18세 이상 남녀",
@@ -3489,11 +3822,20 @@
       "first_publish_at_kst": "2026-02-13 19:00",
       "release_policy_hours": 24,
       "release_at_kst": "2026-02-15T19:00:00+09:00",
+      "earliest_release_at_kst": "2026-02-15T19:00:00+09:00",
       "release_gate_passed": true,
       "collect_status": "collected_template_fallback",
       "safe_window_eligible": true,
+      "pending_reason_code": null,
       "source_channel": "nesdc",
       "detail_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17370&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=3",
+      "retry_schedule_hours": [
+        2,
+        6,
+        24
+      ],
+      "retry_plan": [],
+      "next_retry_at_kst": null,
       "legal_meta": {
         "survey_datetime": "2026-02-10 10 시 00 분 ~ 22 시 00 분 2026-02-11 10 시 00 분 ~ 22 시 00 분 2026-02-12 10 시 00 분 ~ 21 시 00 분",
         "survey_population": "경기도에 거주하는 만 18세 이상 남녀",
@@ -3758,11 +4100,20 @@
       "first_publish_at_kst": "2026-02-13 19:00",
       "release_policy_hours": 24,
       "release_at_kst": "2026-02-15T19:00:00+09:00",
+      "earliest_release_at_kst": "2026-02-15T19:00:00+09:00",
       "release_gate_passed": true,
       "collect_status": "collected_template_fallback",
       "safe_window_eligible": true,
+      "pending_reason_code": null,
       "source_channel": "nesdc",
       "detail_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17369&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=3",
+      "retry_schedule_hours": [
+        2,
+        6,
+        24
+      ],
+      "retry_plan": [],
+      "next_retry_at_kst": null,
       "legal_meta": {
         "survey_datetime": "2026-02-10 10 시 00 분 ~ 22 시 00 분 2026-02-11 10 시 00 분 ~ 22 시 00 분 2026-02-12 10 시 00 분 ~ 21 시 10 분",
         "survey_population": "서울특별시에 거주하는 만 18세 이상 남녀",
@@ -4027,11 +4378,20 @@
       "first_publish_at_kst": "2026-02-13 19:00",
       "release_policy_hours": 24,
       "release_at_kst": "2026-02-15T19:00:00+09:00",
+      "earliest_release_at_kst": "2026-02-15T19:00:00+09:00",
       "release_gate_passed": true,
       "collect_status": "collected_template_fallback",
       "safe_window_eligible": true,
+      "pending_reason_code": null,
       "source_channel": "nesdc",
       "detail_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17368&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=3",
+      "retry_schedule_hours": [
+        2,
+        6,
+        24
+      ],
+      "retry_plan": [],
+      "next_retry_at_kst": null,
       "legal_meta": {
         "survey_datetime": "2026-02-10 10 시 00 분 ~ 22 시 00 분 2026-02-11 10 시 00 분 ~ 22 시 00 분 2026-02-12 10 시 00 분 ~ 21 시 10 분",
         "survey_population": "전국에 거주하는 만 18세 이상 남녀",
@@ -4296,11 +4656,20 @@
       "first_publish_at_kst": "2026-02-16 20:00",
       "release_policy_hours": 24,
       "release_at_kst": "2026-02-18T20:00:00+09:00",
+      "earliest_release_at_kst": "2026-02-18T20:00:00+09:00",
       "release_gate_passed": true,
       "collect_status": "collected_template_fallback",
       "safe_window_eligible": true,
+      "pending_reason_code": null,
       "source_channel": "nesdc",
       "detail_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17396&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=4",
+      "retry_schedule_hours": [
+        2,
+        6,
+        24
+      ],
+      "retry_plan": [],
+      "next_retry_at_kst": null,
       "legal_meta": {
         "survey_datetime": "2026-02-08 10 시 01 분 ~ 17 시 09 분 2026-02-09 10 시 02 분 ~ 11 시 38 분",
         "survey_population": "전라남도 장흥군에 거주하는 만 18세 이상 남녀",
@@ -4565,11 +4934,20 @@
       "first_publish_at_kst": "2026-02-16 20:00",
       "release_policy_hours": 24,
       "release_at_kst": "2026-02-18T20:00:00+09:00",
+      "earliest_release_at_kst": "2026-02-18T20:00:00+09:00",
       "release_gate_passed": true,
       "collect_status": "collected_template_fallback",
       "safe_window_eligible": true,
+      "pending_reason_code": null,
       "source_channel": "nesdc",
       "detail_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17391&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=4",
+      "retry_schedule_hours": [
+        2,
+        6,
+        24
+      ],
+      "retry_plan": [],
+      "next_retry_at_kst": null,
       "legal_meta": {
         "survey_datetime": "2026-02-07 10 시 01 분 ~ 19 시 28 분 2026-02-08 10 시 12 분 ~ 18 시 13 분",
         "survey_population": "전라남도 진도군에 거주하는 만 18세 이상 남녀",
@@ -4834,11 +5212,20 @@
       "first_publish_at_kst": "2026-02-16 20:00",
       "release_policy_hours": 24,
       "release_at_kst": "2026-02-18T20:00:00+09:00",
+      "earliest_release_at_kst": "2026-02-18T20:00:00+09:00",
       "release_gate_passed": true,
       "collect_status": "collected_template_fallback",
       "safe_window_eligible": true,
+      "pending_reason_code": null,
       "source_channel": "nesdc",
       "detail_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17382&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=5",
+      "retry_schedule_hours": [
+        2,
+        6,
+        24
+      ],
+      "retry_plan": [],
+      "next_retry_at_kst": null,
       "legal_meta": {
         "survey_datetime": "2026-02-07 10 시 01 분 ~ 19 시 21 분 2026-02-08 10 시 05 분 ~ 13 시 27 분",
         "survey_population": "전라남도 완도군에 거주하는 만 18세 이상 남녀",
@@ -5103,11 +5490,20 @@
       "first_publish_at_kst": "2026-02-16 20:00",
       "release_policy_hours": 24,
       "release_at_kst": "2026-02-18T20:00:00+09:00",
+      "earliest_release_at_kst": "2026-02-18T20:00:00+09:00",
       "release_gate_passed": true,
       "collect_status": "collected_template_fallback",
       "safe_window_eligible": true,
+      "pending_reason_code": null,
       "source_channel": "nesdc",
       "detail_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17392&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=5",
+      "retry_schedule_hours": [
+        2,
+        6,
+        24
+      ],
+      "retry_plan": [],
+      "next_retry_at_kst": null,
       "legal_meta": {
         "survey_datetime": "2026-02-07 10 시 01 분 ~ 19 시 31 분 2026-02-08 10 시 06 분 ~ 15 시 19 분",
         "survey_population": "전라남도 해남군에 거주하는 만 18세 이상 남녀",
@@ -5372,11 +5768,20 @@
       "first_publish_at_kst": "2026-02-16 20:00",
       "release_policy_hours": 24,
       "release_at_kst": "2026-02-18T20:00:00+09:00",
+      "earliest_release_at_kst": "2026-02-18T20:00:00+09:00",
       "release_gate_passed": true,
       "collect_status": "collected_template_fallback",
       "safe_window_eligible": true,
+      "pending_reason_code": null,
       "source_channel": "nesdc",
       "detail_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17397&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=5",
+      "retry_schedule_hours": [
+        2,
+        6,
+        24
+      ],
+      "retry_plan": [],
+      "next_retry_at_kst": null,
       "legal_meta": {
         "survey_datetime": "2026-02-09 10 시 01 분 ~ 20 시 20 분 2026-02-10 10 시 01 분 ~ 10 시 51 분",
         "survey_population": "전라남도 영암군에 거주하는 만 18세 이상 남녀",
@@ -5641,11 +6046,20 @@
       "first_publish_at_kst": "2026-02-16 20:00",
       "release_policy_hours": 24,
       "release_at_kst": "2026-02-18T20:00:00+09:00",
+      "earliest_release_at_kst": "2026-02-18T20:00:00+09:00",
       "release_gate_passed": true,
       "collect_status": "collected_template_fallback",
       "safe_window_eligible": true,
+      "pending_reason_code": null,
       "source_channel": "nesdc",
       "detail_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17395&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=5",
+      "retry_schedule_hours": [
+        2,
+        6,
+        24
+      ],
+      "retry_plan": [],
+      "next_retry_at_kst": null,
       "legal_meta": {
         "survey_datetime": "2026-02-08 10 시 02 분 ~ 17 시 31 분 2026-02-09 10 시 03 분 ~ 11 시 19 분",
         "survey_population": "전라남도 강진군에 거주하는 만 18세 이상 남녀",
@@ -5910,11 +6324,20 @@
       "first_publish_at_kst": "2026-02-15 20:00",
       "release_policy_hours": 24,
       "release_at_kst": "2026-02-17T20:00:00+09:00",
+      "earliest_release_at_kst": "2026-02-17T20:00:00+09:00",
       "release_gate_passed": true,
       "collect_status": "collected_template_fallback",
       "safe_window_eligible": true,
+      "pending_reason_code": null,
       "source_channel": "nesdc",
       "detail_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17393&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=5",
+      "retry_schedule_hours": [
+        2,
+        6,
+        24
+      ],
+      "retry_plan": [],
+      "next_retry_at_kst": null,
       "legal_meta": {
         "survey_datetime": "2026-02-07 10 시 01 분 ~ 19 시 19 분 2026-02-08 10 시 04 분 ~ 13 시 57 분",
         "survey_population": "전라남도 신안군에 거주하는 만 18세 이상 남녀",
@@ -6179,11 +6602,20 @@
       "first_publish_at_kst": "2026-02-15 20:00",
       "release_policy_hours": 24,
       "release_at_kst": "2026-02-17T20:00:00+09:00",
+      "earliest_release_at_kst": "2026-02-17T20:00:00+09:00",
       "release_gate_passed": true,
       "collect_status": "collected_template_fallback",
       "safe_window_eligible": true,
+      "pending_reason_code": null,
       "source_channel": "nesdc",
       "detail_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17394&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=5",
+      "retry_schedule_hours": [
+        2,
+        6,
+        24
+      ],
+      "retry_plan": [],
+      "next_retry_at_kst": null,
       "legal_meta": {
         "survey_datetime": "2026-02-07 10 시 01 분 ~ 19 시 33 분 2026-02-08 10 시 41 분 ~ 17 시 32 분",
         "survey_population": "전라남도 무안군에 거주하는 만 18세 이상 남녀",
@@ -6448,11 +6880,20 @@
       "first_publish_at_kst": "2026-02-15 20:00",
       "release_policy_hours": 24,
       "release_at_kst": "2026-02-17T20:00:00+09:00",
+      "earliest_release_at_kst": "2026-02-17T20:00:00+09:00",
       "release_gate_passed": true,
       "collect_status": "collected_template_fallback",
       "safe_window_eligible": true,
+      "pending_reason_code": null,
       "source_channel": "nesdc",
       "detail_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17398&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=5",
+      "retry_schedule_hours": [
+        2,
+        6,
+        24
+      ],
+      "retry_plan": [],
+      "next_retry_at_kst": null,
       "legal_meta": {
         "survey_datetime": "2026-02-09 10 시 03 분 ~ 20 시 32 분 2026-02-10 10 시 03 분 ~ 11 시 01 분",
         "survey_population": "전라남도 목포시에 거주하는 만 18세 이상 남녀",
@@ -6717,11 +7158,36 @@
       "first_publish_at_kst": "2026-02-13 05:33",
       "release_policy_hours": 24,
       "release_at_kst": "2026-02-15T05:33:00+09:00",
+      "earliest_release_at_kst": "2026-02-15T05:33:00+09:00",
       "release_gate_passed": true,
       "collect_status": "fallback_collected",
       "safe_window_eligible": true,
+      "pending_reason_code": "pdf_pending",
       "source_channel": "nesdc",
       "detail_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17419&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=5",
+      "retry_schedule_hours": [
+        2,
+        6,
+        24
+      ],
+      "retry_plan": [
+        {
+          "retry_after_hours": 2,
+          "retry_at_kst": "2026-02-15T07:33:00+09:00",
+          "due": true
+        },
+        {
+          "retry_after_hours": 6,
+          "retry_at_kst": "2026-02-15T11:33:00+09:00",
+          "due": true
+        },
+        {
+          "retry_after_hours": 24,
+          "retry_at_kst": "2026-02-16T05:33:00+09:00",
+          "due": true
+        }
+      ],
+      "next_retry_at_kst": null,
       "legal_meta": {
         "survey_datetime": "2026-01-30 10 시 00 분 ~ 23 시 59 분 2026-01-31 00 시 00 분 ~ 23 시 59 분 2026-02-01 00 시 00 분 ~ 23 시 59 분 2026-02-02 00 시 00 분 ~ 23 시 59 분 2026-02-03 00 시 00 분 ~ 23 시 59 분 2026-02-04 00 시 00 분 ~ 17 시 00 분",
         "survey_population": "전국 거주 만 18세 이상 69세 이하 성인남녀",
@@ -6745,11 +7211,20 @@
       "first_publish_at_kst": "2026-02-17 05:00",
       "release_policy_hours": 24,
       "release_at_kst": "2026-02-19T05:00:00+09:00",
+      "earliest_release_at_kst": "2026-02-19T05:00:00+09:00",
       "release_gate_passed": true,
       "collect_status": "collected_template_fallback",
       "safe_window_eligible": true,
+      "pending_reason_code": null,
       "source_channel": "nesdc",
       "detail_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17417&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=5",
+      "retry_schedule_hours": [
+        2,
+        6,
+        24
+      ],
+      "retry_plan": [],
+      "next_retry_at_kst": null,
       "legal_meta": {
         "survey_datetime": "2026-02-09 12 시 35 분 ~ 17 시 45 분 2026-02-10 10 시 45 분 ~ 16 시 00 분",
         "survey_population": "경상북도 울진군에 거주하는 만 18세 이상 남녀",
@@ -7014,11 +7489,36 @@
       "first_publish_at_kst": "2026-02-13 17:00",
       "release_policy_hours": 24,
       "release_at_kst": "2026-02-15T17:00:00+09:00",
+      "earliest_release_at_kst": "2026-02-15T17:00:00+09:00",
       "release_gate_passed": true,
       "collect_status": "fallback_collected",
       "safe_window_eligible": true,
+      "pending_reason_code": "pdf_pending",
       "source_channel": "nesdc",
       "detail_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17416&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=5",
+      "retry_schedule_hours": [
+        2,
+        6,
+        24
+      ],
+      "retry_plan": [
+        {
+          "retry_after_hours": 2,
+          "retry_at_kst": "2026-02-15T19:00:00+09:00",
+          "due": true
+        },
+        {
+          "retry_after_hours": 6,
+          "retry_at_kst": "2026-02-15T23:00:00+09:00",
+          "due": true
+        },
+        {
+          "retry_after_hours": 24,
+          "retry_at_kst": "2026-02-16T17:00:00+09:00",
+          "due": true
+        }
+      ],
+      "next_retry_at_kst": null,
       "legal_meta": {
         "survey_datetime": "2026-02-11 13 시 52 분 ~ 20 시 45 분 2026-02-12 13 시 54 분 ~ 19 시 18 분",
         "survey_population": "전라남도 신안군에 거주하는 만 18세 이상 남녀",
@@ -7042,11 +7542,36 @@
       "first_publish_at_kst": "2026-02-16 21:00",
       "release_policy_hours": 24,
       "release_at_kst": "2026-02-18T21:00:00+09:00",
+      "earliest_release_at_kst": "2026-02-18T21:00:00+09:00",
       "release_gate_passed": true,
       "collect_status": "fallback_collected",
       "safe_window_eligible": true,
+      "pending_reason_code": "pdf_pending",
       "source_channel": "nesdc",
       "detail_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17407&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=6",
+      "retry_schedule_hours": [
+        2,
+        6,
+        24
+      ],
+      "retry_plan": [
+        {
+          "retry_after_hours": 2,
+          "retry_at_kst": "2026-02-18T23:00:00+09:00",
+          "due": true
+        },
+        {
+          "retry_after_hours": 6,
+          "retry_at_kst": "2026-02-19T03:00:00+09:00",
+          "due": true
+        },
+        {
+          "retry_after_hours": 24,
+          "retry_at_kst": "2026-02-19T21:00:00+09:00",
+          "due": true
+        }
+      ],
+      "next_retry_at_kst": null,
       "legal_meta": {
         "survey_datetime": "2026-02-11 10 시 12 분 ~ 20 시 32 분 2026-02-12 09 시 35 분 ~ 21 시 23 분",
         "survey_population": "제주특별자치도에 거주하는 만 18세 이상 남녀",
@@ -7070,11 +7595,36 @@
       "first_publish_at_kst": "2026-02-15 21:00",
       "release_policy_hours": 24,
       "release_at_kst": "2026-02-17T21:00:00+09:00",
+      "earliest_release_at_kst": "2026-02-17T21:00:00+09:00",
       "release_gate_passed": true,
       "collect_status": "fallback_collected",
       "safe_window_eligible": true,
+      "pending_reason_code": "pdf_pending",
       "source_channel": "nesdc",
       "detail_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17405&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=6",
+      "retry_schedule_hours": [
+        2,
+        6,
+        24
+      ],
+      "retry_plan": [
+        {
+          "retry_after_hours": 2,
+          "retry_at_kst": "2026-02-17T23:00:00+09:00",
+          "due": true
+        },
+        {
+          "retry_after_hours": 6,
+          "retry_at_kst": "2026-02-18T03:00:00+09:00",
+          "due": true
+        },
+        {
+          "retry_after_hours": 24,
+          "retry_at_kst": "2026-02-18T21:00:00+09:00",
+          "due": true
+        }
+      ],
+      "next_retry_at_kst": null,
       "legal_meta": {
         "survey_datetime": "2026-02-11 10 시 12 분 ~ 20 시 32 분 2026-02-12 09 시 35 분 ~ 21 시 23 분",
         "survey_population": "제주특별자치도에 거주하는 만 18세 이상 남녀",
@@ -7098,11 +7648,36 @@
       "first_publish_at_kst": "2026-02-13 10:00",
       "release_policy_hours": 24,
       "release_at_kst": "2026-02-15T10:00:00+09:00",
+      "earliest_release_at_kst": "2026-02-15T10:00:00+09:00",
       "release_gate_passed": true,
       "collect_status": "fallback_collected",
       "safe_window_eligible": true,
+      "pending_reason_code": "pdf_pending",
       "source_channel": "nesdc",
       "detail_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17404&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=6",
+      "retry_schedule_hours": [
+        2,
+        6,
+        24
+      ],
+      "retry_plan": [
+        {
+          "retry_after_hours": 2,
+          "retry_at_kst": "2026-02-15T12:00:00+09:00",
+          "due": true
+        },
+        {
+          "retry_after_hours": 6,
+          "retry_at_kst": "2026-02-15T16:00:00+09:00",
+          "due": true
+        },
+        {
+          "retry_after_hours": 24,
+          "retry_at_kst": "2026-02-16T10:00:00+09:00",
+          "due": true
+        }
+      ],
+      "next_retry_at_kst": null,
       "legal_meta": {
         "survey_datetime": "2026-02-10 10 시 00 분 ~ 18 시 00 분 2026-02-11 10 시 00 분 ~ 18 시 00 분 2026-02-12 10 시 00 분 ~ 18 시 00 분",
         "survey_population": "전국 만 18세 이상 남녀",
@@ -7126,11 +7701,36 @@
       "first_publish_at_kst": "2026-02-14 14:00",
       "release_policy_hours": 24,
       "release_at_kst": "2026-02-16T14:00:00+09:00",
+      "earliest_release_at_kst": "2026-02-16T14:00:00+09:00",
       "release_gate_passed": true,
       "collect_status": "fallback_collected",
       "safe_window_eligible": true,
+      "pending_reason_code": "pdf_pending",
       "source_channel": "nesdc",
       "detail_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17403&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=6",
+      "retry_schedule_hours": [
+        2,
+        6,
+        24
+      ],
+      "retry_plan": [
+        {
+          "retry_after_hours": 2,
+          "retry_at_kst": "2026-02-16T16:00:00+09:00",
+          "due": true
+        },
+        {
+          "retry_after_hours": 6,
+          "retry_at_kst": "2026-02-16T20:00:00+09:00",
+          "due": true
+        },
+        {
+          "retry_after_hours": 24,
+          "retry_at_kst": "2026-02-17T14:00:00+09:00",
+          "due": true
+        }
+      ],
+      "next_retry_at_kst": null,
       "legal_meta": {
         "survey_datetime": "2026-02-12 11 시 00 분 ~ 18 시 43 분",
         "survey_population": "경상북도 울진군에 거주하는 만 18세 이상 남녀",
@@ -7154,11 +7754,20 @@
       "first_publish_at_kst": "2026-02-13 14:00",
       "release_policy_hours": 24,
       "release_at_kst": "2026-02-15T14:00:00+09:00",
+      "earliest_release_at_kst": "2026-02-15T14:00:00+09:00",
       "release_gate_passed": true,
       "collect_status": "collected_template_fallback",
       "safe_window_eligible": true,
+      "pending_reason_code": null,
       "source_channel": "nesdc",
       "detail_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17402&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=6",
+      "retry_schedule_hours": [
+        2,
+        6,
+        24
+      ],
+      "retry_plan": [],
+      "next_retry_at_kst": null,
       "legal_meta": {
         "survey_datetime": "2026-02-10 10 시 40 분 ~ 21 시 10 분 2026-02-11 10 시 20 분 ~ 19 시 40 분",
         "survey_population": "전국에 거주하는 만 18세 이상 남녀",
@@ -7423,11 +8032,36 @@
       "first_publish_at_kst": "2026-02-13 02:00",
       "release_policy_hours": 24,
       "release_at_kst": "2026-02-15T02:00:00+09:00",
+      "earliest_release_at_kst": "2026-02-15T02:00:00+09:00",
       "release_gate_passed": true,
       "collect_status": "fallback_collected",
       "safe_window_eligible": true,
+      "pending_reason_code": "pdf_pending",
       "source_channel": "nesdc",
       "detail_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17401&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=6",
+      "retry_schedule_hours": [
+        2,
+        6,
+        24
+      ],
+      "retry_plan": [
+        {
+          "retry_after_hours": 2,
+          "retry_at_kst": "2026-02-15T04:00:00+09:00",
+          "due": true
+        },
+        {
+          "retry_after_hours": 6,
+          "retry_at_kst": "2026-02-15T08:00:00+09:00",
+          "due": true
+        },
+        {
+          "retry_after_hours": 24,
+          "retry_at_kst": "2026-02-16T02:00:00+09:00",
+          "due": true
+        }
+      ],
+      "next_retry_at_kst": null,
       "legal_meta": {
         "survey_datetime": "2026-02-12 09 시 30 분 ~ 14 시 38 분",
         "survey_population": "전남 담양군에 거주하는 만 18세 이상 남녀",
@@ -7451,11 +8085,36 @@
       "first_publish_at_kst": "2026-02-13 07:00",
       "release_policy_hours": 24,
       "release_at_kst": "2026-02-15T07:00:00+09:00",
+      "earliest_release_at_kst": "2026-02-15T07:00:00+09:00",
       "release_gate_passed": true,
       "collect_status": "fallback_collected",
       "safe_window_eligible": true,
+      "pending_reason_code": "pdf_pending",
       "source_channel": "nesdc",
       "detail_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17400&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=6",
+      "retry_schedule_hours": [
+        2,
+        6,
+        24
+      ],
+      "retry_plan": [
+        {
+          "retry_after_hours": 2,
+          "retry_at_kst": "2026-02-15T09:00:00+09:00",
+          "due": true
+        },
+        {
+          "retry_after_hours": 6,
+          "retry_at_kst": "2026-02-15T13:00:00+09:00",
+          "due": true
+        },
+        {
+          "retry_after_hours": 24,
+          "retry_at_kst": "2026-02-16T07:00:00+09:00",
+          "due": true
+        }
+      ],
+      "next_retry_at_kst": null,
       "legal_meta": {
         "survey_datetime": "2026-02-07 10 시 10 분 ~ 21 시 40 분 2026-02-08 09 시 30 분 ~ 10 시 30 분",
         "survey_population": "충청북도에 거주하는 만 18세 이상 남녀",
@@ -7479,11 +8138,36 @@
       "first_publish_at_kst": "2026-02-13 12:01",
       "release_policy_hours": 24,
       "release_at_kst": "2026-02-15T12:01:00+09:00",
+      "earliest_release_at_kst": "2026-02-15T12:01:00+09:00",
       "release_gate_passed": true,
       "collect_status": "fallback_collected",
       "safe_window_eligible": true,
+      "pending_reason_code": "pdf_pending",
       "source_channel": "nesdc",
       "detail_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17390&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=6",
+      "retry_schedule_hours": [
+        2,
+        6,
+        24
+      ],
+      "retry_plan": [
+        {
+          "retry_after_hours": 2,
+          "retry_at_kst": "2026-02-15T14:01:00+09:00",
+          "due": true
+        },
+        {
+          "retry_after_hours": 6,
+          "retry_at_kst": "2026-02-15T18:01:00+09:00",
+          "due": true
+        },
+        {
+          "retry_after_hours": 24,
+          "retry_at_kst": "2026-02-16T12:01:00+09:00",
+          "due": true
+        }
+      ],
+      "next_retry_at_kst": null,
       "legal_meta": {
         "survey_datetime": "2026-02-10 10 시 00 분 ~ 19 시 00 분 2026-02-11 10 시 00 분 ~ 18 시 00 분",
         "survey_population": "전라남도에 거주하는 만 18세 이상 남녀",
@@ -7507,11 +8191,36 @@
       "first_publish_at_kst": "2026-02-13 12:01",
       "release_policy_hours": 24,
       "release_at_kst": "2026-02-15T12:01:00+09:00",
+      "earliest_release_at_kst": "2026-02-15T12:01:00+09:00",
       "release_gate_passed": true,
       "collect_status": "fallback_collected",
       "safe_window_eligible": true,
+      "pending_reason_code": "pdf_pending",
       "source_channel": "nesdc",
       "detail_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17388&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=7",
+      "retry_schedule_hours": [
+        2,
+        6,
+        24
+      ],
+      "retry_plan": [
+        {
+          "retry_after_hours": 2,
+          "retry_at_kst": "2026-02-15T14:01:00+09:00",
+          "due": true
+        },
+        {
+          "retry_after_hours": 6,
+          "retry_at_kst": "2026-02-15T18:01:00+09:00",
+          "due": true
+        },
+        {
+          "retry_after_hours": 24,
+          "retry_at_kst": "2026-02-16T12:01:00+09:00",
+          "due": true
+        }
+      ],
+      "next_retry_at_kst": null,
       "legal_meta": {
         "survey_datetime": "2026-02-10 10 시 00 분 ~ 20 시 00 분 2026-02-11 10 시 00 분 ~ 20 시 00 분",
         "survey_population": "광주광역시에 거주하는 만 18세 이상 남녀",
@@ -7535,11 +8244,36 @@
       "first_publish_at_kst": "2026-02-13 14:00",
       "release_policy_hours": 24,
       "release_at_kst": "2026-02-15T14:00:00+09:00",
+      "earliest_release_at_kst": "2026-02-15T14:00:00+09:00",
       "release_gate_passed": true,
       "collect_status": "fallback_collected",
       "safe_window_eligible": true,
+      "pending_reason_code": "pdf_pending",
       "source_channel": "nesdc",
       "detail_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17381&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=7",
+      "retry_schedule_hours": [
+        2,
+        6,
+        24
+      ],
+      "retry_plan": [
+        {
+          "retry_after_hours": 2,
+          "retry_at_kst": "2026-02-15T16:00:00+09:00",
+          "due": true
+        },
+        {
+          "retry_after_hours": 6,
+          "retry_at_kst": "2026-02-15T20:00:00+09:00",
+          "due": true
+        },
+        {
+          "retry_after_hours": 24,
+          "retry_at_kst": "2026-02-16T14:00:00+09:00",
+          "due": true
+        }
+      ],
+      "next_retry_at_kst": null,
       "legal_meta": {
         "survey_datetime": "2026-02-11 10 시 30 분 ~ 20 시 00 분",
         "survey_population": "전국에 거주하는 만 18세 이상 남녀",
@@ -7563,11 +8297,36 @@
       "first_publish_at_kst": "2026-02-13 11:00",
       "release_policy_hours": 24,
       "release_at_kst": "2026-02-15T11:00:00+09:00",
+      "earliest_release_at_kst": "2026-02-15T11:00:00+09:00",
       "release_gate_passed": true,
       "collect_status": "fallback_collected",
       "safe_window_eligible": true,
+      "pending_reason_code": "pdf_pending",
       "source_channel": "nesdc",
       "detail_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17379&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=7",
+      "retry_schedule_hours": [
+        2,
+        6,
+        24
+      ],
+      "retry_plan": [
+        {
+          "retry_after_hours": 2,
+          "retry_at_kst": "2026-02-15T13:00:00+09:00",
+          "due": true
+        },
+        {
+          "retry_after_hours": 6,
+          "retry_at_kst": "2026-02-15T17:00:00+09:00",
+          "due": true
+        },
+        {
+          "retry_after_hours": 24,
+          "retry_at_kst": "2026-02-16T11:00:00+09:00",
+          "due": true
+        }
+      ],
+      "next_retry_at_kst": null,
       "legal_meta": {
         "survey_datetime": "2026-02-10 15 시 00 분 ~ 20 시 00 분 2026-02-11 14 시 00 분 ~ 18 시 00 분",
         "survey_population": "경기도에 거주하는 만 18세 이상 남녀",
@@ -7591,11 +8350,20 @@
       "first_publish_at_kst": "2026-02-13 00:00",
       "release_policy_hours": 24,
       "release_at_kst": "2026-02-15T00:00:00+09:00",
+      "earliest_release_at_kst": "2026-02-15T00:00:00+09:00",
       "release_gate_passed": true,
       "collect_status": "collected_template_fallback",
       "safe_window_eligible": true,
+      "pending_reason_code": null,
       "source_channel": "nesdc",
       "detail_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17378&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=7",
+      "retry_schedule_hours": [
+        2,
+        6,
+        24
+      ],
+      "retry_plan": [],
+      "next_retry_at_kst": null,
       "legal_meta": {
         "survey_datetime": "2026-02-09 12 시 15 분 ~ 20 시 20 분 2026-02-10 10 시 40 분 ~ 19 시 25 분",
         "survey_population": "경기도 연천군에 거주하는 만 18세 이상 남녀",
@@ -7860,11 +8628,20 @@
       "first_publish_at_kst": "2026-02-13 04:00",
       "release_policy_hours": 24,
       "release_at_kst": "2026-02-15T04:00:00+09:00",
+      "earliest_release_at_kst": "2026-02-15T04:00:00+09:00",
       "release_gate_passed": true,
       "collect_status": "collected_template_fallback",
       "safe_window_eligible": true,
+      "pending_reason_code": null,
       "source_channel": "nesdc",
       "detail_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17376&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=7",
+      "retry_schedule_hours": [
+        2,
+        6,
+        24
+      ],
+      "retry_plan": [],
+      "next_retry_at_kst": null,
       "legal_meta": {
         "survey_datetime": "2026-02-10 10 시 40 분 ~ 20 시 50 분 2026-02-11 10 시 20 분 ~ 16 시 30 분",
         "survey_population": "경기도 시흥시에 거주하는 만 18세 이상 남녀",
@@ -8129,11 +8906,36 @@
       "first_publish_at_kst": "2026-02-12 20:00",
       "release_policy_hours": 24,
       "release_at_kst": "2026-02-14T20:00:00+09:00",
+      "earliest_release_at_kst": "2026-02-14T20:00:00+09:00",
       "release_gate_passed": true,
       "collect_status": "fallback_collected",
       "safe_window_eligible": true,
+      "pending_reason_code": "pdf_pending",
       "source_channel": "nesdc",
       "detail_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17372&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=7",
+      "retry_schedule_hours": [
+        2,
+        6,
+        24
+      ],
+      "retry_plan": [
+        {
+          "retry_after_hours": 2,
+          "retry_at_kst": "2026-02-14T22:00:00+09:00",
+          "due": true
+        },
+        {
+          "retry_after_hours": 6,
+          "retry_at_kst": "2026-02-15T02:00:00+09:00",
+          "due": true
+        },
+        {
+          "retry_after_hours": 24,
+          "retry_at_kst": "2026-02-15T20:00:00+09:00",
+          "due": true
+        }
+      ],
+      "next_retry_at_kst": null,
       "legal_meta": {
         "survey_datetime": "2026-02-10 17 시 00 분 ~ 21 시 30 분 2026-02-11 11 시 00 분 ~ 18 시 00 분",
         "survey_population": "전북특별자치도 완주군에 거주하는 만18세 이상 남ㆍ녀",
@@ -8157,11 +8959,36 @@
       "first_publish_at_kst": "2026-02-12 13:00",
       "release_policy_hours": 24,
       "release_at_kst": "2026-02-14T13:00:00+09:00",
+      "earliest_release_at_kst": "2026-02-14T13:00:00+09:00",
       "release_gate_passed": true,
       "collect_status": "fallback_collected",
       "safe_window_eligible": true,
+      "pending_reason_code": "pdf_pending",
       "source_channel": "nesdc",
       "detail_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17367&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=7",
+      "retry_schedule_hours": [
+        2,
+        6,
+        24
+      ],
+      "retry_plan": [
+        {
+          "retry_after_hours": 2,
+          "retry_at_kst": "2026-02-14T15:00:00+09:00",
+          "due": true
+        },
+        {
+          "retry_after_hours": 6,
+          "retry_at_kst": "2026-02-14T19:00:00+09:00",
+          "due": true
+        },
+        {
+          "retry_after_hours": 24,
+          "retry_at_kst": "2026-02-15T13:00:00+09:00",
+          "due": true
+        }
+      ],
+      "next_retry_at_kst": null,
       "legal_meta": {
         "survey_datetime": "2026-02-10 10 시 31 분 ~ 18 시 51 분",
         "survey_population": "대구광역시 군위군에 거주하는 만 18세 이상 남녀",
@@ -8185,11 +9012,36 @@
       "first_publish_at_kst": "2026-02-12 11:59",
       "release_policy_hours": 24,
       "release_at_kst": "2026-02-14T11:59:00+09:00",
+      "earliest_release_at_kst": "2026-02-14T11:59:00+09:00",
       "release_gate_passed": true,
       "collect_status": "fallback_collected",
       "safe_window_eligible": true,
+      "pending_reason_code": "pdf_pending",
       "source_channel": "nesdc",
       "detail_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17366&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=7",
+      "retry_schedule_hours": [
+        2,
+        6,
+        24
+      ],
+      "retry_plan": [
+        {
+          "retry_after_hours": 2,
+          "retry_at_kst": "2026-02-14T13:59:00+09:00",
+          "due": true
+        },
+        {
+          "retry_after_hours": 6,
+          "retry_at_kst": "2026-02-14T17:59:00+09:00",
+          "due": true
+        },
+        {
+          "retry_after_hours": 24,
+          "retry_at_kst": "2026-02-15T11:59:00+09:00",
+          "due": true
+        }
+      ],
+      "next_retry_at_kst": null,
       "legal_meta": {
         "survey_datetime": "2026-02-10 10 시 54 분 ~ 20 시 53 분 2026-02-11 10 시 14 분 ~ 12 시 51 분",
         "survey_population": "충청남도 서산시에 거주하는 만 18세 이상 남녀",
@@ -8213,11 +9065,36 @@
       "first_publish_at_kst": "2026-02-13 06:00",
       "release_policy_hours": 24,
       "release_at_kst": "2026-02-15T06:00:00+09:00",
+      "earliest_release_at_kst": "2026-02-15T06:00:00+09:00",
       "release_gate_passed": true,
       "collect_status": "fallback_collected",
       "safe_window_eligible": true,
+      "pending_reason_code": "pdf_pending",
       "source_channel": "nesdc",
       "detail_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17365&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=7",
+      "retry_schedule_hours": [
+        2,
+        6,
+        24
+      ],
+      "retry_plan": [
+        {
+          "retry_after_hours": 2,
+          "retry_at_kst": "2026-02-15T08:00:00+09:00",
+          "due": true
+        },
+        {
+          "retry_after_hours": 6,
+          "retry_at_kst": "2026-02-15T12:00:00+09:00",
+          "due": true
+        },
+        {
+          "retry_after_hours": 24,
+          "retry_at_kst": "2026-02-16T06:00:00+09:00",
+          "due": true
+        }
+      ],
+      "next_retry_at_kst": null,
       "legal_meta": {
         "survey_datetime": "2026-02-09 13 시 20 분 ~ 21 시 00 분 2026-02-10 11 시 00 분 ~ 21 시 00 분 2026-02-11 11 시 00 분 ~ 20 시 20 분",
         "survey_population": "경기도에 거주하는 만 18세 이상 남녀",
@@ -8241,11 +9118,36 @@
       "first_publish_at_kst": "2026-02-13 01:00",
       "release_policy_hours": 24,
       "release_at_kst": "2026-02-15T01:00:00+09:00",
+      "earliest_release_at_kst": "2026-02-15T01:00:00+09:00",
       "release_gate_passed": true,
       "collect_status": "fallback_collected",
       "safe_window_eligible": true,
+      "pending_reason_code": "pdf_pending",
       "source_channel": "nesdc",
       "detail_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17364&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=7",
+      "retry_schedule_hours": [
+        2,
+        6,
+        24
+      ],
+      "retry_plan": [
+        {
+          "retry_after_hours": 2,
+          "retry_at_kst": "2026-02-15T03:00:00+09:00",
+          "due": true
+        },
+        {
+          "retry_after_hours": 6,
+          "retry_at_kst": "2026-02-15T07:00:00+09:00",
+          "due": true
+        },
+        {
+          "retry_after_hours": 24,
+          "retry_at_kst": "2026-02-16T01:00:00+09:00",
+          "due": true
+        }
+      ],
+      "next_retry_at_kst": null,
       "legal_meta": {
         "survey_datetime": "2026-02-06 11 시 10 분 ~ 20 시 40 분 2026-02-07 10 시 00 분 ~ 13 시 10 분 2026-02-07 16 시 00 분 ~ 21 시 00 분 2026-02-08 13 시 00 분 ~ 19 시 00 분",
         "survey_population": "포항시에 거주하는 만18세 이상 남녀",
@@ -8269,11 +9171,36 @@
       "first_publish_at_kst": "2026-02-12 09:00",
       "release_policy_hours": 24,
       "release_at_kst": "2026-02-14T09:00:00+09:00",
+      "earliest_release_at_kst": "2026-02-14T09:00:00+09:00",
       "release_gate_passed": true,
       "collect_status": "fallback_collected",
       "safe_window_eligible": true,
+      "pending_reason_code": "pdf_pending",
       "source_channel": "nesdc",
       "detail_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17362&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=8",
+      "retry_schedule_hours": [
+        2,
+        6,
+        24
+      ],
+      "retry_plan": [
+        {
+          "retry_after_hours": 2,
+          "retry_at_kst": "2026-02-14T11:00:00+09:00",
+          "due": true
+        },
+        {
+          "retry_after_hours": 6,
+          "retry_at_kst": "2026-02-14T15:00:00+09:00",
+          "due": true
+        },
+        {
+          "retry_after_hours": 24,
+          "retry_at_kst": "2026-02-15T09:00:00+09:00",
+          "due": true
+        }
+      ],
+      "next_retry_at_kst": null,
       "legal_meta": {
         "survey_datetime": "2026-02-09 10 시 00 분 ~ 19 시 00 분 2026-02-10 10 시 00 분 ~ 22 시 00 분 2026-02-11 10 시 00 분 ~ 12 시 00 분",
         "survey_population": "충청남도에 거주하는 만 18세 이상 남녀",
@@ -8297,11 +9224,36 @@
       "first_publish_at_kst": "2026-02-12 09:00",
       "release_policy_hours": 48,
       "release_at_kst": "2026-02-14T09:00:00+09:00",
+      "earliest_release_at_kst": "2026-02-14T09:00:00+09:00",
       "release_gate_passed": true,
       "collect_status": "fallback_collected",
       "safe_window_eligible": true,
+      "pending_reason_code": "pdf_pending",
       "source_channel": "nesdc",
       "detail_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17354&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=8",
+      "retry_schedule_hours": [
+        2,
+        6,
+        24
+      ],
+      "retry_plan": [
+        {
+          "retry_after_hours": 2,
+          "retry_at_kst": "2026-02-14T11:00:00+09:00",
+          "due": true
+        },
+        {
+          "retry_after_hours": 6,
+          "retry_at_kst": "2026-02-14T15:00:00+09:00",
+          "due": true
+        },
+        {
+          "retry_after_hours": 24,
+          "retry_at_kst": "2026-02-15T09:00:00+09:00",
+          "due": true
+        }
+      ],
+      "next_retry_at_kst": null,
       "legal_meta": {
         "survey_datetime": "2026-02-06 13 시 00 분 ~ 15 시 00 분 2026-02-07 16 시 00 분 ~ 17 시 00 분 2026-02-08 13 시 00 분 ~ 15 시 00 분 2026-02-09 13 시 00 분 ~ 15 시 30 분",
         "survey_population": "전라남도 영암군에 거주하는 만 18세 이상 남녀",
@@ -8325,11 +9277,36 @@
       "first_publish_at_kst": "2026-02-12 06:00",
       "release_policy_hours": 24,
       "release_at_kst": "2026-02-14T06:00:00+09:00",
+      "earliest_release_at_kst": "2026-02-14T06:00:00+09:00",
       "release_gate_passed": true,
       "collect_status": "fallback_collected",
       "safe_window_eligible": true,
+      "pending_reason_code": "pdf_pending",
       "source_channel": "nesdc",
       "detail_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17361&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=8",
+      "retry_schedule_hours": [
+        2,
+        6,
+        24
+      ],
+      "retry_plan": [
+        {
+          "retry_after_hours": 2,
+          "retry_at_kst": "2026-02-14T08:00:00+09:00",
+          "due": true
+        },
+        {
+          "retry_after_hours": 6,
+          "retry_at_kst": "2026-02-14T12:00:00+09:00",
+          "due": true
+        },
+        {
+          "retry_after_hours": 24,
+          "retry_at_kst": "2026-02-15T06:00:00+09:00",
+          "due": true
+        }
+      ],
+      "next_retry_at_kst": null,
       "legal_meta": {
         "survey_datetime": "2026-02-09 16 시 27 분 ~ 21 시 16 분 2026-02-10 11 시 34 분 ~ 17 시 08 분",
         "survey_population": "전국에 거주하는 만 18세 이상 남녀",
@@ -8353,11 +9330,36 @@
       "first_publish_at_kst": "2026-02-12 15:00",
       "release_policy_hours": 24,
       "release_at_kst": "2026-02-14T15:00:00+09:00",
+      "earliest_release_at_kst": "2026-02-14T15:00:00+09:00",
       "release_gate_passed": true,
       "collect_status": "fallback_collected",
       "safe_window_eligible": true,
+      "pending_reason_code": "pdf_pending",
       "source_channel": "nesdc",
       "detail_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17360&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=8",
+      "retry_schedule_hours": [
+        2,
+        6,
+        24
+      ],
+      "retry_plan": [
+        {
+          "retry_after_hours": 2,
+          "retry_at_kst": "2026-02-14T17:00:00+09:00",
+          "due": true
+        },
+        {
+          "retry_after_hours": 6,
+          "retry_at_kst": "2026-02-14T21:00:00+09:00",
+          "due": true
+        },
+        {
+          "retry_after_hours": 24,
+          "retry_at_kst": "2026-02-15T15:00:00+09:00",
+          "due": true
+        }
+      ],
+      "next_retry_at_kst": null,
       "legal_meta": {
         "survey_datetime": "2026-02-09 10 시 00 분 ~ 19 시 00 분 2026-02-10 10 시 00 분 ~ 11 시 00 분",
         "survey_population": "전라남도 광양시에 거주하는 만 18세 이상 남녀",
@@ -8381,11 +9383,36 @@
       "first_publish_at_kst": "2026-02-11 13:00",
       "release_policy_hours": 24,
       "release_at_kst": "2026-02-13T13:00:00+09:00",
+      "earliest_release_at_kst": "2026-02-13T13:00:00+09:00",
       "release_gate_passed": true,
       "collect_status": "fallback_collected",
       "safe_window_eligible": true,
+      "pending_reason_code": "pdf_pending",
       "source_channel": "nesdc",
       "detail_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17358&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=8",
+      "retry_schedule_hours": [
+        2,
+        6,
+        24
+      ],
+      "retry_plan": [
+        {
+          "retry_after_hours": 2,
+          "retry_at_kst": "2026-02-13T15:00:00+09:00",
+          "due": true
+        },
+        {
+          "retry_after_hours": 6,
+          "retry_at_kst": "2026-02-13T19:00:00+09:00",
+          "due": true
+        },
+        {
+          "retry_after_hours": 24,
+          "retry_at_kst": "2026-02-14T13:00:00+09:00",
+          "due": true
+        }
+      ],
+      "next_retry_at_kst": null,
       "legal_meta": {
         "survey_datetime": "2026-02-09 14 시 33 분 ~ 21 시 29 분",
         "survey_population": "전국에 거주하는 만 18세 이상 남녀",
@@ -8409,11 +9436,36 @@
       "first_publish_at_kst": "2026-02-11 11:00",
       "release_policy_hours": 24,
       "release_at_kst": "2026-02-13T11:00:00+09:00",
+      "earliest_release_at_kst": "2026-02-13T11:00:00+09:00",
       "release_gate_passed": true,
       "collect_status": "fallback_collected",
       "safe_window_eligible": true,
+      "pending_reason_code": "pdf_pending",
       "source_channel": "nesdc",
       "detail_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17355&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=8",
+      "retry_schedule_hours": [
+        2,
+        6,
+        24
+      ],
+      "retry_plan": [
+        {
+          "retry_after_hours": 2,
+          "retry_at_kst": "2026-02-13T13:00:00+09:00",
+          "due": true
+        },
+        {
+          "retry_after_hours": 6,
+          "retry_at_kst": "2026-02-13T17:00:00+09:00",
+          "due": true
+        },
+        {
+          "retry_after_hours": 24,
+          "retry_at_kst": "2026-02-14T11:00:00+09:00",
+          "due": true
+        }
+      ],
+      "next_retry_at_kst": null,
       "legal_meta": {
         "survey_datetime": "2026-02-09 13 시 00 분 ~ 22 시 00 분 2026-02-10 10 시 00 분 ~ 16 시 00 분",
         "survey_population": "전국에 거주하는 만 18세 이상 남녀",
@@ -8437,11 +9489,36 @@
       "first_publish_at_kst": "2026-02-12 05:00",
       "release_policy_hours": 24,
       "release_at_kst": "2026-02-14T05:00:00+09:00",
+      "earliest_release_at_kst": "2026-02-14T05:00:00+09:00",
       "release_gate_passed": true,
       "collect_status": "fallback_collected",
       "safe_window_eligible": true,
+      "pending_reason_code": "pdf_pending",
       "source_channel": "nesdc",
       "detail_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17347&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=8",
+      "retry_schedule_hours": [
+        2,
+        6,
+        24
+      ],
+      "retry_plan": [
+        {
+          "retry_after_hours": 2,
+          "retry_at_kst": "2026-02-14T07:00:00+09:00",
+          "due": true
+        },
+        {
+          "retry_after_hours": 6,
+          "retry_at_kst": "2026-02-14T11:00:00+09:00",
+          "due": true
+        },
+        {
+          "retry_after_hours": 24,
+          "retry_at_kst": "2026-02-15T05:00:00+09:00",
+          "due": true
+        }
+      ],
+      "next_retry_at_kst": null,
       "legal_meta": {
         "survey_datetime": "2026-02-09 13 시 30 분 ~ 21 시 00 분 2026-02-10 10 시 30 분 ~ 20 시 00 분",
         "survey_population": "서울특별시에 거주하는 만 18세 이상 남녀",
@@ -8465,11 +9542,36 @@
       "first_publish_at_kst": "2026-02-11 13:00",
       "release_policy_hours": 24,
       "release_at_kst": "2026-02-13T13:00:00+09:00",
+      "earliest_release_at_kst": "2026-02-13T13:00:00+09:00",
       "release_gate_passed": true,
       "collect_status": "fallback_collected",
       "safe_window_eligible": true,
+      "pending_reason_code": "pdf_pending",
       "source_channel": "nesdc",
       "detail_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17349&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=8",
+      "retry_schedule_hours": [
+        2,
+        6,
+        24
+      ],
+      "retry_plan": [
+        {
+          "retry_after_hours": 2,
+          "retry_at_kst": "2026-02-13T15:00:00+09:00",
+          "due": true
+        },
+        {
+          "retry_after_hours": 6,
+          "retry_at_kst": "2026-02-13T19:00:00+09:00",
+          "due": true
+        },
+        {
+          "retry_after_hours": 24,
+          "retry_at_kst": "2026-02-14T13:00:00+09:00",
+          "due": true
+        }
+      ],
+      "next_retry_at_kst": null,
       "legal_meta": {
         "survey_datetime": "2026-02-09 11 시 00 분 ~ 20 시 30 분 2026-02-10 10 시 30 분 ~ 18 시 40 분",
         "survey_population": "부산광역시 강서구에 거주하는 만 18세 이상 남녀",
@@ -8493,11 +9595,36 @@
       "first_publish_at_kst": "2026-02-11 13:00",
       "release_policy_hours": 24,
       "release_at_kst": "2026-02-13T13:00:00+09:00",
+      "earliest_release_at_kst": "2026-02-13T13:00:00+09:00",
       "release_gate_passed": true,
       "collect_status": "fallback_collected",
       "safe_window_eligible": true,
+      "pending_reason_code": "pdf_pending",
       "source_channel": "nesdc",
       "detail_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17348&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=8",
+      "retry_schedule_hours": [
+        2,
+        6,
+        24
+      ],
+      "retry_plan": [
+        {
+          "retry_after_hours": 2,
+          "retry_at_kst": "2026-02-13T15:00:00+09:00",
+          "due": true
+        },
+        {
+          "retry_after_hours": 6,
+          "retry_at_kst": "2026-02-13T19:00:00+09:00",
+          "due": true
+        },
+        {
+          "retry_after_hours": 24,
+          "retry_at_kst": "2026-02-14T13:00:00+09:00",
+          "due": true
+        }
+      ],
+      "next_retry_at_kst": null,
       "legal_meta": {
         "survey_datetime": "2026-02-09 10 시 45 분 ~ 20 시 40 분 2026-02-10 10 시 30 분 ~ 21 시 00 분",
         "survey_population": "부산광역시 사상구에 거주하는 만 18세 이상 남녀",
@@ -8521,11 +9648,20 @@
       "first_publish_at_kst": "2026-02-12 13:00",
       "release_policy_hours": 24,
       "release_at_kst": "2026-02-14T13:00:00+09:00",
+      "earliest_release_at_kst": "2026-02-14T13:00:00+09:00",
       "release_gate_passed": true,
       "collect_status": "collected_template_fallback",
       "safe_window_eligible": true,
+      "pending_reason_code": null,
       "source_channel": "nesdc",
       "detail_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17352&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=9",
+      "retry_schedule_hours": [
+        2,
+        6,
+        24
+      ],
+      "retry_plan": [],
+      "next_retry_at_kst": null,
       "legal_meta": {
         "survey_datetime": "2026-02-06 16 시 00 분 ~ 22 시 00 분 2026-02-07 10 시 20 분 ~ 21 시 30 분",
         "survey_population": "충청남도에 거주하는 만 18세 이상 남녀",
@@ -8790,11 +9926,20 @@
       "first_publish_at_kst": "2026-02-12 13:00",
       "release_policy_hours": 24,
       "release_at_kst": "2026-02-14T13:00:00+09:00",
+      "earliest_release_at_kst": "2026-02-14T13:00:00+09:00",
       "release_gate_passed": true,
       "collect_status": "collected_template_fallback",
       "safe_window_eligible": true,
+      "pending_reason_code": null,
       "source_channel": "nesdc",
       "detail_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17351&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=9",
+      "retry_schedule_hours": [
+        2,
+        6,
+        24
+      ],
+      "retry_plan": [],
+      "next_retry_at_kst": null,
       "legal_meta": {
         "survey_datetime": "2026-02-06 16 시 00 분 ~ 22 시 00 분 2026-02-07 10 시 20 분 ~ 21 시 00 분",
         "survey_population": "대전광역시에 거주하는 만 18세 이상 남녀",
@@ -9059,11 +10204,36 @@
       "first_publish_at_kst": "2026-02-12 04:00",
       "release_policy_hours": 24,
       "release_at_kst": "2026-02-14T04:00:00+09:00",
+      "earliest_release_at_kst": "2026-02-14T04:00:00+09:00",
       "release_gate_passed": true,
       "collect_status": "fallback_collected",
       "safe_window_eligible": true,
+      "pending_reason_code": "pdf_pending",
       "source_channel": "nesdc",
       "detail_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17350&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=9",
+      "retry_schedule_hours": [
+        2,
+        6,
+        24
+      ],
+      "retry_plan": [
+        {
+          "retry_after_hours": 2,
+          "retry_at_kst": "2026-02-14T06:00:00+09:00",
+          "due": true
+        },
+        {
+          "retry_after_hours": 6,
+          "retry_at_kst": "2026-02-14T10:00:00+09:00",
+          "due": true
+        },
+        {
+          "retry_after_hours": 24,
+          "retry_at_kst": "2026-02-15T04:00:00+09:00",
+          "due": true
+        }
+      ],
+      "next_retry_at_kst": null,
       "legal_meta": {
         "survey_datetime": "2026-02-06 10 시 00 분 ~ 17 시 50 분 2026-02-07 10 시 00 분 ~ 13 시 50 분",
         "survey_population": "전북특별자치도 김제시에 거주하는 만18세 이상 남녀",
@@ -9087,11 +10257,36 @@
       "first_publish_at_kst": "2026-02-12 05:00",
       "release_policy_hours": 24,
       "release_at_kst": "2026-02-14T05:00:00+09:00",
+      "earliest_release_at_kst": "2026-02-14T05:00:00+09:00",
       "release_gate_passed": true,
       "collect_status": "fallback_collected",
       "safe_window_eligible": true,
+      "pending_reason_code": "pdf_pending",
       "source_channel": "nesdc",
       "detail_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17346&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=9",
+      "retry_schedule_hours": [
+        2,
+        6,
+        24
+      ],
+      "retry_plan": [
+        {
+          "retry_after_hours": 2,
+          "retry_at_kst": "2026-02-14T07:00:00+09:00",
+          "due": true
+        },
+        {
+          "retry_after_hours": 6,
+          "retry_at_kst": "2026-02-14T11:00:00+09:00",
+          "due": true
+        },
+        {
+          "retry_after_hours": 24,
+          "retry_at_kst": "2026-02-15T05:00:00+09:00",
+          "due": true
+        }
+      ],
+      "next_retry_at_kst": null,
       "legal_meta": {
         "survey_datetime": "2026-02-09 13 시 00 분 ~ 18 시 00 분 2026-02-10 10 시 00 분 ~ 12 시 00 분",
         "survey_population": "전국 만 18세 이상 남녀",
@@ -9115,11 +10310,36 @@
       "first_publish_at_kst": "2026-02-11 17:00",
       "release_policy_hours": 24,
       "release_at_kst": "2026-02-13T17:00:00+09:00",
+      "earliest_release_at_kst": "2026-02-13T17:00:00+09:00",
       "release_gate_passed": true,
       "collect_status": "fallback_collected",
       "safe_window_eligible": true,
+      "pending_reason_code": "pdf_pending",
       "source_channel": "nesdc",
       "detail_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17345&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=9",
+      "retry_schedule_hours": [
+        2,
+        6,
+        24
+      ],
+      "retry_plan": [
+        {
+          "retry_after_hours": 2,
+          "retry_at_kst": "2026-02-13T19:00:00+09:00",
+          "due": true
+        },
+        {
+          "retry_after_hours": 6,
+          "retry_at_kst": "2026-02-13T23:00:00+09:00",
+          "due": true
+        },
+        {
+          "retry_after_hours": 24,
+          "retry_at_kst": "2026-02-14T17:00:00+09:00",
+          "due": true
+        }
+      ],
+      "next_retry_at_kst": null,
       "legal_meta": {
         "survey_datetime": "2026-02-07 11 시 00 분 ~ 18 시 10 분",
         "survey_population": "경상북도 영덕군에 거주하는 만 18세 이상 남녀",
@@ -9143,11 +10363,36 @@
       "first_publish_at_kst": "2026-02-12 17:00",
       "release_policy_hours": 24,
       "release_at_kst": "2026-02-14T17:00:00+09:00",
+      "earliest_release_at_kst": "2026-02-14T17:00:00+09:00",
       "release_gate_passed": true,
       "collect_status": "fallback_collected",
       "safe_window_eligible": true,
+      "pending_reason_code": "pdf_pending",
       "source_channel": "nesdc",
       "detail_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17344&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=9",
+      "retry_schedule_hours": [
+        2,
+        6,
+        24
+      ],
+      "retry_plan": [
+        {
+          "retry_after_hours": 2,
+          "retry_at_kst": "2026-02-14T19:00:00+09:00",
+          "due": true
+        },
+        {
+          "retry_after_hours": 6,
+          "retry_at_kst": "2026-02-14T23:00:00+09:00",
+          "due": true
+        },
+        {
+          "retry_after_hours": 24,
+          "retry_at_kst": "2026-02-15T17:00:00+09:00",
+          "due": true
+        }
+      ],
+      "next_retry_at_kst": null,
       "legal_meta": {
         "survey_datetime": "2026-02-07 11 시 00 분 ~ 19 시 53 분 2026-02-08 13 시 00 분 ~ 20 시 33 분",
         "survey_population": "경상북도 포항시에 거주하는 만 18세 이상 남녀",
@@ -9171,11 +10416,36 @@
       "first_publish_at_kst": "2026-02-11 05:00",
       "release_policy_hours": 24,
       "release_at_kst": "2026-02-13T05:00:00+09:00",
+      "earliest_release_at_kst": "2026-02-13T05:00:00+09:00",
       "release_gate_passed": true,
       "collect_status": "fallback_collected",
       "safe_window_eligible": true,
+      "pending_reason_code": "pdf_pending",
       "source_channel": "nesdc",
       "detail_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17342&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=9",
+      "retry_schedule_hours": [
+        2,
+        6,
+        24
+      ],
+      "retry_plan": [
+        {
+          "retry_after_hours": 2,
+          "retry_at_kst": "2026-02-13T07:00:00+09:00",
+          "due": true
+        },
+        {
+          "retry_after_hours": 6,
+          "retry_at_kst": "2026-02-13T11:00:00+09:00",
+          "due": true
+        },
+        {
+          "retry_after_hours": 24,
+          "retry_at_kst": "2026-02-14T05:00:00+09:00",
+          "due": true
+        }
+      ],
+      "next_retry_at_kst": null,
       "legal_meta": {
         "survey_datetime": "2026-02-07 10 시 00 분 ~ 21 시 00 분 2026-02-08 10 시 00 분 ~ 20 시 00 분 2026-02-09 20 시 30 분 ~ 21 시 30 분",
         "survey_population": "전국에 거주하는 만 18세 이상 남녀",
@@ -9199,11 +10469,36 @@
       "first_publish_at_kst": "2026-02-13 09:00",
       "release_policy_hours": 24,
       "release_at_kst": "2026-02-15T09:00:00+09:00",
+      "earliest_release_at_kst": "2026-02-15T09:00:00+09:00",
       "release_gate_passed": true,
       "collect_status": "fallback_collected",
       "safe_window_eligible": true,
+      "pending_reason_code": "pdf_pending",
       "source_channel": "nesdc",
       "detail_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17298&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=9",
+      "retry_schedule_hours": [
+        2,
+        6,
+        24
+      ],
+      "retry_plan": [
+        {
+          "retry_after_hours": 2,
+          "retry_at_kst": "2026-02-15T11:00:00+09:00",
+          "due": true
+        },
+        {
+          "retry_after_hours": 6,
+          "retry_at_kst": "2026-02-15T15:00:00+09:00",
+          "due": true
+        },
+        {
+          "retry_after_hours": 24,
+          "retry_at_kst": "2026-02-16T09:00:00+09:00",
+          "due": true
+        }
+      ],
+      "next_retry_at_kst": null,
       "legal_meta": {
         "survey_datetime": "2026-02-07 10 시 00 분 ~ 21 시 10 분 2026-02-08 12 시 30 분 ~ 21 시 10 분",
         "survey_population": "경기도 평택시에 거주하는 만 18세 이상 남녀",
@@ -9227,11 +10522,36 @@
       "first_publish_at_kst": "2026-02-12 17:00",
       "release_policy_hours": 24,
       "release_at_kst": "2026-02-14T17:00:00+09:00",
+      "earliest_release_at_kst": "2026-02-14T17:00:00+09:00",
       "release_gate_passed": true,
       "collect_status": "fallback_collected",
       "safe_window_eligible": true,
+      "pending_reason_code": "pdf_pending",
       "source_channel": "nesdc",
       "detail_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17340&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=9",
+      "retry_schedule_hours": [
+        2,
+        6,
+        24
+      ],
+      "retry_plan": [
+        {
+          "retry_after_hours": 2,
+          "retry_at_kst": "2026-02-14T19:00:00+09:00",
+          "due": true
+        },
+        {
+          "retry_after_hours": 6,
+          "retry_at_kst": "2026-02-14T23:00:00+09:00",
+          "due": true
+        },
+        {
+          "retry_after_hours": 24,
+          "retry_at_kst": "2026-02-15T17:00:00+09:00",
+          "due": true
+        }
+      ],
+      "next_retry_at_kst": null,
       "legal_meta": {
         "survey_datetime": "2026-02-08 10 시 00 분 ~ 17 시 10 분 2026-02-09 09 시 50 분 ~ 16 시 20 분",
         "survey_population": "전라남도에 거주하는 만 18세 이상 남녀",
@@ -9255,11 +10575,36 @@
       "first_publish_at_kst": "2026-02-12 17:00",
       "release_policy_hours": 24,
       "release_at_kst": "2026-02-14T17:00:00+09:00",
+      "earliest_release_at_kst": "2026-02-14T17:00:00+09:00",
       "release_gate_passed": true,
       "collect_status": "fallback_collected",
       "safe_window_eligible": true,
+      "pending_reason_code": "pdf_pending",
       "source_channel": "nesdc",
       "detail_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17339&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=10",
+      "retry_schedule_hours": [
+        2,
+        6,
+        24
+      ],
+      "retry_plan": [
+        {
+          "retry_after_hours": 2,
+          "retry_at_kst": "2026-02-14T19:00:00+09:00",
+          "due": true
+        },
+        {
+          "retry_after_hours": 6,
+          "retry_at_kst": "2026-02-14T23:00:00+09:00",
+          "due": true
+        },
+        {
+          "retry_after_hours": 24,
+          "retry_at_kst": "2026-02-15T17:00:00+09:00",
+          "due": true
+        }
+      ],
+      "next_retry_at_kst": null,
       "legal_meta": {
         "survey_datetime": "2026-02-08 10 시 00 분 ~ 17 시 10 분 2026-02-09 09 시 50 분 ~ 14 시 20 분",
         "survey_population": "광주광역시에 거주하는 만 18세 이상 남녀",
@@ -9283,11 +10628,36 @@
       "first_publish_at_kst": "2026-02-11 05:00",
       "release_policy_hours": 24,
       "release_at_kst": "2026-02-13T05:00:00+09:00",
+      "earliest_release_at_kst": "2026-02-13T05:00:00+09:00",
       "release_gate_passed": true,
       "collect_status": "fallback_collected",
       "safe_window_eligible": true,
+      "pending_reason_code": "pdf_pending",
       "source_channel": "nesdc",
       "detail_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17311&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=10",
+      "retry_schedule_hours": [
+        2,
+        6,
+        24
+      ],
+      "retry_plan": [
+        {
+          "retry_after_hours": 2,
+          "retry_at_kst": "2026-02-13T07:00:00+09:00",
+          "due": true
+        },
+        {
+          "retry_after_hours": 6,
+          "retry_at_kst": "2026-02-13T11:00:00+09:00",
+          "due": true
+        },
+        {
+          "retry_after_hours": 24,
+          "retry_at_kst": "2026-02-14T05:00:00+09:00",
+          "due": true
+        }
+      ],
+      "next_retry_at_kst": null,
       "legal_meta": {
         "survey_datetime": "2026-02-07 11 시 30 분 ~ 18 시 33 분 2026-02-08 11 시 30 분 ~ 21 시 24 분 2026-02-09 12 시 02 분 ~ 15 시 48 분",
         "survey_population": "전국 거주 만18세 이상 남녀",
@@ -9311,11 +10681,36 @@
       "first_publish_at_kst": "2026-02-11 17:00",
       "release_policy_hours": 24,
       "release_at_kst": "2026-02-13T17:00:00+09:00",
+      "earliest_release_at_kst": "2026-02-13T17:00:00+09:00",
       "release_gate_passed": true,
       "collect_status": "fallback_collected",
       "safe_window_eligible": true,
+      "pending_reason_code": "pdf_pending",
       "source_channel": "nesdc",
       "detail_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17338&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=10",
+      "retry_schedule_hours": [
+        2,
+        6,
+        24
+      ],
+      "retry_plan": [
+        {
+          "retry_after_hours": 2,
+          "retry_at_kst": "2026-02-13T19:00:00+09:00",
+          "due": true
+        },
+        {
+          "retry_after_hours": 6,
+          "retry_at_kst": "2026-02-13T23:00:00+09:00",
+          "due": true
+        },
+        {
+          "retry_after_hours": 24,
+          "retry_at_kst": "2026-02-14T17:00:00+09:00",
+          "due": true
+        }
+      ],
+      "next_retry_at_kst": null,
       "legal_meta": {
         "survey_datetime": "2026-02-08 10 시 00 분 ~ 17 시 10 분 2026-02-09 09 시 50 분 ~ 16 시 20 분",
         "survey_population": "전라남도에 거주하는 만 18세 이상 남녀",
@@ -9339,11 +10734,36 @@
       "first_publish_at_kst": "2026-02-11 17:00",
       "release_policy_hours": 24,
       "release_at_kst": "2026-02-13T17:00:00+09:00",
+      "earliest_release_at_kst": "2026-02-13T17:00:00+09:00",
       "release_gate_passed": true,
       "collect_status": "fallback_collected",
       "safe_window_eligible": true,
+      "pending_reason_code": "pdf_pending",
       "source_channel": "nesdc",
       "detail_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17337&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=10",
+      "retry_schedule_hours": [
+        2,
+        6,
+        24
+      ],
+      "retry_plan": [
+        {
+          "retry_after_hours": 2,
+          "retry_at_kst": "2026-02-13T19:00:00+09:00",
+          "due": true
+        },
+        {
+          "retry_after_hours": 6,
+          "retry_at_kst": "2026-02-13T23:00:00+09:00",
+          "due": true
+        },
+        {
+          "retry_after_hours": 24,
+          "retry_at_kst": "2026-02-14T17:00:00+09:00",
+          "due": true
+        }
+      ],
+      "next_retry_at_kst": null,
       "legal_meta": {
         "survey_datetime": "2026-02-08 10 시 00 분 ~ 17 시 10 분 2026-02-09 09 시 50 분 ~ 14 시 20 분",
         "survey_population": "광주광역시에 거주하는 만 18세 이상 남녀",
@@ -9367,11 +10787,36 @@
       "first_publish_at_kst": "2026-02-11 14:00",
       "release_policy_hours": 24,
       "release_at_kst": "2026-02-13T14:00:00+09:00",
+      "earliest_release_at_kst": "2026-02-13T14:00:00+09:00",
       "release_gate_passed": true,
       "collect_status": "fallback_collected",
       "safe_window_eligible": true,
+      "pending_reason_code": "pdf_pending",
       "source_channel": "nesdc",
       "detail_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17336&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=10",
+      "retry_schedule_hours": [
+        2,
+        6,
+        24
+      ],
+      "retry_plan": [
+        {
+          "retry_after_hours": 2,
+          "retry_at_kst": "2026-02-13T16:00:00+09:00",
+          "due": true
+        },
+        {
+          "retry_after_hours": 6,
+          "retry_at_kst": "2026-02-13T20:00:00+09:00",
+          "due": true
+        },
+        {
+          "retry_after_hours": 24,
+          "retry_at_kst": "2026-02-14T14:00:00+09:00",
+          "due": true
+        }
+      ],
+      "next_retry_at_kst": null,
       "legal_meta": {
         "survey_datetime": "2026-02-08 10 시 00 분 ~ 21 시 00 분 2026-02-09 10 시 00 분 ~ 16 시 00 분",
         "survey_population": "충청남도 천안시에 거주하는 만 18세 이상 남녀",
@@ -9395,11 +10840,36 @@
       "first_publish_at_kst": "2026-02-11 11:00",
       "release_policy_hours": 24,
       "release_at_kst": "2026-02-13T11:00:00+09:00",
+      "earliest_release_at_kst": "2026-02-13T11:00:00+09:00",
       "release_gate_passed": true,
       "collect_status": "fallback_collected",
       "safe_window_eligible": true,
+      "pending_reason_code": "pdf_pending",
       "source_channel": "nesdc",
       "detail_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17322&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=10",
+      "retry_schedule_hours": [
+        2,
+        6,
+        24
+      ],
+      "retry_plan": [
+        {
+          "retry_after_hours": 2,
+          "retry_at_kst": "2026-02-13T13:00:00+09:00",
+          "due": true
+        },
+        {
+          "retry_after_hours": 6,
+          "retry_at_kst": "2026-02-13T17:00:00+09:00",
+          "due": true
+        },
+        {
+          "retry_after_hours": 24,
+          "retry_at_kst": "2026-02-14T11:00:00+09:00",
+          "due": true
+        }
+      ],
+      "next_retry_at_kst": null,
       "legal_meta": {
         "survey_datetime": "2026-02-07 11 시 00 분 ~ 19 시 40 분 2026-02-08 13 시 25 분 ~ 16 시 40 분",
         "survey_population": "광주광역시에 거주하는 만 18세 이상 남녀",
@@ -9423,11 +10893,36 @@
       "first_publish_at_kst": "2026-02-11 18:00",
       "release_policy_hours": 24,
       "release_at_kst": "2026-02-13T18:00:00+09:00",
+      "earliest_release_at_kst": "2026-02-13T18:00:00+09:00",
       "release_gate_passed": true,
       "collect_status": "fallback_collected",
       "safe_window_eligible": true,
+      "pending_reason_code": "pdf_pending",
       "source_channel": "nesdc",
       "detail_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17321&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=10",
+      "retry_schedule_hours": [
+        2,
+        6,
+        24
+      ],
+      "retry_plan": [
+        {
+          "retry_after_hours": 2,
+          "retry_at_kst": "2026-02-13T20:00:00+09:00",
+          "due": true
+        },
+        {
+          "retry_after_hours": 6,
+          "retry_at_kst": "2026-02-14T00:00:00+09:00",
+          "due": true
+        },
+        {
+          "retry_after_hours": 24,
+          "retry_at_kst": "2026-02-14T18:00:00+09:00",
+          "due": true
+        }
+      ],
+      "next_retry_at_kst": null,
       "legal_meta": {
         "survey_datetime": "2026-02-06 10 시 00 분 ~ 18 시 00 분 2026-02-07 10 시 00 분 ~ 20 시 00 분 2026-02-08 11 시 00 분 ~ 14 시 00 분",
         "survey_population": "대구광역시에 거주하는 만 18세 이상 남녀",
@@ -9451,11 +10946,36 @@
       "first_publish_at_kst": "2026-02-11 18:00",
       "release_policy_hours": 24,
       "release_at_kst": "2026-02-13T18:00:00+09:00",
+      "earliest_release_at_kst": "2026-02-13T18:00:00+09:00",
       "release_gate_passed": true,
       "collect_status": "fallback_collected",
       "safe_window_eligible": true,
+      "pending_reason_code": "pdf_pending",
       "source_channel": "nesdc",
       "detail_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17319&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=10",
+      "retry_schedule_hours": [
+        2,
+        6,
+        24
+      ],
+      "retry_plan": [
+        {
+          "retry_after_hours": 2,
+          "retry_at_kst": "2026-02-13T20:00:00+09:00",
+          "due": true
+        },
+        {
+          "retry_after_hours": 6,
+          "retry_at_kst": "2026-02-14T00:00:00+09:00",
+          "due": true
+        },
+        {
+          "retry_after_hours": 24,
+          "retry_at_kst": "2026-02-14T18:00:00+09:00",
+          "due": true
+        }
+      ],
+      "next_retry_at_kst": null,
       "legal_meta": {
         "survey_datetime": "2026-02-06 10 시 00 분 ~ 18 시 00 분 2026-02-07 10 시 00 분 ~ 20 시 00 분 2026-02-08 11 시 00 분 ~ 14 시 00 분",
         "survey_population": "경상북도에 거주하는 만 18세 이상 남녀",
@@ -9479,11 +10999,36 @@
       "first_publish_at_kst": "2026-02-12 15:00",
       "release_policy_hours": 24,
       "release_at_kst": "2026-02-14T15:00:00+09:00",
+      "earliest_release_at_kst": "2026-02-14T15:00:00+09:00",
       "release_gate_passed": true,
       "collect_status": "fallback_collected",
       "safe_window_eligible": true,
+      "pending_reason_code": "pdf_pending",
       "source_channel": "nesdc",
       "detail_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17335&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=10",
+      "retry_schedule_hours": [
+        2,
+        6,
+        24
+      ],
+      "retry_plan": [
+        {
+          "retry_after_hours": 2,
+          "retry_at_kst": "2026-02-14T17:00:00+09:00",
+          "due": true
+        },
+        {
+          "retry_after_hours": 6,
+          "retry_at_kst": "2026-02-14T21:00:00+09:00",
+          "due": true
+        },
+        {
+          "retry_after_hours": 24,
+          "retry_at_kst": "2026-02-15T15:00:00+09:00",
+          "due": true
+        }
+      ],
+      "next_retry_at_kst": null,
       "legal_meta": {
         "survey_datetime": "2026-02-08 10 시 00 분 ~ 21 시 00 분 2026-02-09 10 시 00 분 ~ 17 시 00 분",
         "survey_population": "충청남도 태안군 거주 만 18세 이상 남녀",
@@ -9507,11 +11052,20 @@
       "first_publish_at_kst": "2026-02-11 04:00",
       "release_policy_hours": 24,
       "release_at_kst": "2026-02-13T04:00:00+09:00",
+      "earliest_release_at_kst": "2026-02-13T04:00:00+09:00",
       "release_gate_passed": true,
       "collect_status": "collected_template_fallback",
       "safe_window_eligible": true,
+      "pending_reason_code": null,
       "source_channel": "nesdc",
       "detail_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17334&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=10",
+      "retry_schedule_hours": [
+        2,
+        6,
+        24
+      ],
+      "retry_plan": [],
+      "next_retry_at_kst": null,
       "legal_meta": {
         "survey_datetime": "2026-02-08 13 시 40 분 ~ 21 시 10 분 2026-02-09 12 시 10 분 ~ 17 시 40 분",
         "survey_population": "경기도 고양특례시에 거주하는 만 18세 이상 남녀",
@@ -9776,11 +11330,20 @@
       "first_publish_at_kst": "2026-02-11 00:00",
       "release_policy_hours": 24,
       "release_at_kst": "2026-02-13T00:00:00+09:00",
+      "earliest_release_at_kst": "2026-02-13T00:00:00+09:00",
       "release_gate_passed": true,
       "collect_status": "collected_template_fallback",
       "safe_window_eligible": true,
+      "pending_reason_code": null,
       "source_channel": "nesdc",
       "detail_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17333&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=11",
+      "retry_schedule_hours": [
+        2,
+        6,
+        24
+      ],
+      "retry_plan": [],
+      "next_retry_at_kst": null,
       "legal_meta": {
         "survey_datetime": "2026-02-08 13 시 30 분 ~ 21 시 10 분 2026-02-09 12 시 00 분 ~ 16 시 50 분",
         "survey_population": "경기도 가평군에 거주하는 만 18세 이상 남녀",
@@ -10045,11 +11608,20 @@
       "first_publish_at_kst": "2026-02-11 00:00",
       "release_policy_hours": 24,
       "release_at_kst": "2026-02-13T00:00:00+09:00",
+      "earliest_release_at_kst": "2026-02-13T00:00:00+09:00",
       "release_gate_passed": true,
       "collect_status": "collected_template_fallback",
       "safe_window_eligible": true,
+      "pending_reason_code": null,
       "source_channel": "nesdc",
       "detail_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17332&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=11",
+      "retry_schedule_hours": [
+        2,
+        6,
+        24
+      ],
+      "retry_plan": [],
+      "next_retry_at_kst": null,
       "legal_meta": {
         "survey_datetime": "2026-02-06 12 시 00 분 ~ 21 시 50 분 2026-02-07 10 시 00 분 ~ 21 시 50 분",
         "survey_population": "경기도 포천시에 거주하는 만 18세 이상 남녀",
@@ -10314,11 +11886,36 @@
       "first_publish_at_kst": "2026-02-11 11:00",
       "release_policy_hours": 24,
       "release_at_kst": "2026-02-13T11:00:00+09:00",
+      "earliest_release_at_kst": "2026-02-13T11:00:00+09:00",
       "release_gate_passed": true,
       "collect_status": "fallback_collected",
       "safe_window_eligible": true,
+      "pending_reason_code": "pdf_pending",
       "source_channel": "nesdc",
       "detail_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17329&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=11",
+      "retry_schedule_hours": [
+        2,
+        6,
+        24
+      ],
+      "retry_plan": [
+        {
+          "retry_after_hours": 2,
+          "retry_at_kst": "2026-02-13T13:00:00+09:00",
+          "due": true
+        },
+        {
+          "retry_after_hours": 6,
+          "retry_at_kst": "2026-02-13T17:00:00+09:00",
+          "due": true
+        },
+        {
+          "retry_after_hours": 24,
+          "retry_at_kst": "2026-02-14T11:00:00+09:00",
+          "due": true
+        }
+      ],
+      "next_retry_at_kst": null,
       "legal_meta": {
         "survey_datetime": "2026-02-07 11 시 32 분 ~ 21 시 12 분 2026-02-08 11 시 32 분 ~ 20 시 44 분",
         "survey_population": "광주광역시 거주 만 18세 이상 남녀",
@@ -10342,11 +11939,36 @@
       "first_publish_at_kst": "2026-02-10 17:00",
       "release_policy_hours": 24,
       "release_at_kst": "2026-02-12T17:00:00+09:00",
+      "earliest_release_at_kst": "2026-02-12T17:00:00+09:00",
       "release_gate_passed": true,
       "collect_status": "fallback_collected",
       "safe_window_eligible": true,
+      "pending_reason_code": "pdf_pending",
       "source_channel": "nesdc",
       "detail_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17323&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=11",
+      "retry_schedule_hours": [
+        2,
+        6,
+        24
+      ],
+      "retry_plan": [
+        {
+          "retry_after_hours": 2,
+          "retry_at_kst": "2026-02-12T19:00:00+09:00",
+          "due": true
+        },
+        {
+          "retry_after_hours": 6,
+          "retry_at_kst": "2026-02-12T23:00:00+09:00",
+          "due": true
+        },
+        {
+          "retry_after_hours": 24,
+          "retry_at_kst": "2026-02-13T17:00:00+09:00",
+          "due": true
+        }
+      ],
+      "next_retry_at_kst": null,
       "legal_meta": {
         "survey_datetime": "2026-02-08 18 시 40 분 ~ 21 시 50 분 2026-02-09 10 시 00 분 ~ 19 시 20 분",
         "survey_population": "전국에 거주하는 만 18세 이상 남녀",
@@ -10370,11 +11992,20 @@
       "first_publish_at_kst": "2026-02-13 08:00",
       "release_policy_hours": 24,
       "release_at_kst": "2026-02-15T08:00:00+09:00",
+      "earliest_release_at_kst": "2026-02-15T08:00:00+09:00",
       "release_gate_passed": true,
       "collect_status": "collected_template_fallback",
       "safe_window_eligible": true,
+      "pending_reason_code": null,
       "source_channel": "nesdc",
       "detail_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17328&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=11",
+      "retry_schedule_hours": [
+        2,
+        6,
+        24
+      ],
+      "retry_plan": [],
+      "next_retry_at_kst": null,
       "legal_meta": {
         "survey_datetime": "2026-02-05 11 시 25 분 ~ 20 시 50 분 2026-02-06 12 시 10 분 ~ 14 시 20 분",
         "survey_population": "제주특별자치도에 거주하는 만 18세 이상 남녀",
@@ -10639,11 +12270,36 @@
       "first_publish_at_kst": "2026-02-10 18:00",
       "release_policy_hours": 24,
       "release_at_kst": "2026-02-12T18:00:00+09:00",
+      "earliest_release_at_kst": "2026-02-12T18:00:00+09:00",
       "release_gate_passed": true,
       "collect_status": "fallback_collected",
       "safe_window_eligible": true,
+      "pending_reason_code": "pdf_pending",
       "source_channel": "nesdc",
       "detail_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17325&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=11",
+      "retry_schedule_hours": [
+        2,
+        6,
+        24
+      ],
+      "retry_plan": [
+        {
+          "retry_after_hours": 2,
+          "retry_at_kst": "2026-02-12T20:00:00+09:00",
+          "due": true
+        },
+        {
+          "retry_after_hours": 6,
+          "retry_at_kst": "2026-02-13T00:00:00+09:00",
+          "due": true
+        },
+        {
+          "retry_after_hours": 24,
+          "retry_at_kst": "2026-02-13T18:00:00+09:00",
+          "due": true
+        }
+      ],
+      "next_retry_at_kst": null,
       "legal_meta": {
         "survey_datetime": "2026-02-07 15 시 00 분 ~ 21 시 30 분 2026-02-08 18 시 00 분 ~ 21 시 00 분",
         "survey_population": "대구 광역시 북구에 거주하는 만 18세 이상 남녀",
@@ -10667,11 +12323,36 @@
       "first_publish_at_kst": "2026-02-10 18:00",
       "release_policy_hours": 24,
       "release_at_kst": "2026-02-12T18:00:00+09:00",
+      "earliest_release_at_kst": "2026-02-12T18:00:00+09:00",
       "release_gate_passed": true,
       "collect_status": "fallback_collected",
       "safe_window_eligible": true,
+      "pending_reason_code": "pdf_pending",
       "source_channel": "nesdc",
       "detail_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17324&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=11",
+      "retry_schedule_hours": [
+        2,
+        6,
+        24
+      ],
+      "retry_plan": [
+        {
+          "retry_after_hours": 2,
+          "retry_at_kst": "2026-02-12T20:00:00+09:00",
+          "due": true
+        },
+        {
+          "retry_after_hours": 6,
+          "retry_at_kst": "2026-02-13T00:00:00+09:00",
+          "due": true
+        },
+        {
+          "retry_after_hours": 24,
+          "retry_at_kst": "2026-02-13T18:00:00+09:00",
+          "due": true
+        }
+      ],
+      "next_retry_at_kst": null,
       "legal_meta": {
         "survey_datetime": "2026-02-07 13 시 00 분 ~ 20 시 30 분 2026-02-08 16 시 00 분 ~ 19 시 00 분",
         "survey_population": "경북 의성군 에 거주하는 만 18세 이상 남녀",
@@ -10695,11 +12376,36 @@
       "first_publish_at_kst": "2026-02-10 06:00",
       "release_policy_hours": 24,
       "release_at_kst": "2026-02-12T06:00:00+09:00",
+      "earliest_release_at_kst": "2026-02-12T06:00:00+09:00",
       "release_gate_passed": true,
       "collect_status": "fallback_collected",
       "safe_window_eligible": true,
+      "pending_reason_code": "pdf_pending",
       "source_channel": "nesdc",
       "detail_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17318&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=11",
+      "retry_schedule_hours": [
+        2,
+        6,
+        24
+      ],
+      "retry_plan": [
+        {
+          "retry_after_hours": 2,
+          "retry_at_kst": "2026-02-12T08:00:00+09:00",
+          "due": true
+        },
+        {
+          "retry_after_hours": 6,
+          "retry_at_kst": "2026-02-12T12:00:00+09:00",
+          "due": true
+        },
+        {
+          "retry_after_hours": 24,
+          "retry_at_kst": "2026-02-13T06:00:00+09:00",
+          "due": true
+        }
+      ],
+      "next_retry_at_kst": null,
       "legal_meta": {
         "survey_datetime": "2026-02-08 13 시 25 분 ~ 18 시 20 분 2026-02-09 14 시 40 분 ~ 19 시 50 분",
         "survey_population": "인천광역시에 거주하는 만 18세 이상 남녀",
@@ -10723,11 +12429,36 @@
       "first_publish_at_kst": "2026-02-09 22:00",
       "release_policy_hours": 24,
       "release_at_kst": "2026-02-11T22:00:00+09:00",
+      "earliest_release_at_kst": "2026-02-11T22:00:00+09:00",
       "release_gate_passed": true,
       "collect_status": "fallback_collected",
       "safe_window_eligible": true,
+      "pending_reason_code": "pdf_pending",
       "source_channel": "nesdc",
       "detail_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17320&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=11",
+      "retry_schedule_hours": [
+        2,
+        6,
+        24
+      ],
+      "retry_plan": [
+        {
+          "retry_after_hours": 2,
+          "retry_at_kst": "2026-02-12T00:00:00+09:00",
+          "due": true
+        },
+        {
+          "retry_after_hours": 6,
+          "retry_at_kst": "2026-02-12T04:00:00+09:00",
+          "due": true
+        },
+        {
+          "retry_after_hours": 24,
+          "retry_at_kst": "2026-02-12T22:00:00+09:00",
+          "due": true
+        }
+      ],
+      "next_retry_at_kst": null,
       "legal_meta": {
         "survey_datetime": "2026-02-08 10 시 00 분 ~ 21 시 00 분 2026-02-09 15 시 00 분 ~ 17 시 00 분",
         "survey_population": "경기도 가평군에 거주하는 만 18세 이상 남녀",
@@ -10751,11 +12482,36 @@
       "first_publish_at_kst": "2026-02-10 17:00",
       "release_policy_hours": 24,
       "release_at_kst": "2026-02-12T17:00:00+09:00",
+      "earliest_release_at_kst": "2026-02-12T17:00:00+09:00",
       "release_gate_passed": true,
       "collect_status": "fallback_collected",
       "safe_window_eligible": true,
+      "pending_reason_code": "pdf_pending",
       "source_channel": "nesdc",
       "detail_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17316&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=11",
+      "retry_schedule_hours": [
+        2,
+        6,
+        24
+      ],
+      "retry_plan": [
+        {
+          "retry_after_hours": 2,
+          "retry_at_kst": "2026-02-12T19:00:00+09:00",
+          "due": true
+        },
+        {
+          "retry_after_hours": 6,
+          "retry_at_kst": "2026-02-12T23:00:00+09:00",
+          "due": true
+        },
+        {
+          "retry_after_hours": 24,
+          "retry_at_kst": "2026-02-13T17:00:00+09:00",
+          "due": true
+        }
+      ],
+      "next_retry_at_kst": null,
       "legal_meta": {
         "survey_datetime": "2026-02-08 10 시 00 분 ~ 17 시 10 분 2026-02-09 09 시 50 분 ~ 16 시 20 분",
         "survey_population": "전라남도에 거주하는 만 18세 이상 남녀",

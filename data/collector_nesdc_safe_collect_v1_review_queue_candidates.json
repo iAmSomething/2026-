@@ -1,6 +1,6 @@
 [
   {
-    "id": "rvq_7e8e22bae8236c5a",
+    "id": "rvq_56a8a65a4655008d",
     "entity_type": "poll_observation",
     "entity_id": "17456",
     "issue_type": "mapping_error",
@@ -15,10 +15,10 @@
       "release_policy_hours": 24
     },
     "status": "pending",
-    "created_at": "2026-02-25T22:33:01.558382+00:00"
+    "created_at": "2026-02-27T02:16:47.072160+00:00"
   },
   {
-    "id": "rvq_c46cc74b455f8f28",
+    "id": "rvq_b5624e9723c6610e",
     "entity_type": "poll_observation",
     "entity_id": "17399",
     "issue_type": "mapping_error",
@@ -33,16 +33,16 @@
       "release_policy_hours": 24
     },
     "status": "pending",
-    "created_at": "2026-02-25T22:33:01.558476+00:00"
+    "created_at": "2026-02-27T02:16:47.072254+00:00"
   },
   {
-    "id": "rvq_8f9e92394f30adfb",
+    "id": "rvq_3933094304c9e12f",
     "entity_type": "poll_observation",
     "entity_id": "17453",
     "issue_type": "extract_error",
     "stage": "nesdc_safe_collect_v1",
-    "error_code": "ADAPTER_FALLBACK_APPLIED",
-    "error_message": "NESDC adapter parse failed or result items missing; fallback record emitted",
+    "error_code": "pdf_pending",
+    "error_message": "NESDC adapter parse failed or result items missing; pdf pending retry path scheduled",
     "source_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17453&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=1",
     "payload": {
       "ntt_id": "17453",
@@ -50,16 +50,16 @@
       "release_policy_hours": 24
     },
     "status": "pending",
-    "created_at": "2026-02-25T22:33:01.558494+00:00"
+    "created_at": "2026-02-27T02:16:47.072351+00:00"
   },
   {
-    "id": "rvq_c764ff236e4c1b48",
+    "id": "rvq_f79eb9c7dd8300e5",
     "entity_type": "poll_observation",
     "entity_id": "17451",
     "issue_type": "extract_error",
     "stage": "nesdc_safe_collect_v1",
-    "error_code": "ADAPTER_FALLBACK_APPLIED",
-    "error_message": "NESDC adapter parse failed or result items missing; fallback record emitted",
+    "error_code": "pdf_pending",
+    "error_message": "NESDC adapter parse failed or result items missing; pdf pending retry path scheduled",
     "source_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17451&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=1",
     "payload": {
       "ntt_id": "17451",
@@ -67,16 +67,16 @@
       "release_policy_hours": 24
     },
     "status": "pending",
-    "created_at": "2026-02-25T22:33:01.558504+00:00"
+    "created_at": "2026-02-27T02:16:47.072378+00:00"
   },
   {
-    "id": "rvq_7e4640320d10d671",
+    "id": "rvq_5ed72ddd28afbe97",
     "entity_type": "poll_observation",
     "entity_id": "17449",
     "issue_type": "extract_error",
     "stage": "nesdc_safe_collect_v1",
-    "error_code": "ADAPTER_FALLBACK_APPLIED",
-    "error_message": "NESDC adapter parse failed or result items missing; fallback record emitted",
+    "error_code": "pdf_pending",
+    "error_message": "NESDC adapter parse failed or result items missing; pdf pending retry path scheduled",
     "source_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17449&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=2",
     "payload": {
       "ntt_id": "17449",
@@ -84,16 +84,16 @@
       "release_policy_hours": 24
     },
     "status": "pending",
-    "created_at": "2026-02-25T22:33:01.558512+00:00"
+    "created_at": "2026-02-27T02:16:47.072393+00:00"
   },
   {
-    "id": "rvq_57f25942789029d5",
+    "id": "rvq_ea4a8c3641e6faf4",
     "entity_type": "poll_observation",
     "entity_id": "17448",
     "issue_type": "extract_error",
     "stage": "nesdc_safe_collect_v1",
-    "error_code": "ADAPTER_FALLBACK_APPLIED",
-    "error_message": "NESDC adapter parse failed or result items missing; fallback record emitted",
+    "error_code": "pdf_pending",
+    "error_message": "NESDC adapter parse failed or result items missing; pdf pending retry path scheduled",
     "source_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17448&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=2",
     "payload": {
       "ntt_id": "17448",
@@ -101,16 +101,16 @@
       "release_policy_hours": 24
     },
     "status": "pending",
-    "created_at": "2026-02-25T22:33:01.558519+00:00"
+    "created_at": "2026-02-27T02:16:47.072407+00:00"
   },
   {
-    "id": "rvq_486d8b0bb401a337",
+    "id": "rvq_864ac390c1479199",
     "entity_type": "poll_observation",
     "entity_id": "17450",
     "issue_type": "extract_error",
     "stage": "nesdc_safe_collect_v1",
-    "error_code": "ADAPTER_FALLBACK_APPLIED",
-    "error_message": "NESDC adapter parse failed or result items missing; fallback record emitted",
+    "error_code": "pdf_pending",
+    "error_message": "NESDC adapter parse failed or result items missing; pdf pending retry path scheduled",
     "source_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17450&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=2",
     "payload": {
       "ntt_id": "17450",
@@ -118,16 +118,16 @@
       "release_policy_hours": 24
     },
     "status": "pending",
-    "created_at": "2026-02-25T22:33:01.558527+00:00"
+    "created_at": "2026-02-27T02:16:47.072420+00:00"
   },
   {
-    "id": "rvq_08267088b9d754e7",
+    "id": "rvq_356d2aa95268b442",
     "entity_type": "poll_observation",
     "entity_id": "17445",
     "issue_type": "extract_error",
     "stage": "nesdc_safe_collect_v1",
-    "error_code": "ADAPTER_FALLBACK_APPLIED",
-    "error_message": "NESDC adapter parse failed or result items missing; fallback record emitted",
+    "error_code": "pdf_pending",
+    "error_message": "NESDC adapter parse failed or result items missing; pdf pending retry path scheduled",
     "source_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17445&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=2",
     "payload": {
       "ntt_id": "17445",
@@ -135,10 +135,10 @@
       "release_policy_hours": 24
     },
     "status": "pending",
-    "created_at": "2026-02-25T22:33:01.558539+00:00"
+    "created_at": "2026-02-27T02:16:47.072451+00:00"
   },
   {
-    "id": "rvq_845539bd88983b37",
+    "id": "rvq_231c3e084a9f2e2a",
     "entity_type": "poll_observation",
     "entity_id": "17444",
     "issue_type": "mapping_error",
@@ -153,10 +153,10 @@
       "release_policy_hours": 24
     },
     "status": "pending",
-    "created_at": "2026-02-25T22:33:01.558740+00:00"
+    "created_at": "2026-02-27T02:16:47.072530+00:00"
   },
   {
-    "id": "rvq_2a4ca2d11f28b4bf",
+    "id": "rvq_f92244253b5793c0",
     "entity_type": "poll_observation",
     "entity_id": "17443",
     "issue_type": "mapping_error",
@@ -171,16 +171,16 @@
       "release_policy_hours": 24
     },
     "status": "pending",
-    "created_at": "2026-02-25T22:33:01.558863+00:00"
+    "created_at": "2026-02-27T02:16:47.072564+00:00"
   },
   {
-    "id": "rvq_5e3d6c926369d7cf",
+    "id": "rvq_f92e161ca50bf3c1",
     "entity_type": "poll_observation",
     "entity_id": "17442",
     "issue_type": "extract_error",
     "stage": "nesdc_safe_collect_v1",
-    "error_code": "ADAPTER_FALLBACK_APPLIED",
-    "error_message": "NESDC adapter parse failed or result items missing; fallback record emitted",
+    "error_code": "pdf_pending",
+    "error_message": "NESDC adapter parse failed or result items missing; pdf pending retry path scheduled",
     "source_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17442&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=2",
     "payload": {
       "ntt_id": "17442",
@@ -188,16 +188,16 @@
       "release_policy_hours": 24
     },
     "status": "pending",
-    "created_at": "2026-02-25T22:33:01.558888+00:00"
+    "created_at": "2026-02-27T02:16:47.072578+00:00"
   },
   {
-    "id": "rvq_a82873b2c60f8b0f",
+    "id": "rvq_37394140b3078f57",
     "entity_type": "poll_observation",
     "entity_id": "17437",
     "issue_type": "extract_error",
     "stage": "nesdc_safe_collect_v1",
-    "error_code": "ADAPTER_FALLBACK_APPLIED",
-    "error_message": "NESDC adapter parse failed or result items missing; fallback record emitted",
+    "error_code": "pdf_pending",
+    "error_message": "NESDC adapter parse failed or result items missing; pdf pending retry path scheduled",
     "source_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17437&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=2",
     "payload": {
       "ntt_id": "17437",
@@ -205,16 +205,16 @@
       "release_policy_hours": 24
     },
     "status": "pending",
-    "created_at": "2026-02-25T22:33:01.558916+00:00"
+    "created_at": "2026-02-27T02:16:47.072591+00:00"
   },
   {
-    "id": "rvq_4b4a82506b339062",
+    "id": "rvq_63447410b216c2e2",
     "entity_type": "poll_observation",
     "entity_id": "17439",
     "issue_type": "extract_error",
     "stage": "nesdc_safe_collect_v1",
-    "error_code": "ADAPTER_FALLBACK_APPLIED",
-    "error_message": "NESDC adapter parse failed or result items missing; fallback record emitted",
+    "error_code": "pdf_pending",
+    "error_message": "NESDC adapter parse failed or result items missing; pdf pending retry path scheduled",
     "source_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17439&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=2",
     "payload": {
       "ntt_id": "17439",
@@ -222,10 +222,10 @@
       "release_policy_hours": 24
     },
     "status": "pending",
-    "created_at": "2026-02-25T22:33:01.558935+00:00"
+    "created_at": "2026-02-27T02:16:47.072604+00:00"
   },
   {
-    "id": "rvq_7333a0474c49498c",
+    "id": "rvq_be2471408f1cce56",
     "entity_type": "poll_observation",
     "entity_id": "17436",
     "issue_type": "mapping_error",
@@ -240,10 +240,10 @@
       "release_policy_hours": 24
     },
     "status": "pending",
-    "created_at": "2026-02-25T22:33:01.559025+00:00"
+    "created_at": "2026-02-27T02:16:47.072666+00:00"
   },
   {
-    "id": "rvq_83dcfa875940fd2f",
+    "id": "rvq_022e432653828aa1",
     "entity_type": "poll_observation",
     "entity_id": "17375",
     "issue_type": "mapping_error",
@@ -258,10 +258,10 @@
       "release_policy_hours": 24
     },
     "status": "pending",
-    "created_at": "2026-02-25T22:33:01.559276+00:00"
+    "created_at": "2026-02-27T02:16:47.072745+00:00"
   },
   {
-    "id": "rvq_2680f90383a2da77",
+    "id": "rvq_5d833040e144710c",
     "entity_type": "poll_observation",
     "entity_id": "17374",
     "issue_type": "mapping_error",
@@ -276,10 +276,10 @@
       "release_policy_hours": 24
     },
     "status": "pending",
-    "created_at": "2026-02-25T22:33:01.559331+00:00"
+    "created_at": "2026-02-27T02:16:47.072781+00:00"
   },
   {
-    "id": "rvq_2aae91ef58451792",
+    "id": "rvq_dd078105788bde2c",
     "entity_type": "poll_observation",
     "entity_id": "17373",
     "issue_type": "mapping_error",
@@ -294,10 +294,10 @@
       "release_policy_hours": 24
     },
     "status": "pending",
-    "created_at": "2026-02-25T22:33:01.559367+00:00"
+    "created_at": "2026-02-27T02:16:47.072814+00:00"
   },
   {
-    "id": "rvq_b8af8be715a370d9",
+    "id": "rvq_4cedd8dc01c9c0a3",
     "entity_type": "poll_observation",
     "entity_id": "17371",
     "issue_type": "mapping_error",
@@ -312,10 +312,10 @@
       "release_policy_hours": 24
     },
     "status": "pending",
-    "created_at": "2026-02-25T22:33:01.559400+00:00"
+    "created_at": "2026-02-27T02:16:47.072847+00:00"
   },
   {
-    "id": "rvq_59e1f66670806cac",
+    "id": "rvq_f49c184da1d25c25",
     "entity_type": "poll_observation",
     "entity_id": "17370",
     "issue_type": "mapping_error",
@@ -330,10 +330,10 @@
       "release_policy_hours": 24
     },
     "status": "pending",
-    "created_at": "2026-02-25T22:33:01.559436+00:00"
+    "created_at": "2026-02-27T02:16:47.072880+00:00"
   },
   {
-    "id": "rvq_031dcdb45dfeb6d9",
+    "id": "rvq_c641250d87369ce7",
     "entity_type": "poll_observation",
     "entity_id": "17369",
     "issue_type": "mapping_error",
@@ -348,10 +348,10 @@
       "release_policy_hours": 24
     },
     "status": "pending",
-    "created_at": "2026-02-25T22:33:01.559469+00:00"
+    "created_at": "2026-02-27T02:16:47.072911+00:00"
   },
   {
-    "id": "rvq_869c00c033c9badc",
+    "id": "rvq_9db7074eab2ac497",
     "entity_type": "poll_observation",
     "entity_id": "17368",
     "issue_type": "mapping_error",
@@ -366,10 +366,10 @@
       "release_policy_hours": 24
     },
     "status": "pending",
-    "created_at": "2026-02-25T22:33:01.559500+00:00"
+    "created_at": "2026-02-27T02:16:47.072943+00:00"
   },
   {
-    "id": "rvq_c8a0e976676a709f",
+    "id": "rvq_aca3de7896fe6272",
     "entity_type": "poll_observation",
     "entity_id": "17396",
     "issue_type": "mapping_error",
@@ -384,10 +384,10 @@
       "release_policy_hours": 24
     },
     "status": "pending",
-    "created_at": "2026-02-25T22:33:01.559532+00:00"
+    "created_at": "2026-02-27T02:16:47.072975+00:00"
   },
   {
-    "id": "rvq_779323af32399a4e",
+    "id": "rvq_f96221d310749fbd",
     "entity_type": "poll_observation",
     "entity_id": "17391",
     "issue_type": "mapping_error",
@@ -402,10 +402,10 @@
       "release_policy_hours": 24
     },
     "status": "pending",
-    "created_at": "2026-02-25T22:33:01.559563+00:00"
+    "created_at": "2026-02-27T02:16:47.073006+00:00"
   },
   {
-    "id": "rvq_0964209a81494266",
+    "id": "rvq_1542eeedc4db77cb",
     "entity_type": "poll_observation",
     "entity_id": "17382",
     "issue_type": "mapping_error",
@@ -420,10 +420,10 @@
       "release_policy_hours": 24
     },
     "status": "pending",
-    "created_at": "2026-02-25T22:33:01.559599+00:00"
+    "created_at": "2026-02-27T02:16:47.073041+00:00"
   },
   {
-    "id": "rvq_bb7b311c1f1b6ba4",
+    "id": "rvq_e570aab9aefddc55",
     "entity_type": "poll_observation",
     "entity_id": "17392",
     "issue_type": "mapping_error",
@@ -438,10 +438,10 @@
       "release_policy_hours": 24
     },
     "status": "pending",
-    "created_at": "2026-02-25T22:33:01.559630+00:00"
+    "created_at": "2026-02-27T02:16:47.073073+00:00"
   },
   {
-    "id": "rvq_c56c196abd5f1d74",
+    "id": "rvq_7d41e6a660850e67",
     "entity_type": "poll_observation",
     "entity_id": "17397",
     "issue_type": "mapping_error",
@@ -456,10 +456,10 @@
       "release_policy_hours": 24
     },
     "status": "pending",
-    "created_at": "2026-02-25T22:33:01.559661+00:00"
+    "created_at": "2026-02-27T02:16:47.073104+00:00"
   },
   {
-    "id": "rvq_cdbac5946d672b9d",
+    "id": "rvq_f9d6de6188ff03b7",
     "entity_type": "poll_observation",
     "entity_id": "17395",
     "issue_type": "mapping_error",
@@ -474,10 +474,10 @@
       "release_policy_hours": 24
     },
     "status": "pending",
-    "created_at": "2026-02-25T22:33:01.559691+00:00"
+    "created_at": "2026-02-27T02:16:47.073136+00:00"
   },
   {
-    "id": "rvq_513af633432bff3b",
+    "id": "rvq_886e935160dce2ce",
     "entity_type": "poll_observation",
     "entity_id": "17393",
     "issue_type": "mapping_error",
@@ -492,10 +492,10 @@
       "release_policy_hours": 24
     },
     "status": "pending",
-    "created_at": "2026-02-25T22:33:01.559722+00:00"
+    "created_at": "2026-02-27T02:16:47.073167+00:00"
   },
   {
-    "id": "rvq_415b9b464b31518d",
+    "id": "rvq_798436c5526620f6",
     "entity_type": "poll_observation",
     "entity_id": "17394",
     "issue_type": "mapping_error",
@@ -510,10 +510,10 @@
       "release_policy_hours": 24
     },
     "status": "pending",
-    "created_at": "2026-02-25T22:33:01.559759+00:00"
+    "created_at": "2026-02-27T02:16:47.073207+00:00"
   },
   {
-    "id": "rvq_d07b0a4c9bdb79c5",
+    "id": "rvq_21004213fa12953a",
     "entity_type": "poll_observation",
     "entity_id": "17398",
     "issue_type": "mapping_error",
@@ -528,16 +528,16 @@
       "release_policy_hours": 24
     },
     "status": "pending",
-    "created_at": "2026-02-25T22:33:01.559801+00:00"
+    "created_at": "2026-02-27T02:16:47.073239+00:00"
   },
   {
-    "id": "rvq_9adfc65147671452",
+    "id": "rvq_bc4c36e789d964ab",
     "entity_type": "poll_observation",
     "entity_id": "17419",
     "issue_type": "extract_error",
     "stage": "nesdc_safe_collect_v1",
-    "error_code": "ADAPTER_FALLBACK_APPLIED",
-    "error_message": "NESDC adapter parse failed or result items missing; fallback record emitted",
+    "error_code": "pdf_pending",
+    "error_message": "NESDC adapter parse failed or result items missing; pdf pending retry path scheduled",
     "source_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17419&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=5",
     "payload": {
       "ntt_id": "17419",
@@ -545,10 +545,10 @@
       "release_policy_hours": 24
     },
     "status": "pending",
-    "created_at": "2026-02-25T22:33:01.559814+00:00"
+    "created_at": "2026-02-27T02:16:47.073257+00:00"
   },
   {
-    "id": "rvq_79ab7218bb303174",
+    "id": "rvq_4c2a6094d5c4b7a6",
     "entity_type": "poll_observation",
     "entity_id": "17417",
     "issue_type": "mapping_error",
@@ -563,16 +563,16 @@
       "release_policy_hours": 24
     },
     "status": "pending",
-    "created_at": "2026-02-25T22:33:01.559852+00:00"
+    "created_at": "2026-02-27T02:16:47.073290+00:00"
   },
   {
-    "id": "rvq_fe4a8e33ebc84b78",
+    "id": "rvq_98da36c8335ce205",
     "entity_type": "poll_observation",
     "entity_id": "17416",
     "issue_type": "extract_error",
     "stage": "nesdc_safe_collect_v1",
-    "error_code": "ADAPTER_FALLBACK_APPLIED",
-    "error_message": "NESDC adapter parse failed or result items missing; fallback record emitted",
+    "error_code": "pdf_pending",
+    "error_message": "NESDC adapter parse failed or result items missing; pdf pending retry path scheduled",
     "source_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17416&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=5",
     "payload": {
       "ntt_id": "17416",
@@ -580,16 +580,16 @@
       "release_policy_hours": 24
     },
     "status": "pending",
-    "created_at": "2026-02-25T22:33:01.559863+00:00"
+    "created_at": "2026-02-27T02:16:47.073302+00:00"
   },
   {
-    "id": "rvq_fbb2a635c8d98f2f",
+    "id": "rvq_2081015dffcbcb1c",
     "entity_type": "poll_observation",
     "entity_id": "17407",
     "issue_type": "extract_error",
     "stage": "nesdc_safe_collect_v1",
-    "error_code": "ADAPTER_FALLBACK_APPLIED",
-    "error_message": "NESDC adapter parse failed or result items missing; fallback record emitted",
+    "error_code": "pdf_pending",
+    "error_message": "NESDC adapter parse failed or result items missing; pdf pending retry path scheduled",
     "source_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17407&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=6",
     "payload": {
       "ntt_id": "17407",
@@ -597,16 +597,16 @@
       "release_policy_hours": 24
     },
     "status": "pending",
-    "created_at": "2026-02-25T22:33:01.559873+00:00"
+    "created_at": "2026-02-27T02:16:47.073314+00:00"
   },
   {
-    "id": "rvq_403e78abfeb2d7e6",
+    "id": "rvq_cf09f63656a1e51c",
     "entity_type": "poll_observation",
     "entity_id": "17405",
     "issue_type": "extract_error",
     "stage": "nesdc_safe_collect_v1",
-    "error_code": "ADAPTER_FALLBACK_APPLIED",
-    "error_message": "NESDC adapter parse failed or result items missing; fallback record emitted",
+    "error_code": "pdf_pending",
+    "error_message": "NESDC adapter parse failed or result items missing; pdf pending retry path scheduled",
     "source_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17405&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=6",
     "payload": {
       "ntt_id": "17405",
@@ -614,16 +614,16 @@
       "release_policy_hours": 24
     },
     "status": "pending",
-    "created_at": "2026-02-25T22:33:01.559881+00:00"
+    "created_at": "2026-02-27T02:16:47.073327+00:00"
   },
   {
-    "id": "rvq_6ee63e6aace527d5",
+    "id": "rvq_9885c3a4f901c73b",
     "entity_type": "poll_observation",
     "entity_id": "17404",
     "issue_type": "extract_error",
     "stage": "nesdc_safe_collect_v1",
-    "error_code": "ADAPTER_FALLBACK_APPLIED",
-    "error_message": "NESDC adapter parse failed or result items missing; fallback record emitted",
+    "error_code": "pdf_pending",
+    "error_message": "NESDC adapter parse failed or result items missing; pdf pending retry path scheduled",
     "source_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17404&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=6",
     "payload": {
       "ntt_id": "17404",
@@ -631,16 +631,16 @@
       "release_policy_hours": 24
     },
     "status": "pending",
-    "created_at": "2026-02-25T22:33:01.559890+00:00"
+    "created_at": "2026-02-27T02:16:47.073340+00:00"
   },
   {
-    "id": "rvq_7740f9c25edd878e",
+    "id": "rvq_af1f93e68e2f312a",
     "entity_type": "poll_observation",
     "entity_id": "17403",
     "issue_type": "extract_error",
     "stage": "nesdc_safe_collect_v1",
-    "error_code": "ADAPTER_FALLBACK_APPLIED",
-    "error_message": "NESDC adapter parse failed or result items missing; fallback record emitted",
+    "error_code": "pdf_pending",
+    "error_message": "NESDC adapter parse failed or result items missing; pdf pending retry path scheduled",
     "source_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17403&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=6",
     "payload": {
       "ntt_id": "17403",
@@ -648,10 +648,10 @@
       "release_policy_hours": 24
     },
     "status": "pending",
-    "created_at": "2026-02-25T22:33:01.559899+00:00"
+    "created_at": "2026-02-27T02:16:47.073358+00:00"
   },
   {
-    "id": "rvq_5baf3fcf5780103e",
+    "id": "rvq_6a0d994c64700507",
     "entity_type": "poll_observation",
     "entity_id": "17402",
     "issue_type": "mapping_error",
@@ -666,16 +666,16 @@
       "release_policy_hours": 24
     },
     "status": "pending",
-    "created_at": "2026-02-25T22:33:01.559943+00:00"
+    "created_at": "2026-02-27T02:16:47.073394+00:00"
   },
   {
-    "id": "rvq_6a74f255067bb8b7",
+    "id": "rvq_61383ea2c5224a1f",
     "entity_type": "poll_observation",
     "entity_id": "17401",
     "issue_type": "extract_error",
     "stage": "nesdc_safe_collect_v1",
-    "error_code": "ADAPTER_FALLBACK_APPLIED",
-    "error_message": "NESDC adapter parse failed or result items missing; fallback record emitted",
+    "error_code": "pdf_pending",
+    "error_message": "NESDC adapter parse failed or result items missing; pdf pending retry path scheduled",
     "source_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17401&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=6",
     "payload": {
       "ntt_id": "17401",
@@ -683,16 +683,16 @@
       "release_policy_hours": 24
     },
     "status": "pending",
-    "created_at": "2026-02-25T22:33:01.559954+00:00"
+    "created_at": "2026-02-27T02:16:47.073409+00:00"
   },
   {
-    "id": "rvq_43aa8436ce58761b",
+    "id": "rvq_8e4d25e603d9e909",
     "entity_type": "poll_observation",
     "entity_id": "17400",
     "issue_type": "extract_error",
     "stage": "nesdc_safe_collect_v1",
-    "error_code": "ADAPTER_FALLBACK_APPLIED",
-    "error_message": "NESDC adapter parse failed or result items missing; fallback record emitted",
+    "error_code": "pdf_pending",
+    "error_message": "NESDC adapter parse failed or result items missing; pdf pending retry path scheduled",
     "source_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17400&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=6",
     "payload": {
       "ntt_id": "17400",
@@ -700,16 +700,16 @@
       "release_policy_hours": 24
     },
     "status": "pending",
-    "created_at": "2026-02-25T22:33:01.559964+00:00"
+    "created_at": "2026-02-27T02:16:47.073422+00:00"
   },
   {
-    "id": "rvq_ffe95ca09ecdca45",
+    "id": "rvq_b7f5a2a9c00e029d",
     "entity_type": "poll_observation",
     "entity_id": "17390",
     "issue_type": "extract_error",
     "stage": "nesdc_safe_collect_v1",
-    "error_code": "ADAPTER_FALLBACK_APPLIED",
-    "error_message": "NESDC adapter parse failed or result items missing; fallback record emitted",
+    "error_code": "pdf_pending",
+    "error_message": "NESDC adapter parse failed or result items missing; pdf pending retry path scheduled",
     "source_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17390&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=6",
     "payload": {
       "ntt_id": "17390",
@@ -717,16 +717,16 @@
       "release_policy_hours": 24
     },
     "status": "pending",
-    "created_at": "2026-02-25T22:33:01.559972+00:00"
+    "created_at": "2026-02-27T02:16:47.073434+00:00"
   },
   {
-    "id": "rvq_9c53ea5f1e7bf2ee",
+    "id": "rvq_b1fa9314957c1de4",
     "entity_type": "poll_observation",
     "entity_id": "17388",
     "issue_type": "extract_error",
     "stage": "nesdc_safe_collect_v1",
-    "error_code": "ADAPTER_FALLBACK_APPLIED",
-    "error_message": "NESDC adapter parse failed or result items missing; fallback record emitted",
+    "error_code": "pdf_pending",
+    "error_message": "NESDC adapter parse failed or result items missing; pdf pending retry path scheduled",
     "source_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17388&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=7",
     "payload": {
       "ntt_id": "17388",
@@ -734,16 +734,16 @@
       "release_policy_hours": 24
     },
     "status": "pending",
-    "created_at": "2026-02-25T22:33:01.559982+00:00"
+    "created_at": "2026-02-27T02:16:47.073446+00:00"
   },
   {
-    "id": "rvq_239d4103f095088c",
+    "id": "rvq_aa3203d9662dfe99",
     "entity_type": "poll_observation",
     "entity_id": "17381",
     "issue_type": "extract_error",
     "stage": "nesdc_safe_collect_v1",
-    "error_code": "ADAPTER_FALLBACK_APPLIED",
-    "error_message": "NESDC adapter parse failed or result items missing; fallback record emitted",
+    "error_code": "pdf_pending",
+    "error_message": "NESDC adapter parse failed or result items missing; pdf pending retry path scheduled",
     "source_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17381&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=7",
     "payload": {
       "ntt_id": "17381",
@@ -751,16 +751,16 @@
       "release_policy_hours": 24
     },
     "status": "pending",
-    "created_at": "2026-02-25T22:33:01.559993+00:00"
+    "created_at": "2026-02-27T02:16:47.073460+00:00"
   },
   {
-    "id": "rvq_fdeb4c7f9c806e99",
+    "id": "rvq_45840d427bb9257d",
     "entity_type": "poll_observation",
     "entity_id": "17379",
     "issue_type": "extract_error",
     "stage": "nesdc_safe_collect_v1",
-    "error_code": "ADAPTER_FALLBACK_APPLIED",
-    "error_message": "NESDC adapter parse failed or result items missing; fallback record emitted",
+    "error_code": "pdf_pending",
+    "error_message": "NESDC adapter parse failed or result items missing; pdf pending retry path scheduled",
     "source_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17379&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=7",
     "payload": {
       "ntt_id": "17379",
@@ -768,10 +768,10 @@
       "release_policy_hours": 24
     },
     "status": "pending",
-    "created_at": "2026-02-25T22:33:01.560002+00:00"
+    "created_at": "2026-02-27T02:16:47.073472+00:00"
   },
   {
-    "id": "rvq_52e45a17e86c44c4",
+    "id": "rvq_659cca91e1c8c844",
     "entity_type": "poll_observation",
     "entity_id": "17378",
     "issue_type": "mapping_error",
@@ -786,10 +786,10 @@
       "release_policy_hours": 24
     },
     "status": "pending",
-    "created_at": "2026-02-25T22:33:01.560042+00:00"
+    "created_at": "2026-02-27T02:16:47.073510+00:00"
   },
   {
-    "id": "rvq_59a397362a071343",
+    "id": "rvq_5d8db52bf881eff3",
     "entity_type": "poll_observation",
     "entity_id": "17376",
     "issue_type": "mapping_error",
@@ -804,16 +804,16 @@
       "release_policy_hours": 24
     },
     "status": "pending",
-    "created_at": "2026-02-25T22:33:01.560080+00:00"
+    "created_at": "2026-02-27T02:16:47.073543+00:00"
   },
   {
-    "id": "rvq_6ad19b6bfd8d8292",
+    "id": "rvq_d55a8da95027e6c3",
     "entity_type": "poll_observation",
     "entity_id": "17372",
     "issue_type": "extract_error",
     "stage": "nesdc_safe_collect_v1",
-    "error_code": "ADAPTER_FALLBACK_APPLIED",
-    "error_message": "NESDC adapter parse failed or result items missing; fallback record emitted",
+    "error_code": "pdf_pending",
+    "error_message": "NESDC adapter parse failed or result items missing; pdf pending retry path scheduled",
     "source_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17372&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=7",
     "payload": {
       "ntt_id": "17372",
@@ -821,16 +821,16 @@
       "release_policy_hours": 24
     },
     "status": "pending",
-    "created_at": "2026-02-25T22:33:01.560089+00:00"
+    "created_at": "2026-02-27T02:16:47.073556+00:00"
   },
   {
-    "id": "rvq_09a7862daf4c6486",
+    "id": "rvq_ac48598839f05371",
     "entity_type": "poll_observation",
     "entity_id": "17367",
     "issue_type": "extract_error",
     "stage": "nesdc_safe_collect_v1",
-    "error_code": "ADAPTER_FALLBACK_APPLIED",
-    "error_message": "NESDC adapter parse failed or result items missing; fallback record emitted",
+    "error_code": "pdf_pending",
+    "error_message": "NESDC adapter parse failed or result items missing; pdf pending retry path scheduled",
     "source_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17367&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=7",
     "payload": {
       "ntt_id": "17367",
@@ -838,16 +838,16 @@
       "release_policy_hours": 24
     },
     "status": "pending",
-    "created_at": "2026-02-25T22:33:01.560098+00:00"
+    "created_at": "2026-02-27T02:16:47.073570+00:00"
   },
   {
-    "id": "rvq_2611a72ade5f8e9c",
+    "id": "rvq_e8ae7c86ade58b0c",
     "entity_type": "poll_observation",
     "entity_id": "17366",
     "issue_type": "extract_error",
     "stage": "nesdc_safe_collect_v1",
-    "error_code": "ADAPTER_FALLBACK_APPLIED",
-    "error_message": "NESDC adapter parse failed or result items missing; fallback record emitted",
+    "error_code": "pdf_pending",
+    "error_message": "NESDC adapter parse failed or result items missing; pdf pending retry path scheduled",
     "source_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17366&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=7",
     "payload": {
       "ntt_id": "17366",
@@ -855,16 +855,16 @@
       "release_policy_hours": 24
     },
     "status": "pending",
-    "created_at": "2026-02-25T22:33:01.560109+00:00"
+    "created_at": "2026-02-27T02:16:47.073583+00:00"
   },
   {
-    "id": "rvq_85b47c75ebee58d7",
+    "id": "rvq_6f02d9d8659300df",
     "entity_type": "poll_observation",
     "entity_id": "17365",
     "issue_type": "extract_error",
     "stage": "nesdc_safe_collect_v1",
-    "error_code": "ADAPTER_FALLBACK_APPLIED",
-    "error_message": "NESDC adapter parse failed or result items missing; fallback record emitted",
+    "error_code": "pdf_pending",
+    "error_message": "NESDC adapter parse failed or result items missing; pdf pending retry path scheduled",
     "source_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17365&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=7",
     "payload": {
       "ntt_id": "17365",
@@ -872,16 +872,16 @@
       "release_policy_hours": 24
     },
     "status": "pending",
-    "created_at": "2026-02-25T22:33:01.560118+00:00"
+    "created_at": "2026-02-27T02:16:47.073602+00:00"
   },
   {
-    "id": "rvq_ec319d57d44b1540",
+    "id": "rvq_7a78cd9f0483e28d",
     "entity_type": "poll_observation",
     "entity_id": "17364",
     "issue_type": "extract_error",
     "stage": "nesdc_safe_collect_v1",
-    "error_code": "ADAPTER_FALLBACK_APPLIED",
-    "error_message": "NESDC adapter parse failed or result items missing; fallback record emitted",
+    "error_code": "pdf_pending",
+    "error_message": "NESDC adapter parse failed or result items missing; pdf pending retry path scheduled",
     "source_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17364&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=7",
     "payload": {
       "ntt_id": "17364",
@@ -889,16 +889,16 @@
       "release_policy_hours": 24
     },
     "status": "pending",
-    "created_at": "2026-02-25T22:33:01.560127+00:00"
+    "created_at": "2026-02-27T02:16:47.073622+00:00"
   },
   {
-    "id": "rvq_322542cbf36979af",
+    "id": "rvq_3abdb9e2e37cab51",
     "entity_type": "poll_observation",
     "entity_id": "17362",
     "issue_type": "extract_error",
     "stage": "nesdc_safe_collect_v1",
-    "error_code": "ADAPTER_FALLBACK_APPLIED",
-    "error_message": "NESDC adapter parse failed or result items missing; fallback record emitted",
+    "error_code": "pdf_pending",
+    "error_message": "NESDC adapter parse failed or result items missing; pdf pending retry path scheduled",
     "source_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17362&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=8",
     "payload": {
       "ntt_id": "17362",
@@ -906,16 +906,16 @@
       "release_policy_hours": 24
     },
     "status": "pending",
-    "created_at": "2026-02-25T22:33:01.560135+00:00"
+    "created_at": "2026-02-27T02:16:47.073634+00:00"
   },
   {
-    "id": "rvq_9c47a2ee49454ba9",
+    "id": "rvq_d13f0fbfa2e7f638",
     "entity_type": "poll_observation",
     "entity_id": "17354",
     "issue_type": "extract_error",
     "stage": "nesdc_safe_collect_v1",
-    "error_code": "ADAPTER_FALLBACK_APPLIED",
-    "error_message": "NESDC adapter parse failed or result items missing; fallback record emitted",
+    "error_code": "pdf_pending",
+    "error_message": "NESDC adapter parse failed or result items missing; pdf pending retry path scheduled",
     "source_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17354&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=8",
     "payload": {
       "ntt_id": "17354",
@@ -923,16 +923,16 @@
       "release_policy_hours": 48
     },
     "status": "pending",
-    "created_at": "2026-02-25T22:33:01.560144+00:00"
+    "created_at": "2026-02-27T02:16:47.073646+00:00"
   },
   {
-    "id": "rvq_4b0f6fc0ebeaf0e8",
+    "id": "rvq_0fadcb3af9ad6acf",
     "entity_type": "poll_observation",
     "entity_id": "17361",
     "issue_type": "extract_error",
     "stage": "nesdc_safe_collect_v1",
-    "error_code": "ADAPTER_FALLBACK_APPLIED",
-    "error_message": "NESDC adapter parse failed or result items missing; fallback record emitted",
+    "error_code": "pdf_pending",
+    "error_message": "NESDC adapter parse failed or result items missing; pdf pending retry path scheduled",
     "source_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17361&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=8",
     "payload": {
       "ntt_id": "17361",
@@ -940,16 +940,16 @@
       "release_policy_hours": 24
     },
     "status": "pending",
-    "created_at": "2026-02-25T22:33:01.560152+00:00"
+    "created_at": "2026-02-27T02:16:47.073658+00:00"
   },
   {
-    "id": "rvq_217d0a0fbdf6ae56",
+    "id": "rvq_a5304abbada0d7f4",
     "entity_type": "poll_observation",
     "entity_id": "17360",
     "issue_type": "extract_error",
     "stage": "nesdc_safe_collect_v1",
-    "error_code": "ADAPTER_FALLBACK_APPLIED",
-    "error_message": "NESDC adapter parse failed or result items missing; fallback record emitted",
+    "error_code": "pdf_pending",
+    "error_message": "NESDC adapter parse failed or result items missing; pdf pending retry path scheduled",
     "source_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17360&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=8",
     "payload": {
       "ntt_id": "17360",
@@ -957,16 +957,16 @@
       "release_policy_hours": 24
     },
     "status": "pending",
-    "created_at": "2026-02-25T22:33:01.560161+00:00"
+    "created_at": "2026-02-27T02:16:47.073671+00:00"
   },
   {
-    "id": "rvq_a5fce45b025d7f79",
+    "id": "rvq_cd2878dc14a9ba06",
     "entity_type": "poll_observation",
     "entity_id": "17358",
     "issue_type": "extract_error",
     "stage": "nesdc_safe_collect_v1",
-    "error_code": "ADAPTER_FALLBACK_APPLIED",
-    "error_message": "NESDC adapter parse failed or result items missing; fallback record emitted",
+    "error_code": "pdf_pending",
+    "error_message": "NESDC adapter parse failed or result items missing; pdf pending retry path scheduled",
     "source_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17358&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=8",
     "payload": {
       "ntt_id": "17358",
@@ -974,16 +974,16 @@
       "release_policy_hours": 24
     },
     "status": "pending",
-    "created_at": "2026-02-25T22:33:01.560169+00:00"
+    "created_at": "2026-02-27T02:16:47.073683+00:00"
   },
   {
-    "id": "rvq_9ebcac75700796e3",
+    "id": "rvq_077dd6ed9b4d86f1",
     "entity_type": "poll_observation",
     "entity_id": "17355",
     "issue_type": "extract_error",
     "stage": "nesdc_safe_collect_v1",
-    "error_code": "ADAPTER_FALLBACK_APPLIED",
-    "error_message": "NESDC adapter parse failed or result items missing; fallback record emitted",
+    "error_code": "pdf_pending",
+    "error_message": "NESDC adapter parse failed or result items missing; pdf pending retry path scheduled",
     "source_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17355&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=8",
     "payload": {
       "ntt_id": "17355",
@@ -991,16 +991,16 @@
       "release_policy_hours": 24
     },
     "status": "pending",
-    "created_at": "2026-02-25T22:33:01.560178+00:00"
+    "created_at": "2026-02-27T02:16:47.073695+00:00"
   },
   {
-    "id": "rvq_f9c2b74a59a9cbfd",
+    "id": "rvq_dd06b4c4c894ba03",
     "entity_type": "poll_observation",
     "entity_id": "17347",
     "issue_type": "extract_error",
     "stage": "nesdc_safe_collect_v1",
-    "error_code": "ADAPTER_FALLBACK_APPLIED",
-    "error_message": "NESDC adapter parse failed or result items missing; fallback record emitted",
+    "error_code": "pdf_pending",
+    "error_message": "NESDC adapter parse failed or result items missing; pdf pending retry path scheduled",
     "source_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17347&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=8",
     "payload": {
       "ntt_id": "17347",
@@ -1008,16 +1008,16 @@
       "release_policy_hours": 24
     },
     "status": "pending",
-    "created_at": "2026-02-25T22:33:01.560188+00:00"
+    "created_at": "2026-02-27T02:16:47.073708+00:00"
   },
   {
-    "id": "rvq_b732305fbb6a4a40",
+    "id": "rvq_0c49e89e8c7aada8",
     "entity_type": "poll_observation",
     "entity_id": "17349",
     "issue_type": "extract_error",
     "stage": "nesdc_safe_collect_v1",
-    "error_code": "ADAPTER_FALLBACK_APPLIED",
-    "error_message": "NESDC adapter parse failed or result items missing; fallback record emitted",
+    "error_code": "pdf_pending",
+    "error_message": "NESDC adapter parse failed or result items missing; pdf pending retry path scheduled",
     "source_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17349&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=8",
     "payload": {
       "ntt_id": "17349",
@@ -1025,16 +1025,16 @@
       "release_policy_hours": 24
     },
     "status": "pending",
-    "created_at": "2026-02-25T22:33:01.560197+00:00"
+    "created_at": "2026-02-27T02:16:47.073720+00:00"
   },
   {
-    "id": "rvq_7aa86a637a889c4f",
+    "id": "rvq_f602e07a5c002090",
     "entity_type": "poll_observation",
     "entity_id": "17348",
     "issue_type": "extract_error",
     "stage": "nesdc_safe_collect_v1",
-    "error_code": "ADAPTER_FALLBACK_APPLIED",
-    "error_message": "NESDC adapter parse failed or result items missing; fallback record emitted",
+    "error_code": "pdf_pending",
+    "error_message": "NESDC adapter parse failed or result items missing; pdf pending retry path scheduled",
     "source_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17348&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=8",
     "payload": {
       "ntt_id": "17348",
@@ -1042,10 +1042,10 @@
       "release_policy_hours": 24
     },
     "status": "pending",
-    "created_at": "2026-02-25T22:33:01.560205+00:00"
+    "created_at": "2026-02-27T02:16:47.073732+00:00"
   },
   {
-    "id": "rvq_834e44231d18a663",
+    "id": "rvq_f08262b25092e132",
     "entity_type": "poll_observation",
     "entity_id": "17352",
     "issue_type": "mapping_error",
@@ -1060,10 +1060,10 @@
       "release_policy_hours": 24
     },
     "status": "pending",
-    "created_at": "2026-02-25T22:33:01.560247+00:00"
+    "created_at": "2026-02-27T02:16:47.073764+00:00"
   },
   {
-    "id": "rvq_e941b2746c8eceaa",
+    "id": "rvq_ccf285b182c6a06e",
     "entity_type": "poll_observation",
     "entity_id": "17351",
     "issue_type": "mapping_error",
@@ -1078,16 +1078,16 @@
       "release_policy_hours": 24
     },
     "status": "pending",
-    "created_at": "2026-02-25T22:33:01.560286+00:00"
+    "created_at": "2026-02-27T02:16:47.073798+00:00"
   },
   {
-    "id": "rvq_f8c3c57405ba94cd",
+    "id": "rvq_4a1135517b7066d1",
     "entity_type": "poll_observation",
     "entity_id": "17350",
     "issue_type": "extract_error",
     "stage": "nesdc_safe_collect_v1",
-    "error_code": "ADAPTER_FALLBACK_APPLIED",
-    "error_message": "NESDC adapter parse failed or result items missing; fallback record emitted",
+    "error_code": "pdf_pending",
+    "error_message": "NESDC adapter parse failed or result items missing; pdf pending retry path scheduled",
     "source_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17350&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=9",
     "payload": {
       "ntt_id": "17350",
@@ -1095,16 +1095,16 @@
       "release_policy_hours": 24
     },
     "status": "pending",
-    "created_at": "2026-02-25T22:33:01.560295+00:00"
+    "created_at": "2026-02-27T02:16:47.073811+00:00"
   },
   {
-    "id": "rvq_875ff762573211f6",
+    "id": "rvq_030ddc0b99bd6ace",
     "entity_type": "poll_observation",
     "entity_id": "17346",
     "issue_type": "extract_error",
     "stage": "nesdc_safe_collect_v1",
-    "error_code": "ADAPTER_FALLBACK_APPLIED",
-    "error_message": "NESDC adapter parse failed or result items missing; fallback record emitted",
+    "error_code": "pdf_pending",
+    "error_message": "NESDC adapter parse failed or result items missing; pdf pending retry path scheduled",
     "source_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17346&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=9",
     "payload": {
       "ntt_id": "17346",
@@ -1112,16 +1112,16 @@
       "release_policy_hours": 24
     },
     "status": "pending",
-    "created_at": "2026-02-25T22:33:01.560302+00:00"
+    "created_at": "2026-02-27T02:16:47.073824+00:00"
   },
   {
-    "id": "rvq_f039cecfb26e2403",
+    "id": "rvq_2ecb7bbd26ea2758",
     "entity_type": "poll_observation",
     "entity_id": "17345",
     "issue_type": "extract_error",
     "stage": "nesdc_safe_collect_v1",
-    "error_code": "ADAPTER_FALLBACK_APPLIED",
-    "error_message": "NESDC adapter parse failed or result items missing; fallback record emitted",
+    "error_code": "pdf_pending",
+    "error_message": "NESDC adapter parse failed or result items missing; pdf pending retry path scheduled",
     "source_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17345&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=9",
     "payload": {
       "ntt_id": "17345",
@@ -1129,16 +1129,16 @@
       "release_policy_hours": 24
     },
     "status": "pending",
-    "created_at": "2026-02-25T22:33:01.560309+00:00"
+    "created_at": "2026-02-27T02:16:47.073835+00:00"
   },
   {
-    "id": "rvq_0afa429767f42fb4",
+    "id": "rvq_5d6bd1d83951dcc2",
     "entity_type": "poll_observation",
     "entity_id": "17344",
     "issue_type": "extract_error",
     "stage": "nesdc_safe_collect_v1",
-    "error_code": "ADAPTER_FALLBACK_APPLIED",
-    "error_message": "NESDC adapter parse failed or result items missing; fallback record emitted",
+    "error_code": "pdf_pending",
+    "error_message": "NESDC adapter parse failed or result items missing; pdf pending retry path scheduled",
     "source_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17344&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=9",
     "payload": {
       "ntt_id": "17344",
@@ -1146,16 +1146,16 @@
       "release_policy_hours": 24
     },
     "status": "pending",
-    "created_at": "2026-02-25T22:33:01.560315+00:00"
+    "created_at": "2026-02-27T02:16:47.073847+00:00"
   },
   {
-    "id": "rvq_d5216ec8a979714c",
+    "id": "rvq_58585e9aaddcfb68",
     "entity_type": "poll_observation",
     "entity_id": "17342",
     "issue_type": "extract_error",
     "stage": "nesdc_safe_collect_v1",
-    "error_code": "ADAPTER_FALLBACK_APPLIED",
-    "error_message": "NESDC adapter parse failed or result items missing; fallback record emitted",
+    "error_code": "pdf_pending",
+    "error_message": "NESDC adapter parse failed or result items missing; pdf pending retry path scheduled",
     "source_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17342&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=9",
     "payload": {
       "ntt_id": "17342",
@@ -1163,16 +1163,16 @@
       "release_policy_hours": 24
     },
     "status": "pending",
-    "created_at": "2026-02-25T22:33:01.560323+00:00"
+    "created_at": "2026-02-27T02:16:47.073859+00:00"
   },
   {
-    "id": "rvq_6f2c0d290ce43c89",
+    "id": "rvq_cd7acace4da51697",
     "entity_type": "poll_observation",
     "entity_id": "17298",
     "issue_type": "extract_error",
     "stage": "nesdc_safe_collect_v1",
-    "error_code": "ADAPTER_FALLBACK_APPLIED",
-    "error_message": "NESDC adapter parse failed or result items missing; fallback record emitted",
+    "error_code": "pdf_pending",
+    "error_message": "NESDC adapter parse failed or result items missing; pdf pending retry path scheduled",
     "source_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17298&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=9",
     "payload": {
       "ntt_id": "17298",
@@ -1180,16 +1180,16 @@
       "release_policy_hours": 24
     },
     "status": "pending",
-    "created_at": "2026-02-25T22:33:01.560330+00:00"
+    "created_at": "2026-02-27T02:16:47.073873+00:00"
   },
   {
-    "id": "rvq_c3c5572a5b6d32f2",
+    "id": "rvq_4ecf1fc58fee2625",
     "entity_type": "poll_observation",
     "entity_id": "17340",
     "issue_type": "extract_error",
     "stage": "nesdc_safe_collect_v1",
-    "error_code": "ADAPTER_FALLBACK_APPLIED",
-    "error_message": "NESDC adapter parse failed or result items missing; fallback record emitted",
+    "error_code": "pdf_pending",
+    "error_message": "NESDC adapter parse failed or result items missing; pdf pending retry path scheduled",
     "source_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17340&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=9",
     "payload": {
       "ntt_id": "17340",
@@ -1197,16 +1197,16 @@
       "release_policy_hours": 24
     },
     "status": "pending",
-    "created_at": "2026-02-25T22:33:01.560339+00:00"
+    "created_at": "2026-02-27T02:16:47.073886+00:00"
   },
   {
-    "id": "rvq_7f46fde51003f85f",
+    "id": "rvq_55f438784c807516",
     "entity_type": "poll_observation",
     "entity_id": "17339",
     "issue_type": "extract_error",
     "stage": "nesdc_safe_collect_v1",
-    "error_code": "ADAPTER_FALLBACK_APPLIED",
-    "error_message": "NESDC adapter parse failed or result items missing; fallback record emitted",
+    "error_code": "pdf_pending",
+    "error_message": "NESDC adapter parse failed or result items missing; pdf pending retry path scheduled",
     "source_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17339&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=10",
     "payload": {
       "ntt_id": "17339",
@@ -1214,16 +1214,16 @@
       "release_policy_hours": 24
     },
     "status": "pending",
-    "created_at": "2026-02-25T22:33:01.560346+00:00"
+    "created_at": "2026-02-27T02:16:47.073898+00:00"
   },
   {
-    "id": "rvq_59e2fae471049635",
+    "id": "rvq_5ee5807637b57290",
     "entity_type": "poll_observation",
     "entity_id": "17311",
     "issue_type": "extract_error",
     "stage": "nesdc_safe_collect_v1",
-    "error_code": "ADAPTER_FALLBACK_APPLIED",
-    "error_message": "NESDC adapter parse failed or result items missing; fallback record emitted",
+    "error_code": "pdf_pending",
+    "error_message": "NESDC adapter parse failed or result items missing; pdf pending retry path scheduled",
     "source_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17311&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=10",
     "payload": {
       "ntt_id": "17311",
@@ -1231,16 +1231,16 @@
       "release_policy_hours": 24
     },
     "status": "pending",
-    "created_at": "2026-02-25T22:33:01.560352+00:00"
+    "created_at": "2026-02-27T02:16:47.073910+00:00"
   },
   {
-    "id": "rvq_63682e356fd5a5f7",
+    "id": "rvq_e16c22f6abdad950",
     "entity_type": "poll_observation",
     "entity_id": "17338",
     "issue_type": "extract_error",
     "stage": "nesdc_safe_collect_v1",
-    "error_code": "ADAPTER_FALLBACK_APPLIED",
-    "error_message": "NESDC adapter parse failed or result items missing; fallback record emitted",
+    "error_code": "pdf_pending",
+    "error_message": "NESDC adapter parse failed or result items missing; pdf pending retry path scheduled",
     "source_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17338&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=10",
     "payload": {
       "ntt_id": "17338",
@@ -1248,16 +1248,16 @@
       "release_policy_hours": 24
     },
     "status": "pending",
-    "created_at": "2026-02-25T22:33:01.560359+00:00"
+    "created_at": "2026-02-27T02:16:47.073921+00:00"
   },
   {
-    "id": "rvq_3a2a0d88f2e34ef5",
+    "id": "rvq_2269ecdf2342c018",
     "entity_type": "poll_observation",
     "entity_id": "17337",
     "issue_type": "extract_error",
     "stage": "nesdc_safe_collect_v1",
-    "error_code": "ADAPTER_FALLBACK_APPLIED",
-    "error_message": "NESDC adapter parse failed or result items missing; fallback record emitted",
+    "error_code": "pdf_pending",
+    "error_message": "NESDC adapter parse failed or result items missing; pdf pending retry path scheduled",
     "source_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17337&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=10",
     "payload": {
       "ntt_id": "17337",
@@ -1265,16 +1265,16 @@
       "release_policy_hours": 24
     },
     "status": "pending",
-    "created_at": "2026-02-25T22:33:01.560370+00:00"
+    "created_at": "2026-02-27T02:16:47.073933+00:00"
   },
   {
-    "id": "rvq_36fe3820608d99d8",
+    "id": "rvq_baabf28b66e0aac8",
     "entity_type": "poll_observation",
     "entity_id": "17336",
     "issue_type": "extract_error",
     "stage": "nesdc_safe_collect_v1",
-    "error_code": "ADAPTER_FALLBACK_APPLIED",
-    "error_message": "NESDC adapter parse failed or result items missing; fallback record emitted",
+    "error_code": "pdf_pending",
+    "error_message": "NESDC adapter parse failed or result items missing; pdf pending retry path scheduled",
     "source_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17336&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=10",
     "payload": {
       "ntt_id": "17336",
@@ -1282,16 +1282,16 @@
       "release_policy_hours": 24
     },
     "status": "pending",
-    "created_at": "2026-02-25T22:33:01.560377+00:00"
+    "created_at": "2026-02-27T02:16:47.073945+00:00"
   },
   {
-    "id": "rvq_16c2c1c0e6f06d58",
+    "id": "rvq_30f9e2a5acfeb2cc",
     "entity_type": "poll_observation",
     "entity_id": "17322",
     "issue_type": "extract_error",
     "stage": "nesdc_safe_collect_v1",
-    "error_code": "ADAPTER_FALLBACK_APPLIED",
-    "error_message": "NESDC adapter parse failed or result items missing; fallback record emitted",
+    "error_code": "pdf_pending",
+    "error_message": "NESDC adapter parse failed or result items missing; pdf pending retry path scheduled",
     "source_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17322&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=10",
     "payload": {
       "ntt_id": "17322",
@@ -1299,16 +1299,16 @@
       "release_policy_hours": 24
     },
     "status": "pending",
-    "created_at": "2026-02-25T22:33:01.560384+00:00"
+    "created_at": "2026-02-27T02:16:47.073957+00:00"
   },
   {
-    "id": "rvq_62cccbc2b7055d73",
+    "id": "rvq_4effec282711b960",
     "entity_type": "poll_observation",
     "entity_id": "17321",
     "issue_type": "extract_error",
     "stage": "nesdc_safe_collect_v1",
-    "error_code": "ADAPTER_FALLBACK_APPLIED",
-    "error_message": "NESDC adapter parse failed or result items missing; fallback record emitted",
+    "error_code": "pdf_pending",
+    "error_message": "NESDC adapter parse failed or result items missing; pdf pending retry path scheduled",
     "source_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17321&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=10",
     "payload": {
       "ntt_id": "17321",
@@ -1316,16 +1316,16 @@
       "release_policy_hours": 24
     },
     "status": "pending",
-    "created_at": "2026-02-25T22:33:01.560390+00:00"
+    "created_at": "2026-02-27T02:16:47.073969+00:00"
   },
   {
-    "id": "rvq_456001cab8783cbe",
+    "id": "rvq_f88ee4fe97193c57",
     "entity_type": "poll_observation",
     "entity_id": "17319",
     "issue_type": "extract_error",
     "stage": "nesdc_safe_collect_v1",
-    "error_code": "ADAPTER_FALLBACK_APPLIED",
-    "error_message": "NESDC adapter parse failed or result items missing; fallback record emitted",
+    "error_code": "pdf_pending",
+    "error_message": "NESDC adapter parse failed or result items missing; pdf pending retry path scheduled",
     "source_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17319&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=10",
     "payload": {
       "ntt_id": "17319",
@@ -1333,16 +1333,16 @@
       "release_policy_hours": 24
     },
     "status": "pending",
-    "created_at": "2026-02-25T22:33:01.560397+00:00"
+    "created_at": "2026-02-27T02:16:47.073980+00:00"
   },
   {
-    "id": "rvq_0b0cff374e239384",
+    "id": "rvq_b677ce61218df202",
     "entity_type": "poll_observation",
     "entity_id": "17335",
     "issue_type": "extract_error",
     "stage": "nesdc_safe_collect_v1",
-    "error_code": "ADAPTER_FALLBACK_APPLIED",
-    "error_message": "NESDC adapter parse failed or result items missing; fallback record emitted",
+    "error_code": "pdf_pending",
+    "error_message": "NESDC adapter parse failed or result items missing; pdf pending retry path scheduled",
     "source_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17335&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=10",
     "payload": {
       "ntt_id": "17335",
@@ -1350,10 +1350,10 @@
       "release_policy_hours": 24
     },
     "status": "pending",
-    "created_at": "2026-02-25T22:33:01.560404+00:00"
+    "created_at": "2026-02-27T02:16:47.073992+00:00"
   },
   {
-    "id": "rvq_1559e126f19e41ee",
+    "id": "rvq_682244df46592ed2",
     "entity_type": "poll_observation",
     "entity_id": "17334",
     "issue_type": "mapping_error",
@@ -1368,10 +1368,10 @@
       "release_policy_hours": 24
     },
     "status": "pending",
-    "created_at": "2026-02-25T22:33:01.560435+00:00"
+    "created_at": "2026-02-27T02:16:47.074026+00:00"
   },
   {
-    "id": "rvq_4bc982a3537e534e",
+    "id": "rvq_639bca5922e7a54b",
     "entity_type": "poll_observation",
     "entity_id": "17333",
     "issue_type": "mapping_error",
@@ -1386,10 +1386,10 @@
       "release_policy_hours": 24
     },
     "status": "pending",
-    "created_at": "2026-02-25T22:33:01.560466+00:00"
+    "created_at": "2026-02-27T02:16:47.074057+00:00"
   },
   {
-    "id": "rvq_5ac11a8da5530fd1",
+    "id": "rvq_ccdf6d27e6a7290f",
     "entity_type": "poll_observation",
     "entity_id": "17332",
     "issue_type": "mapping_error",
@@ -1404,16 +1404,16 @@
       "release_policy_hours": 24
     },
     "status": "pending",
-    "created_at": "2026-02-25T22:33:01.560496+00:00"
+    "created_at": "2026-02-27T02:16:47.074094+00:00"
   },
   {
-    "id": "rvq_685c0b4aeb2ba46c",
+    "id": "rvq_5c0038dafcc19a67",
     "entity_type": "poll_observation",
     "entity_id": "17329",
     "issue_type": "extract_error",
     "stage": "nesdc_safe_collect_v1",
-    "error_code": "ADAPTER_FALLBACK_APPLIED",
-    "error_message": "NESDC adapter parse failed or result items missing; fallback record emitted",
+    "error_code": "pdf_pending",
+    "error_message": "NESDC adapter parse failed or result items missing; pdf pending retry path scheduled",
     "source_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17329&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=11",
     "payload": {
       "ntt_id": "17329",
@@ -1421,16 +1421,16 @@
       "release_policy_hours": 24
     },
     "status": "pending",
-    "created_at": "2026-02-25T22:33:01.560504+00:00"
+    "created_at": "2026-02-27T02:16:47.074107+00:00"
   },
   {
-    "id": "rvq_4cef9515b8b364ff",
+    "id": "rvq_ae727661155be1ce",
     "entity_type": "poll_observation",
     "entity_id": "17323",
     "issue_type": "extract_error",
     "stage": "nesdc_safe_collect_v1",
-    "error_code": "ADAPTER_FALLBACK_APPLIED",
-    "error_message": "NESDC adapter parse failed or result items missing; fallback record emitted",
+    "error_code": "pdf_pending",
+    "error_message": "NESDC adapter parse failed or result items missing; pdf pending retry path scheduled",
     "source_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17323&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=11",
     "payload": {
       "ntt_id": "17323",
@@ -1438,10 +1438,10 @@
       "release_policy_hours": 24
     },
     "status": "pending",
-    "created_at": "2026-02-25T22:33:01.560511+00:00"
+    "created_at": "2026-02-27T02:16:47.074118+00:00"
   },
   {
-    "id": "rvq_c76df613b38c0fe5",
+    "id": "rvq_ad20e2cf855ab9f9",
     "entity_type": "poll_observation",
     "entity_id": "17328",
     "issue_type": "mapping_error",
@@ -1456,16 +1456,16 @@
       "release_policy_hours": 24
     },
     "status": "pending",
-    "created_at": "2026-02-25T22:33:01.560543+00:00"
+    "created_at": "2026-02-27T02:16:47.074151+00:00"
   },
   {
-    "id": "rvq_2d69bddeb6b8047b",
+    "id": "rvq_36c407ea6093ae21",
     "entity_type": "poll_observation",
     "entity_id": "17325",
     "issue_type": "extract_error",
     "stage": "nesdc_safe_collect_v1",
-    "error_code": "ADAPTER_FALLBACK_APPLIED",
-    "error_message": "NESDC adapter parse failed or result items missing; fallback record emitted",
+    "error_code": "pdf_pending",
+    "error_message": "NESDC adapter parse failed or result items missing; pdf pending retry path scheduled",
     "source_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17325&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=11",
     "payload": {
       "ntt_id": "17325",
@@ -1473,16 +1473,16 @@
       "release_policy_hours": 24
     },
     "status": "pending",
-    "created_at": "2026-02-25T22:33:01.560550+00:00"
+    "created_at": "2026-02-27T02:16:47.074165+00:00"
   },
   {
-    "id": "rvq_50c3b52a5401cf32",
+    "id": "rvq_1c467fcc1612396c",
     "entity_type": "poll_observation",
     "entity_id": "17324",
     "issue_type": "extract_error",
     "stage": "nesdc_safe_collect_v1",
-    "error_code": "ADAPTER_FALLBACK_APPLIED",
-    "error_message": "NESDC adapter parse failed or result items missing; fallback record emitted",
+    "error_code": "pdf_pending",
+    "error_message": "NESDC adapter parse failed or result items missing; pdf pending retry path scheduled",
     "source_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17324&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=11",
     "payload": {
       "ntt_id": "17324",
@@ -1490,16 +1490,16 @@
       "release_policy_hours": 24
     },
     "status": "pending",
-    "created_at": "2026-02-25T22:33:01.560559+00:00"
+    "created_at": "2026-02-27T02:16:47.074188+00:00"
   },
   {
-    "id": "rvq_0dee8eaa261c72aa",
+    "id": "rvq_005682c676db0e33",
     "entity_type": "poll_observation",
     "entity_id": "17318",
     "issue_type": "extract_error",
     "stage": "nesdc_safe_collect_v1",
-    "error_code": "ADAPTER_FALLBACK_APPLIED",
-    "error_message": "NESDC adapter parse failed or result items missing; fallback record emitted",
+    "error_code": "pdf_pending",
+    "error_message": "NESDC adapter parse failed or result items missing; pdf pending retry path scheduled",
     "source_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17318&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=11",
     "payload": {
       "ntt_id": "17318",
@@ -1507,16 +1507,16 @@
       "release_policy_hours": 24
     },
     "status": "pending",
-    "created_at": "2026-02-25T22:33:01.560570+00:00"
+    "created_at": "2026-02-27T02:16:47.074201+00:00"
   },
   {
-    "id": "rvq_89a332e60a157e5f",
+    "id": "rvq_3d5750deb5ef3f63",
     "entity_type": "poll_observation",
     "entity_id": "17320",
     "issue_type": "extract_error",
     "stage": "nesdc_safe_collect_v1",
-    "error_code": "ADAPTER_FALLBACK_APPLIED",
-    "error_message": "NESDC adapter parse failed or result items missing; fallback record emitted",
+    "error_code": "pdf_pending",
+    "error_message": "NESDC adapter parse failed or result items missing; pdf pending retry path scheduled",
     "source_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17320&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=11",
     "payload": {
       "ntt_id": "17320",
@@ -1524,16 +1524,16 @@
       "release_policy_hours": 24
     },
     "status": "pending",
-    "created_at": "2026-02-25T22:33:01.560582+00:00"
+    "created_at": "2026-02-27T02:16:47.074213+00:00"
   },
   {
-    "id": "rvq_5eae549c757ffec5",
+    "id": "rvq_86ca91fa7f04fa7b",
     "entity_type": "poll_observation",
     "entity_id": "17316",
     "issue_type": "extract_error",
     "stage": "nesdc_safe_collect_v1",
-    "error_code": "ADAPTER_FALLBACK_APPLIED",
-    "error_message": "NESDC adapter parse failed or result items missing; fallback record emitted",
+    "error_code": "pdf_pending",
+    "error_message": "NESDC adapter parse failed or result items missing; pdf pending retry path scheduled",
     "source_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17316&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=11",
     "payload": {
       "ntt_id": "17316",
@@ -1541,6 +1541,6 @@
       "release_policy_hours": 24
     },
     "status": "pending",
-    "created_at": "2026-02-25T22:33:01.560593+00:00"
+    "created_at": "2026-02-27T02:16:47.074227+00:00"
   }
 ]

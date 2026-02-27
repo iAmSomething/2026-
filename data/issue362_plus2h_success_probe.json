@@ -1,0 +1,90 @@
+{
+  "issue": 362,
+  "generated_at_kst": "2026-02-27T11:19:27+09:00",
+  "probe": {
+    "pre": {
+      "as_of_kst": "2026-02-18T21:30:00+09:00",
+      "counts": {
+        "registry_total": 110,
+        "eligible_48h_total": 91,
+        "release_gate_eligible_total": 91,
+        "pending_official_release_count": 1,
+        "collected_success_count": 33,
+        "adapter_exact_success_count": 3,
+        "adapter_template_success_count": 30,
+        "fallback_count": 88,
+        "template_fallback_count": 30,
+        "hard_fallback_count": 58,
+        "manual_opt_out_count": 18,
+        "eligibility_parse_error_count": 0,
+        "safe_window_guard_block_count": 1,
+        "review_queue_candidate_count": 89,
+        "unique_pollster_count": 5,
+        "total_option_count": 528,
+        "recent20_pending_official_release_count": 1,
+        "recent20_release_policy_violation_count": 0,
+        "release_not_open_count": 1,
+        "pdf_pending_count": 58,
+        "release_plus2h_window_total": 7,
+        "release_plus2h_window_success": 6
+      },
+      "recollect_within_plus2h": {
+        "window_total": 7,
+        "success_count": 6,
+        "success_rate": 0.8571
+      },
+      "pending_ntt_ids": [
+        "17417"
+      ]
+    },
+    "post": {
+      "as_of_kst": "2026-02-19T06:00:00+09:00",
+      "counts": {
+        "registry_total": 110,
+        "eligible_48h_total": 92,
+        "release_gate_eligible_total": 92,
+        "pending_official_release_count": 0,
+        "collected_success_count": 34,
+        "adapter_exact_success_count": 3,
+        "adapter_template_success_count": 31,
+        "fallback_count": 89,
+        "template_fallback_count": 31,
+        "hard_fallback_count": 58,
+        "manual_opt_out_count": 18,
+        "eligibility_parse_error_count": 0,
+        "safe_window_guard_block_count": 0,
+        "review_queue_candidate_count": 89,
+        "unique_pollster_count": 5,
+        "total_option_count": 544,
+        "recent20_pending_official_release_count": 0,
+        "recent20_release_policy_violation_count": 0,
+        "release_not_open_count": 0,
+        "pdf_pending_count": 58,
+        "release_plus2h_window_total": 1,
+        "release_plus2h_window_success": 1
+      },
+      "recollect_within_plus2h": {
+        "window_total": 1,
+        "success_count": 1,
+        "success_rate": 1.0
+      },
+      "pending_ntt_ids": []
+    }
+  },
+  "same_record_transition": [
+    {
+      "ntt_id": "17417",
+      "release_at_kst": "2026-02-19T05:00:00+09:00",
+      "pre": {
+        "as_of_kst": "2026-02-18T21:30:00+09:00",
+        "collect_status": "pending_official_release",
+        "pending_reason_code": "release_not_open"
+      },
+      "post": {
+        "as_of_kst": "2026-02-19T06:00:00+09:00",
+        "collect_status": "collected_template_fallback",
+        "pending_reason_code": null
+      }
+    }
+  ]
+}
