@@ -1,6 +1,7 @@
 from collections import Counter
 from dataclasses import dataclass
 import json
+import logging
 import re
 from typing import Any
 
@@ -141,6 +142,60 @@ SORTED_POPULATION_REGION_ALIASES = sorted(
     reverse=True,
 )
 
+SCOPE_HARDGUARD_OFFICE_TYPE = "광역자치단체장"
+SCOPE_HARDGUARD_NEEDLES: tuple[tuple[str, str], ...] = (
+    ("서울시장", "11-000"),
+    ("부산시장", "26-000"),
+    ("대구시장", "27-000"),
+    ("인천시장", "28-000"),
+    ("광주시장", "29-000"),
+    ("대전시장", "30-000"),
+    ("울산시장", "31-000"),
+    ("세종시장", "36-000"),
+    ("경기도지사", "41-000"),
+    ("경기지사", "41-000"),
+    ("강원특별자치도지사", "42-000"),
+    ("강원도지사", "42-000"),
+    ("강원지사", "42-000"),
+    ("충청북도지사", "43-000"),
+    ("충북지사", "43-000"),
+    ("충청남도지사", "44-000"),
+    ("충남지사", "44-000"),
+    ("전북특별자치도지사", "45-000"),
+    ("전라북도지사", "45-000"),
+    ("전북지사", "45-000"),
+    ("전라남도지사", "46-000"),
+    ("전남지사", "46-000"),
+    ("경상북도지사", "47-000"),
+    ("경북지사", "47-000"),
+    ("경상남도지사", "48-000"),
+    ("경남지사", "48-000"),
+    ("제주특별자치도지사", "50-000"),
+    ("제주도지사", "50-000"),
+    ("제주지사", "50-000"),
+)
+SCOPE_HARDGUARD_SIDO_NAME_BY_CODE = {
+    "11-000": "서울특별시",
+    "26-000": "부산광역시",
+    "27-000": "대구광역시",
+    "28-000": "인천광역시",
+    "29-000": "광주광역시",
+    "30-000": "대전광역시",
+    "31-000": "울산광역시",
+    "36-000": "세종특별자치시",
+    "41-000": "경기도",
+    "42-000": "강원특별자치도",
+    "43-000": "충청북도",
+    "44-000": "충청남도",
+    "45-000": "전북특별자치도",
+    "46-000": "전라남도",
+    "47-000": "경상북도",
+    "48-000": "경상남도",
+    "50-000": "제주특별자치도",
+}
+
+LOGGER = logging.getLogger(__name__)
+
 
 @dataclass
 class IngestResult:
@@ -177,6 +232,71 @@ def _normalize_region_code(value: Any) -> str | None:
         return normalized.canonical
     raw = str(value).strip()
     return raw or None
+
+
+def _rebuild_matchup_id(matchup_id: str, office_type: str, region_code: str) -> str:
+    return f"{_infer_election_id(matchup_id)}|{office_type}|{region_code}"
+
+
+def _compact_text(value: Any) -> str:
+    return re.sub(r"\s+", "", str(value or ""))
+
+
+def _resolve_scope_hardguard_region_code(*texts: Any) -> tuple[str, str] | None:
+    compact = "".join(_compact_text(text) for text in texts if text)
+    if not compact:
+        return None
+    for needle, region_code in SCOPE_HARDGUARD_NEEDLES:
+        if needle in compact:
+            return region_code, needle
+    return None
+
+
+def _apply_scope_hardguard(record) -> tuple[bool, str | None]:
+    resolved = _resolve_scope_hardguard_region_code(
+        record.article.title,
+        record.article.raw_text,
+        record.observation.survey_name,
+    )
+    if resolved is None:
+        return False, None
+
+    region_code, needle = resolved
+    changed = False
+    if record.observation.office_type != SCOPE_HARDGUARD_OFFICE_TYPE:
+        record.observation.office_type = SCOPE_HARDGUARD_OFFICE_TYPE
+        changed = True
+    if _normalize_region_code(record.observation.region_code) != region_code:
+        record.observation.region_code = region_code
+        changed = True
+    rebuilt_matchup_id = _rebuild_matchup_id(
+        matchup_id=record.observation.matchup_id,
+        office_type=SCOPE_HARDGUARD_OFFICE_TYPE,
+        region_code=region_code,
+    )
+    if record.observation.matchup_id != rebuilt_matchup_id:
+        record.observation.matchup_id = rebuilt_matchup_id
+        changed = True
+
+    if record.region is not None:
+        if _normalize_region_code(record.region.region_code) != region_code:
+            record.region.region_code = region_code
+            changed = True
+        target_sido_name = SCOPE_HARDGUARD_SIDO_NAME_BY_CODE.get(region_code)
+        if target_sido_name and record.region.sido_name != target_sido_name:
+            record.region.sido_name = target_sido_name
+            changed = True
+        if record.region.sigungu_name != "전체":
+            record.region.sigungu_name = "전체"
+            changed = True
+        if record.region.admin_level != "sido":
+            record.region.admin_level = "sido"
+            changed = True
+        if record.region.parent_region_code is not None:
+            record.region.parent_region_code = None
+            changed = True
+
+    return changed, needle
 
 
 def _to_sido_region_code(region_code: str | None) -> str | None:
@@ -839,6 +959,27 @@ def _scenario_key_is_default(value: Any) -> bool:
     return key in {"", "default"}
 
 
+def _detect_scenario_parse_incomplete(
+    *,
+    survey_name: str | None,
+    article_title: str | None,
+    article_raw_text: str | None,
+    options: list[dict[str, Any]],
+) -> tuple[bool, int, list[str]]:
+    text = " ".join(x for x in [survey_name, article_title, article_raw_text] if isinstance(x, str))
+    if "다자대결" not in text:
+        return False, 0, []
+    candidate_names: set[str] = set()
+    for row in options:
+        if row.get("option_type") not in {"candidate", "candidate_matchup"}:
+            continue
+        name = _scenario_name_token(row.get("option_name"))
+        if name:
+            candidate_names.add(name)
+    names = sorted(candidate_names)
+    return len(names) < 3, len(names), names
+
+
 def _has_explicit_candidate_scenarios(options: list[dict[str, Any]]) -> bool:
     for row in options:
         if row.get("option_type") != "candidate_matchup":
@@ -1223,6 +1364,14 @@ def ingest_payload(payload: IngestPayload, repo) -> IngestResult:
                 if cutoff_reason != "PASS":
                     error_count += 1
                     parsed_published_at = parse_datetime_like(record.article.published_at)
+                    LOGGER.info(
+                        "collector ingest excluded by article cutoff: reason=old_article_cutoff "
+                        "observation_key=%s published_at=%s policy_reason=%s cutoff=%s",
+                        record.observation.observation_key,
+                        parsed_published_at.isoformat(timespec="seconds") if parsed_published_at else None,
+                        cutoff_reason,
+                        ARTICLE_PUBLISHED_AT_CUTOFF_ISO,
+                    )
                     try:
                         repo.insert_review_queue(
                             entity_type="ingest_record",
@@ -1230,7 +1379,8 @@ def ingest_payload(payload: IngestPayload, repo) -> IngestResult:
                             issue_type="ingestion_error",
                             review_note=(
                                 "ARTICLE_PUBLISHED_AT_CUTOFF_BLOCK "
-                                f"reason={cutoff_reason} "
+                                "reason=old_article_cutoff "
+                                f"policy_reason={cutoff_reason} "
                                 f"published_at={parsed_published_at.isoformat(timespec='seconds') if parsed_published_at else None} "
                                 f"cutoff={ARTICLE_PUBLISHED_AT_CUTOFF_ISO}"
                             ),
@@ -1238,6 +1388,17 @@ def ingest_payload(payload: IngestPayload, repo) -> IngestResult:
                     except Exception:  # noqa: BLE001
                         pass
                     continue
+
+            hardguard_applied, hardguard_keyword = _apply_scope_hardguard(record)
+            if hardguard_applied:
+                LOGGER.info(
+                    "collector scope hardguard applied: observation_key=%s keyword=%s office_type=%s region_code=%s matchup_id=%s",
+                    record.observation.observation_key,
+                    hardguard_keyword,
+                    record.observation.office_type,
+                    record.observation.region_code,
+                    record.observation.matchup_id,
+                )
 
             if record.region:
                 repo.upsert_region(record.region.model_dump())
@@ -1374,6 +1535,28 @@ def ingest_payload(payload: IngestPayload, repo) -> IngestResult:
                 cleanup_default = getattr(repo, "delete_candidate_default_poll_options", None)
                 if callable(cleanup_default):
                     cleanup_default(observation_id)
+
+            scenario_incomplete, scenario_candidate_count, scenario_candidate_names = _detect_scenario_parse_incomplete(
+                survey_name=record.observation.survey_name,
+                article_title=record.article.title,
+                article_raw_text=record.article.raw_text,
+                options=normalized_options,
+            )
+            if scenario_incomplete:
+                try:
+                    repo.insert_review_queue(
+                        entity_type="poll_observation",
+                        entity_id=record.observation.observation_key,
+                        issue_type="scenario_parse_incomplete",
+                        review_note=(
+                            "SCENARIO_PARSE_INCOMPLETE "
+                            f"candidate_count={scenario_candidate_count} "
+                            f"candidates={','.join(scenario_candidate_names) if scenario_candidate_names else '-'} "
+                            f"matchup_id={record.observation.matchup_id}"
+                        ),
+                    )
+                except Exception:  # noqa: BLE001
+                    pass
 
             for normalized_option in normalized_options:
                 classification_reason = classification_reason_by_id.get(id(normalized_option))
