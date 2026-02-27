@@ -30,6 +30,7 @@ SCENARIO_H2H_PAIR_RE = re.compile(
     r"([가-힣]{2,6})\s*([0-9]{1,2}(?:\.[0-9]+)?)\s*%?\s*[-~]\s*([가-힣]{2,6})\s*([0-9]{1,2}(?:\.[0-9]+)?)\s*%?"
 )
 SCENARIO_MULTI_SINGLE_RE = re.compile(r"다자대결[^가-힣0-9%]*([가-힣]{2,6})\s*([0-9]{1,2}(?:\.[0-9]+)?)\s*%?")
+SCENARIO_MULTI_ITEM_RE = re.compile(r"([가-힣]{2,6})\s*([0-9]{1,2}(?:\.[0-9]+)?)\s*%?")
 DEFAULT_SG_TYPECODES = ("3", "4", "5")
 OFFICE_TYPE_TO_SG_TYPECODES = {
     "광역자치단체장": ("3", "4"),
@@ -140,6 +141,7 @@ SORTED_POPULATION_REGION_ALIASES = sorted(
     key=lambda item: len(item[0]),
     reverse=True,
 )
+SURVEY_NAME_OFFICE_RE = re.compile(r"([가-힣]{2,10})(시장|도지사|지사|교육감)")
 
 
 @dataclass
@@ -167,6 +169,76 @@ def _infer_election_id(matchup_id: str) -> str:
     if ":" in matchup_id:
         return matchup_id.split(":", 1)[0]
     return "unknown"
+
+
+def _office_region_from_survey_name(survey_name: str) -> tuple[str, str] | None:
+    text = str(survey_name or "").strip()
+    if not text:
+        return None
+
+    for match in SURVEY_NAME_OFFICE_RE.finditer(text):
+        prefix = match.group(1).strip()
+        office_token = match.group(2)
+        if not prefix:
+            continue
+
+        alias_candidates: list[str] = [prefix]
+        if office_token == "시장":
+            alias_candidates = [f"{prefix}광역시", f"{prefix}시", prefix]
+        elif office_token in {"지사", "도지사"}:
+            alias_candidates = [f"{prefix}도", f"{prefix}특별자치도", prefix]
+        elif office_token == "교육감":
+            alias_candidates = [
+                f"{prefix}광역시",
+                f"{prefix}특별시",
+                f"{prefix}특별자치시",
+                f"{prefix}도",
+                f"{prefix}특별자치도",
+                prefix,
+            ]
+
+        region_code = None
+        for alias in alias_candidates:
+            normalized_alias = alias.strip()
+            if not normalized_alias:
+                continue
+            mapped = POPULATION_REGION_ALIAS_TO_CODE.get(normalized_alias)
+            if mapped:
+                region_code = mapped
+                break
+        if region_code is None:
+            continue
+
+        if office_token == "시장":
+            office_type = "광역자치단체장" if region_code.endswith("-000") else "기초자치단체장"
+            return region_code, office_type
+        if office_token in {"지사", "도지사"}:
+            return _to_sido_region_code(region_code) or region_code, "광역자치단체장"
+        if office_token == "교육감":
+            return _to_sido_region_code(region_code) or region_code, "교육감"
+    return None
+
+
+def _apply_survey_name_matchup_correction(
+    *,
+    observation_payload: dict[str, Any],
+    article_title: str | None,
+) -> None:
+    survey_name = str(observation_payload.get("survey_name") or "").strip()
+    title_text = str(article_title or "").strip()
+    inferred = _office_region_from_survey_name(f"{survey_name} {title_text}".strip())
+    if not inferred:
+        return
+
+    region_code, office_type = inferred
+    election_id = _infer_election_id(str(observation_payload.get("matchup_id") or "2026_local"))
+    observation_payload["region_code"] = region_code
+    observation_payload["office_type"] = office_type
+    observation_payload["matchup_id"] = f"{election_id}|{office_type}|{region_code}"
+
+    current_scope = observation_payload.get("audience_scope")
+    if current_scope not in {"national", "regional", "local"}:
+        observation_payload["audience_scope"] = "regional" if region_code.endswith("-000") else "local"
 
 
 def _normalize_region_code(value: Any) -> str | None:
@@ -792,6 +864,35 @@ def _extract_multi_anchor(survey_name: str) -> tuple[str, float] | None:
     return name, value
 
 
+def _extract_multi_candidates(survey_name: str) -> list[tuple[str, float]]:
+    text = str(survey_name or "")
+    if "다자대결" not in text:
+        return []
+
+    start = text.find("다자대결")
+    segment = text[start:]
+    # keep the parsing window short to avoid mixing unrelated survey snippets.
+    for stop_token in (" 양자대결", " 가상대결", " 여론조사", "표본오차", "응답률"):
+        stop_idx = segment.find(stop_token)
+        if stop_idx > 0:
+            segment = segment[:stop_idx]
+            break
+
+    seen_names: set[str] = set()
+    rows: list[tuple[str, float]] = []
+    for match in SCENARIO_MULTI_ITEM_RE.finditer(segment):
+        name = _scenario_name_token(match.group(1))
+        if not name or name in seen_names:
+            continue
+        try:
+            value = float(match.group(2))
+        except (TypeError, ValueError):
+            continue
+        seen_names.add(name)
+        rows.append((name, value))
+    return rows if len(rows) >= 3 else []
+
+
 def _match_candidate_index(
     *,
     options: list[dict[str, Any]],
@@ -820,13 +921,29 @@ def _clone_candidate_option(
     value: float,
 ) -> int | None:
     template_indexes = [i for i in candidate_indexes if names_by_index.get(i) == name]
+    generic_template = False
     if not template_indexes:
-        return None
+        if not candidate_indexes:
+            return None
+        generic_template = True
+        template_indexes = [candidate_indexes[0]]
     template_indexes.sort(key=lambda i: abs(_scenario_value(options[i]) - value))
     row = dict(options[template_indexes[0]])
     row["option_name"] = name
     row["value_mid"] = value
     row["value_raw"] = f"{value:.1f}%"
+    if generic_template:
+        row["candidate_id"] = None
+        row["party_name"] = None
+        row["party_inferred"] = False
+        row["party_inference_source"] = None
+        row["party_inference_confidence"] = None
+        row["party_inference_evidence"] = None
+        row["candidate_verified"] = False
+        row["candidate_verify_source"] = "manual"
+        row["candidate_verify_confidence"] = 0.0
+        row["candidate_verify_matched_key"] = name
+        row["needs_manual_review"] = True
     row["scenario_key"] = "default"
     row["scenario_type"] = None
     row["scenario_title"] = None
@@ -928,6 +1045,7 @@ def _repair_candidate_matchup_scenarios(
         return False
 
     names_by_index = {i: _scenario_name_token(options[i].get("option_name")) for i in candidate_indexes}
+    multi_candidates = _extract_multi_candidates(text)
     counts: dict[str, int] = {}
     for idx in candidate_indexes:
         name = names_by_index[idx]
@@ -995,6 +1113,13 @@ def _repair_candidate_matchup_scenarios(
         options[:] = [row for i, row in enumerate(options) if i not in default_index_set]
 
         existing_multi_names: set[str] = set()
+        candidate_indexes_after_cleanup = [
+            i for i, row in enumerate(options) if row.get("option_type") == "candidate_matchup"
+        ]
+        names_after_cleanup = {
+            i: _scenario_name_token(options[i].get("option_name"))
+            for i in candidate_indexes_after_cleanup
+        }
         for row in options:
             if row.get("option_type") != "candidate_matchup":
                 continue
@@ -1008,6 +1133,53 @@ def _repair_candidate_matchup_scenarios(
                 continue
             row["option_name"] = name
             existing_multi_names.add(name)
+
+        if multi_candidates:
+            changed = bool(default_index_set)
+            selected_multi_rows: set[int] = set()
+            for name, value in multi_candidates:
+                matched_idx = _match_candidate_index(
+                    options=options,
+                    candidate_indexes=candidate_indexes_after_cleanup,
+                    names_by_index=names_after_cleanup,
+                    name=name,
+                    value=value,
+                    exclude=selected_multi_rows,
+                )
+                if matched_idx is None:
+                    matched_idx = _clone_candidate_option(
+                        options=options,
+                        candidate_indexes=candidate_indexes_after_cleanup,
+                        names_by_index=names_after_cleanup,
+                        name=name,
+                        value=value,
+                    )
+                    if matched_idx is not None:
+                        candidate_indexes_after_cleanup.append(matched_idx)
+                        names_after_cleanup[matched_idx] = name
+                if matched_idx is None:
+                    continue
+                row = options[matched_idx]
+                row["option_name"] = name
+                row["value_mid"] = value
+                row["value_raw"] = f"{value:.1f}%"
+                row["scenario_key"] = multi_key
+                row["scenario_type"] = "multi_candidate"
+                row["scenario_title"] = multi_title
+                selected_multi_rows.add(matched_idx)
+                changed = True
+
+            if selected_multi_rows:
+                options[:] = [
+                    row
+                    for idx, row in enumerate(options)
+                    if not (
+                        row.get("option_type") == "candidate_matchup"
+                        and str(row.get("scenario_key") or "").strip() == multi_key
+                        and idx not in selected_multi_rows
+                    )
+                ]
+                return changed
 
         changed = bool(default_index_set)
         for name, template_row in default_name_to_row.items():
@@ -1095,6 +1267,52 @@ def _repair_candidate_matchup_scenarios(
             if anchor_for_multi is None:
                 anchor_for_multi = left_name
             assigned = True
+
+        if assigned and multi_candidates:
+            multi_key = f"multi-{anchor_for_multi or multi_candidates[0][0]}"
+            multi_selected: set[int] = set()
+            for name, value in multi_candidates:
+                idx = _match_candidate_index(
+                    options=options,
+                    candidate_indexes=candidate_indexes_all,
+                    names_by_index=names_all,
+                    name=name,
+                    value=value,
+                    exclude=used_indexes | multi_selected,
+                )
+                if idx is None:
+                    idx = _clone_candidate_option(
+                        options=options,
+                        candidate_indexes=candidate_indexes_all,
+                        names_by_index=names_all,
+                        name=name,
+                        value=value,
+                    )
+                    if idx is not None:
+                        candidate_indexes_all.append(idx)
+                        names_all[idx] = name
+                if idx is None:
+                    continue
+                row = options[idx]
+                row["option_name"] = name
+                row["value_mid"] = value
+                row["value_raw"] = f"{value:.1f}%"
+                row["scenario_key"] = multi_key
+                row["scenario_type"] = "multi_candidate"
+                row["scenario_title"] = "다자대결"
+                multi_selected.add(idx)
+
+            if multi_selected:
+                selected_candidate_rows = used_indexes | multi_selected
+                options[:] = [
+                    row
+                    for idx, row in enumerate(options)
+                    if not (
+                        row.get("option_type") == "candidate_matchup"
+                        and idx not in selected_candidate_rows
+                    )
+                ]
+                return True
 
         multi_indexes = [i for i in candidate_indexes_all if i not in used_indexes and names_all.get(i)]
         multi_anchor = _extract_multi_anchor(text)
@@ -1242,18 +1460,11 @@ def ingest_payload(payload: IngestPayload, repo) -> IngestResult:
             if record.region:
                 repo.upsert_region(record.region.model_dump())
 
-            repo.upsert_matchup(
-                {
-                    "matchup_id": record.observation.matchup_id,
-                    "election_id": _infer_election_id(record.observation.matchup_id),
-                    "office_type": record.observation.office_type,
-                    "region_code": record.observation.region_code,
-                    "title": record.observation.survey_name,
-                    "is_active": True,
-                }
-            )
-
             observation_payload = record.observation.model_dump()
+            _apply_survey_name_matchup_correction(
+                observation_payload=observation_payload,
+                article_title=getattr(record.article, "title", None),
+            )
             scope_resolution = _resolve_observation_scope(observation_payload)
             if scope_resolution.hard_fail_reason:
                 error_count += 1
@@ -1270,6 +1481,16 @@ def ingest_payload(payload: IngestPayload, repo) -> IngestResult:
 
             observation_payload["audience_scope"] = scope_resolution.scope
             observation_payload["audience_region_code"] = scope_resolution.audience_region_code
+            repo.upsert_matchup(
+                {
+                    "matchup_id": observation_payload["matchup_id"],
+                    "election_id": _infer_election_id(observation_payload["matchup_id"]),
+                    "office_type": observation_payload["office_type"],
+                    "region_code": observation_payload["region_code"],
+                    "title": observation_payload["survey_name"],
+                    "is_active": True,
+                }
+            )
             if scope_resolution.low_confidence_reason:
                 try:
                     repo.insert_review_queue(
