@@ -250,6 +250,7 @@ class MatchupOptionOut(BaseModel):
     option_name: str
     candidate_id: str | None
     party_name: str | None = None
+    name_validity: Literal["valid", "invalid", "unknown"] = "unknown"
     scenario_key: str | None = None
     scenario_type: Literal["head_to_head", "multi_candidate"] | None = None
     scenario_title: str | None = None
