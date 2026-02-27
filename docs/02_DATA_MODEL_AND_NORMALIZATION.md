@@ -109,6 +109,11 @@
 9. `GET /api/v1/regions/search`는 `has_data`, `matchup_count` 보조 필드를 포함한다.
 10. `GET /api/v1/regions/search`는 `q/query`가 비어도 기본적으로 공식 선거구 전체를 반환한다.
 11. `GET /api/v1/regions/search`는 선택 필터 `has_data`(`true|false`)를 지원한다.
+12. `GET /api/v1/dashboard/summary`, `GET /api/v1/dashboard/map-latest`, `GET /api/v1/dashboard/big-matches`, `GET /api/v1/matchups/{matchup_id}`는 공통 메타 `source_trace`를 제공한다.
+13. `source_trace` 공통 필드: `source_priority`, `source_channel`, `source_channels`, `official_release_at`, `article_published_at`, `freshness_hours`, `is_official_confirmed`.
+14. `summary`의 `source_trace`는 대표값 선택 근거로 `selected_source_tier`, `selected_source_channel`를 추가 노출한다.
+15. 제목 계약 v2: `map-latest`, `big-matches`, `matchups`는 `canonical_title`(정규화 제목)과 `article_title`(원문 제목)을 분리 노출한다.
+16. 하위호환 필드(`title`, `source_priority`, `source_channel`, `source_channels`, `official_release_at`, `article_published_at`, `freshness_hours`, `is_official_confirmed`)는 deprecated로 유지한다.
 
 ## 6.1 운영 품질 요약 규칙 (`GET /api/v1/dashboard/quality`)
 1. `freshness_p50_hours`, `freshness_p90_hours`는 검증 완료(`verified=true`) 관측치의 freshness 분포 백분위를 시간 단위로 노출한다.
@@ -140,6 +145,7 @@
 4. 기존 레거시 데이터는 마이그레이션 시 `source_channels = [source_channel]`로 백필한다.
 5. API 파생 필드:
 - `source_priority`: `official|article|mixed`
+- `source_trace`: 공통 출처 메타 묶음(v2 표준 필드)
 
 ## 8.1 후보 상세 결측/출처 계약 (`GET /api/v1/candidates/{candidate_id}`)
 1. 문자열 결측값(`''`, 공백)은 API 응답에서 `null`로 정규화한다.

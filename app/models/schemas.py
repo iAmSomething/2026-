@@ -44,6 +44,18 @@ class CandidateOut(BaseModel):
     placeholder_name_applied: bool = False
 
 
+class SourceTraceOut(BaseModel):
+    source_priority: Literal["official", "article", "mixed"] = "article"
+    source_channel: Literal["article", "nesdc"] | None = None
+    source_channels: list[Literal["article", "nesdc"]] = Field(default_factory=list)
+    selected_source_tier: Literal["official", "nesdc", "article_aggregate", "article"] | None = None
+    selected_source_channel: str | None = None
+    official_release_at: datetime | None = None
+    article_published_at: datetime | None = None
+    freshness_hours: float | None = None
+    is_official_confirmed: bool = False
+
+
 class SummaryPoint(BaseModel):
     option_name: str
     value_mid: float | None = None
@@ -51,15 +63,19 @@ class SummaryPoint(BaseModel):
     survey_end_date: date | None = None
     audience_scope: Literal["national", "regional", "local"] | None = None
     audience_region_code: str | None = None
-    source_priority: Literal["official", "article", "mixed"] = "article"
-    selected_source_tier: Literal["official", "nesdc", "article_aggregate", "article"] | None = None
-    selected_source_channel: str | None = None
-    official_release_at: datetime | None = None
-    article_published_at: datetime | None = None
-    freshness_hours: float | None = None
-    is_official_confirmed: bool = False
-    source_channel: Literal["article", "nesdc"] | None = None
-    source_channels: list[Literal["article", "nesdc"]] = Field(default_factory=list)
+    source_priority: Literal["official", "article", "mixed"] = Field(default="article", deprecated=True)
+    selected_source_tier: Literal["official", "nesdc", "article_aggregate", "article"] | None = Field(
+        default=None,
+        deprecated=True,
+    )
+    selected_source_channel: str | None = Field(default=None, deprecated=True)
+    official_release_at: datetime | None = Field(default=None, deprecated=True)
+    article_published_at: datetime | None = Field(default=None, deprecated=True)
+    freshness_hours: float | None = Field(default=None, deprecated=True)
+    is_official_confirmed: bool = Field(default=False, deprecated=True)
+    source_channel: Literal["article", "nesdc"] | None = Field(default=None, deprecated=True)
+    source_channels: list[Literal["article", "nesdc"]] = Field(default_factory=list, deprecated=True)
+    source_trace: SourceTraceOut = Field(default_factory=SourceTraceOut)
     verified: bool
 
 
@@ -84,19 +100,22 @@ class DashboardSummaryOut(BaseModel):
 class MapLatestPoint(BaseModel):
     region_code: str
     office_type: str
-    title: str
+    title: str = Field(..., deprecated=True)
+    canonical_title: str | None = None
+    article_title: str | None = None
     value_mid: float | None = None
     survey_end_date: date | None = None
     option_name: str | None = None
     audience_scope: Literal["national", "regional", "local"] | None = None
     audience_region_code: str | None = None
-    source_priority: Literal["official", "article", "mixed"] = "article"
-    official_release_at: datetime | None = None
-    article_published_at: datetime | None = None
-    freshness_hours: float | None = None
-    is_official_confirmed: bool = False
-    source_channel: Literal["article", "nesdc"] | None = None
-    source_channels: list[Literal["article", "nesdc"]] = Field(default_factory=list)
+    source_priority: Literal["official", "article", "mixed"] = Field(default="article", deprecated=True)
+    official_release_at: datetime | None = Field(default=None, deprecated=True)
+    article_published_at: datetime | None = Field(default=None, deprecated=True)
+    freshness_hours: float | None = Field(default=None, deprecated=True)
+    is_official_confirmed: bool = Field(default=False, deprecated=True)
+    source_channel: Literal["article", "nesdc"] | None = Field(default=None, deprecated=True)
+    source_channels: list[Literal["article", "nesdc"]] = Field(default_factory=list, deprecated=True)
+    source_trace: SourceTraceOut = Field(default_factory=SourceTraceOut)
 
 
 class DashboardFilterStatsOut(BaseModel):
@@ -115,19 +134,22 @@ class DashboardMapLatestOut(BaseModel):
 
 class BigMatchPoint(BaseModel):
     matchup_id: str
-    title: str
+    title: str = Field(..., deprecated=True)
+    canonical_title: str | None = None
+    article_title: str | None = None
     survey_end_date: date | None = None
     value_mid: float | None = None
     spread: float | None = None
     audience_scope: Literal["national", "regional", "local"] | None = None
     audience_region_code: str | None = None
-    source_priority: Literal["official", "article", "mixed"] = "article"
-    official_release_at: datetime | None = None
-    article_published_at: datetime | None = None
-    freshness_hours: float | None = None
-    is_official_confirmed: bool = False
-    source_channel: Literal["article", "nesdc"] | None = None
-    source_channels: list[Literal["article", "nesdc"]] = Field(default_factory=list)
+    source_priority: Literal["official", "article", "mixed"] = Field(default="article", deprecated=True)
+    official_release_at: datetime | None = Field(default=None, deprecated=True)
+    article_published_at: datetime | None = Field(default=None, deprecated=True)
+    freshness_hours: float | None = Field(default=None, deprecated=True)
+    is_official_confirmed: bool = Field(default=False, deprecated=True)
+    source_channel: Literal["article", "nesdc"] | None = Field(default=None, deprecated=True)
+    source_channels: list[Literal["article", "nesdc"]] = Field(default_factory=list, deprecated=True)
+    source_trace: SourceTraceOut = Field(default_factory=SourceTraceOut)
 
 
 class DashboardBigMatchesOut(BaseModel):
@@ -222,7 +244,7 @@ class MatchupOut(BaseModel):
     matchup_id: str
     region_code: str
     office_type: str
-    title: str
+    title: str = Field(..., deprecated=True)
     canonical_title: str | None = None
     article_title: str | None = None
     has_data: bool = True
@@ -245,14 +267,15 @@ class MatchupOut(BaseModel):
     date_inference_confidence: float | None = None
     nesdc_enriched: bool = False
     needs_manual_review: bool = False
-    source_priority: Literal["official", "article", "mixed"] = "article"
-    official_release_at: datetime | None = None
-    article_published_at: datetime | None = None
-    freshness_hours: float | None = None
-    is_official_confirmed: bool = False
+    source_priority: Literal["official", "article", "mixed"] = Field(default="article", deprecated=True)
+    official_release_at: datetime | None = Field(default=None, deprecated=True)
+    article_published_at: datetime | None = Field(default=None, deprecated=True)
+    freshness_hours: float | None = Field(default=None, deprecated=True)
+    is_official_confirmed: bool = Field(default=False, deprecated=True)
     poll_fingerprint: str | None = None
-    source_channel: Literal["article", "nesdc"] | None = None
-    source_channels: list[Literal["article", "nesdc"]] | None = None
+    source_channel: Literal["article", "nesdc"] | None = Field(default=None, deprecated=True)
+    source_channels: list[Literal["article", "nesdc"]] | None = Field(default=None, deprecated=True)
+    source_trace: SourceTraceOut = Field(default_factory=SourceTraceOut)
     verified: bool = False
     scenarios: list[MatchupScenarioOut] = Field(default_factory=list)
     options: list[MatchupOptionOut]
