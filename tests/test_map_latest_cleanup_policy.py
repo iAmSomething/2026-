@@ -38,6 +38,10 @@ def test_map_latest_exclusion_reason_classifies_noise_and_legacy() -> None:
     mixed_token["option_name"] = "김A"
     assert _map_latest_exclusion_reason(mixed_token) == "invalid_candidate_option_name"
 
+    particle_noise = dict(row)
+    particle_noise["option_name"] = "국민의힘은"
+    assert _map_latest_exclusion_reason(particle_noise) == "invalid_candidate_option_name"
+
     legacy = dict(row)
     legacy["title"] = "[2022 지방선거] 서울시장 가상대결"
     assert _map_latest_exclusion_reason(legacy) == "legacy_matchup_title"

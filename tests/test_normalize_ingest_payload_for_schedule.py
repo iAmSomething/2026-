@@ -194,6 +194,7 @@ def test_normalize_payload_candidate_verify_fields() -> None:
                         "candidate_verified": "true",
                         "candidate_verify_source": "external-service",
                         "candidate_verify_confidence": "0.83",
+                        "candidate_verify_matched_key": "  data_go:cand-1  ",
                     }
                 ]
             }
@@ -205,3 +206,4 @@ def test_normalize_payload_candidate_verify_fields() -> None:
     assert option["candidate_verified"] is True
     assert option["candidate_verify_source"] == "article_context"
     assert option["candidate_verify_confidence"] == 0.83
+    assert option["candidate_verify_matched_key"] == "data_go:cand-1"

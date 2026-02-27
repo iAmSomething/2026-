@@ -49,6 +49,7 @@ from app.services.cutoff_policy import (
     is_article_published_at_allowed,
     is_survey_end_date_allowed,
 )
+from app.services.candidate_token_policy import is_noise_candidate_token
 from app.services.ingest_service import ingest_payload
 from app.services.ingest_input_normalization import normalize_ingest_payload
 from app.services.region_code_normalizer import normalize_region_code_input
@@ -278,20 +279,12 @@ def _normalize_candidate_token(value: str | None) -> str:
 
 
 def _is_map_latest_noise_option_name(option_name: str | None) -> bool:
-    token = _normalize_candidate_token(option_name)
-    if not token:
-        return True
-    if token in MAP_LATEST_NOISE_TOKENS:
-        return True
-    if any(noise in token for noise in MAP_LATEST_NOISE_TOKENS):
-        return True
-    if any(ch.isdigit() for ch in token):
-        return True
-    if "%" in token:
-        return True
-    if not MAP_LATEST_CANDIDATE_RE.fullmatch(token):
-        return True
-    return False
+    return is_noise_candidate_token(
+        option_name,
+        name_pattern=MAP_LATEST_CANDIDATE_RE,
+        extra_exact_tokens=MAP_LATEST_NOISE_TOKENS,
+        extra_substring_tokens=MAP_LATEST_GENERIC_OPTION_SUBSTRINGS,
+    )
 
 
 def _is_legacy_matchup_title(title: str | None) -> bool:

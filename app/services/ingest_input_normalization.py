@@ -121,6 +121,13 @@ def _normalize_candidate_verify_source(source: Any, candidate_verified: bool) ->
     return "article_context" if candidate_verified else "manual"
 
 
+def _normalize_candidate_verify_matched_key(value: Any) -> str | None:
+    if not isinstance(value, str):
+        return None
+    normalized = value.strip()
+    return normalized or None
+
+
 def _normalize_float(value: Any) -> float | None:
     if value is None:
         return None
@@ -208,12 +215,18 @@ def normalize_option_fields(option: dict[str, Any]) -> dict[str, Any]:
             option.get("candidate_verify_source"), candidate_verified
         )
         option["candidate_verify_confidence"] = _normalize_float(option.get("candidate_verify_confidence"))
+        option["candidate_verify_matched_key"] = _normalize_candidate_verify_matched_key(
+            option.get("candidate_verify_matched_key")
+        )
     else:
         option["candidate_verified"] = bool(option.get("candidate_verified", True))
         option["candidate_verify_source"] = _normalize_candidate_verify_source(
             option.get("candidate_verify_source"), option["candidate_verified"]
         )
         option["candidate_verify_confidence"] = _normalize_float(option.get("candidate_verify_confidence"))
+        option["candidate_verify_matched_key"] = _normalize_candidate_verify_matched_key(
+            option.get("candidate_verify_matched_key")
+        )
     return option
 
 
