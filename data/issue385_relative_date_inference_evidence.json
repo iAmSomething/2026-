@@ -1,0 +1,224 @@
+{
+  "issue": 385,
+  "generated_at_kst": "2026-02-27T11:44:44+09:00",
+  "scenario": "relative_date_inference_anchor_v2",
+  "summary": {
+    "total_cases": 7,
+    "passed_cases": 7,
+    "failed_cases": 0
+  },
+  "results": [
+    {
+      "case_id": "yesterday_published_anchor",
+      "policy": "strict_fail",
+      "input": {
+        "published_at": "2026-02-20T08:00:00+09:00",
+        "collected_at": "2026-02-20T00:00:00+00:00",
+        "raw_text": "어제 발표된 서울시장 여론조사에서 정원오 44% vs 오세훈 31%"
+      },
+      "expected": {
+        "survey_end_date": "2026-02-19",
+        "date_inference_mode": "relative_published_at"
+      },
+      "observed": {
+        "survey_end_date": "2026-02-19",
+        "date_inference_mode": "relative_published_at",
+        "date_inference_confidence": 0.95,
+        "date_resolution": "relative_day",
+        "error_codes": [],
+        "error_payloads": [],
+        "option_count": 2
+      },
+      "passed": true
+    },
+    {
+      "case_id": "three_days_ago",
+      "policy": "strict_fail",
+      "input": {
+        "published_at": "2026-02-20T08:00:00+09:00",
+        "collected_at": "2026-02-20T00:00:00+00:00",
+        "raw_text": "3일 전 발표된 서울시장 여론조사에서 정원오 44% vs 오세훈 31%"
+      },
+      "expected": {
+        "survey_end_date": "2026-02-17",
+        "date_inference_mode": "relative_published_at"
+      },
+      "observed": {
+        "survey_end_date": "2026-02-17",
+        "date_inference_mode": "relative_published_at",
+        "date_inference_confidence": 0.9,
+        "date_resolution": "relative_day",
+        "error_codes": [],
+        "error_payloads": [],
+        "option_count": 2
+      },
+      "passed": true
+    },
+    {
+      "case_id": "last_month_day_clamp",
+      "policy": "strict_fail",
+      "input": {
+        "published_at": "2026-03-31T10:00:00+09:00",
+        "collected_at": "2026-04-01T00:00:00+00:00",
+        "raw_text": "지난달 실시된 서울시장 여론조사에서 정원오 44% vs 오세훈 31%"
+      },
+      "expected": {
+        "survey_end_date": "2026-02-28",
+        "date_inference_mode": "relative_published_at"
+      },
+      "observed": {
+        "survey_end_date": "2026-02-28",
+        "date_inference_mode": "relative_published_at",
+        "date_inference_confidence": 0.86,
+        "date_resolution": "relative_month",
+        "error_codes": [],
+        "error_payloads": [],
+        "option_count": 2
+      },
+      "passed": true
+    },
+    {
+      "case_id": "kst_midnight_boundary",
+      "policy": "strict_fail",
+      "input": {
+        "published_at": "2026-02-17T16:30:00+00:00",
+        "collected_at": "2026-02-19T00:00:00+00:00",
+        "raw_text": "어제 발표된 서울시장 여론조사에서 정원오 44% vs 오세훈 31%"
+      },
+      "expected": {
+        "survey_end_date": "2026-02-17",
+        "date_inference_mode": "relative_published_at"
+      },
+      "observed": {
+        "survey_end_date": "2026-02-17",
+        "date_inference_mode": "relative_published_at",
+        "date_inference_confidence": 0.95,
+        "date_resolution": "relative_day",
+        "error_codes": [],
+        "error_payloads": [],
+        "option_count": 2
+      },
+      "passed": true
+    },
+    {
+      "case_id": "strict_fail_when_published_missing",
+      "policy": "strict_fail",
+      "input": {
+        "published_at": null,
+        "collected_at": "2026-02-19T00:00:00+00:00",
+        "raw_text": "어제 발표된 서울시장 여론조사에서 정원오 44% vs 오세훈 31%"
+      },
+      "expected": {
+        "survey_end_date": null,
+        "date_inference_mode": "strict_fail_blocked",
+        "error_code": "RELATIVE_DATE_STRICT_FAIL"
+      },
+      "observed": {
+        "survey_end_date": null,
+        "date_inference_mode": "strict_fail_blocked",
+        "date_inference_confidence": 0.0,
+        "date_resolution": "failed",
+        "error_codes": [
+          "RELATIVE_DATE_STRICT_FAIL"
+        ],
+        "error_payloads": [
+          {
+            "date_inference_mode": "strict_fail_blocked",
+            "date_inference_confidence": 0.0,
+            "relative_date_policy": "strict_fail",
+            "relative_signal": "어제",
+            "relative_offset_days": -1,
+            "anchor_source": "none",
+            "anchor_date": null,
+            "inferred_survey_end_date": null,
+            "published_at": null,
+            "collected_at": "2026-02-19T00:00:00+00:00",
+            "timezone": "Asia/Seoul"
+          }
+        ],
+        "option_count": 2
+      },
+      "passed": true
+    },
+    {
+      "case_id": "allow_estimated_when_published_missing",
+      "policy": "allow_estimated_timestamp",
+      "input": {
+        "published_at": null,
+        "collected_at": "2026-02-19T00:00:00+00:00",
+        "raw_text": "어제 발표된 서울시장 여론조사에서 정원오 44% vs 오세훈 31%"
+      },
+      "expected": {
+        "survey_end_date": "2026-02-18",
+        "date_inference_mode": "estimated_timestamp",
+        "error_code": "RELATIVE_DATE_ESTIMATED"
+      },
+      "observed": {
+        "survey_end_date": "2026-02-18",
+        "date_inference_mode": "estimated_timestamp",
+        "date_inference_confidence": 0.7,
+        "date_resolution": "estimated",
+        "error_codes": [
+          "RELATIVE_DATE_ESTIMATED"
+        ],
+        "error_payloads": [
+          {
+            "date_inference_mode": "estimated_timestamp",
+            "date_inference_confidence": 0.7,
+            "relative_date_policy": "allow_estimated_timestamp",
+            "relative_signal": "어제",
+            "relative_offset_days": -1,
+            "anchor_source": "collected_at",
+            "anchor_date": "2026-02-19",
+            "inferred_survey_end_date": "2026-02-18",
+            "published_at": null,
+            "collected_at": "2026-02-19T00:00:00+00:00",
+            "timezone": "Asia/Seoul"
+          }
+        ],
+        "option_count": 2
+      },
+      "passed": true
+    },
+    {
+      "case_id": "low_confidence_recent",
+      "policy": "strict_fail",
+      "input": {
+        "published_at": "2026-02-18T00:00:00+09:00",
+        "collected_at": "2026-02-19T00:00:00+00:00",
+        "raw_text": "최근 서울시장 여론조사에서 정원오 44% vs 오세훈 31%"
+      },
+      "expected": {
+        "survey_end_date": "2026-02-18",
+        "date_inference_mode": "relative_published_at",
+        "error_code": "RELATIVE_DATE_UNCERTAIN"
+      },
+      "observed": {
+        "survey_end_date": "2026-02-18",
+        "date_inference_mode": "relative_published_at",
+        "date_inference_confidence": 0.45,
+        "date_resolution": "relative_recent",
+        "error_codes": [
+          "RELATIVE_DATE_UNCERTAIN"
+        ],
+        "error_payloads": [
+          {
+            "date_inference_mode": "relative_published_at",
+            "date_inference_confidence": 0.45,
+            "relative_date_policy": "strict_fail",
+            "relative_signal": "최근",
+            "relative_offset_days": 0,
+            "anchor_source": "published_at",
+            "anchor_date": "2026-02-18",
+            "inferred_survey_end_date": "2026-02-18",
+            "published_at": "2026-02-18T00:00:00+09:00",
+            "collected_at": "2026-02-19T00:00:00+00:00",
+            "timezone": "Asia/Seoul"
+          }
+        ],
+        "option_count": 2
+      },
+      "passed": true
+    }
+  ]
+}
