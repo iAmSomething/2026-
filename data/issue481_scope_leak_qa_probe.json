@@ -1,0 +1,11 @@
+{
+  "issue": 481,
+  "probe_name": "scope_scenario_regression_gate_target_probe_v1",
+  "target_keys": [
+    "live30d-v2-12-obs_b61d10f49a5d5fdd",
+    "live30d-v2-18-obs_8dc5d149038ab97c"
+  ],
+  "scope_fail_count": 0,
+  "scope_failures": [],
+  "pass": true
+}
