@@ -373,6 +373,11 @@ python scripts/qa/run_ops_recovery_bundle.py \
 - `error_code`는 `review_queue.issue_type`의 세부코드(콜론 이후 값)이며 없으면 `unknown`
 - `generated_at`은 API 생성 시각(UTC)이고, `bucket_start`도 UTC 기준으로 해석
 
+스코프 추론 v3 오류코드 운영 규칙:
+- `AUDIENCE_SCOPE_CONFLICT_POPULATION`: 명시 스코프와 표본집단 문구 추론 스코프가 충돌한 hard fail
+- `AUDIENCE_SCOPE_CONFLICT_REGION`: 명시 지역코드와 표본집단 문구 추론 지역코드가 충돌한 hard fail
+- `AUDIENCE_SCOPE_LOW_CONFIDENCE`: 추론 신뢰도 부족(ingest는 진행, 검수 큐 적재)
+
 ## 9. 일일 운영 체크
 1. 새벽 배치 실패 여부
 2. 검수 큐 24시간 초과 항목 여부
