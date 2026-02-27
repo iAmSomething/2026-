@@ -232,3 +232,206 @@ def test_normalize_options_filters_low_quality_manual_candidate_rows():
     names = [row["option_name"] for row in normalized]
 
     assert names == ["정원오"]
+
+
+class _FallbackCursor:
+    def __init__(self):
+        self.execs: list[str] = []
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, exc_type, exc, tb):  # noqa: ANN001
+        return False
+
+    def execute(self, query, params=None):  # noqa: ARG002
+        self.execs.append(query)
+
+    def fetchone(self):
+        step = len(self.execs)
+        if step == 1:
+            return {
+                "matchup_id": "m-fallback",
+                "region_code": "11-000",
+                "office_type": "광역자치단체장",
+                "title": "서울시장 가상대결",
+                "is_active": True,
+            }
+        if step == 2:
+            return {
+                "region_code": "11-000",
+                "sido_name": "서울특별시",
+                "sigungu_name": "전체",
+                "admin_level": "sido",
+            }
+        return None
+
+    def fetchall(self):
+        step = len(self.execs)
+        if step != 3:
+            return []
+        return [
+            {
+                "matchup_id": "m-fallback",
+                "region_code": "11-000",
+                "office_type": "광역자치단체장",
+                "title": "서울시장 가상대결",
+                "pollster": "최신리서치",
+                "survey_start_date": date(2026, 2, 19),
+                "survey_end_date": date(2026, 2, 20),
+                "confidence_level": 95.0,
+                "sample_size": 1000,
+                "response_rate": 12.3,
+                "margin_of_error": 3.1,
+                "source_grade": "B",
+                "audience_scope": "regional",
+                "audience_region_code": "11-000",
+                "sampling_population_text": "서울시 거주 만 18세 이상",
+                "legal_completeness_score": 0.86,
+                "legal_filled_count": 6,
+                "legal_required_count": 7,
+                "date_resolution": "exact",
+                "date_inference_mode": "relative_published_at",
+                "date_inference_confidence": 0.92,
+                "observation_updated_at": "2026-02-20T03:00:00+00:00",
+                "official_release_at": None,
+                "article_published_at": "2026-02-20T01:00:00+00:00",
+                "nesdc_enriched": False,
+                "needs_manual_review": False,
+                "poll_fingerprint": "f1",
+                "source_channel": "article",
+                "source_channels": ["article"],
+                "verified": True,
+                "observation_id": 1001,
+                "options": [
+                    {
+                        "option_name": "대비",
+                        "candidate_id": "cand:대비",
+                        "party_name": "미확정(검수대기)",
+                        "scenario_key": "default",
+                        "scenario_type": "head_to_head",
+                        "scenario_title": "대비 단독",
+                        "value_mid": 7.0,
+                        "value_raw": "7%",
+                        "party_inferred": False,
+                        "party_inference_source": None,
+                        "party_inference_confidence": None,
+                        "needs_manual_review": True,
+                        "candidate_verify_source": "manual",
+                        "candidate_verify_confidence": 1.0,
+                        "candidate_verify_matched_key": "대비",
+                    }
+                ],
+            },
+            {
+                "matchup_id": "m-fallback",
+                "region_code": "11-000",
+                "office_type": "광역자치단체장",
+                "title": "서울시장 가상대결",
+                "pollster": "직전리서치",
+                "survey_start_date": date(2026, 2, 17),
+                "survey_end_date": date(2026, 2, 18),
+                "confidence_level": 95.0,
+                "sample_size": 1000,
+                "response_rate": 12.1,
+                "margin_of_error": 3.1,
+                "source_grade": "B",
+                "audience_scope": "regional",
+                "audience_region_code": "11-000",
+                "sampling_population_text": "서울시 거주 만 18세 이상",
+                "legal_completeness_score": 0.86,
+                "legal_filled_count": 6,
+                "legal_required_count": 7,
+                "date_resolution": "exact",
+                "date_inference_mode": "relative_published_at",
+                "date_inference_confidence": 0.92,
+                "observation_updated_at": "2026-02-18T03:00:00+00:00",
+                "official_release_at": None,
+                "article_published_at": "2026-02-18T01:00:00+00:00",
+                "nesdc_enriched": False,
+                "needs_manual_review": False,
+                "poll_fingerprint": "f2",
+                "source_channel": "article",
+                "source_channels": ["article"],
+                "verified": True,
+                "observation_id": 1000,
+                "options": [
+                    {
+                        "option_name": "정원오",
+                        "candidate_id": "cand-jwo",
+                        "party_name": "더불어민주당",
+                        "scenario_key": "default",
+                        "scenario_type": "head_to_head",
+                        "scenario_title": "정원오 vs 오세훈",
+                        "value_mid": 44.0,
+                        "value_raw": "44%",
+                        "party_inferred": False,
+                        "party_inference_source": None,
+                        "party_inference_confidence": None,
+                        "needs_manual_review": False,
+                    },
+                    {
+                        "option_name": "오세훈",
+                        "candidate_id": "cand-oh",
+                        "party_name": "국민의힘",
+                        "scenario_key": "default",
+                        "scenario_type": "head_to_head",
+                        "scenario_title": "정원오 vs 오세훈",
+                        "value_mid": 41.0,
+                        "value_raw": "41%",
+                        "party_inferred": False,
+                        "party_inference_source": None,
+                        "party_inference_confidence": None,
+                        "needs_manual_review": False,
+                    },
+                ],
+            },
+        ]
+
+
+class _FallbackConn:
+    def __init__(self):
+        self.cur = _FallbackCursor()
+
+    def cursor(self):
+        return self.cur
+
+
+def test_get_matchup_falls_back_to_previous_observation_when_latest_is_invalid():
+    repo = PostgresRepository(_FallbackConn())
+
+    out = repo.get_matchup("m-fallback")
+
+    assert out is not None
+    assert out["has_data"] is True
+    assert out["pollster"] == "직전리서치"
+    assert out["survey_end_date"] == date(2026, 2, 18)
+    assert [row["option_name"] for row in out["options"]] == ["정원오", "오세훈"]
+
+
+class _AllInvalidCursor(_FallbackCursor):
+    def fetchall(self):
+        step = len(self.execs)
+        if step != 3:
+            return []
+        rows = super().fetchall()
+        return rows[:1]
+
+
+class _AllInvalidConn:
+    def __init__(self):
+        self.cur = _AllInvalidCursor()
+
+    def cursor(self):
+        return self.cur
+
+
+def test_get_matchup_sets_has_data_false_when_all_recent_observations_invalid():
+    repo = PostgresRepository(_AllInvalidConn())
+
+    out = repo.get_matchup("m-fallback")
+
+    assert out is not None
+    assert out["has_data"] is False
+    assert out["options"] == []
+    assert out["scenarios"] == []

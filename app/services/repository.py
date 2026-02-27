@@ -1742,7 +1742,7 @@ class PostgresRepository:
             )
             return cur.fetchone()
 
-    def _fetch_latest_matchup_observation(self, matchup_id: str) -> dict | None:
+    def _fetch_recent_matchup_observations(self, matchup_id: str, *, limit: int = 5) -> list[dict]:
         with self.conn.cursor() as cur:
             cur.execute(
                 """
@@ -1861,11 +1861,19 @@ class PostgresRepository:
                 ) opts ON TRUE
                 WHERE o.matchup_id = %s
                 ORDER BY o.survey_end_date DESC NULLS LAST, o.id DESC
-                LIMIT 1
+                LIMIT %s
                 """,
-                (matchup_id,),
+                (matchup_id, max(int(limit), 1)),
             )
-            return cur.fetchone()
+            rows: list[dict] = []
+            if hasattr(cur, "fetchall"):
+                rows = cur.fetchall() or []
+            # Test doubles may stub fetchone-only behavior.
+            if not rows and hasattr(cur, "fetchone"):
+                single = cur.fetchone()
+                if single:
+                    rows = [single]
+            return rows
 
     @staticmethod
     def _normalize_options(options_payload) -> list[dict]:
@@ -2089,8 +2097,8 @@ class PostgresRepository:
             matchup_meta.get("office_type"),
             str(matchup_meta.get("title") or "").strip() or canonical_matchup_id,
         )
-        observation = self._fetch_latest_matchup_observation(canonical_matchup_id)
-        if not observation:
+        observations = self._fetch_recent_matchup_observations(canonical_matchup_id, limit=5)
+        if not observations:
             result = {
                 "matchup_id": canonical_matchup_id,
                 "region_code": matchup_meta["region_code"],
@@ -2133,8 +2141,18 @@ class PostgresRepository:
                 _api_read_cache_set(cache_key, result)
             return result
 
-        options = self._normalize_options(observation.get("options"))
-        scenarios, primary_options = self._build_matchup_scenarios(options)
+        selected_observation = observations[0]
+        scenarios: list[dict] = []
+        primary_options: list[dict] = []
+        for row in observations:
+            normalized_options = self._normalize_options(row.get("options"))
+            if not normalized_options:
+                continue
+            selected_observation = row
+            scenarios, primary_options = self._build_matchup_scenarios(normalized_options)
+            break
+
+        observation = selected_observation
         observation_title = str(observation.get("title") or "").strip()
         if not canonical_title:
             canonical_title = observation_title or canonical_matchup_id
@@ -2148,7 +2166,7 @@ class PostgresRepository:
             "title": canonical_title,
             "canonical_title": canonical_title,
             "article_title": article_title,
-            "has_data": True,
+            "has_data": bool(primary_options),
             "pollster": observation["pollster"],
             "survey_start_date": observation["survey_start_date"],
             "survey_end_date": observation["survey_end_date"],
