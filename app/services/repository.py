@@ -601,32 +601,29 @@ class PostgresRepository:
             WITH ranked_latest AS (
                 SELECT
                     po.option_type,
+                    po.option_name,
                     o.id AS observation_id,
                     o.audience_scope,
                     ROW_NUMBER() OVER (
-                        PARTITION BY po.option_type, o.audience_scope
+                        PARTITION BY po.option_type, po.option_name, o.audience_scope
                         ORDER BY
-                            o.survey_end_date DESC NULLS LAST,
                             CASE
                                 WHEN (
                                     o.source_channel = 'nesdc'
                                     OR 'nesdc' = ANY(COALESCE(o.source_channels, ARRAY[]::text[]))
-                                ) AND (
-                                    o.source_channel = 'article'
-                                    OR 'article' = ANY(COALESCE(o.source_channels, ARRAY[]::text[]))
-                                ) THEN 3
-                                WHEN (
-                                    o.source_channel = 'nesdc'
-                                    OR 'nesdc' = ANY(COALESCE(o.source_channels, ARRAY[]::text[]))
-                                ) THEN 2
-                                WHEN (
-                                    o.source_channel = 'article'
-                                    OR 'article' = ANY(COALESCE(o.source_channels, ARRAY[]::text[]))
                                 ) THEN 1
                                 ELSE 0
                             END DESC,
-                            COALESCE(o.legal_completeness_score, 0.0) DESC,
-                            COALESCE(o.official_release_at, a.published_at, o.updated_at) DESC NULLS LAST,
+                            CASE UPPER(COALESCE(o.source_grade, ''))
+                                WHEN 'S' THEN 5
+                                WHEN 'A' THEN 4
+                                WHEN 'B' THEN 3
+                                WHEN 'C' THEN 2
+                                WHEN 'D' THEN 1
+                                ELSE 0
+                            END DESC,
+                            COALESCE(o.official_release_at, a.published_at) DESC NULLS LAST,
+                            o.updated_at DESC NULLS LAST,
                             o.id DESC
                     ) AS rn
                 FROM poll_options po
@@ -640,17 +637,6 @@ class PostgresRepository:
                 )
                   AND o.verified = TRUE
                   {as_of_filter}
-                GROUP BY
-                    po.option_type,
-                    o.id,
-                    o.audience_scope,
-                    o.survey_end_date,
-                    o.official_release_at,
-                    a.published_at,
-                    o.updated_at,
-                    o.source_channel,
-                    o.source_channels,
-                    o.legal_completeness_score
             )
             SELECT
                 po.option_type,
@@ -675,6 +661,7 @@ class PostgresRepository:
             LEFT JOIN articles a ON a.id = o.article_id
             JOIN ranked_latest rl
               ON rl.option_type = po.option_type
+             AND rl.option_name = po.option_name
              AND rl.observation_id = o.id
              AND rl.audience_scope IS NOT DISTINCT FROM o.audience_scope
             WHERE po.option_type IN (
@@ -1959,6 +1946,12 @@ class PostgresRepository:
             if isinstance(party_name, str):
                 party_name = party_name.strip() or None
             row["party_name"] = party_name or "미확정(검수대기)"
+            if row.get("candidate_id"):
+                row["name_validity"] = "valid"
+            elif row["party_name"] != "미확정(검수대기)":
+                row["name_validity"] = "valid"
+            else:
+                row["name_validity"] = "unknown"
 
             normalized.append(row)
         if include_stats:

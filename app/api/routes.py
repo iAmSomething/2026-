@@ -106,6 +106,7 @@ SOURCE_GRADE_SCORE = {
     "C": 2,
     "D": 1,
 }
+SUMMARY_SELECTION_POLICY_VERSION = "summary_single_set_v1"
 MAP_LATEST_CANDIDATE_NAME_RE = re.compile(r"^[가-힣]{2,8}$")
 MAP_LATEST_GENERIC_OPTION_EXACT_TOKENS = {
     "양자대결",
@@ -386,6 +387,7 @@ def _build_selection_trace(row: dict, *, selected_tier: str, source_meta: dict) 
     anchor_field, anchor_at = _selection_freshness_anchor(row)
     return {
         "algorithm_version": "representative_v2",
+        "selection_policy_version": SUMMARY_SELECTION_POLICY_VERSION,
         "selected_source_tier": selected_tier,
         "selected_source_channel": row.get("source_channel"),
         "source_priority": source_meta.get("source_priority"),
@@ -572,6 +574,41 @@ def _select_summary_representative(rows: list[dict]) -> tuple[dict, str]:
     return selected, _summary_source_tier(selected)
 
 
+def _summary_published_or_official_at(row: dict) -> datetime | None:
+    return _to_datetime(row.get("official_release_at")) or _to_datetime(row.get("article_published_at"))
+
+
+def _summary_updated_at(row: dict) -> datetime | None:
+    return _to_datetime(row.get("observation_updated_at"))
+
+
+def _summary_single_set_sort_key(row: dict) -> tuple[int, int, float, float]:
+    tier = _summary_source_tier(row)
+    source_grade_score = _summary_reliability_score(row)
+    published_at = _summary_published_or_official_at(row)
+    updated_at = _summary_updated_at(row)
+    published_score = published_at.timestamp() if published_at is not None else 0.0
+    updated_score = updated_at.timestamp() if updated_at is not None else 0.0
+    # Policy: official_confirmed desc -> source_grade -> published_at desc -> updated_at desc
+    return (
+        1 if tier in {"official", "nesdc"} else 0,
+        source_grade_score,
+        published_score,
+        updated_score,
+    )
+
+
+def _select_summary_single_set_representative(rows: list[dict]) -> tuple[dict, str]:
+    selected = max(rows, key=_summary_single_set_sort_key)
+    return selected, _summary_source_tier(selected)
+
+
+def _summary_selected_reason(source_meta: dict) -> Literal["official_preferred", "latest_fallback"]:
+    if bool(source_meta.get("is_official_confirmed")):
+        return "official_preferred"
+    return "latest_fallback"
+
+
 def _normalize_map_candidate_token(option_name: str | None) -> str:
     token = re.sub(r"\s+", "", str(option_name or "").strip().lower())
     return re.sub(r"[^0-9a-z가-힣]", "", token)
@@ -645,7 +682,7 @@ def get_dashboard_summary(
         grouped.setdefault((bucket, option_name), []).append(row)
 
     for (bucket, _option_name), candidates in sorted(grouped.items(), key=lambda x: (x[0][0], x[0][1])):
-        selected_row, selected_tier = _select_summary_representative(candidates)
+        selected_row, selected_tier = _select_summary_single_set_representative(candidates)
         source_meta = _derive_source_meta(selected_row)
         selection_trace = _build_selection_trace(selected_row, selected_tier=selected_tier, source_meta=source_meta)
         point = SummaryPoint(
@@ -671,6 +708,7 @@ def get_dashboard_summary(
                 selected_source_channel=selected_row.get("source_channel"),
             ),
             selection_trace=selection_trace,
+            selected_reason=_summary_selected_reason(source_meta),
             verified=selected_row["verified"],
         )
         if bucket == "party_support":
@@ -684,6 +722,7 @@ def get_dashboard_summary(
 
     return DashboardSummaryOut(
         as_of=as_of,
+        selection_policy_version=SUMMARY_SELECTION_POLICY_VERSION,
         data_source=_derive_dashboard_data_source(eligible_rows),
         party_support=party_support,
         president_job_approval=president_job_approval,

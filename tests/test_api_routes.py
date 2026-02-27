@@ -647,6 +647,7 @@ def test_api_contract_fields():
     assert "election_frame" in body
     assert "presidential_approval" in body
     assert body["presidential_approval_deprecated"] is True
+    assert body["selection_policy_version"] == "summary_single_set_v1"
     assert body["data_source"] == "mixed"
     assert "option_name" in body["party_support"][0]
     assert "value_mid" in body["party_support"][0]
@@ -672,8 +673,10 @@ def test_api_contract_fields():
     assert body["party_support"][0]["source_trace"]["source_priority"] == "mixed"
     assert body["party_support"][0]["source_trace"]["selected_source_tier"] == "nesdc"
     assert body["party_support"][0]["source_trace"]["source_channels"] == ["article", "nesdc"]
+    assert body["party_support"][0]["selected_reason"] == "official_preferred"
     summary_trace = body["party_support"][0]["selection_trace"]
     assert summary_trace["algorithm_version"] == "representative_v2"
+    assert summary_trace["selection_policy_version"] == "summary_single_set_v1"
     assert summary_trace["source_priority"] == "mixed"
     assert summary_trace["selected_source_tier"] == "nesdc"
 
@@ -792,9 +795,11 @@ def test_api_contract_fields():
     assert matchup.json()["options"][0]["party_inference_evidence"] == '{"rule":"name_rule","version":"v1"}'
     assert matchup.json()["options"][0]["candidate_id"] == "cand-jwo"
     assert matchup.json()["options"][0]["party_name"] == "더불어민주당"
+    assert matchup.json()["options"][0]["name_validity"] == "valid"
     assert matchup.json()["options"][0]["needs_manual_review"] is False
     assert matchup.json()["options"][1]["needs_manual_review"] is True
     assert matchup.json()["options"][1]["candidate_id"] == "cand-oh"
+    assert matchup.json()["options"][1]["name_validity"] == "valid"
     assert matchup.json()["candidate_noise_block_count"] == 0
     matchup_alias = client.get("/api/v1/matchups/m_2026_seoul_mayor")
     assert matchup_alias.status_code == 200
@@ -1110,10 +1115,11 @@ def test_dashboard_summary_selects_single_representative_by_source_priority():
     assert selected_dem["value_mid"] == 34.0
 
     selected_kpp = next(x for x in body["party_support"] if x["option_name"] == "국민의힘")
-    assert selected_kpp["pollster"] == "기사집계센터"
-    assert selected_kpp["selected_source_tier"] == "article_aggregate"
-    assert selected_kpp["source_trace"]["selected_source_tier"] == "article_aggregate"
-    assert selected_kpp["value_mid"] == 39.0
+    assert selected_kpp["pollster"] == "일반기사"
+    assert selected_kpp["selected_source_tier"] == "article"
+    assert selected_kpp["source_trace"]["selected_source_tier"] == "article"
+    assert selected_kpp["value_mid"] == 40.0
+    assert selected_kpp["selected_reason"] == "latest_fallback"
 
     assert len(body["president_job_approval"]) == 1
     assert body["president_job_approval"][0]["value_mid"] == 48.0
@@ -1121,6 +1127,96 @@ def test_dashboard_summary_selects_single_representative_by_source_priority():
     assert body["president_job_approval"][0]["selected_source_channel"] == "article"
     assert body["president_job_approval"][0]["source_trace"]["selected_source_tier"] == "article"
     assert body["president_job_approval"][0]["source_trace"]["selected_source_channel"] == "article"
+    assert body["president_job_approval"][0]["selected_reason"] == "latest_fallback"
+
+    app.dependency_overrides.clear()
+
+
+def test_dashboard_summary_selection_policy_uses_published_then_updated_tiebreak():
+    class SummarySelectionPolicyRepo(FakeApiRepo):
+        def fetch_dashboard_summary(self, as_of):  # noqa: ARG002
+            return [
+                {
+                    "option_type": "party_support",
+                    "option_name": "국민의힘",
+                    "value_mid": 30.0,
+                    "pollster": "A기사",
+                    "survey_end_date": date(2026, 2, 20),
+                    "source_grade": "A",
+                    "audience_scope": "national",
+                    "audience_region_code": None,
+                    "observation_updated_at": "2026-02-20T03:00:00+00:00",
+                    "article_published_at": "2026-02-20T01:00:00+00:00",
+                    "source_channel": "article",
+                    "source_channels": ["article"],
+                    "verified": True,
+                },
+                {
+                    "option_type": "party_support",
+                    "option_name": "국민의힘",
+                    "value_mid": 31.0,
+                    "pollster": "B기사",
+                    "survey_end_date": date(2026, 2, 20),
+                    "source_grade": "A",
+                    "audience_scope": "national",
+                    "audience_region_code": None,
+                    "observation_updated_at": "2026-02-20T02:00:00+00:00",
+                    "article_published_at": "2026-02-20T02:00:00+00:00",
+                    "source_channel": "article",
+                    "source_channels": ["article"],
+                    "verified": True,
+                },
+                {
+                    "option_type": "party_support",
+                    "option_name": "더불어민주당",
+                    "value_mid": 32.0,
+                    "pollster": "C기사",
+                    "survey_end_date": date(2026, 2, 20),
+                    "source_grade": "A",
+                    "audience_scope": "national",
+                    "audience_region_code": None,
+                    "observation_updated_at": "2026-02-20T01:00:00+00:00",
+                    "article_published_at": "2026-02-20T02:00:00+00:00",
+                    "source_channel": "article",
+                    "source_channels": ["article"],
+                    "verified": True,
+                },
+                {
+                    "option_type": "party_support",
+                    "option_name": "더불어민주당",
+                    "value_mid": 33.0,
+                    "pollster": "D기사",
+                    "survey_end_date": date(2026, 2, 20),
+                    "source_grade": "A",
+                    "audience_scope": "national",
+                    "audience_region_code": None,
+                    "observation_updated_at": "2026-02-20T03:00:00+00:00",
+                    "article_published_at": "2026-02-20T02:00:00+00:00",
+                    "source_channel": "article",
+                    "source_channels": ["article"],
+                    "verified": True,
+                },
+            ]
+
+    def override_policy_repo():
+        yield SummarySelectionPolicyRepo()
+
+    app.dependency_overrides[get_repository] = override_policy_repo
+    app.dependency_overrides[get_candidate_data_go_service] = override_candidate_data_go_service
+    client = TestClient(app)
+
+    res = client.get("/api/v1/dashboard/summary")
+    assert res.status_code == 200
+    body = res.json()
+    assert body["selection_policy_version"] == "summary_single_set_v1"
+
+    selected_kpp = next(x for x in body["party_support"] if x["option_name"] == "국민의힘")
+    assert selected_kpp["value_mid"] == 31.0
+    assert selected_kpp["selected_reason"] == "latest_fallback"
+
+    selected_dem = next(x for x in body["party_support"] if x["option_name"] == "더불어민주당")
+    assert selected_dem["value_mid"] == 33.0
+    assert selected_dem["selected_reason"] == "latest_fallback"
 
     app.dependency_overrides.clear()
 
