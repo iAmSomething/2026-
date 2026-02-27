@@ -193,6 +193,13 @@ def test_normalize_options_filters_noise_candidate_tokens():
         {"option_name": "전라는", "candidate_id": None, "scenario_key": "default", "value_mid": 13.0},
         {"option_name": "국정안정론", "candidate_id": "cand:국정안정론", "scenario_key": "default", "value_mid": 53.0},
         {"option_name": "재정자립도", "candidate_id": "cand:재정자립도", "scenario_key": "default", "value_mid": 24.0},
+        {"option_name": "최고치", "candidate_id": "cand:최고치", "scenario_key": "default", "value_mid": 19.0},
+        {"option_name": "접촉률은", "candidate_id": "cand:접촉률은", "scenario_key": "default", "value_mid": 18.0},
+        {"option_name": "엔비디아", "candidate_id": "cand:엔비디아", "scenario_key": "default", "value_mid": 17.0},
+        {"option_name": "가격", "candidate_id": "cand:가격", "scenario_key": "default", "value_mid": 16.0},
+        {"option_name": "조정했는데도", "candidate_id": "cand:조정했는데도", "scenario_key": "default", "value_mid": 15.0},
+        {"option_name": "보다", "candidate_id": "cand:보다", "scenario_key": "default", "value_mid": 14.0},
+        {"option_name": "주전보다", "candidate_id": "cand:주전보다", "scenario_key": "default", "value_mid": 13.0},
         {"option_name": "정원오", "candidate_id": None, "scenario_key": "default", "value_mid": 44.0},
         {"option_name": "오세훈", "candidate_id": "cand-oh", "scenario_key": "default", "value_mid": 42.0},
         {"option_name": "김민주", "candidate_id": None, "scenario_key": "default", "value_mid": 12.0},
@@ -750,9 +757,13 @@ class _AllInvalidCursor(_FallbackCursor):
 class _AllInvalidConn:
     def __init__(self):
         self.cur = _AllInvalidCursor()
+        self.commit_count = 0
 
     def cursor(self):
         return self.cur
+
+    def commit(self):
+        self.commit_count += 1
 
 
 def test_get_matchup_sets_has_data_false_when_all_recent_observations_invalid():
@@ -764,3 +775,121 @@ def test_get_matchup_sets_has_data_false_when_all_recent_observations_invalid():
     assert out["has_data"] is False
     assert out["options"] == []
     assert out["scenarios"] == []
+
+
+class _NoiseOnlyCursor:
+    def __init__(self):
+        self.execs: list[str] = []
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, exc_type, exc, tb):  # noqa: ANN001
+        return False
+
+    def execute(self, query, params=None):  # noqa: ARG002
+        self.execs.append(query)
+
+    def fetchone(self):
+        step = len(self.execs)
+        if step == 1:
+            return {
+                "matchup_id": "m-noise",
+                "region_code": "11-000",
+                "office_type": "광역자치단체장",
+                "title": "서울시장 가상대결",
+                "is_active": True,
+            }
+        if step == 2:
+            return {
+                "region_code": "11-000",
+                "sido_name": "서울특별시",
+                "sigungu_name": "전체",
+                "admin_level": "sido",
+            }
+        if step == 4:
+            return None
+        return None
+
+    def fetchall(self):
+        step = len(self.execs)
+        if step != 3:
+            return []
+        return [
+            {
+                "matchup_id": "m-noise",
+                "region_code": "11-000",
+                "office_type": "광역자치단체장",
+                "title": "서울시장 가상대결",
+                "observation_key": "obs-noise",
+                "pollster": "테스트리서치",
+                "survey_start_date": date(2026, 2, 19),
+                "survey_end_date": date(2026, 2, 20),
+                "confidence_level": 95.0,
+                "sample_size": 1000,
+                "response_rate": 12.3,
+                "margin_of_error": 3.1,
+                "source_grade": "B",
+                "audience_scope": "regional",
+                "audience_region_code": "11-000",
+                "sampling_population_text": "서울 거주 만 18세 이상",
+                "legal_completeness_score": 0.86,
+                "legal_filled_count": 6,
+                "legal_required_count": 7,
+                "date_resolution": "exact",
+                "date_inference_mode": "relative_published_at",
+                "date_inference_confidence": 0.92,
+                "observation_updated_at": "2026-02-20T03:00:00+00:00",
+                "official_release_at": None,
+                "article_published_at": "2026-02-20T01:00:00+00:00",
+                "nesdc_enriched": False,
+                "needs_manual_review": False,
+                "poll_fingerprint": "noise-fingerprint",
+                "source_channel": "article",
+                "source_channels": ["article"],
+                "verified": True,
+                "observation_id": 9001,
+                "options": [
+                    {"option_name": "최고치", "candidate_id": "cand:최고치", "scenario_key": "default", "value_mid": 70.0},
+                    {"option_name": "접촉률은", "candidate_id": "cand:접촉률은", "scenario_key": "default", "value_mid": 60.0},
+                    {"option_name": "엔비디아", "candidate_id": "cand:엔비디아", "scenario_key": "default", "value_mid": 50.0},
+                    {"option_name": "가격", "candidate_id": "cand:가격", "scenario_key": "default", "value_mid": 40.0},
+                    {
+                        "option_name": "조정했는데도",
+                        "candidate_id": "cand:조정했는데도",
+                        "scenario_key": "default",
+                        "value_mid": 30.0,
+                    },
+                    {"option_name": "보다", "candidate_id": "cand:보다", "scenario_key": "default", "value_mid": 20.0},
+                    {"option_name": "주전보다", "candidate_id": "cand:주전보다", "scenario_key": "default", "value_mid": 10.0},
+                ],
+            }
+        ]
+
+
+class _NoiseOnlyConn:
+    def __init__(self):
+        self.cur = _NoiseOnlyCursor()
+        self.commit_count = 0
+
+    def cursor(self):
+        return self.cur
+
+    def commit(self):
+        self.commit_count += 1
+
+
+def test_get_matchup_routes_review_queue_when_noise_filter_removes_all_candidates():
+    conn = _NoiseOnlyConn()
+    repo = PostgresRepository(conn)
+
+    out = repo.get_matchup("m-noise")
+
+    assert out is not None
+    assert out["has_data"] is False
+    assert out["options"] == []
+    assert out["scenarios"] == []
+    assert out["candidate_noise_block_count"] == 7
+    assert out["needs_manual_review"] is True
+    assert conn.commit_count == 1
+    assert any("INSERT INTO review_queue" in query for query in conn.cur.execs)
