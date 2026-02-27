@@ -22,6 +22,7 @@ class Settings(BaseSettings):
     data_go_candidate_cache_ttl_sec: int = 300
     data_go_candidate_requests_per_sec: float = 5.0
     data_go_candidate_num_of_rows: int = 300
+    api_read_cache_ttl_sec: int = 0
 
     model_config = SettingsConfigDict(env_file=".env", env_file_encoding="utf-8")
 
