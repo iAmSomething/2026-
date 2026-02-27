@@ -125,6 +125,8 @@
 17. `GET /api/v1/trends/{metric}`는 `metric`(`party_support|president_job_approval|election_frame`), `scope`(`national|regional|local`), `region_code`, `days`(`1~365`)를 지원한다.
 18. `scope`가 `regional|local`이면 `region_code`는 필수다.
 19. trends 포인트는 동일 `survey_end_date + option_name` 그룹에서 대표값 선택 trace(`source_trace.selected_source_tier`)를 포함한다.
+20. `GET /api/v1/dashboard/summary`는 응답 루트에 `selection_policy_version`을 노출한다.
+21. `GET /api/v1/dashboard/summary` 각 카드는 `selected_reason`(`official_preferred|latest_fallback`)를 포함한다.
 
 ## 6.1 운영 품질 요약 규칙 (`GET /api/v1/dashboard/quality`)
 1. `freshness_p50_hours`, `freshness_p90_hours`는 검증 완료(`verified=true`) 관측치의 freshness 분포 백분위를 시간 단위로 노출한다.
