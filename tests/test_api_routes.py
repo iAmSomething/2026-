@@ -1157,6 +1157,158 @@ def test_dashboard_summary_filters_rows_before_fixed_article_cutoff():
     app.dependency_overrides.clear()
 
 
+def test_dashboard_summary_filters_rows_before_survey_end_cutoff():
+    class SurveyEndCutoffRepo(FakeApiRepo):
+        def fetch_dashboard_summary(self, as_of):  # noqa: ARG002
+            return [
+                {
+                    "option_type": "party_support",
+                    "option_name": "오래된조사정당",
+                    "value_mid": 11.0,
+                    "pollster": "테스트",
+                    "survey_end_date": date(2025, 11, 30),
+                    "audience_scope": "national",
+                    "audience_region_code": None,
+                    "observation_updated_at": "2026-02-18T03:00:00+00:00",
+                    "article_published_at": "2026-01-10T00:00:00+09:00",
+                    "source_channel": "article",
+                    "source_channels": ["article"],
+                    "verified": True,
+                },
+                {
+                    "option_type": "party_support",
+                    "option_name": "최신조사정당",
+                    "value_mid": 22.0,
+                    "pollster": "테스트",
+                    "survey_end_date": date(2025, 12, 1),
+                    "audience_scope": "national",
+                    "audience_region_code": None,
+                    "observation_updated_at": "2026-02-18T03:00:00+00:00",
+                    "article_published_at": "2026-01-10T00:00:00+09:00",
+                    "source_channel": "article",
+                    "source_channels": ["article"],
+                    "verified": True,
+                },
+            ]
+
+    def override_survey_end_cutoff_repo():
+        yield SurveyEndCutoffRepo()
+
+    app.dependency_overrides[get_repository] = override_survey_end_cutoff_repo
+    app.dependency_overrides[get_candidate_data_go_service] = override_candidate_data_go_service
+    client = TestClient(app)
+
+    res = client.get("/api/v1/dashboard/summary")
+    assert res.status_code == 200
+    names = [x["option_name"] for x in res.json()["party_support"]]
+    assert names == ["최신조사정당"]
+
+    app.dependency_overrides.clear()
+
+
+def test_dashboard_big_matches_filters_rows_before_survey_end_cutoff():
+    class BigMatchCutoffRepo(FakeApiRepo):
+        def fetch_dashboard_big_matches(self, as_of, limit=3):  # noqa: ARG002
+            rows = super().fetch_dashboard_big_matches(as_of=as_of, limit=limit)
+            rows[0]["survey_end_date"] = date(2025, 11, 30)
+            rows[0]["article_published_at"] = "2026-01-10T00:00:00+09:00"
+            rows.append(
+                {
+                    "matchup_id": "20260603|기초자치단체장|11-010",
+                    "title": "종로구청장 가상대결",
+                    "survey_end_date": date(2025, 12, 1),
+                    "value_mid": 38.0,
+                    "spread": 2.1,
+                    "audience_scope": "local",
+                    "audience_region_code": "11-010",
+                    "observation_updated_at": "2026-02-18T03:00:00+00:00",
+                    "article_published_at": "2026-01-10T00:00:00+09:00",
+                    "source_channel": "article",
+                    "source_channels": ["article"],
+                }
+            )
+            return rows
+
+    def override_big_match_cutoff_repo():
+        yield BigMatchCutoffRepo()
+
+    app.dependency_overrides[get_repository] = override_big_match_cutoff_repo
+    app.dependency_overrides[get_candidate_data_go_service] = override_candidate_data_go_service
+    client = TestClient(app)
+
+    res = client.get("/api/v1/dashboard/big-matches")
+    assert res.status_code == 200
+    items = res.json()["items"]
+    assert len(items) == 1
+    assert items[0]["matchup_id"] == "20260603|기초자치단체장|11-010"
+
+    app.dependency_overrides.clear()
+
+
+def test_map_latest_reason_counts_groups_cutoff_as_stale_cycle():
+    class MapCutoffReasonRepo(FakeApiRepo):
+        def fetch_dashboard_map_latest(self, as_of, limit=100):  # noqa: ARG002
+            return [
+                {
+                    "region_code": "11-000",
+                    "office_type": "광역자치단체장",
+                    "title": "서울시장 가상대결",
+                    "value_mid": 44.0,
+                    "survey_end_date": date(2025, 11, 30),
+                    "option_name": "정원오",
+                    "audience_scope": "regional",
+                    "audience_region_code": "11-000",
+                    "observation_updated_at": "2026-02-18T03:00:00+00:00",
+                    "article_published_at": "2026-01-10T00:00:00+09:00",
+                    "source_channel": "article",
+                    "source_channels": ["article"],
+                },
+                {
+                    "region_code": "11-010",
+                    "office_type": "기초자치단체장",
+                    "title": "종로구청장 가상대결",
+                    "value_mid": 41.0,
+                    "survey_end_date": date(2026, 2, 18),
+                    "option_name": "오세훈",
+                    "audience_scope": "local",
+                    "audience_region_code": "11-010",
+                    "observation_updated_at": "2026-02-18T03:00:00+00:00",
+                    "article_published_at": "2025-11-30T23:59:59+09:00",
+                    "source_channel": "article",
+                    "source_channels": ["article"],
+                },
+                {
+                    "region_code": "11-020",
+                    "office_type": "기초자치단체장",
+                    "title": "중구청장 가상대결",
+                    "value_mid": 42.0,
+                    "survey_end_date": date(2026, 2, 18),
+                    "option_name": "박형준",
+                    "audience_scope": "local",
+                    "audience_region_code": "11-020",
+                    "observation_updated_at": "2026-02-18T03:00:00+00:00",
+                    "article_published_at": "2026-01-10T00:00:00+09:00",
+                    "source_channel": "article",
+                    "source_channels": ["article"],
+                },
+            ][:limit]
+
+    def override_map_cutoff_reason_repo():
+        yield MapCutoffReasonRepo()
+
+    app.dependency_overrides[get_repository] = override_map_cutoff_reason_repo
+    client = TestClient(app)
+
+    res = client.get("/api/v1/dashboard/map-latest")
+    assert res.status_code == 200
+    body = res.json()
+    assert body["filter_stats"]["reason_counts"]["stale_cycle"] == 2
+    assert body["filter_stats"]["kept_count"] == 1
+    assert body["items"][0]["option_name"] == "박형준"
+
+    app.dependency_overrides.clear()
+
+
 def test_matchup_before_cutoff_returns_not_found():
     class CutoffMatchupRepo(FakeApiRepo):
         def get_matchup(self, matchup_id):  # noqa: ARG002
@@ -1170,6 +1322,29 @@ def test_matchup_before_cutoff_returns_not_found():
         yield CutoffMatchupRepo()
 
     app.dependency_overrides[get_repository] = override_cutoff_matchup_repo
+    app.dependency_overrides[get_candidate_data_go_service] = override_candidate_data_go_service
+    client = TestClient(app)
+
+    res = client.get("/api/v1/matchups/20260603|광역자치단체장|11-000")
+    assert res.status_code == 404
+
+    app.dependency_overrides.clear()
+
+
+def test_matchup_with_survey_end_before_cutoff_returns_not_found():
+    class CutoffSurveyMatchupRepo(FakeApiRepo):
+        def get_matchup(self, matchup_id):  # noqa: ARG002
+            row = super().get_matchup("anything")
+            row["survey_end_date"] = date(2025, 11, 30)
+            row["source_channel"] = "article"
+            row["source_channels"] = ["article"]
+            row["article_published_at"] = "2026-01-10T00:00:00+09:00"
+            return row
+
+    def override_cutoff_survey_matchup_repo():
+        yield CutoffSurveyMatchupRepo()
+
+    app.dependency_overrides[get_repository] = override_cutoff_survey_matchup_repo
     app.dependency_overrides[get_candidate_data_go_service] = override_candidate_data_go_service
     client = TestClient(app)
 

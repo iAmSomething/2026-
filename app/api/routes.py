@@ -43,7 +43,12 @@ from app.models.schemas import (
     RegionOut,
     SummaryPoint,
 )
-from app.services.cutoff_policy import has_article_source, is_article_published_at_allowed
+from app.services.cutoff_policy import (
+    SURVEY_END_DATE_CUTOFF,
+    has_article_source,
+    is_article_published_at_allowed,
+    is_survey_end_date_allowed,
+)
 from app.services.ingest_service import ingest_payload
 from app.services.ingest_input_normalization import normalize_ingest_payload
 from app.services.region_code_normalizer import normalize_region_code_input
@@ -89,7 +94,6 @@ MAP_LATEST_NOISE_TOKENS = {
 }
 MAP_LATEST_CANDIDATE_RE = re.compile(r"^[가-힣]{2,4}$")
 MAP_LATEST_LEGACY_TITLE_RE = re.compile(r"\[(?:19|20)\d{2}[^]]*선거[^]]*\]")
-MAP_LATEST_SURVEY_CUTOFF = date(2025, 12, 1)
 ARTICLE_AGGREGATE_HINTS = ("집계", "aggregate", "평균", "메타", "종합")
 SOURCE_GRADE_SCORE = {
     "S": 5,
@@ -259,6 +263,8 @@ def _derive_source_meta(row: dict) -> dict:
 
 
 def _is_cutoff_eligible_row(row: dict) -> bool:
+    if not is_survey_end_date_allowed(row.get("survey_end_date")):
+        return False
     if not has_article_source(
         source_channel=row.get("source_channel"),
         source_channels=row.get("source_channels"),
@@ -314,7 +320,7 @@ def _survey_end_before_cutoff(survey_end_date: date | str | None) -> bool:
             survey_end = date.fromisoformat(text)
         except ValueError:
             return False
-    return survey_end < MAP_LATEST_SURVEY_CUTOFF
+    return survey_end < SURVEY_END_DATE_CUTOFF
 
 
 def _map_latest_exclusion_reason(row: dict) -> str | None:
@@ -565,7 +571,12 @@ def get_dashboard_map_latest(
         exclusion_reason = _map_latest_exclusion_reason(row)
         if exclusion_reason is not None:
             drop_reason = _map_latest_drop_reason(row)
-            reason_key = drop_reason or exclusion_reason
+            if exclusion_reason in {"survey_end_date_before_cutoff", "article_published_at_before_cutoff"}:
+                reason_key = "stale_cycle"
+            elif drop_reason == "cutoff_blocked":
+                reason_key = "stale_cycle"
+            else:
+                reason_key = drop_reason or exclusion_reason
             reason_counts[reason_key] = reason_counts.get(reason_key, 0) + 1
             continue
         kept_rows.append(row)

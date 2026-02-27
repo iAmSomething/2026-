@@ -1,12 +1,13 @@
 from __future__ import annotations
 
-from datetime import datetime, timedelta, timezone
+from datetime import date, datetime, timedelta, timezone
 from email.utils import parsedate_to_datetime
 from typing import Any
 
 KST = timezone(timedelta(hours=9))
 ARTICLE_PUBLISHED_AT_CUTOFF_KST = datetime(2025, 12, 1, 0, 0, 0, tzinfo=KST)
 ARTICLE_PUBLISHED_AT_CUTOFF_ISO = ARTICLE_PUBLISHED_AT_CUTOFF_KST.isoformat(timespec="seconds")
+SURVEY_END_DATE_CUTOFF = date(2025, 12, 1)
 
 
 def parse_datetime_like(value: Any) -> datetime | None:
@@ -32,6 +33,27 @@ def parse_datetime_like(value: Any) -> datetime | None:
     return parsed.astimezone(KST)
 
 
+def parse_date_like(value: Any) -> date | None:
+    if value is None:
+        return None
+    if isinstance(value, date) and not isinstance(value, datetime):
+        return value
+
+    parsed_dt = parse_datetime_like(value)
+    if parsed_dt is not None:
+        return parsed_dt.date()
+
+    text = str(value).strip()
+    if not text:
+        return None
+    if "T" in text:
+        text = text.split("T", 1)[0]
+    try:
+        return date.fromisoformat(text)
+    except ValueError:
+        return None
+
+
 def published_at_cutoff_reason(published_at: Any) -> str:
     parsed = parse_datetime_like(published_at)
     if parsed is None:
@@ -43,6 +65,19 @@ def published_at_cutoff_reason(published_at: Any) -> str:
 
 def is_article_published_at_allowed(published_at: Any) -> bool:
     return published_at_cutoff_reason(published_at) == "PASS"
+
+
+def survey_end_date_cutoff_reason(survey_end_date: Any) -> str:
+    parsed = parse_date_like(survey_end_date)
+    if parsed is None:
+        return "PASS"
+    if parsed < SURVEY_END_DATE_CUTOFF:
+        return "SURVEY_END_DATE_BEFORE_CUTOFF"
+    return "PASS"
+
+
+def is_survey_end_date_allowed(survey_end_date: Any) -> bool:
+    return survey_end_date_cutoff_reason(survey_end_date) == "PASS"
 
 
 def has_article_source(source_channel: str | None, source_channels: list[str] | None) -> bool:
