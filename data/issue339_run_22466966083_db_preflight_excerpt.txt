@@ -1,0 +1,29 @@
+1:scheduled-ingest	DB preflight via health/db	﻿2026-02-27T00:16:33.6923003Z ##[group]Run DB_HEALTH_STATUS="$(curl -sS -o /tmp/ingest-schedule-health-db.json -w "%{http_code}" http://127.0.0.1:8100/health/db || true)"
+2:scheduled-ingest	DB preflight via health/db	2026-02-27T00:16:33.6924001Z [36;1mDB_HEALTH_STATUS="$(curl -sS -o /tmp/ingest-schedule-health-db.json -w "%{http_code}" http://127.0.0.1:8100/health/db || true)"[0m
+3:scheduled-ingest	DB preflight via health/db	2026-02-27T00:16:33.6924645Z [36;1mecho "health_db_http_status=${DB_HEALTH_STATUS}"[0m
+4:scheduled-ingest	DB preflight via health/db	2026-02-27T00:16:33.6925039Z [36;1mecho "===== /tmp/ingest-schedule-health-db.json ====="[0m
+5:scheduled-ingest	DB preflight via health/db	2026-02-27T00:16:33.6925728Z [36;1mcat /tmp/ingest-schedule-health-db.json || true[0m
+6:scheduled-ingest	DB preflight via health/db	2026-02-27T00:16:33.6926073Z [36;1mif [ "${DB_HEALTH_STATUS}" != "200" ]; then[0m
+7:scheduled-ingest	DB preflight via health/db	2026-02-27T00:16:33.6926480Z [36;1m  echo "::error::DB preflight failed (/health/db status=${DB_HEALTH_STATUS})"[0m
+8:scheduled-ingest	DB preflight via health/db	2026-02-27T00:16:33.6926872Z [36;1m  exit 1[0m
+9:scheduled-ingest	DB preflight via health/db	2026-02-27T00:16:33.6927080Z [36;1mfi[0m
+10:scheduled-ingest	DB preflight via health/db	2026-02-27T00:16:33.6975569Z shell: /usr/bin/bash -e {0}
+11:scheduled-ingest	DB preflight via health/db	2026-02-27T00:16:33.6975815Z env:
+12:scheduled-ingest	DB preflight via health/db	2026-02-27T00:16:33.6976167Z   SUPABASE_URL: ***
+13:scheduled-ingest	DB preflight via health/db	2026-02-27T00:16:33.6976575Z   SUPABASE_SERVICE_ROLE_KEY: ***
+14:scheduled-ingest	DB preflight via health/db	2026-02-27T00:16:33.6976969Z   DATA_GO_KR_KEY: ***
+15:scheduled-ingest	DB preflight via health/db	2026-02-27T00:16:33.6977629Z   DATABASE_URL: ***
+16:scheduled-ingest	DB preflight via health/db	2026-02-27T00:16:33.6977892Z   INTERNAL_JOB_TOKEN: ***
+17:scheduled-ingest	DB preflight via health/db	2026-02-27T00:16:33.6978139Z   API_BASE_URL: http://127.0.0.1:8100
+18:scheduled-ingest	DB preflight via health/db	2026-02-27T00:16:33.6978477Z   INGEST_SCHEDULE_PAYLOAD: data/collector_live_payload.json
+19:scheduled-ingest	DB preflight via health/db	2026-02-27T00:16:33.6978867Z   pythonLocation: /opt/hostedtoolcache/Python/3.13.12/x64
+20:scheduled-ingest	DB preflight via health/db	2026-02-27T00:16:33.6979281Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.13.12/x64/lib/pkgconfig
+21:scheduled-ingest	DB preflight via health/db	2026-02-27T00:16:33.6979692Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.13.12/x64
+22:scheduled-ingest	DB preflight via health/db	2026-02-27T00:16:33.6980059Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.13.12/x64
+23:scheduled-ingest	DB preflight via health/db	2026-02-27T00:16:33.6980428Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.13.12/x64
+24:scheduled-ingest	DB preflight via health/db	2026-02-27T00:16:33.6980810Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.13.12/x64/lib
+25:scheduled-ingest	DB preflight via health/db	2026-02-27T00:16:33.6981127Z ##[endgroup]
+26:scheduled-ingest	DB preflight via health/db	2026-02-27T00:16:38.5573118Z health_db_http_status=503
+27:scheduled-ingest	DB preflight via health/db	2026-02-27T00:16:38.5573996Z ===== /tmp/ingest-schedule-health-db.json =====
+28:scheduled-ingest	DB preflight via health/db	2026-02-27T00:16:38.5613263Z {"status":"degraded","db":"error","reason":"database_connection_failed","detail":"database connection failed (auth_failed): connection failed: connection to server at \"3.111.225.200\", port 5432 failed: FATAL: password authentication failed for user \"postgres\" connection to server at \"3.111.225.200\", ...","bootstrap":{"enabled":false,"attempted":false,"ok":null,"detail":"disabled"}}::error::DB preflight failed (/health/db status=503)
+29:scheduled-ingest	DB preflight via health/db	2026-02-27T00:16:38.5626291Z ##[error]Process completed with exit code 1.
