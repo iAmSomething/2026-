@@ -91,6 +91,7 @@
 6. `GET /api/v1/regions/{region_code}/elections`
 7. `GET /api/v1/matchups/{matchup_id}`
 8. `GET /api/v1/candidates/{candidate_id}`
+9. `GET /api/v1/trends/{metric}`
 
 ### 내부 운영 API
 1. `POST /api/v1/jobs/run-ingest`
@@ -114,6 +115,9 @@
 14. `summary`의 `source_trace`는 대표값 선택 근거로 `selected_source_tier`, `selected_source_channel`를 추가 노출한다.
 15. 제목 계약 v2: `map-latest`, `big-matches`, `matchups`는 `canonical_title`(정규화 제목)과 `article_title`(원문 제목)을 분리 노출한다.
 16. 하위호환 필드(`title`, `source_priority`, `source_channel`, `source_channels`, `official_release_at`, `article_published_at`, `freshness_hours`, `is_official_confirmed`)는 deprecated로 유지한다.
+17. `GET /api/v1/trends/{metric}`는 `metric`(`party_support|president_job_approval|election_frame`), `scope`(`national|regional|local`), `region_code`, `days`(`1~365`)를 지원한다.
+18. `scope`가 `regional|local`이면 `region_code`는 필수다.
+19. trends 포인트는 동일 `survey_end_date + option_name` 그룹에서 대표값 선택 trace(`source_trace.selected_source_tier`)를 포함한다.
 
 ## 6.1 운영 품질 요약 규칙 (`GET /api/v1/dashboard/quality`)
 1. `freshness_p50_hours`, `freshness_p90_hours`는 검증 완료(`verified=true`) 관측치의 freshness 분포 백분위를 시간 단위로 노출한다.
