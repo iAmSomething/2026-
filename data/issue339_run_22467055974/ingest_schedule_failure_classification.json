@@ -1,0 +1,75 @@
+{
+  "schema_version": "collector_ingest_failure_classification.v1",
+  "generated_at": "2026-02-27T00:33:44.419834+00:00",
+  "source_input_path": "data/collector_live_payload.json",
+  "payload_run_type": "collector_live_coverage_v2",
+  "payload_record_count": 30,
+  "runner": {
+    "success": false,
+    "raw_success": false,
+    "attempt_count": 3,
+    "run_ids": [],
+    "started_at": "2026-02-27T00:20:04.132035+00:00",
+    "finished_at": "2026-02-27T00:33:44.416066+00:00",
+    "elapsed_seconds": 820.284,
+    "failure_class": "timeout",
+    "failure_type": "timeout",
+    "cause_code": "timeout_request",
+    "failure_reason": "timeout: ReadTimeout: timed out",
+    "timeout_attempts": 3,
+    "failure_class_counts": {
+      "timeout": 3
+    }
+  },
+  "dead_letter_path": "data/dead_letter/ingest_dead_letter_20260227T003344Z_timeout.json",
+  "attempt_timeline": [
+    {
+      "attempt": 1,
+      "started_at": "2026-02-27T00:20:04.132072+00:00",
+      "finished_at": "2026-02-27T00:23:04.252538+00:00",
+      "duration_seconds": 180.12,
+      "request_timeout_seconds": 180.0,
+      "http_status": null,
+      "job_status": null,
+      "failure_class": "timeout",
+      "failure_type": "timeout",
+      "cause_code": "timeout_request",
+      "retryable": true,
+      "next_backoff_seconds": 5.0,
+      "error": "ReadTimeout: timed out",
+      "detail": null
+    },
+    {
+      "attempt": 2,
+      "started_at": "2026-02-27T00:23:09.252909+00:00",
+      "finished_at": "2026-02-27T00:27:39.296867+00:00",
+      "duration_seconds": 270.044,
+      "request_timeout_seconds": 270.0,
+      "http_status": null,
+      "job_status": null,
+      "failure_class": "timeout",
+      "failure_type": "timeout",
+      "cause_code": "timeout_request",
+      "retryable": true,
+      "next_backoff_seconds": 5.0,
+      "error": "ReadTimeout: timed out",
+      "detail": null
+    },
+    {
+      "attempt": 3,
+      "started_at": "2026-02-27T00:27:44.297208+00:00",
+      "finished_at": "2026-02-27T00:33:44.415935+00:00",
+      "duration_seconds": 360.119,
+      "request_timeout_seconds": 360.0,
+      "http_status": null,
+      "job_status": null,
+      "failure_class": "timeout",
+      "failure_type": "timeout",
+      "cause_code": "timeout_request",
+      "retryable": true,
+      "next_backoff_seconds": null,
+      "error": "ReadTimeout: timed out",
+      "detail": null
+    }
+  ]
+}

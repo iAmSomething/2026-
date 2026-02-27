@@ -1,0 +1,5 @@
+completed	failure	Ingest Schedule	Ingest Schedule	main	workflow_dispatch	22467055974	14m6s	2026-02-27T00:19:42Z
+completed	failure	Ingest Schedule	Ingest Schedule	main	workflow_dispatch	22466966083	32s	2026-02-27T00:16:11Z
+completed	failure	Ingest Schedule	Ingest Schedule	main	schedule	22464350506	33s	2026-02-26T22:41:25Z
+completed	failure	Ingest Schedule	Ingest Schedule	main	schedule	22460600037	29s	2026-02-26T20:48:35Z
+completed	failure	Ingest Schedule	Ingest Schedule	main	schedule	22456874636	36s	2026-02-26T19:02:43Z
