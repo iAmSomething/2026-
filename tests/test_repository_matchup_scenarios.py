@@ -187,6 +187,7 @@ def test_normalize_options_filters_noise_candidate_tokens():
         {"option_name": "같은", "candidate_id": None, "scenario_key": "default", "value_mid": 28.0},
         {"option_name": "국힘", "candidate_id": None, "scenario_key": "default", "value_mid": 17.0},
         {"option_name": "차이", "candidate_id": None, "scenario_key": "default", "value_mid": 16.0},
+        {"option_name": "대비", "candidate_id": None, "scenario_key": "default", "value_mid": 11.0},
         {"option_name": "더불어민주당은", "candidate_id": None, "scenario_key": "default", "value_mid": 31.0},
         {"option_name": "국민의힘은", "candidate_id": None, "scenario_key": "default", "value_mid": 29.0},
         {"option_name": "전라는", "candidate_id": None, "scenario_key": "default", "value_mid": 13.0},
@@ -201,3 +202,33 @@ def test_normalize_options_filters_noise_candidate_tokens():
     names = [row["option_name"] for row in normalized]
 
     assert names == ["정원오", "오세훈", "김민주"]
+
+
+def test_normalize_options_filters_low_quality_manual_candidate_rows():
+    options = [
+        {
+            "option_name": "대비",
+            "candidate_id": "cand:대비",
+            "party_name": None,
+            "scenario_key": "default",
+            "value_mid": 7.0,
+            "candidate_verify_source": "manual",
+            "candidate_verify_confidence": 1.0,
+            "candidate_verify_matched_key": "대비",
+        },
+        {
+            "option_name": "정원오",
+            "candidate_id": "cand:정원오",
+            "party_name": "더불어민주당",
+            "scenario_key": "default",
+            "value_mid": 44.0,
+            "candidate_verify_source": "manual",
+            "candidate_verify_confidence": 1.0,
+            "candidate_verify_matched_key": "정원오",
+        },
+    ]
+
+    normalized = PostgresRepository._normalize_options(options)
+    names = [row["option_name"] for row in normalized]
+
+    assert names == ["정원오"]
