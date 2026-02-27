@@ -16,6 +16,36 @@ def _is_noise_candidate_option(option_name: str | None, candidate_id: str | None
     return is_noise_candidate_token(option_name)
 
 
+def _is_low_quality_manual_candidate_option(row: dict) -> bool:
+    verify_source = str(row.get("candidate_verify_source") or "").strip().lower()
+    if verify_source != "manual":
+        return False
+
+    candidate_id = str(row.get("candidate_id") or "").strip()
+    if not candidate_id.startswith("cand:"):
+        return False
+
+    option_name = str(row.get("option_name") or "").strip()
+    if not option_name:
+        return True
+
+    party_name = str(row.get("party_name") or "").strip()
+    if party_name and party_name != "미확정(검수대기)":
+        return False
+
+    matched_key = str(row.get("candidate_verify_matched_key") or "").strip()
+    candidate_name_hint = candidate_id.split(":", 1)[1].strip() if ":" in candidate_id else candidate_id
+    if matched_key and matched_key not in {option_name, candidate_name_hint}:
+        return False
+
+    confidence_value = row.get("candidate_verify_confidence")
+    try:
+        confidence = float(confidence_value)
+    except (TypeError, ValueError):
+        confidence = 1.0
+    return confidence >= 0.95
+
+
 _API_READ_CACHE: dict[str, tuple[float, Any]] = {}
 _API_READ_CACHE_LOCK = Lock()
 
@@ -1883,6 +1913,9 @@ class PostgresRepository:
             row["option_name"] = option_name
 
             if _is_noise_candidate_option(option_name, candidate_id):
+                continue
+
+            if _is_low_quality_manual_candidate_option(row):
                 continue
 
             party_name = row.get("party_name")
