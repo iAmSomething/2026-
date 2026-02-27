@@ -262,6 +262,41 @@ python scripts/qa/run_ops_recovery_bundle.py \
 - ingest/reprocess/capture 단계별 성공 여부
 - 실패 단계별 `retry-guide`/`rollback-guide`
 
+## 7.4 후보 토큰 품질 DB 백필 CLI (Issue #459)
+1. 목적:
+- 기존 `poll_options`의 후보 행을 재검증해 잡음 토큰/저품질 수동 검증 행을 일괄 정리
+- 운영 화면에서 비후보 토큰 노출을 줄이고 검수대기 경로(`needs_manual_review`)로 안전 전환
+2. 엔트리포인트:
+- `scripts/qa/run_candidate_token_backfill.py`
+3. dry-run 예시:
+```bash
+python scripts/qa/run_candidate_token_backfill.py \
+  --mode dry-run \
+  --matchup-id "20260603|광역자치단체장|11-000" \
+  --limit 5000
+```
+4. apply 예시:
+```bash
+python scripts/qa/run_candidate_token_backfill.py \
+  --mode apply \
+  --limit 10000 \
+  --chunk-size 500 \
+  --idempotency-check
+```
+5. 동작 규칙:
+- 대상: `option_type IN ('candidate', 'candidate_matchup')` + `candidate_verified=true`
+- 분류:
+  - `noise_token`: 후보명 정책(`is_noise_candidate_token`)에 걸리는 토큰
+  - `low_quality_manual_candidate`: 수동 검증 + synthetic 후보(`cand:`) + 근거 빈약 행
+- apply 시 업데이트:
+  - `candidate_verified=false`
+  - `candidate_verify_confidence=0.0`
+  - `needs_manual_review=true`
+  - `candidate_verify_matched_key` 비어있으면 `candidate_token_backfill_v1`로 채움
+6. 산출물:
+- `report.json` (`target_count`, `reason_counts`, `apply_result`, `idempotency`)
+- `targets.json` (변경 대상 샘플)
+
 ## 8. 모니터링 체크리스트
 1. 배치 성공률
 2. 기사 수집량 대비 추출 성공률
