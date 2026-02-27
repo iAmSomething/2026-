@@ -1,0 +1,220 @@
+{
+  "mutations": {
+    "forced_cutoff_observation_key": "demo-30d-party-1",
+    "forced_cutoff_published_at": "2025-11-30T23:59:59+09:00",
+    "forced_scenario_observation_key": "demo-30d-pres-1"
+  },
+  "keyword_samples": [
+    {
+      "observation_key": "demo-30d-pres-1",
+      "keyword": "부산시장",
+      "before": {
+        "office_type": "광역자치단체장",
+        "region_code": "11-000",
+        "matchup_id": "20260603|광역자치단체장|11-000"
+      },
+      "after": {
+        "office_type": "광역자치단체장",
+        "region_code": "26-000",
+        "matchup_id": "20260603|광역자치단체장|26-000"
+      }
+    },
+    {
+      "observation_key": "demo-30d-match-seoul",
+      "keyword": "서울시장",
+      "before": {
+        "office_type": "광역자치단체장",
+        "region_code": "11-000",
+        "matchup_id": "20260603|광역자치단체장|11-000"
+      },
+      "after": {
+        "office_type": "광역자치단체장",
+        "region_code": "11-000",
+        "matchup_id": "20260603|광역자치단체장|11-000"
+      }
+    },
+    {
+      "observation_key": "demo-30d-match-busan",
+      "keyword": "부산시장",
+      "before": {
+        "office_type": "광역자치단체장",
+        "region_code": "26-000",
+        "matchup_id": "20260603|광역자치단체장|26-000"
+      },
+      "after": {
+        "office_type": "광역자치단체장",
+        "region_code": "26-000",
+        "matchup_id": "20260603|광역자치단체장|26-000"
+      }
+    },
+    {
+      "observation_key": "demo-30d-match-gyeonggi",
+      "keyword": "경기지사",
+      "before": {
+        "office_type": "광역자치단체장",
+        "region_code": "41-000",
+        "matchup_id": "20260603|광역자치단체장|41-000"
+      },
+      "after": {
+        "office_type": "광역자치단체장",
+        "region_code": "41-000",
+        "matchup_id": "20260603|광역자치단체장|41-000"
+      }
+    },
+    {
+      "observation_key": "live30d-v2-04-obs_e1bbab6ef90f2035",
+      "keyword": "강원도지사",
+      "before": {
+        "office_type": "기초자치단체장",
+        "region_code": "42-110",
+        "matchup_id": "2026_local|기초자치단체장|42-110"
+      },
+      "after": {
+        "office_type": "광역자치단체장",
+        "region_code": "42-000",
+        "matchup_id": "2026_local|광역자치단체장|42-000"
+      }
+    },
+    {
+      "observation_key": "live30d-v2-05-obs_dce561b2d5190dbd",
+      "keyword": "경남지사",
+      "before": {
+        "office_type": "기초자치단체장",
+        "region_code": "48-110",
+        "matchup_id": "2026_local|기초자치단체장|48-110"
+      },
+      "after": {
+        "office_type": "광역자치단체장",
+        "region_code": "48-000",
+        "matchup_id": "2026_local|광역자치단체장|48-000"
+      }
+    },
+    {
+      "observation_key": "live30d-v2-06-obs_d665019db527a0c8",
+      "keyword": "제주도지사",
+      "before": {
+        "office_type": "기초자치단체장",
+        "region_code": "50-110",
+        "matchup_id": "2026_local|기초자치단체장|50-110"
+      },
+      "after": {
+        "office_type": "광역자치단체장",
+        "region_code": "50-000",
+        "matchup_id": "2026_local|광역자치단체장|50-000"
+      }
+    },
+    {
+      "observation_key": "live30d-v2-08-obs_d0980e8b742d5af7",
+      "keyword": "서울시장",
+      "before": {
+        "office_type": "기초자치단체장",
+        "region_code": "11-110",
+        "matchup_id": "2026_local|기초자치단체장|11-110"
+      },
+      "after": {
+        "office_type": "광역자치단체장",
+        "region_code": "11-000",
+        "matchup_id": "2026_local|광역자치단체장|11-000"
+      }
+    },
+    {
+      "observation_key": "live30d-v2-09-obs_ca72aacb9b35270c",
+      "keyword": "전북지사",
+      "before": {
+        "office_type": "기초자치단체장",
+        "region_code": "45-110",
+        "matchup_id": "2026_local|기초자치단체장|45-110"
+      },
+      "after": {
+        "office_type": "광역자치단체장",
+        "region_code": "45-000",
+        "matchup_id": "2026_local|광역자치단체장|45-000"
+      }
+    },
+    {
+      "observation_key": "live30d-v2-12-obs_b61d10f49a5d5fdd",
+      "keyword": "부산시장",
+      "before": {
+        "office_type": "기초자치단체장",
+        "region_code": "26-710",
+        "matchup_id": "2026_local|기초자치단체장|26-710"
+      },
+      "after": {
+        "office_type": "광역자치단체장",
+        "region_code": "26-000",
+        "matchup_id": "2026_local|광역자치단체장|26-000"
+      }
+    },
+    {
+      "observation_key": "live30d-v2-13-obs_abb740f7fe640154",
+      "keyword": "서울시장",
+      "before": {
+        "office_type": "기초자치단체장",
+        "region_code": "41-280",
+        "matchup_id": "2026_local|기초자치단체장|41-280"
+      },
+      "after": {
+        "office_type": "광역자치단체장",
+        "region_code": "11-000",
+        "matchup_id": "2026_local|광역자치단체장|11-000"
+      }
+    },
+    {
+      "observation_key": "live30d-v2-18-obs_8dc5d149038ab97c",
+      "keyword": "인천시장",
+      "before": {
+        "office_type": "기초자치단체장",
+        "region_code": "28-450",
+        "matchup_id": "2026_local|기초자치단체장|28-450"
+      },
+      "after": {
+        "office_type": "광역자치단체장",
+        "region_code": "28-000",
+        "matchup_id": "2026_local|광역자치단체장|28-000"
+      }
+    },
+    {
+      "observation_key": "live30d-v2-19-obs_8aff3ed1d23504f8",
+      "keyword": "서울시장",
+      "before": {
+        "office_type": "기초자치단체장",
+        "region_code": "11-710",
+        "matchup_id": "2026_local|기초자치단체장|11-710"
+      },
+      "after": {
+        "office_type": "광역자치단체장",
+        "region_code": "11-000",
+        "matchup_id": "2026_local|광역자치단체장|11-000"
+      }
+    },
+    {
+      "observation_key": "live30d-v2-23-obs_4a3cfc6a5b3dc73a",
+      "keyword": "서울시장",
+      "before": {
+        "office_type": "기초자치단체장",
+        "region_code": "11-620",
+        "matchup_id": "2026_local|기초자치단체장|11-620"
+      },
+      "after": {
+        "office_type": "광역자치단체장",
+        "region_code": "11-000",
+        "matchup_id": "2026_local|광역자치단체장|11-000"
+      }
+    }
+  ],
+  "keyword_violations": [],
+  "old_article_cutoff_reviews": [
+    {
+      "entity_id": "demo-30d-party-1",
+      "issue_type": "ingestion_error",
+      "review_note": "ARTICLE_PUBLISHED_AT_CUTOFF_BLOCK reason=old_article_cutoff policy_reason=PUBLISHED_AT_BEFORE_CUTOFF published_at=2025-11-30T23:59:59+09:00 cutoff=2025-12-01T00:00:00+09:00"
+    }
+  ],
+  "scenario_parse_incomplete_reviews": [
+    {
+      "entity_id": "demo-30d-pres-1",
+      "issue_type": "scenario_parse_incomplete",
+      "review_note": "SCENARIO_PARSE_INCOMPLETE candidate_count=2 candidates=박형준,전재수 matchup_id=20260603|광역자치단체장|26-000"
+    }
+  ]
+}

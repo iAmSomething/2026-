@@ -10,6 +10,8 @@ from app.services.ingest_service import ingest_payload
 class FakeRepo:
     def __init__(self):
         self.run_id = 0
+        self.regions = []
+        self.matchups = []
         self.articles = {}
         self.observations = {}
         self.options = set()
@@ -27,10 +29,10 @@ class FakeRepo:
         self.last_run = (run_id, status, processed_count, error_count)
 
     def upsert_region(self, region):
-        pass
+        self.regions.append(region)
 
     def upsert_matchup(self, matchup):
-        pass
+        self.matchups.append(matchup)
 
     def upsert_candidate(self, candidate):
         self.candidate_rows.append(candidate)
@@ -391,6 +393,40 @@ def test_article_source_record_before_cutoff_is_blocked():
     assert len(repo.articles) == 0
     assert len(repo.observations) == 0
     assert any("ARTICLE_PUBLISHED_AT_CUTOFF_BLOCK" in row[3] for row in repo.review)
+    assert any("reason=old_article_cutoff" in row[3] for row in repo.review)
+    assert any("policy_reason=PUBLISHED_AT_BEFORE_CUTOFF" in row[3] for row in repo.review)
+
+
+def test_scope_hardguard_forces_metro_scope_and_rebuilds_matchup():
+    repo = FakeRepo()
+    payload_data = deepcopy(PAYLOAD)
+    payload_data["records"][0]["article"]["title"] = "인천시장 양자대결, 오차범위 접전"
+    payload_data["records"][0]["article"]["raw_text"] = "인천시장 다자구도도 함께 조사했다."
+    payload_data["records"][0]["observation"]["survey_name"] = "인천시장 후보 적합도"
+    payload_data["records"][0]["observation"]["office_type"] = "기초자치단체장"
+    payload_data["records"][0]["observation"]["region_code"] = "28-450"
+    payload_data["records"][0]["observation"]["matchup_id"] = "20260603|기초자치단체장|28-450"
+    payload_data["records"][0]["region"]["region_code"] = "28-450"
+    payload_data["records"][0]["region"]["sido_name"] = "인천광역시"
+    payload_data["records"][0]["region"]["sigungu_name"] = "연수구"
+    payload_data["records"][0]["region"]["admin_level"] = "sigungu"
+    payload_data["records"][0]["region"]["parent_region_code"] = "28-000"
+    payload = IngestPayload.model_validate(payload_data)
+
+    result = ingest_payload(payload, repo)
+
+    assert result.status == "success"
+    assert result.error_count == 0
+    assert repo.matchups[-1]["office_type"] == "광역자치단체장"
+    assert repo.matchups[-1]["region_code"] == "28-000"
+    assert repo.matchups[-1]["matchup_id"] == "20260603|광역자치단체장|28-000"
+    assert repo.observations["obs-1"]["office_type"] == "광역자치단체장"
+    assert repo.observations["obs-1"]["region_code"] == "28-000"
+    assert repo.observations["obs-1"]["matchup_id"] == "20260603|광역자치단체장|28-000"
+    assert repo.regions[-1]["region_code"] == "28-000"
+    assert repo.regions[-1]["sigungu_name"] == "전체"
+    assert repo.regions[-1]["admin_level"] == "sido"
+    assert repo.regions[-1]["parent_region_code"] is None
 
 
 def test_record_with_survey_end_before_cutoff_is_blocked_even_if_article_is_new():
@@ -774,3 +810,21 @@ def test_explicit_candidate_scenario_ingest_cleans_previous_default_rows() -> No
         if row.get("option_type") == "candidate_matchup" and row.get("scenario_key") == "multi-전재수"
     ]
     assert {row.get("option_name") for row in multi_rows} == {"전재수", "박형준", "김도읍"}
+
+
+def test_multi_scenario_parse_incomplete_routes_review_queue():
+    repo = FakeRepo()
+    payload_data = deepcopy(PAYLOAD)
+    payload_data["records"][0]["article"]["title"] = "부산시장 다자대결 조사"
+    payload_data["records"][0]["observation"]["survey_name"] = "부산시장 다자대결"
+    payload_data["records"][0]["options"] = [
+        {"option_type": "candidate_matchup", "option_name": "전재수", "value_raw": "43.4%"},
+        {"option_type": "candidate_matchup", "option_name": "박형준", "value_raw": "32.3%"},
+    ]
+    payload = IngestPayload.model_validate(payload_data)
+
+    result = ingest_payload(payload, repo)
+
+    assert result.status == "success"
+    assert any(row[2] == "scenario_parse_incomplete" for row in repo.review)
+    assert any("candidate_count=2" in row[3] for row in repo.review if row[2] == "scenario_parse_incomplete")

@@ -1,0 +1,22 @@
+{
+  "issue": 465,
+  "algorithm_version": "scope_hardguard_cutoff_v1",
+  "sample_count": 30,
+  "processed_count": 29,
+  "error_count": 1,
+  "contains_reference_719065": false,
+  "keyword_record_count": 14,
+  "keyword_ingested_count": 14,
+  "keyword_violation_count": 0,
+  "old_article_record_count": 1,
+  "old_article_ingested_count": 0,
+  "old_article_cutoff_review_count": 1,
+  "scenario_parse_incomplete_review_count": 1,
+  "acceptance_checks": {
+    "sample_count_ge_30": true,
+    "hardguard_basic_scope_violation_zero": true,
+    "old_article_ingest_zero": true,
+    "old_article_cutoff_review_logged": true,
+    "scenario_parse_incomplete_review_logged": true
+  }
+}
