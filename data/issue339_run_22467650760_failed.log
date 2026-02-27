@@ -1,0 +1,684 @@
+scheduled-ingest	Set up job	﻿2026-02-27T00:42:39.2154231Z Current runner version: '2.331.0'
+scheduled-ingest	Set up job	2026-02-27T00:42:39.2179948Z ##[group]Runner Image Provisioner
+scheduled-ingest	Set up job	2026-02-27T00:42:39.2180904Z Hosted Compute Agent
+scheduled-ingest	Set up job	2026-02-27T00:42:39.2181530Z Version: 20260213.493
+scheduled-ingest	Set up job	2026-02-27T00:42:39.2182170Z Commit: 5c115507f6dd24b8de37d8bbe0bb4509d0cc0fa3
+scheduled-ingest	Set up job	2026-02-27T00:42:39.2182910Z Build Date: 2026-02-13T00:28:41Z
+scheduled-ingest	Set up job	2026-02-27T00:42:39.2183653Z Worker ID: {0efbf844-764b-4065-a586-9ed1588d0ce0}
+scheduled-ingest	Set up job	2026-02-27T00:42:39.2184359Z Azure Region: westus
+scheduled-ingest	Set up job	2026-02-27T00:42:39.2184979Z ##[endgroup]
+scheduled-ingest	Set up job	2026-02-27T00:42:39.2186405Z ##[group]Operating System
+scheduled-ingest	Set up job	2026-02-27T00:42:39.2187076Z Ubuntu
+scheduled-ingest	Set up job	2026-02-27T00:42:39.2188172Z 24.04.3
+scheduled-ingest	Set up job	2026-02-27T00:42:39.2188710Z LTS
+scheduled-ingest	Set up job	2026-02-27T00:42:39.2189267Z ##[endgroup]
+scheduled-ingest	Set up job	2026-02-27T00:42:39.2189796Z ##[group]Runner Image
+scheduled-ingest	Set up job	2026-02-27T00:42:39.2190402Z Image: ubuntu-24.04
+scheduled-ingest	Set up job	2026-02-27T00:42:39.2190991Z Version: 20260224.36.1
+scheduled-ingest	Set up job	2026-02-27T00:42:39.2192119Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20260224.36/images/ubuntu/Ubuntu2404-Readme.md
+scheduled-ingest	Set up job	2026-02-27T00:42:39.2193914Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20260224.36
+scheduled-ingest	Set up job	2026-02-27T00:42:39.2194867Z ##[endgroup]
+scheduled-ingest	Set up job	2026-02-27T00:42:39.2196108Z ##[group]GITHUB_TOKEN Permissions
+scheduled-ingest	Set up job	2026-02-27T00:42:39.2198377Z Contents: read
+scheduled-ingest	Set up job	2026-02-27T00:42:39.2198994Z Metadata: read
+scheduled-ingest	Set up job	2026-02-27T00:42:39.2199661Z Packages: read
+scheduled-ingest	Set up job	2026-02-27T00:42:39.2200235Z ##[endgroup]
+scheduled-ingest	Set up job	2026-02-27T00:42:39.2202511Z Secret source: Actions
+scheduled-ingest	Set up job	2026-02-27T00:42:39.2203368Z Prepare workflow directory
+scheduled-ingest	Set up job	2026-02-27T00:42:39.2747570Z Prepare all required actions
+scheduled-ingest	Set up job	2026-02-27T00:42:39.2785443Z Getting action download info
+scheduled-ingest	Set up job	2026-02-27T00:42:39.7071198Z Download action repository 'actions/checkout@v4' (SHA:34e114876b0b11c390a56381ad16ebd13914f8d5)
+scheduled-ingest	Set up job	2026-02-27T00:42:39.8346207Z Download action repository 'actions/setup-python@v5' (SHA:a26af69be951a213d495a4c3e4e4022e16d87065)
+scheduled-ingest	Set up job	2026-02-27T00:42:39.9208072Z Download action repository 'actions/upload-artifact@v4' (SHA:ea165f8d65b6e75b540449e92b4886f43607fa02)
+scheduled-ingest	Set up job	2026-02-27T00:42:40.1397916Z Complete job name: scheduled-ingest
+scheduled-ingest	Checkout	﻿2026-02-27T00:42:40.2075462Z ##[group]Run actions/checkout@v4
+scheduled-ingest	Checkout	2026-02-27T00:42:40.2076418Z with:
+scheduled-ingest	Checkout	2026-02-27T00:42:40.2076857Z   repository: iAmSomething/2026-
+scheduled-ingest	Checkout	2026-02-27T00:42:40.2077699Z   token: ***
+scheduled-ingest	Checkout	2026-02-27T00:42:40.2078116Z   ssh-strict: true
+scheduled-ingest	Checkout	2026-02-27T00:42:40.2078540Z   ssh-user: git
+scheduled-ingest	Checkout	2026-02-27T00:42:40.2078956Z   persist-credentials: true
+scheduled-ingest	Checkout	2026-02-27T00:42:40.2079440Z   clean: true
+scheduled-ingest	Checkout	2026-02-27T00:42:40.2079870Z   sparse-checkout-cone-mode: true
+scheduled-ingest	Checkout	2026-02-27T00:42:40.2080375Z   fetch-depth: 1
+scheduled-ingest	Checkout	2026-02-27T00:42:40.2080778Z   fetch-tags: false
+scheduled-ingest	Checkout	2026-02-27T00:42:40.2081192Z   show-progress: true
+scheduled-ingest	Checkout	2026-02-27T00:42:40.2081622Z   lfs: false
+scheduled-ingest	Checkout	2026-02-27T00:42:40.2082015Z   submodules: false
+scheduled-ingest	Checkout	2026-02-27T00:42:40.2082449Z   set-safe-directory: true
+scheduled-ingest	Checkout	2026-02-27T00:42:40.2083453Z env:
+scheduled-ingest	Checkout	2026-02-27T00:42:40.2084061Z   SUPABASE_URL: ***
+scheduled-ingest	Checkout	2026-02-27T00:42:40.2084694Z   SUPABASE_SERVICE_ROLE_KEY: ***
+scheduled-ingest	Checkout	2026-02-27T00:42:40.2085428Z   DATA_GO_KR_KEY: ***
+scheduled-ingest	Checkout	2026-02-27T00:42:40.2086577Z   DATABASE_URL: ***
+scheduled-ingest	Checkout	2026-02-27T00:42:40.2087346Z   INTERNAL_JOB_TOKEN: ***
+scheduled-ingest	Checkout	2026-02-27T00:42:40.2087884Z   API_BASE_URL: http://127.0.0.1:8100
+scheduled-ingest	Checkout	2026-02-27T00:42:40.2088523Z   INGEST_SCHEDULE_PAYLOAD: data/collector_live_payload.json
+scheduled-ingest	Checkout	2026-02-27T00:42:40.2089136Z ##[endgroup]
+scheduled-ingest	Checkout	2026-02-27T00:42:40.3198702Z Syncing repository: iAmSomething/2026-
+scheduled-ingest	Checkout	2026-02-27T00:42:40.3200465Z ##[group]Getting Git version info
+scheduled-ingest	Checkout	2026-02-27T00:42:40.3201141Z Working directory is '/home/runner/work/2026-/2026-'
+scheduled-ingest	Checkout	2026-02-27T00:42:40.3202089Z [command]/usr/bin/git version
+scheduled-ingest	Checkout	2026-02-27T00:42:40.3314745Z git version 2.53.0
+scheduled-ingest	Checkout	2026-02-27T00:42:40.3346579Z ##[endgroup]
+scheduled-ingest	Checkout	2026-02-27T00:42:40.3361606Z Temporarily overriding HOME='/home/runner/work/_temp/65761be6-ef3c-4432-8e0a-a77dcb620a9a' before making global git config changes
+scheduled-ingest	Checkout	2026-02-27T00:42:40.3363246Z Adding repository directory to the temporary git global config as a safe directory
+scheduled-ingest	Checkout	2026-02-27T00:42:40.3375351Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/2026-/2026-
+scheduled-ingest	Checkout	2026-02-27T00:42:40.3416962Z Deleting the contents of '/home/runner/work/2026-/2026-'
+scheduled-ingest	Checkout	2026-02-27T00:42:40.3422035Z ##[group]Initializing the repository
+scheduled-ingest	Checkout	2026-02-27T00:42:40.3427079Z [command]/usr/bin/git init /home/runner/work/2026-/2026-
+scheduled-ingest	Checkout	2026-02-27T00:42:40.3550186Z hint: Using 'master' as the name for the initial branch. This default branch name
+scheduled-ingest	Checkout	2026-02-27T00:42:40.3551756Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+scheduled-ingest	Checkout	2026-02-27T00:42:40.3552743Z hint: to use in all of your new repositories, which will suppress this warning,
+scheduled-ingest	Checkout	2026-02-27T00:42:40.3553727Z hint: call:
+scheduled-ingest	Checkout	2026-02-27T00:42:40.3554455Z hint:
+scheduled-ingest	Checkout	2026-02-27T00:42:40.3555296Z hint: 	git config --global init.defaultBranch <name>
+scheduled-ingest	Checkout	2026-02-27T00:42:40.3556357Z hint:
+scheduled-ingest	Checkout	2026-02-27T00:42:40.3557606Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+scheduled-ingest	Checkout	2026-02-27T00:42:40.3559311Z hint: 'development'. The just-created branch can be renamed via this command:
+scheduled-ingest	Checkout	2026-02-27T00:42:40.3560660Z hint:
+scheduled-ingest	Checkout	2026-02-27T00:42:40.3561452Z hint: 	git branch -m <name>
+scheduled-ingest	Checkout	2026-02-27T00:42:40.3562359Z hint:
+scheduled-ingest	Checkout	2026-02-27T00:42:40.3563435Z hint: Disable this message with "git config set advice.defaultBranchName false"
+scheduled-ingest	Checkout	2026-02-27T00:42:40.3565070Z Initialized empty Git repository in /home/runner/work/2026-/2026-/.git/
+scheduled-ingest	Checkout	2026-02-27T00:42:40.3569425Z [command]/usr/bin/git remote add origin https://github.com/iAmSomething/2026-
+scheduled-ingest	Checkout	2026-02-27T00:42:40.3605204Z ##[endgroup]
+scheduled-ingest	Checkout	2026-02-27T00:42:40.3606476Z ##[group]Disabling automatic garbage collection
+scheduled-ingest	Checkout	2026-02-27T00:42:40.3610622Z [command]/usr/bin/git config --local gc.auto 0
+scheduled-ingest	Checkout	2026-02-27T00:42:40.3641598Z ##[endgroup]
+scheduled-ingest	Checkout	2026-02-27T00:42:40.3642883Z ##[group]Setting up auth
+scheduled-ingest	Checkout	2026-02-27T00:42:40.3649805Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+scheduled-ingest	Checkout	2026-02-27T00:42:40.3683212Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+scheduled-ingest	Checkout	2026-02-27T00:42:40.4049676Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+scheduled-ingest	Checkout	2026-02-27T00:42:40.4082867Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+scheduled-ingest	Checkout	2026-02-27T00:42:40.4320560Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+scheduled-ingest	Checkout	2026-02-27T00:42:40.4353603Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+scheduled-ingest	Checkout	2026-02-27T00:42:40.4596235Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+scheduled-ingest	Checkout	2026-02-27T00:42:40.4633581Z ##[endgroup]
+scheduled-ingest	Checkout	2026-02-27T00:42:40.4634413Z ##[group]Fetching the repository
+scheduled-ingest	Checkout	2026-02-27T00:42:40.4643274Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +e7f27821aac489a3d1cae1621958388d2c53e4af:refs/remotes/origin/main
+scheduled-ingest	Checkout	2026-02-27T00:42:44.9581405Z From https://github.com/iAmSomething/2026-
+scheduled-ingest	Checkout	2026-02-27T00:42:44.9583053Z  * [new ref]         e7f27821aac489a3d1cae1621958388d2c53e4af -> origin/main
+scheduled-ingest	Checkout	2026-02-27T00:42:44.9618061Z ##[endgroup]
+scheduled-ingest	Checkout	2026-02-27T00:42:44.9619310Z ##[group]Determining the checkout info
+scheduled-ingest	Checkout	2026-02-27T00:42:44.9621034Z ##[endgroup]
+scheduled-ingest	Checkout	2026-02-27T00:42:44.9625280Z [command]/usr/bin/git sparse-checkout disable
+scheduled-ingest	Checkout	2026-02-27T00:42:44.9670200Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+scheduled-ingest	Checkout	2026-02-27T00:42:44.9696760Z ##[group]Checking out the ref
+scheduled-ingest	Checkout	2026-02-27T00:42:44.9701037Z [command]/usr/bin/git checkout --progress --force -B main refs/remotes/origin/main
+scheduled-ingest	Checkout	2026-02-27T00:42:45.3851862Z Switched to a new branch 'main'
+scheduled-ingest	Checkout	2026-02-27T00:42:45.3852809Z branch 'main' set up to track 'origin/main'.
+scheduled-ingest	Checkout	2026-02-27T00:42:45.3888621Z ##[endgroup]
+scheduled-ingest	Checkout	2026-02-27T00:42:45.3929736Z [command]/usr/bin/git log -1 --format=%H
+scheduled-ingest	Checkout	2026-02-27T00:42:45.3953358Z e7f27821aac489a3d1cae1621958388d2c53e4af
+scheduled-ingest	Secret preflight (fail-fast)	﻿2026-02-27T00:42:45.4129381Z ##[group]Run scripts/qa/preflight_required_secrets.sh
+scheduled-ingest	Secret preflight (fail-fast)	2026-02-27T00:42:45.4129963Z [36;1mscripts/qa/preflight_required_secrets.sh[0m
+scheduled-ingest	Secret preflight (fail-fast)	2026-02-27T00:42:45.4183041Z shell: /usr/bin/bash -e {0}
+scheduled-ingest	Secret preflight (fail-fast)	2026-02-27T00:42:45.4183384Z env:
+scheduled-ingest	Secret preflight (fail-fast)	2026-02-27T00:42:45.4184045Z   SUPABASE_URL: ***
+scheduled-ingest	Secret preflight (fail-fast)	2026-02-27T00:42:45.4184435Z   SUPABASE_SERVICE_ROLE_KEY: ***
+scheduled-ingest	Secret preflight (fail-fast)	2026-02-27T00:42:45.4184881Z   DATA_GO_KR_KEY: ***
+scheduled-ingest	Secret preflight (fail-fast)	2026-02-27T00:42:45.4185693Z   DATABASE_URL: ***
+scheduled-ingest	Secret preflight (fail-fast)	2026-02-27T00:42:45.4186021Z   INTERNAL_JOB_TOKEN: ***
+scheduled-ingest	Secret preflight (fail-fast)	2026-02-27T00:42:45.4186325Z   API_BASE_URL: http://127.0.0.1:8100
+scheduled-ingest	Secret preflight (fail-fast)	2026-02-27T00:42:45.4186701Z   INGEST_SCHEDULE_PAYLOAD: data/collector_live_payload.json
+scheduled-ingest	Secret preflight (fail-fast)	2026-02-27T00:42:45.4187059Z ##[endgroup]
+scheduled-ingest	Secret preflight (fail-fast)	2026-02-27T00:42:45.4298085Z [OK] SUPABASE_URL is set (len=40)
+scheduled-ingest	Secret preflight (fail-fast)	2026-02-27T00:42:45.4298813Z [OK] SUPABASE_SERVICE_ROLE_KEY is set (len=41)
+scheduled-ingest	Secret preflight (fail-fast)	2026-02-27T00:42:45.4299410Z [OK] DATA_GO_KR_KEY is set (len=64)
+scheduled-ingest	Secret preflight (fail-fast)	2026-02-27T00:42:45.4299977Z [OK] DATABASE_URL is set (len=127)
+scheduled-ingest	Secret preflight (fail-fast)	2026-02-27T00:42:45.4300552Z [OK] INTERNAL_JOB_TOKEN is set (len=32)
+scheduled-ingest	Secret preflight (fail-fast)	2026-02-27T00:42:45.4302054Z [PASS] Required secrets preflight passed
+scheduled-ingest	Setup Python 3.13	﻿2026-02-27T00:42:45.4459499Z ##[group]Run actions/setup-python@v5
+scheduled-ingest	Setup Python 3.13	2026-02-27T00:42:45.4459877Z with:
+scheduled-ingest	Setup Python 3.13	2026-02-27T00:42:45.4460123Z   python-version: 3.13
+scheduled-ingest	Setup Python 3.13	2026-02-27T00:42:45.4460387Z   check-latest: false
+scheduled-ingest	Setup Python 3.13	2026-02-27T00:42:45.4460780Z   token: ***
+scheduled-ingest	Setup Python 3.13	2026-02-27T00:42:45.4461030Z   update-environment: true
+scheduled-ingest	Setup Python 3.13	2026-02-27T00:42:45.4461316Z   allow-prereleases: false
+scheduled-ingest	Setup Python 3.13	2026-02-27T00:42:45.4461582Z   freethreaded: false
+scheduled-ingest	Setup Python 3.13	2026-02-27T00:42:45.4461824Z env:
+scheduled-ingest	Setup Python 3.13	2026-02-27T00:42:45.4462150Z   SUPABASE_URL: ***
+scheduled-ingest	Setup Python 3.13	2026-02-27T00:42:45.4462525Z   SUPABASE_SERVICE_ROLE_KEY: ***
+scheduled-ingest	Setup Python 3.13	2026-02-27T00:42:45.4462961Z   DATA_GO_KR_KEY: ***
+scheduled-ingest	Setup Python 3.13	2026-02-27T00:42:45.4463694Z   DATABASE_URL: ***
+scheduled-ingest	Setup Python 3.13	2026-02-27T00:42:45.4464006Z   INTERNAL_JOB_TOKEN: ***
+scheduled-ingest	Setup Python 3.13	2026-02-27T00:42:45.4464295Z   API_BASE_URL: http://127.0.0.1:8100
+scheduled-ingest	Setup Python 3.13	2026-02-27T00:42:45.4464679Z   INGEST_SCHEDULE_PAYLOAD: data/collector_live_payload.json
+scheduled-ingest	Setup Python 3.13	2026-02-27T00:42:45.4465048Z ##[endgroup]
+scheduled-ingest	Setup Python 3.13	2026-02-27T00:42:45.6172423Z ##[group]Installed versions
+scheduled-ingest	Setup Python 3.13	2026-02-27T00:42:45.6272488Z Successfully set up CPython (3.13.12)
+scheduled-ingest	Setup Python 3.13	2026-02-27T00:42:45.6273687Z ##[endgroup]
+scheduled-ingest	Create venv and install deps	﻿2026-02-27T00:42:45.6373164Z ##[group]Run python -m venv .venv
+scheduled-ingest	Create venv and install deps	2026-02-27T00:42:45.6373575Z [36;1mpython -m venv .venv[0m
+scheduled-ingest	Create venv and install deps	2026-02-27T00:42:45.6373933Z [36;1m.venv/bin/pip install -r requirements.txt[0m
+scheduled-ingest	Create venv and install deps	2026-02-27T00:42:45.6730431Z shell: /usr/bin/bash -e {0}
+scheduled-ingest	Create venv and install deps	2026-02-27T00:42:45.6730760Z env:
+scheduled-ingest	Create venv and install deps	2026-02-27T00:42:45.6731230Z   SUPABASE_URL: ***
+scheduled-ingest	Create venv and install deps	2026-02-27T00:42:45.6731610Z   SUPABASE_SERVICE_ROLE_KEY: ***
+scheduled-ingest	Create venv and install deps	2026-02-27T00:42:45.6732049Z   DATA_GO_KR_KEY: ***
+scheduled-ingest	Create venv and install deps	2026-02-27T00:42:45.6732831Z   DATABASE_URL: ***
+scheduled-ingest	Create venv and install deps	2026-02-27T00:42:45.6733299Z   INTERNAL_JOB_TOKEN: ***
+scheduled-ingest	Create venv and install deps	2026-02-27T00:42:45.6733755Z   API_BASE_URL: http://127.0.0.1:8100
+scheduled-ingest	Create venv and install deps	2026-02-27T00:42:45.6734148Z   INGEST_SCHEDULE_PAYLOAD: data/collector_live_payload.json
+scheduled-ingest	Create venv and install deps	2026-02-27T00:42:45.6734587Z   pythonLocation: /opt/hostedtoolcache/Python/3.13.12/x64
+scheduled-ingest	Create venv and install deps	2026-02-27T00:42:45.6735084Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.13.12/x64/lib/pkgconfig
+scheduled-ingest	Create venv and install deps	2026-02-27T00:42:45.6735617Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.13.12/x64
+scheduled-ingest	Create venv and install deps	2026-02-27T00:42:45.6736048Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.13.12/x64
+scheduled-ingest	Create venv and install deps	2026-02-27T00:42:45.6736536Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.13.12/x64
+scheduled-ingest	Create venv and install deps	2026-02-27T00:42:45.6736982Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.13.12/x64/lib
+scheduled-ingest	Create venv and install deps	2026-02-27T00:42:45.6737480Z ##[endgroup]
+scheduled-ingest	Create venv and install deps	2026-02-27T00:42:50.2911757Z Collecting fastapi==0.116.1 (from -r requirements.txt (line 1))
+scheduled-ingest	Create venv and install deps	2026-02-27T00:42:50.3506268Z   Downloading fastapi-0.116.1-py3-none-any.whl.metadata (28 kB)
+scheduled-ingest	Create venv and install deps	2026-02-27T00:42:50.3917647Z Collecting uvicorn==0.35.0 (from uvicorn[standard]==0.35.0->-r requirements.txt (line 2))
+scheduled-ingest	Create venv and install deps	2026-02-27T00:42:50.3956252Z   Downloading uvicorn-0.35.0-py3-none-any.whl.metadata (6.5 kB)
+scheduled-ingest	Create venv and install deps	2026-02-27T00:42:50.4185594Z Collecting psycopg==3.2.13 (from psycopg[binary]==3.2.13->-r requirements.txt (line 3))
+scheduled-ingest	Create venv and install deps	2026-02-27T00:42:50.4229587Z   Downloading psycopg-3.2.13-py3-none-any.whl.metadata (4.5 kB)
+scheduled-ingest	Create venv and install deps	2026-02-27T00:42:50.5445694Z Collecting pydantic==2.11.7 (from -r requirements.txt (line 4))
+scheduled-ingest	Create venv and install deps	2026-02-27T00:42:50.5474688Z   Downloading pydantic-2.11.7-py3-none-any.whl.metadata (67 kB)
+scheduled-ingest	Create venv and install deps	2026-02-27T00:42:50.5765944Z Collecting pydantic-settings==2.10.1 (from -r requirements.txt (line 5))
+scheduled-ingest	Create venv and install deps	2026-02-27T00:42:50.5796274Z   Downloading pydantic_settings-2.10.1-py3-none-any.whl.metadata (3.4 kB)
+scheduled-ingest	Create venv and install deps	2026-02-27T00:42:50.5969567Z Collecting python-dotenv==1.0.1 (from -r requirements.txt (line 6))
+scheduled-ingest	Create venv and install deps	2026-02-27T00:42:50.6004730Z   Downloading python_dotenv-1.0.1-py3-none-any.whl.metadata (23 kB)
+scheduled-ingest	Create venv and install deps	2026-02-27T00:42:50.6336827Z Collecting pytest==8.4.2 (from -r requirements.txt (line 8))
+scheduled-ingest	Create venv and install deps	2026-02-27T00:42:50.6365388Z   Downloading pytest-8.4.2-py3-none-any.whl.metadata (7.7 kB)
+scheduled-ingest	Create venv and install deps	2026-02-27T00:42:50.6570276Z Collecting httpx==0.28.1 (from -r requirements.txt (line 9))
+scheduled-ingest	Create venv and install deps	2026-02-27T00:42:50.6603627Z   Downloading httpx-0.28.1-py3-none-any.whl.metadata (7.1 kB)
+scheduled-ingest	Create venv and install deps	2026-02-27T00:42:50.6927948Z Collecting starlette<0.48.0,>=0.40.0 (from fastapi==0.116.1->-r requirements.txt (line 1))
+scheduled-ingest	Create venv and install deps	2026-02-27T00:42:50.6968896Z   Downloading starlette-0.47.3-py3-none-any.whl.metadata (6.2 kB)
+scheduled-ingest	Create venv and install deps	2026-02-27T00:42:50.7303736Z Collecting typing-extensions>=4.8.0 (from fastapi==0.116.1->-r requirements.txt (line 1))
+scheduled-ingest	Create venv and install deps	2026-02-27T00:42:50.7334447Z   Downloading typing_extensions-4.15.0-py3-none-any.whl.metadata (3.3 kB)
+scheduled-ingest	Create venv and install deps	2026-02-27T00:42:50.7449339Z Collecting annotated-types>=0.6.0 (from pydantic==2.11.7->-r requirements.txt (line 4))
+scheduled-ingest	Create venv and install deps	2026-02-27T00:42:50.7477797Z   Downloading annotated_types-0.7.0-py3-none-any.whl.metadata (15 kB)
+scheduled-ingest	Create venv and install deps	2026-02-27T00:42:51.3791986Z Collecting pydantic-core==2.33.2 (from pydantic==2.11.7->-r requirements.txt (line 4))
+scheduled-ingest	Create venv and install deps	2026-02-27T00:42:51.3826072Z   Downloading pydantic_core-2.33.2-cp313-cp313-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (6.8 kB)
+scheduled-ingest	Create venv and install deps	2026-02-27T00:42:51.3978475Z Collecting typing-inspection>=0.4.0 (from pydantic==2.11.7->-r requirements.txt (line 4))
+scheduled-ingest	Create venv and install deps	2026-02-27T00:42:51.4013899Z   Downloading typing_inspection-0.4.2-py3-none-any.whl.metadata (2.6 kB)
+scheduled-ingest	Create venv and install deps	2026-02-27T00:42:51.4218673Z Collecting click>=7.0 (from uvicorn==0.35.0->uvicorn[standard]==0.35.0->-r requirements.txt (line 2))
+scheduled-ingest	Create venv and install deps	2026-02-27T00:42:51.4247326Z   Downloading click-8.3.1-py3-none-any.whl.metadata (2.6 kB)
+scheduled-ingest	Create venv and install deps	2026-02-27T00:42:51.4359909Z Collecting h11>=0.8 (from uvicorn==0.35.0->uvicorn[standard]==0.35.0->-r requirements.txt (line 2))
+scheduled-ingest	Create venv and install deps	2026-02-27T00:42:51.4393914Z   Downloading h11-0.16.0-py3-none-any.whl.metadata (8.3 kB)
+scheduled-ingest	Create venv and install deps	2026-02-27T00:42:51.4695822Z Collecting iniconfig>=1 (from pytest==8.4.2->-r requirements.txt (line 8))
+scheduled-ingest	Create venv and install deps	2026-02-27T00:42:51.4726403Z   Downloading iniconfig-2.3.0-py3-none-any.whl.metadata (2.5 kB)
+scheduled-ingest	Create venv and install deps	2026-02-27T00:42:51.4894881Z Collecting packaging>=20 (from pytest==8.4.2->-r requirements.txt (line 8))
+scheduled-ingest	Create venv and install deps	2026-02-27T00:42:51.4928148Z   Downloading packaging-26.0-py3-none-any.whl.metadata (3.3 kB)
+scheduled-ingest	Create venv and install deps	2026-02-27T00:42:51.5055285Z Collecting pluggy<2,>=1.5 (from pytest==8.4.2->-r requirements.txt (line 8))
+scheduled-ingest	Create venv and install deps	2026-02-27T00:42:51.5091271Z   Downloading pluggy-1.6.0-py3-none-any.whl.metadata (4.8 kB)
+scheduled-ingest	Create venv and install deps	2026-02-27T00:42:51.5293350Z Collecting pygments>=2.7.2 (from pytest==8.4.2->-r requirements.txt (line 8))
+scheduled-ingest	Create venv and install deps	2026-02-27T00:42:51.5325970Z   Downloading pygments-2.19.2-py3-none-any.whl.metadata (2.5 kB)
+scheduled-ingest	Create venv and install deps	2026-02-27T00:42:51.5546143Z Collecting anyio (from httpx==0.28.1->-r requirements.txt (line 9))
+scheduled-ingest	Create venv and install deps	2026-02-27T00:42:51.5571269Z   Downloading anyio-4.12.1-py3-none-any.whl.metadata (4.3 kB)
+scheduled-ingest	Create venv and install deps	2026-02-27T00:42:51.5770473Z Collecting certifi (from httpx==0.28.1->-r requirements.txt (line 9))
+scheduled-ingest	Create venv and install deps	2026-02-27T00:42:51.5802022Z   Downloading certifi-2026.2.25-py3-none-any.whl.metadata (2.5 kB)
+scheduled-ingest	Create venv and install deps	2026-02-27T00:42:51.6002646Z Collecting httpcore==1.* (from httpx==0.28.1->-r requirements.txt (line 9))
+scheduled-ingest	Create venv and install deps	2026-02-27T00:42:51.6035547Z   Downloading httpcore-1.0.9-py3-none-any.whl.metadata (21 kB)
+scheduled-ingest	Create venv and install deps	2026-02-27T00:42:51.6188823Z Collecting idna (from httpx==0.28.1->-r requirements.txt (line 9))
+scheduled-ingest	Create venv and install deps	2026-02-27T00:42:51.6226763Z   Downloading idna-3.11-py3-none-any.whl.metadata (8.4 kB)
+scheduled-ingest	Create venv and install deps	2026-02-27T00:42:51.7872195Z Collecting psycopg-binary==3.2.13 (from psycopg[binary]==3.2.13->-r requirements.txt (line 3))
+scheduled-ingest	Create venv and install deps	2026-02-27T00:42:51.7916835Z   Downloading psycopg_binary-3.2.13-cp313-cp313-manylinux2014_x86_64.manylinux_2_17_x86_64.whl.metadata (2.9 kB)
+scheduled-ingest	Create venv and install deps	2026-02-27T00:42:51.8273482Z Collecting httptools>=0.6.3 (from uvicorn[standard]==0.35.0->-r requirements.txt (line 2))
+scheduled-ingest	Create venv and install deps	2026-02-27T00:42:51.8348952Z   Downloading httptools-0.7.1-cp313-cp313-manylinux1_x86_64.manylinux_2_28_x86_64.manylinux_2_5_x86_64.whl.metadata (3.5 kB)
+scheduled-ingest	Create venv and install deps	2026-02-27T00:42:51.8770359Z Collecting pyyaml>=5.1 (from uvicorn[standard]==0.35.0->-r requirements.txt (line 2))
+scheduled-ingest	Create venv and install deps	2026-02-27T00:42:51.8810170Z   Downloading pyyaml-6.0.3-cp313-cp313-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (2.4 kB)
+scheduled-ingest	Create venv and install deps	2026-02-27T00:42:51.9198374Z Collecting uvloop>=0.15.1 (from uvicorn[standard]==0.35.0->-r requirements.txt (line 2))
+scheduled-ingest	Create venv and install deps	2026-02-27T00:42:51.9240399Z   Downloading uvloop-0.22.1-cp313-cp313-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (4.9 kB)
+scheduled-ingest	Create venv and install deps	2026-02-27T00:42:52.0329345Z Collecting watchfiles>=0.13 (from uvicorn[standard]==0.35.0->-r requirements.txt (line 2))
+scheduled-ingest	Create venv and install deps	2026-02-27T00:42:52.0375312Z   Downloading watchfiles-1.1.1-cp313-cp313-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (4.9 kB)
+scheduled-ingest	Create venv and install deps	2026-02-27T00:42:52.1254279Z Collecting websockets>=10.4 (from uvicorn[standard]==0.35.0->-r requirements.txt (line 2))
+scheduled-ingest	Create venv and install deps	2026-02-27T00:42:52.1286752Z   Downloading websockets-16.0-cp313-cp313-manylinux1_x86_64.manylinux_2_28_x86_64.manylinux_2_5_x86_64.whl.metadata (6.8 kB)
+scheduled-ingest	Create venv and install deps	2026-02-27T00:42:52.1726668Z Downloading fastapi-0.116.1-py3-none-any.whl (95 kB)
+scheduled-ingest	Create venv and install deps	2026-02-27T00:42:52.1801828Z Downloading pydantic-2.11.7-py3-none-any.whl (444 kB)
+scheduled-ingest	Create venv and install deps	2026-02-27T00:42:52.1871256Z Downloading uvicorn-0.35.0-py3-none-any.whl (66 kB)
+scheduled-ingest	Create venv and install deps	2026-02-27T00:42:52.1937590Z Downloading psycopg-3.2.13-py3-none-any.whl (206 kB)
+scheduled-ingest	Create venv and install deps	2026-02-27T00:42:52.1993410Z Downloading pydantic_settings-2.10.1-py3-none-any.whl (45 kB)
+scheduled-ingest	Create venv and install deps	2026-02-27T00:42:52.2047847Z Downloading python_dotenv-1.0.1-py3-none-any.whl (19 kB)
+scheduled-ingest	Create venv and install deps	2026-02-27T00:42:52.2098819Z Downloading pytest-8.4.2-py3-none-any.whl (365 kB)
+scheduled-ingest	Create venv and install deps	2026-02-27T00:42:52.2163433Z Downloading httpx-0.28.1-py3-none-any.whl (73 kB)
+scheduled-ingest	Create venv and install deps	2026-02-27T00:42:52.2231337Z Downloading psycopg_binary-3.2.13-cp313-cp313-manylinux2014_x86_64.manylinux_2_17_x86_64.whl (4.4 MB)
+scheduled-ingest	Create venv and install deps	2026-02-27T00:42:52.2481789Z    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 4.4/4.4 MB 187.8 MB/s  0:00:00
+scheduled-ingest	Create venv and install deps	2026-02-27T00:42:52.2535525Z Downloading pydantic_core-2.33.2-cp313-cp313-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (2.0 MB)
+scheduled-ingest	Create venv and install deps	2026-02-27T00:42:52.2645109Z    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 2.0/2.0 MB 201.9 MB/s  0:00:00
+scheduled-ingest	Create venv and install deps	2026-02-27T00:42:52.2676529Z Downloading httpcore-1.0.9-py3-none-any.whl (78 kB)
+scheduled-ingest	Create venv and install deps	2026-02-27T00:42:52.2729971Z Downloading pluggy-1.6.0-py3-none-any.whl (20 kB)
+scheduled-ingest	Create venv and install deps	2026-02-27T00:42:52.2781092Z Downloading starlette-0.47.3-py3-none-any.whl (72 kB)
+scheduled-ingest	Create venv and install deps	2026-02-27T00:42:52.2856823Z Downloading anyio-4.12.1-py3-none-any.whl (113 kB)
+scheduled-ingest	Create venv and install deps	2026-02-27T00:42:52.2912525Z Downloading annotated_types-0.7.0-py3-none-any.whl (13 kB)
+scheduled-ingest	Create venv and install deps	2026-02-27T00:42:52.2966535Z Downloading click-8.3.1-py3-none-any.whl (108 kB)
+scheduled-ingest	Create venv and install deps	2026-02-27T00:42:52.3026933Z Downloading h11-0.16.0-py3-none-any.whl (37 kB)
+scheduled-ingest	Create venv and install deps	2026-02-27T00:42:52.3112683Z Downloading httptools-0.7.1-cp313-cp313-manylinux1_x86_64.manylinux_2_28_x86_64.manylinux_2_5_x86_64.whl (478 kB)
+scheduled-ingest	Create venv and install deps	2026-02-27T00:42:52.3185227Z Downloading idna-3.11-py3-none-any.whl (71 kB)
+scheduled-ingest	Create venv and install deps	2026-02-27T00:42:52.3237489Z Downloading iniconfig-2.3.0-py3-none-any.whl (7.5 kB)
+scheduled-ingest	Create venv and install deps	2026-02-27T00:42:52.3286433Z Downloading packaging-26.0-py3-none-any.whl (74 kB)
+scheduled-ingest	Create venv and install deps	2026-02-27T00:42:52.3337571Z Downloading pygments-2.19.2-py3-none-any.whl (1.2 MB)
+scheduled-ingest	Create venv and install deps	2026-02-27T00:42:52.3423978Z    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.2/1.2 MB 154.2 MB/s  0:00:00
+scheduled-ingest	Create venv and install deps	2026-02-27T00:42:52.3460985Z Downloading pyyaml-6.0.3-cp313-cp313-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (801 kB)
+scheduled-ingest	Create venv and install deps	2026-02-27T00:42:52.3530298Z    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 801.6/801.6 kB 118.5 MB/s  0:00:00
+scheduled-ingest	Create venv and install deps	2026-02-27T00:42:52.3560561Z Downloading typing_extensions-4.15.0-py3-none-any.whl (44 kB)
+scheduled-ingest	Create venv and install deps	2026-02-27T00:42:52.3609731Z Downloading typing_inspection-0.4.2-py3-none-any.whl (14 kB)
+scheduled-ingest	Create venv and install deps	2026-02-27T00:42:52.3679493Z Downloading uvloop-0.22.1-cp313-cp313-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (4.4 MB)
+scheduled-ingest	Create venv and install deps	2026-02-27T00:42:52.3927395Z    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 4.4/4.4 MB 182.5 MB/s  0:00:00
+scheduled-ingest	Create venv and install deps	2026-02-27T00:42:52.3969791Z Downloading watchfiles-1.1.1-cp313-cp313-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (456 kB)
+scheduled-ingest	Create venv and install deps	2026-02-27T00:42:52.4046332Z Downloading websockets-16.0-cp313-cp313-manylinux1_x86_64.manylinux_2_28_x86_64.manylinux_2_5_x86_64.whl (184 kB)
+scheduled-ingest	Create venv and install deps	2026-02-27T00:42:52.4103111Z Downloading certifi-2026.2.25-py3-none-any.whl (153 kB)
+scheduled-ingest	Create venv and install deps	2026-02-27T00:42:52.4958691Z Installing collected packages: websockets, uvloop, typing-extensions, pyyaml, python-dotenv, pygments, psycopg-binary, psycopg, pluggy, packaging, iniconfig, idna, httptools, h11, click, certifi, annotated-types, uvicorn, typing-inspection, pytest, pydantic-core, httpcore, anyio, watchfiles, starlette, pydantic, httpx, pydantic-settings, fastapi
+scheduled-ingest	Create venv and install deps	2026-02-27T00:42:55.2731148Z 
+scheduled-ingest	Create venv and install deps	2026-02-27T00:42:55.2771335Z Successfully installed annotated-types-0.7.0 anyio-4.12.1 certifi-2026.2.25 click-8.3.1 fastapi-0.116.1 h11-0.16.0 httpcore-1.0.9 httptools-0.7.1 httpx-0.28.1 idna-3.11 iniconfig-2.3.0 packaging-26.0 pluggy-1.6.0 psycopg-3.2.13 psycopg-binary-3.2.13 pydantic-2.11.7 pydantic-core-2.33.2 pydantic-settings-2.10.1 pygments-2.19.2 pytest-8.4.2 python-dotenv-1.0.1 pyyaml-6.0.3 starlette-0.47.3 typing-extensions-4.15.0 typing-inspection-0.4.2 uvicorn-0.35.0 uvloop-0.22.1 watchfiles-1.1.1 websockets-16.0
+scheduled-ingest	Create venv and install deps	2026-02-27T00:42:55.3838095Z 
+scheduled-ingest	Create venv and install deps	2026-02-27T00:42:55.3839073Z [notice] A new release of pip is available: 25.3 -> 26.0.1
+scheduled-ingest	Create venv and install deps	2026-02-27T00:42:55.3839753Z [notice] To update, run: /home/runner/work/2026-/2026-/.venv/bin/python -m pip install --upgrade pip
+scheduled-ingest	Build live coverage payload	﻿2026-02-27T00:42:55.5879373Z ##[group]Run chmod +x scripts/qa/build_live_coverage_payload.sh
+scheduled-ingest	Build live coverage payload	2026-02-27T00:42:55.5879913Z [36;1mchmod +x scripts/qa/build_live_coverage_payload.sh[0m
+scheduled-ingest	Build live coverage payload	2026-02-27T00:42:55.5880286Z [36;1mscripts/qa/build_live_coverage_payload.sh \[0m
+scheduled-ingest	Build live coverage payload	2026-02-27T00:42:55.5880611Z [36;1m  --python .venv/bin/python \[0m
+scheduled-ingest	Build live coverage payload	2026-02-27T00:42:55.5880953Z [36;1m  --canonical-payload "$INGEST_SCHEDULE_PAYLOAD" \[0m
+scheduled-ingest	Build live coverage payload	2026-02-27T00:42:55.5881386Z [36;1m  --route-report data/ingest_schedule_payload_route_report.json[0m
+scheduled-ingest	Build live coverage payload	2026-02-27T00:42:55.5881777Z [36;1mtest -s "$INGEST_SCHEDULE_PAYLOAD"[0m
+scheduled-ingest	Build live coverage payload	2026-02-27T00:42:55.5882121Z [36;1mtest -s data/ingest_schedule_payload_route_report.json[0m
+scheduled-ingest	Build live coverage payload	2026-02-27T00:42:55.5882515Z [36;1mcat data/ingest_schedule_payload_route_report.json[0m
+scheduled-ingest	Build live coverage payload	2026-02-27T00:42:55.5934901Z shell: /usr/bin/bash -e {0}
+scheduled-ingest	Build live coverage payload	2026-02-27T00:42:55.5935163Z env:
+scheduled-ingest	Build live coverage payload	2026-02-27T00:42:55.5935587Z   SUPABASE_URL: ***
+scheduled-ingest	Build live coverage payload	2026-02-27T00:42:55.5935929Z   SUPABASE_SERVICE_ROLE_KEY: ***
+scheduled-ingest	Build live coverage payload	2026-02-27T00:42:55.5936323Z   DATA_GO_KR_KEY: ***
+scheduled-ingest	Build live coverage payload	2026-02-27T00:42:55.5937090Z   DATABASE_URL: ***
+scheduled-ingest	Build live coverage payload	2026-02-27T00:42:55.5937608Z   INTERNAL_JOB_TOKEN: ***
+scheduled-ingest	Build live coverage payload	2026-02-27T00:42:55.5937855Z   API_BASE_URL: http://127.0.0.1:8100
+scheduled-ingest	Build live coverage payload	2026-02-27T00:42:55.5938185Z   INGEST_SCHEDULE_PAYLOAD: data/collector_live_payload.json
+scheduled-ingest	Build live coverage payload	2026-02-27T00:42:55.5938588Z   pythonLocation: /opt/hostedtoolcache/Python/3.13.12/x64
+scheduled-ingest	Build live coverage payload	2026-02-27T00:42:55.5939022Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.13.12/x64/lib/pkgconfig
+scheduled-ingest	Build live coverage payload	2026-02-27T00:42:55.5939454Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.13.12/x64
+scheduled-ingest	Build live coverage payload	2026-02-27T00:42:55.5939835Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.13.12/x64
+scheduled-ingest	Build live coverage payload	2026-02-27T00:42:55.5940205Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.13.12/x64
+scheduled-ingest	Build live coverage payload	2026-02-27T00:42:55.5940587Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.13.12/x64/lib
+scheduled-ingest	Build live coverage payload	2026-02-27T00:42:55.5940897Z ##[endgroup]
+scheduled-ingest	Build live coverage payload	2026-02-27T00:42:55.6074099Z [build-live-coverage] generator=v2 script=scripts/generate_collector_live_coverage_v2_pack.py
+scheduled-ingest	Build live coverage payload	2026-02-27T00:42:56.5315255Z {
+scheduled-ingest	Build live coverage payload	2026-02-27T00:42:56.5315894Z   "run_type": "collector_live_coverage_v2",
+scheduled-ingest	Build live coverage payload	2026-02-27T00:42:56.5316706Z   "as_of_date": "2026-02-22",
+scheduled-ingest	Build live coverage payload	2026-02-27T00:42:56.5317071Z   "window_days": 30,
+scheduled-ingest	Build live coverage payload	2026-02-27T00:42:56.5317686Z   "source_payloads": {
+scheduled-ingest	Build live coverage payload	2026-02-27T00:42:56.5318107Z     "web_demo": "data/collector_web_demo_datapack_30d.json",
+scheduled-ingest	Build live coverage payload	2026-02-27T00:42:56.5318740Z     "party_v2_batch": "data/collector_party_inference_v2_batch50.json",
+scheduled-ingest	Build live coverage payload	2026-02-27T00:42:56.5319415Z     "nesdc_snapshot": "data/nesdc_registry_snapshot_v1.json"
+scheduled-ingest	Build live coverage payload	2026-02-27T00:42:56.5319949Z   },
+scheduled-ingest	Build live coverage payload	2026-02-27T00:42:56.5320233Z   "counts": {
+scheduled-ingest	Build live coverage payload	2026-02-27T00:42:56.5320563Z     "records": 30,
+scheduled-ingest	Build live coverage payload	2026-02-27T00:42:56.5320806Z     "unique_matchups": 26,
+scheduled-ingest	Build live coverage payload	2026-02-27T00:42:56.5321078Z     "unique_local_sigungu_regions": 23,
+scheduled-ingest	Build live coverage payload	2026-02-27T00:42:56.5321370Z     "in_window_count": 30
+scheduled-ingest	Build live coverage payload	2026-02-27T00:42:56.5321598Z   },
+scheduled-ingest	Build live coverage payload	2026-02-27T00:42:56.5321788Z   "source_channel_counts": {
+scheduled-ingest	Build live coverage payload	2026-02-27T00:42:56.5322030Z     "article": 22,
+scheduled-ingest	Build live coverage payload	2026-02-27T00:42:56.5322239Z     "nesdc": 8
+scheduled-ingest	Build live coverage payload	2026-02-27T00:42:56.5322428Z   },
+scheduled-ingest	Build live coverage payload	2026-02-27T00:42:56.5322636Z   "office_type_counts": {
+scheduled-ingest	Build live coverage payload	2026-02-27T00:42:56.5323084Z     "광역자치단체장": 5,
+scheduled-ingest	Build live coverage payload	2026-02-27T00:42:56.5323318Z     "기초자치단체장": 25
+scheduled-ingest	Build live coverage payload	2026-02-27T00:42:56.5323510Z   },
+scheduled-ingest	Build live coverage payload	2026-02-27T00:42:56.5323698Z   "option_type_counts": {
+scheduled-ingest	Build live coverage payload	2026-02-27T00:42:56.5323935Z     "party_support": 2,
+scheduled-ingest	Build live coverage payload	2026-02-27T00:42:56.5324173Z     "election_frame": 2,
+scheduled-ingest	Build live coverage payload	2026-02-27T00:42:56.5324417Z     "candidate_matchup": 59
+scheduled-ingest	Build live coverage payload	2026-02-27T00:42:56.5324648Z   },
+scheduled-ingest	Build live coverage payload	2026-02-27T00:42:56.5324855Z   "local_candidate_party_fill_rate": 0.28,
+scheduled-ingest	Build live coverage payload	2026-02-27T00:42:56.5325161Z   "review_queue_candidate_count": 0,
+scheduled-ingest	Build live coverage payload	2026-02-27T00:42:56.5325443Z   "acceptance_checks": {
+scheduled-ingest	Build live coverage payload	2026-02-27T00:42:56.5325679Z     "records_ge_30": true,
+scheduled-ingest	Build live coverage payload	2026-02-27T00:42:56.5325932Z     "dual_source_present": true,
+scheduled-ingest	Build live coverage payload	2026-02-27T00:42:56.5326210Z     "national_indicator_present": true,
+scheduled-ingest	Build live coverage payload	2026-02-27T00:42:56.5326513Z     "metro_matchup_present": true,
+scheduled-ingest	Build live coverage payload	2026-02-27T00:42:56.5326778Z     "local_sigungu_ge_12": true,
+scheduled-ingest	Build live coverage payload	2026-02-27T00:42:56.5327032Z     "unique_matchup_ge_24": true,
+scheduled-ingest	Build live coverage payload	2026-02-27T00:42:56.5327548Z     "survey_end_within_30d_all": true,
+scheduled-ingest	Build live coverage payload	2026-02-27T00:42:56.5328117Z     "local_candidate_party_fill_rate_ge_02": true
+scheduled-ingest	Build live coverage payload	2026-02-27T00:42:56.5328393Z   }
+scheduled-ingest	Build live coverage payload	2026-02-27T00:42:56.5328552Z }
+scheduled-ingest	Build live coverage payload	2026-02-27T00:42:56.5328785Z written: data/collector_live_coverage_v2_payload.json
+scheduled-ingest	Build live coverage payload	2026-02-27T00:42:56.5329137Z written: data/collector_live_coverage_v2_report.json
+scheduled-ingest	Build live coverage payload	2026-02-27T00:42:56.5329527Z written: data/collector_live_coverage_v2_review_queue_candidates.json
+scheduled-ingest	Build live coverage payload	2026-02-27T00:42:56.6276228Z [build-live-coverage] route_report=data/ingest_schedule_payload_route_report.json
+scheduled-ingest	Build live coverage payload	2026-02-27T00:42:56.6278023Z [build-live-coverage] route_report_json={"source_mode": "collector_live_v2", "canonical_payload": "data/collector_live_payload.json", "record_count": 30, "run_type": "collector_live_coverage_v2", "extractor_version": "collector-live-coverage-v2"}
+scheduled-ingest	Build live coverage payload	2026-02-27T00:42:56.6310709Z [build-live-coverage] canonical_payload=data/collector_live_payload.json
+scheduled-ingest	Build live coverage payload	2026-02-27T00:42:56.6324804Z {
+scheduled-ingest	Build live coverage payload	2026-02-27T00:42:56.6325056Z   "source_mode": "collector_live_v2",
+scheduled-ingest	Build live coverage payload	2026-02-27T00:42:56.6325460Z   "canonical_payload": "data/collector_live_payload.json",
+scheduled-ingest	Build live coverage payload	2026-02-27T00:42:56.6325910Z   "record_count": 30,
+scheduled-ingest	Build live coverage payload	2026-02-27T00:42:56.6326321Z   "run_type": "collector_live_coverage_v2",
+scheduled-ingest	Build live coverage payload	2026-02-27T00:42:56.6326867Z   "extractor_version": "collector-live-coverage-v2"
+scheduled-ingest	Build live coverage payload	2026-02-27T00:42:56.6327543Z }
+scheduled-ingest	Start API server	﻿2026-02-27T00:42:56.6356389Z ##[group]Run nohup .venv/bin/uvicorn app.main:app --host 127.0.0.1 --port 8100 >/tmp/ingest-schedule-api.log 2>&1 &
+scheduled-ingest	Start API server	2026-02-27T00:42:56.6357463Z [36;1mnohup .venv/bin/uvicorn app.main:app --host 127.0.0.1 --port 8100 >/tmp/ingest-schedule-api.log 2>&1 &[0m
+scheduled-ingest	Start API server	2026-02-27T00:42:56.6357971Z [36;1mfor _ in $(seq 1 30); do[0m
+scheduled-ingest	Start API server	2026-02-27T00:42:56.6358321Z [36;1m  if curl -fsS http://127.0.0.1:8100/health >/dev/null 2>&1; then[0m
+scheduled-ingest	Start API server	2026-02-27T00:42:56.6358674Z [36;1m    exit 0[0m
+scheduled-ingest	Start API server	2026-02-27T00:42:56.6358869Z [36;1m  fi[0m
+scheduled-ingest	Start API server	2026-02-27T00:42:56.6359050Z [36;1m  sleep 1[0m
+scheduled-ingest	Start API server	2026-02-27T00:42:56.6359240Z [36;1mdone[0m
+scheduled-ingest	Start API server	2026-02-27T00:42:56.6359460Z [36;1mecho "::error::API server failed to start"[0m
+scheduled-ingest	Start API server	2026-02-27T00:42:56.6359916Z [36;1mexit 1[0m
+scheduled-ingest	Start API server	2026-02-27T00:42:56.6410520Z shell: /usr/bin/bash -e {0}
+scheduled-ingest	Start API server	2026-02-27T00:42:56.6410766Z env:
+scheduled-ingest	Start API server	2026-02-27T00:42:56.6411274Z   SUPABASE_URL: ***
+scheduled-ingest	Start API server	2026-02-27T00:42:56.6411617Z   SUPABASE_SERVICE_ROLE_KEY: ***
+scheduled-ingest	Start API server	2026-02-27T00:42:56.6412007Z   DATA_GO_KR_KEY: ***
+scheduled-ingest	Start API server	2026-02-27T00:42:56.6412794Z   DATABASE_URL: ***
+scheduled-ingest	Start API server	2026-02-27T00:42:56.6413073Z   INTERNAL_JOB_TOKEN: ***
+scheduled-ingest	Start API server	2026-02-27T00:42:56.6413316Z   API_BASE_URL: http://127.0.0.1:8100
+scheduled-ingest	Start API server	2026-02-27T00:42:56.6413647Z   INGEST_SCHEDULE_PAYLOAD: data/collector_live_payload.json
+scheduled-ingest	Start API server	2026-02-27T00:42:56.6414039Z   pythonLocation: /opt/hostedtoolcache/Python/3.13.12/x64
+scheduled-ingest	Start API server	2026-02-27T00:42:56.6414461Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.13.12/x64/lib/pkgconfig
+scheduled-ingest	Start API server	2026-02-27T00:42:56.6414892Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.13.12/x64
+scheduled-ingest	Start API server	2026-02-27T00:42:56.6415268Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.13.12/x64
+scheduled-ingest	Start API server	2026-02-27T00:42:56.6415639Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.13.12/x64
+scheduled-ingest	Start API server	2026-02-27T00:42:56.6416030Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.13.12/x64/lib
+scheduled-ingest	Start API server	2026-02-27T00:42:56.6416337Z ##[endgroup]
+scheduled-ingest	DB preflight via health/db	﻿2026-02-27T00:42:58.6814248Z ##[group]Run DB_HEALTH_STATUS="$(curl -sS -o /tmp/ingest-schedule-health-db.json -w "%{http_code}" http://127.0.0.1:8100/health/db || true)"
+scheduled-ingest	DB preflight via health/db	2026-02-27T00:42:58.6815283Z [36;1mDB_HEALTH_STATUS="$(curl -sS -o /tmp/ingest-schedule-health-db.json -w "%{http_code}" http://127.0.0.1:8100/health/db || true)"[0m
+scheduled-ingest	DB preflight via health/db	2026-02-27T00:42:58.6815917Z [36;1mecho "health_db_http_status=${DB_HEALTH_STATUS}"[0m
+scheduled-ingest	DB preflight via health/db	2026-02-27T00:42:58.6816304Z [36;1mecho "===== /tmp/ingest-schedule-health-db.json ====="[0m
+scheduled-ingest	DB preflight via health/db	2026-02-27T00:42:58.6816698Z [36;1mcat /tmp/ingest-schedule-health-db.json || true[0m
+scheduled-ingest	DB preflight via health/db	2026-02-27T00:42:58.6817036Z [36;1mif [ "${DB_HEALTH_STATUS}" != "200" ]; then[0m
+scheduled-ingest	DB preflight via health/db	2026-02-27T00:42:58.6817703Z [36;1m  echo "::error::DB preflight failed (/health/db status=${DB_HEALTH_STATUS})"[0m
+scheduled-ingest	DB preflight via health/db	2026-02-27T00:42:58.6818094Z [36;1m  exit 1[0m
+scheduled-ingest	DB preflight via health/db	2026-02-27T00:42:58.6818299Z [36;1mfi[0m
+scheduled-ingest	DB preflight via health/db	2026-02-27T00:42:58.6866976Z shell: /usr/bin/bash -e {0}
+scheduled-ingest	DB preflight via health/db	2026-02-27T00:42:58.6867418Z env:
+scheduled-ingest	DB preflight via health/db	2026-02-27T00:42:58.6867781Z   SUPABASE_URL: ***
+scheduled-ingest	DB preflight via health/db	2026-02-27T00:42:58.6868190Z   SUPABASE_SERVICE_ROLE_KEY: ***
+scheduled-ingest	DB preflight via health/db	2026-02-27T00:42:58.6868572Z   DATA_GO_KR_KEY: ***
+scheduled-ingest	DB preflight via health/db	2026-02-27T00:42:58.6869289Z   DATABASE_URL: ***
+scheduled-ingest	DB preflight via health/db	2026-02-27T00:42:58.6869553Z   INTERNAL_JOB_TOKEN: ***
+scheduled-ingest	DB preflight via health/db	2026-02-27T00:42:58.6869794Z   API_BASE_URL: http://127.0.0.1:8100
+scheduled-ingest	DB preflight via health/db	2026-02-27T00:42:58.6870122Z   INGEST_SCHEDULE_PAYLOAD: data/collector_live_payload.json
+scheduled-ingest	DB preflight via health/db	2026-02-27T00:42:58.6870508Z   pythonLocation: /opt/hostedtoolcache/Python/3.13.12/x64
+scheduled-ingest	DB preflight via health/db	2026-02-27T00:42:58.6870930Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.13.12/x64/lib/pkgconfig
+scheduled-ingest	DB preflight via health/db	2026-02-27T00:42:58.6871364Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.13.12/x64
+scheduled-ingest	DB preflight via health/db	2026-02-27T00:42:58.6871750Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.13.12/x64
+scheduled-ingest	DB preflight via health/db	2026-02-27T00:42:58.6872122Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.13.12/x64
+scheduled-ingest	DB preflight via health/db	2026-02-27T00:42:58.6872504Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.13.12/x64/lib
+scheduled-ingest	DB preflight via health/db	2026-02-27T00:42:58.6872811Z ##[endgroup]
+scheduled-ingest	DB preflight via health/db	2026-02-27T00:43:00.5591663Z health_db_http_status=200
+scheduled-ingest	DB preflight via health/db	2026-02-27T00:43:00.5592335Z ===== /tmp/ingest-schedule-health-db.json =====
+scheduled-ingest	DB preflight via health/db	2026-02-27T00:43:00.5607596Z {"status":"ok","db":"ok","ping":true,"bootstrap":{"enabled":false,"attempted":false,"ok":null,"detail":"disabled"}}
+scheduled-ingest	Run scheduled ingest with retry	﻿2026-02-27T00:43:00.5651502Z ##[group]Run .venv/bin/python scripts/qa/run_ingest_with_retry.py \
+scheduled-ingest	Run scheduled ingest with retry	2026-02-27T00:43:00.5652009Z [36;1m.venv/bin/python scripts/qa/run_ingest_with_retry.py \[0m
+scheduled-ingest	Run scheduled ingest with retry	2026-02-27T00:43:00.5652367Z [36;1m  --api-base "$API_BASE_URL" \[0m
+scheduled-ingest	Run scheduled ingest with retry	2026-02-27T00:43:00.5652666Z [36;1m  --input "$INGEST_SCHEDULE_PAYLOAD" \[0m
+scheduled-ingest	Run scheduled ingest with retry	2026-02-27T00:43:00.5652955Z [36;1m  --max-retries 2 \[0m
+scheduled-ingest	Run scheduled ingest with retry	2026-02-27T00:43:00.5653191Z [36;1m  --backoff-seconds 1 \[0m
+scheduled-ingest	Run scheduled ingest with retry	2026-02-27T00:43:00.5653432Z [36;1m  --timeout 180 \[0m
+scheduled-ingest	Run scheduled ingest with retry	2026-02-27T00:43:00.5653681Z [36;1m  --timeout-scale-on-timeout 1.5 \[0m
+scheduled-ingest	Run scheduled ingest with retry	2026-02-27T00:43:00.5653956Z [36;1m  --timeout-max 360 \[0m
+scheduled-ingest	Run scheduled ingest with retry	2026-02-27T00:43:00.5654362Z [36;1m  --allow-partial-success \[0m
+scheduled-ingest	Run scheduled ingest with retry	2026-02-27T00:43:00.5654783Z [36;1m  --classification-artifact data/ingest_schedule_failure_classification.json \[0m
+scheduled-ingest	Run scheduled ingest with retry	2026-02-27T00:43:00.5655354Z [36;1m  --comment-template-path data/ingest_schedule_failure_comment_template.md \[0m
+scheduled-ingest	Run scheduled ingest with retry	2026-02-27T00:43:00.5655789Z [36;1m  --dead-letter-dir data/dead_letter \[0m
+scheduled-ingest	Run scheduled ingest with retry	2026-02-27T00:43:00.5656152Z [36;1m  --report data/ingest_schedule_report.json[0m
+scheduled-ingest	Run scheduled ingest with retry	2026-02-27T00:43:00.5705104Z shell: /usr/bin/bash -e {0}
+scheduled-ingest	Run scheduled ingest with retry	2026-02-27T00:43:00.5705352Z env:
+scheduled-ingest	Run scheduled ingest with retry	2026-02-27T00:43:00.5705731Z   SUPABASE_URL: ***
+scheduled-ingest	Run scheduled ingest with retry	2026-02-27T00:43:00.5706057Z   SUPABASE_SERVICE_ROLE_KEY: ***
+scheduled-ingest	Run scheduled ingest with retry	2026-02-27T00:43:00.5706446Z   DATA_GO_KR_KEY: ***
+scheduled-ingest	Run scheduled ingest with retry	2026-02-27T00:43:00.5707333Z   DATABASE_URL: ***
+scheduled-ingest	Run scheduled ingest with retry	2026-02-27T00:43:00.5707642Z   INTERNAL_JOB_TOKEN: ***
+scheduled-ingest	Run scheduled ingest with retry	2026-02-27T00:43:00.5707884Z   API_BASE_URL: http://127.0.0.1:8100
+scheduled-ingest	Run scheduled ingest with retry	2026-02-27T00:43:00.5708207Z   INGEST_SCHEDULE_PAYLOAD: data/collector_live_payload.json
+scheduled-ingest	Run scheduled ingest with retry	2026-02-27T00:43:00.5708598Z   pythonLocation: /opt/hostedtoolcache/Python/3.13.12/x64
+scheduled-ingest	Run scheduled ingest with retry	2026-02-27T00:43:00.5709038Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.13.12/x64/lib/pkgconfig
+scheduled-ingest	Run scheduled ingest with retry	2026-02-27T00:43:00.5709451Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.13.12/x64
+scheduled-ingest	Run scheduled ingest with retry	2026-02-27T00:43:00.5709821Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.13.12/x64
+scheduled-ingest	Run scheduled ingest with retry	2026-02-27T00:43:00.5710187Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.13.12/x64
+scheduled-ingest	Run scheduled ingest with retry	2026-02-27T00:43:00.5710565Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.13.12/x64/lib
+scheduled-ingest	Run scheduled ingest with retry	2026-02-27T00:43:00.5710877Z ##[endgroup]
+scheduled-ingest	Run scheduled ingest with retry	2026-02-27T00:43:00.6875290Z {"channel": "ingest_runner_heartbeat", "event": "script_start", "ts": "2026-02-27T00:43:00.687221+00:00", "source_input_path": "data/collector_live_payload.json", "report_path": "data/ingest_schedule_report.json"}
+scheduled-ingest	Run scheduled ingest with retry	2026-02-27T00:43:00.6878149Z {"channel": "ingest_runner_heartbeat", "ts": "2026-02-27T00:43:00.687286+00:00", "event": "run_start", "api_base_url": "http://127.0.0.1:8100", "max_attempts": 3, "max_retries": 2, "initial_request_timeout_seconds": 180.0, "timeout_max_seconds": 360.0}
+scheduled-ingest	Run scheduled ingest with retry	2026-02-27T00:43:00.6880493Z {"channel": "ingest_runner_heartbeat", "ts": "2026-02-27T00:43:00.687327+00:00", "event": "attempt_start", "attempt": 1, "max_attempts": 3, "request_timeout_seconds": 180.0}
+scheduled-ingest	Run scheduled ingest with retry	2026-02-27T00:43:30.6880738Z {"channel": "ingest_runner_heartbeat", "ts": "2026-02-27T00:43:30.687745+00:00", "event": "attempt_waiting", "attempt": 1, "heartbeat_tick": 1, "elapsed_seconds": 30.0, "request_timeout_seconds": 180.0}
+scheduled-ingest	Run scheduled ingest with retry	2026-02-27T00:44:00.6883264Z {"channel": "ingest_runner_heartbeat", "ts": "2026-02-27T00:44:00.687994+00:00", "event": "attempt_waiting", "attempt": 1, "heartbeat_tick": 2, "elapsed_seconds": 60.001, "request_timeout_seconds": 180.0}
+scheduled-ingest	Run scheduled ingest with retry	2026-02-27T00:44:30.6885600Z {"channel": "ingest_runner_heartbeat", "ts": "2026-02-27T00:44:30.688239+00:00", "event": "attempt_waiting", "attempt": 1, "heartbeat_tick": 3, "elapsed_seconds": 90.001, "request_timeout_seconds": 180.0}
+scheduled-ingest	Run scheduled ingest with retry	2026-02-27T00:45:00.6888322Z {"channel": "ingest_runner_heartbeat", "ts": "2026-02-27T00:45:00.688478+00:00", "event": "attempt_waiting", "attempt": 1, "heartbeat_tick": 4, "elapsed_seconds": 120.001, "request_timeout_seconds": 180.0}
+scheduled-ingest	Run scheduled ingest with retry	2026-02-27T00:45:30.6890279Z {"channel": "ingest_runner_heartbeat", "ts": "2026-02-27T00:45:30.688742+00:00", "event": "attempt_waiting", "attempt": 1, "heartbeat_tick": 5, "elapsed_seconds": 150.001, "request_timeout_seconds": 180.0}
+scheduled-ingest	Run scheduled ingest with retry	2026-02-27T00:46:00.6892705Z {"channel": "ingest_runner_heartbeat", "ts": "2026-02-27T00:46:00.688979+00:00", "event": "attempt_waiting", "attempt": 1, "heartbeat_tick": 6, "elapsed_seconds": 180.002, "request_timeout_seconds": 180.0}
+scheduled-ingest	Run scheduled ingest with retry	2026-02-27T00:46:00.8500950Z {"channel": "ingest_runner_heartbeat", "ts": "2026-02-27T00:46:00.849776+00:00", "event": "attempt_result", "attempt": 1, "http_status": null, "job_status": null, "failure_class": "timeout", "failure_type": "timeout", "cause_code": "timeout_request", "retryable": true, "duration_seconds": 180.162, "next_backoff_seconds": 5.0, "error": "ReadTimeout: timed out", "detail": null}
+scheduled-ingest	Run scheduled ingest with retry	2026-02-27T00:46:00.8503266Z {"channel": "ingest_runner_heartbeat", "ts": "2026-02-27T00:46:00.849838+00:00", "event": "retry_wait", "attempt": 1, "backoff_seconds": 5.0, "next_attempt": 2}
+scheduled-ingest	Run scheduled ingest with retry	2026-02-27T00:46:05.8503924Z {"channel": "ingest_runner_heartbeat", "ts": "2026-02-27T00:46:05.849989+00:00", "event": "timeout_scaled", "attempt": 2, "previous_request_timeout_seconds": 180.0, "next_request_timeout_seconds": 270.0}
+scheduled-ingest	Run scheduled ingest with retry	2026-02-27T00:46:05.8506481Z {"channel": "ingest_runner_heartbeat", "ts": "2026-02-27T00:46:05.850111+00:00", "event": "attempt_start", "attempt": 2, "max_attempts": 3, "request_timeout_seconds": 270.0}
+scheduled-ingest	Run scheduled ingest with retry	2026-02-27T00:46:35.8509252Z {"channel": "ingest_runner_heartbeat", "ts": "2026-02-27T00:46:35.850542+00:00", "event": "attempt_waiting", "attempt": 2, "heartbeat_tick": 1, "elapsed_seconds": 30.0, "request_timeout_seconds": 270.0}
+scheduled-ingest	Run scheduled ingest with retry	2026-02-27T00:47:05.8511004Z {"channel": "ingest_runner_heartbeat", "ts": "2026-02-27T00:47:05.850767+00:00", "event": "attempt_waiting", "attempt": 2, "heartbeat_tick": 2, "elapsed_seconds": 60.001, "request_timeout_seconds": 270.0}
+scheduled-ingest	Run scheduled ingest with retry	2026-02-27T00:47:35.8513649Z {"channel": "ingest_runner_heartbeat", "ts": "2026-02-27T00:47:35.850995+00:00", "event": "attempt_waiting", "attempt": 2, "heartbeat_tick": 3, "elapsed_seconds": 90.001, "request_timeout_seconds": 270.0}
+scheduled-ingest	Run scheduled ingest with retry	2026-02-27T00:48:05.8515793Z {"channel": "ingest_runner_heartbeat", "ts": "2026-02-27T00:48:05.851249+00:00", "event": "attempt_waiting", "attempt": 2, "heartbeat_tick": 4, "elapsed_seconds": 120.001, "request_timeout_seconds": 270.0}
+scheduled-ingest	Run scheduled ingest with retry	2026-02-27T00:48:35.8518771Z {"channel": "ingest_runner_heartbeat", "ts": "2026-02-27T00:48:35.851492+00:00", "event": "attempt_waiting", "attempt": 2, "heartbeat_tick": 5, "elapsed_seconds": 150.001, "request_timeout_seconds": 270.0}
+scheduled-ingest	Run scheduled ingest with retry	2026-02-27T00:49:05.8520057Z {"channel": "ingest_runner_heartbeat", "ts": "2026-02-27T00:49:05.851744+00:00", "event": "attempt_waiting", "attempt": 2, "heartbeat_tick": 6, "elapsed_seconds": 180.002, "request_timeout_seconds": 270.0}
+scheduled-ingest	Run scheduled ingest with retry	2026-02-27T00:49:35.8522626Z {"channel": "ingest_runner_heartbeat", "ts": "2026-02-27T00:49:35.851978+00:00", "event": "attempt_waiting", "attempt": 2, "heartbeat_tick": 7, "elapsed_seconds": 210.002, "request_timeout_seconds": 270.0}
+scheduled-ingest	Run scheduled ingest with retry	2026-02-27T00:50:05.8525173Z {"channel": "ingest_runner_heartbeat", "ts": "2026-02-27T00:50:05.852215+00:00", "event": "attempt_waiting", "attempt": 2, "heartbeat_tick": 8, "elapsed_seconds": 240.002, "request_timeout_seconds": 270.0}
+scheduled-ingest	Run scheduled ingest with retry	2026-02-27T00:50:35.8528343Z {"channel": "ingest_runner_heartbeat", "ts": "2026-02-27T00:50:35.852445+00:00", "event": "attempt_waiting", "attempt": 2, "heartbeat_tick": 9, "elapsed_seconds": 270.002, "request_timeout_seconds": 270.0}
+scheduled-ingest	Run scheduled ingest with retry	2026-02-27T00:50:35.9510610Z {"channel": "ingest_runner_heartbeat", "ts": "2026-02-27T00:50:35.950773+00:00", "event": "attempt_result", "attempt": 2, "http_status": null, "job_status": null, "failure_class": "timeout", "failure_type": "timeout", "cause_code": "timeout_request", "retryable": true, "duration_seconds": 270.101, "next_backoff_seconds": 5.0, "error": "ReadTimeout: timed out", "detail": null}
+scheduled-ingest	Run scheduled ingest with retry	2026-02-27T00:50:35.9512473Z {"channel": "ingest_runner_heartbeat", "ts": "2026-02-27T00:50:35.950831+00:00", "event": "retry_wait", "attempt": 2, "backoff_seconds": 5.0, "next_attempt": 3}
+scheduled-ingest	Run scheduled ingest with retry	2026-02-27T00:50:40.9513188Z {"channel": "ingest_runner_heartbeat", "ts": "2026-02-27T00:50:40.950947+00:00", "event": "timeout_scaled", "attempt": 3, "previous_request_timeout_seconds": 270.0, "next_request_timeout_seconds": 360.0}
+scheduled-ingest	Run scheduled ingest with retry	2026-02-27T00:50:40.9516223Z {"channel": "ingest_runner_heartbeat", "ts": "2026-02-27T00:50:40.951037+00:00", "event": "attempt_start", "attempt": 3, "max_attempts": 3, "request_timeout_seconds": 360.0}
+scheduled-ingest	Run scheduled ingest with retry	2026-02-27T00:51:10.9523779Z {"channel": "ingest_runner_heartbeat", "ts": "2026-02-27T00:51:10.952061+00:00", "event": "attempt_waiting", "attempt": 3, "heartbeat_tick": 1, "elapsed_seconds": 30.001, "request_timeout_seconds": 360.0}
+scheduled-ingest	Run scheduled ingest with retry	2026-02-27T00:51:40.9526007Z {"channel": "ingest_runner_heartbeat", "ts": "2026-02-27T00:51:40.952295+00:00", "event": "attempt_waiting", "attempt": 3, "heartbeat_tick": 2, "elapsed_seconds": 60.001, "request_timeout_seconds": 360.0}
+scheduled-ingest	Run scheduled ingest with retry	2026-02-27T00:52:10.9529147Z {"channel": "ingest_runner_heartbeat", "ts": "2026-02-27T00:52:10.952534+00:00", "event": "attempt_waiting", "attempt": 3, "heartbeat_tick": 3, "elapsed_seconds": 90.001, "request_timeout_seconds": 360.0}
+scheduled-ingest	Run scheduled ingest with retry	2026-02-27T00:52:40.9531240Z {"channel": "ingest_runner_heartbeat", "ts": "2026-02-27T00:52:40.952777+00:00", "event": "attempt_waiting", "attempt": 3, "heartbeat_tick": 4, "elapsed_seconds": 120.002, "request_timeout_seconds": 360.0}
+scheduled-ingest	Run scheduled ingest with retry	2026-02-27T00:53:10.9532942Z {"channel": "ingest_runner_heartbeat", "ts": "2026-02-27T00:53:10.953003+00:00", "event": "attempt_waiting", "attempt": 3, "heartbeat_tick": 5, "elapsed_seconds": 150.002, "request_timeout_seconds": 360.0}
+scheduled-ingest	Run scheduled ingest with retry	2026-02-27T00:53:40.9538764Z {"channel": "ingest_runner_heartbeat", "ts": "2026-02-27T00:53:40.953239+00:00", "event": "attempt_waiting", "attempt": 3, "heartbeat_tick": 6, "elapsed_seconds": 180.002, "request_timeout_seconds": 360.0}
+scheduled-ingest	Run scheduled ingest with retry	2026-02-27T00:54:10.9537981Z {"channel": "ingest_runner_heartbeat", "ts": "2026-02-27T00:54:10.953476+00:00", "event": "attempt_waiting", "attempt": 3, "heartbeat_tick": 7, "elapsed_seconds": 210.002, "request_timeout_seconds": 360.0}
+scheduled-ingest	Run scheduled ingest with retry	2026-02-27T00:54:40.9540906Z {"channel": "ingest_runner_heartbeat", "ts": "2026-02-27T00:54:40.953705+00:00", "event": "attempt_waiting", "attempt": 3, "heartbeat_tick": 8, "elapsed_seconds": 240.003, "request_timeout_seconds": 360.0}
+scheduled-ingest	Run scheduled ingest with retry	2026-02-27T00:55:10.9542802Z {"channel": "ingest_runner_heartbeat", "ts": "2026-02-27T00:55:10.953975+00:00", "event": "attempt_waiting", "attempt": 3, "heartbeat_tick": 9, "elapsed_seconds": 270.003, "request_timeout_seconds": 360.0}
+scheduled-ingest	Run scheduled ingest with retry	2026-02-27T00:55:40.9545011Z {"channel": "ingest_runner_heartbeat", "ts": "2026-02-27T00:55:40.954206+00:00", "event": "attempt_waiting", "attempt": 3, "heartbeat_tick": 10, "elapsed_seconds": 300.003, "request_timeout_seconds": 360.0}
+scheduled-ingest	Run scheduled ingest with retry	2026-02-27T00:56:10.9547754Z {"channel": "ingest_runner_heartbeat", "ts": "2026-02-27T00:56:10.954429+00:00", "event": "attempt_waiting", "attempt": 3, "heartbeat_tick": 11, "elapsed_seconds": 330.003, "request_timeout_seconds": 360.0}
+scheduled-ingest	Run scheduled ingest with retry	2026-02-27T00:56:40.9550384Z {"channel": "ingest_runner_heartbeat", "ts": "2026-02-27T00:56:40.954650+00:00", "event": "attempt_waiting", "attempt": 3, "heartbeat_tick": 12, "elapsed_seconds": 360.004, "request_timeout_seconds": 360.0}
+scheduled-ingest	Run scheduled ingest with retry	2026-02-27T00:56:41.0052699Z {"channel": "ingest_runner_heartbeat", "ts": "2026-02-27T00:56:41.004926+00:00", "event": "attempt_result", "attempt": 3, "http_status": null, "job_status": null, "failure_class": "timeout", "failure_type": "timeout", "cause_code": "timeout_request", "retryable": true, "duration_seconds": 360.054, "next_backoff_seconds": null, "error": "ReadTimeout: timed out", "detail": null}
+scheduled-ingest	Run scheduled ingest with retry	2026-02-27T00:56:41.0055775Z {"channel": "ingest_runner_heartbeat", "ts": "2026-02-27T00:56:41.004983+00:00", "event": "run_end", "success": false, "elapsed_seconds": 820.318, "attempt_count": 3, "failure_class": "timeout", "failure_type": "timeout", "cause_code": "timeout_request", "failure_reason": "timeout: ReadTimeout: timed out"}
+scheduled-ingest	Run scheduled ingest with retry	2026-02-27T00:56:41.0100515Z {"success": false, "raw_success": false, "report": "data/ingest_schedule_report.json", "attempt_count": 3, "failure_class": "timeout", "failure_type": "timeout", "cause_code": "timeout_request", "failure_reason": "timeout: ReadTimeout: timed out", "last_attempt": {"attempt": 3, "http_status": null, "job_status": null, "cause_code": "timeout_request", "error": "ReadTimeout: timed out", "detail": null}, "dead_letter_path": "data/dead_letter/ingest_dead_letter_20260227T005641Z_timeout.json", "classification_artifact": "data/ingest_schedule_failure_classification.json", "comment_template_path": "data/ingest_schedule_failure_comment_template.md", "elapsed_seconds": 820.322}
+scheduled-ingest	Run scheduled ingest with retry	2026-02-27T00:56:41.0309430Z ##[error]Process completed with exit code 1.
+scheduled-ingest	Dump API server log on failure	﻿2026-02-27T00:56:41.0355281Z ##[group]Run echo "===== /tmp/ingest-schedule-api.log ====="
+scheduled-ingest	Dump API server log on failure	2026-02-27T00:56:41.0355734Z [36;1mecho "===== /tmp/ingest-schedule-api.log ====="[0m
+scheduled-ingest	Dump API server log on failure	2026-02-27T00:56:41.0356092Z [36;1mcat /tmp/ingest-schedule-api.log || true[0m
+scheduled-ingest	Dump API server log on failure	2026-02-27T00:56:41.0404489Z shell: /usr/bin/bash -e {0}
+scheduled-ingest	Dump API server log on failure	2026-02-27T00:56:41.0404742Z env:
+scheduled-ingest	Dump API server log on failure	2026-02-27T00:56:41.0405071Z   SUPABASE_URL: ***
+scheduled-ingest	Dump API server log on failure	2026-02-27T00:56:41.0405388Z   SUPABASE_SERVICE_ROLE_KEY: ***
+scheduled-ingest	Dump API server log on failure	2026-02-27T00:56:41.0405766Z   DATA_GO_KR_KEY: ***
+scheduled-ingest	Dump API server log on failure	2026-02-27T00:56:41.0406438Z   DATABASE_URL: ***
+scheduled-ingest	Dump API server log on failure	2026-02-27T00:56:41.0406717Z   INTERNAL_JOB_TOKEN: ***
+scheduled-ingest	Dump API server log on failure	2026-02-27T00:56:41.0406957Z   API_BASE_URL: http://127.0.0.1:8100
+scheduled-ingest	Dump API server log on failure	2026-02-27T00:56:41.0407400Z   INGEST_SCHEDULE_PAYLOAD: data/collector_live_payload.json
+scheduled-ingest	Dump API server log on failure	2026-02-27T00:56:41.0407787Z   pythonLocation: /opt/hostedtoolcache/Python/3.13.12/x64
+scheduled-ingest	Dump API server log on failure	2026-02-27T00:56:41.0408189Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.13.12/x64/lib/pkgconfig
+scheduled-ingest	Dump API server log on failure	2026-02-27T00:56:41.0408596Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.13.12/x64
+scheduled-ingest	Dump API server log on failure	2026-02-27T00:56:41.0409008Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.13.12/x64
+scheduled-ingest	Dump API server log on failure	2026-02-27T00:56:41.0409373Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.13.12/x64
+scheduled-ingest	Dump API server log on failure	2026-02-27T00:56:41.0409738Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.13.12/x64/lib
+scheduled-ingest	Dump API server log on failure	2026-02-27T00:56:41.0410049Z ##[endgroup]
+scheduled-ingest	Dump API server log on failure	2026-02-27T00:56:41.0476987Z ===== /tmp/ingest-schedule-api.log =====
+scheduled-ingest	Dump API server log on failure	2026-02-27T00:56:41.0486935Z INFO:     Started server process [2375]
+scheduled-ingest	Dump API server log on failure	2026-02-27T00:56:41.0487556Z INFO:     Waiting for application startup.
+scheduled-ingest	Dump API server log on failure	2026-02-27T00:56:41.0487856Z INFO:     Application startup complete.
+scheduled-ingest	Dump API server log on failure	2026-02-27T00:56:41.0488431Z INFO:     Uvicorn running on http://127.0.0.1:8100 (Press CTRL+C to quit)
+scheduled-ingest	Dump API server log on failure	2026-02-27T00:56:41.0489193Z INFO:     127.0.0.1:43402 - "GET /health HTTP/1.1" 200 OK
+scheduled-ingest	Dump API server log on failure	2026-02-27T00:56:41.0489787Z INFO:     127.0.0.1:43412 - "GET /health/db HTTP/1.1" 200 OK
+scheduled-ingest	Ensure ingest diagnostics artifacts exist	﻿2026-02-27T00:56:41.0514643Z ##[group]Run .venv/bin/python - <<'PY'
+scheduled-ingest	Ensure ingest diagnostics artifacts exist	2026-02-27T00:56:41.0515031Z [36;1m.venv/bin/python - <<'PY'[0m
+scheduled-ingest	Ensure ingest diagnostics artifacts exist	2026-02-27T00:56:41.0515293Z [36;1mimport json[0m
+scheduled-ingest	Ensure ingest diagnostics artifacts exist	2026-02-27T00:56:41.0515493Z [36;1mimport os[0m
+scheduled-ingest	Ensure ingest diagnostics artifacts exist	2026-02-27T00:56:41.0515725Z [36;1mfrom datetime import datetime, timezone[0m
+scheduled-ingest	Ensure ingest diagnostics artifacts exist	2026-02-27T00:56:41.0516025Z [36;1mfrom pathlib import Path[0m
+scheduled-ingest	Ensure ingest diagnostics artifacts exist	2026-02-27T00:56:41.0516260Z [36;1m[0m
+scheduled-ingest	Ensure ingest diagnostics artifacts exist	2026-02-27T00:56:41.0516532Z [36;1mreport_path = Path("data/ingest_schedule_report.json")[0m
+scheduled-ingest	Ensure ingest diagnostics artifacts exist	2026-02-27T00:56:41.0517077Z [36;1mpayload_path = Path(os.environ.get("INGEST_SCHEDULE_PAYLOAD", "data/collector_live_payload.json"))[0m
+scheduled-ingest	Ensure ingest diagnostics artifacts exist	2026-02-27T00:56:41.0517945Z [36;1mclassification_path = Path("data/ingest_schedule_failure_classification.json")[0m
+scheduled-ingest	Ensure ingest diagnostics artifacts exist	2026-02-27T00:56:41.0518508Z [36;1mcomment_template_path = Path("data/ingest_schedule_failure_comment_template.md")[0m
+scheduled-ingest	Ensure ingest diagnostics artifacts exist	2026-02-27T00:56:41.0518901Z [36;1m[0m
+scheduled-ingest	Ensure ingest diagnostics artifacts exist	2026-02-27T00:56:41.0519074Z [36;1mreport = {}[0m
+scheduled-ingest	Ensure ingest diagnostics artifacts exist	2026-02-27T00:56:41.0519286Z [36;1mif report_path.exists():[0m
+scheduled-ingest	Ensure ingest diagnostics artifacts exist	2026-02-27T00:56:41.0519648Z [36;1m    report = json.loads(report_path.read_text(encoding="utf-8"))[0m
+scheduled-ingest	Ensure ingest diagnostics artifacts exist	2026-02-27T00:56:41.0519990Z [36;1m[0m
+scheduled-ingest	Ensure ingest diagnostics artifacts exist	2026-02-27T00:56:41.0520160Z [36;1mpayload = {}[0m
+scheduled-ingest	Ensure ingest diagnostics artifacts exist	2026-02-27T00:56:41.0520379Z [36;1mif payload_path.exists():[0m
+scheduled-ingest	Ensure ingest diagnostics artifacts exist	2026-02-27T00:56:41.0520732Z [36;1m    payload = json.loads(payload_path.read_text(encoding="utf-8"))[0m
+scheduled-ingest	Ensure ingest diagnostics artifacts exist	2026-02-27T00:56:41.0521069Z [36;1m[0m
+scheduled-ingest	Ensure ingest diagnostics artifacts exist	2026-02-27T00:56:41.0521271Z [36;1mif not classification_path.exists():[0m
+scheduled-ingest	Ensure ingest diagnostics artifacts exist	2026-02-27T00:56:41.0521577Z [36;1m    attempts = report.get("attempts") or [][0m
+scheduled-ingest	Ensure ingest diagnostics artifacts exist	2026-02-27T00:56:41.0521869Z [36;1m    failure_counts = {}[0m
+scheduled-ingest	Ensure ingest diagnostics artifacts exist	2026-02-27T00:56:41.0522111Z [36;1m    for item in attempts:[0m
+scheduled-ingest	Ensure ingest diagnostics artifacts exist	2026-02-27T00:56:41.0522389Z [36;1m        key = item.get("failure_class") or "none"[0m
+scheduled-ingest	Ensure ingest diagnostics artifacts exist	2026-02-27T00:56:41.0522750Z [36;1m        failure_counts[key] = failure_counts.get(key, 0) + 1[0m
+scheduled-ingest	Ensure ingest diagnostics artifacts exist	2026-02-27T00:56:41.0523076Z [36;1m    artifact = {[0m
+scheduled-ingest	Ensure ingest diagnostics artifacts exist	2026-02-27T00:56:41.0523396Z [36;1m        "schema_version": "collector_ingest_failure_classification.v1",[0m
+scheduled-ingest	Ensure ingest diagnostics artifacts exist	2026-02-27T00:56:41.0523836Z [36;1m        "generated_at": datetime.now(timezone.utc).isoformat(),[0m
+scheduled-ingest	Ensure ingest diagnostics artifacts exist	2026-02-27T00:56:41.0524382Z [36;1m        "source_input_path": str(payload_path),[0m
+scheduled-ingest	Ensure ingest diagnostics artifacts exist	2026-02-27T00:56:41.0524749Z [36;1m        "payload_run_type": payload.get("run_type"),[0m
+scheduled-ingest	Ensure ingest diagnostics artifacts exist	2026-02-27T00:56:41.0525143Z [36;1m        "payload_record_count": len(payload.get("records") or []),[0m
+scheduled-ingest	Ensure ingest diagnostics artifacts exist	2026-02-27T00:56:41.0525484Z [36;1m        "runner": {[0m
+scheduled-ingest	Ensure ingest diagnostics artifacts exist	2026-02-27T00:56:41.0525743Z [36;1m            "success": bool(report.get("success")),[0m
+scheduled-ingest	Ensure ingest diagnostics artifacts exist	2026-02-27T00:56:41.0526222Z [36;1m            "raw_success": bool(report.get("raw_success", report.get("success"))),[0m
+scheduled-ingest	Ensure ingest diagnostics artifacts exist	2026-02-27T00:56:41.0526659Z [36;1m            "attempt_count": len(attempts),[0m
+scheduled-ingest	Ensure ingest diagnostics artifacts exist	2026-02-27T00:56:41.0526970Z [36;1m            "run_ids": report.get("run_ids") or [],[0m
+scheduled-ingest	Ensure ingest diagnostics artifacts exist	2026-02-27T00:56:41.0527535Z [36;1m            "started_at": report.get("started_at"),[0m
+scheduled-ingest	Ensure ingest diagnostics artifacts exist	2026-02-27T00:56:41.0527874Z [36;1m            "finished_at": report.get("finished_at"),[0m
+scheduled-ingest	Ensure ingest diagnostics artifacts exist	2026-02-27T00:56:41.0528243Z [36;1m            "elapsed_seconds": report.get("elapsed_seconds"),[0m
+scheduled-ingest	Ensure ingest diagnostics artifacts exist	2026-02-27T00:56:41.0528717Z [36;1m            "failure_class": report.get("failure_class") or "workflow_step_interrupted",[0m
+scheduled-ingest	Ensure ingest diagnostics artifacts exist	2026-02-27T00:56:41.0529245Z [36;1m            "failure_type": report.get("failure_type") or "workflow_interrupted",[0m
+scheduled-ingest	Ensure ingest diagnostics artifacts exist	2026-02-27T00:56:41.0529695Z [36;1m            "cause_code": report.get("cause_code") or "unknown",[0m
+scheduled-ingest	Ensure ingest diagnostics artifacts exist	2026-02-27T00:56:41.0530156Z [36;1m            "failure_reason": report.get("failure_reason") or "ingest step interrupted",[0m
+scheduled-ingest	Ensure ingest diagnostics artifacts exist	2026-02-27T00:56:41.0530589Z [36;1m            "timeout_attempts": sum([0m
+scheduled-ingest	Ensure ingest diagnostics artifacts exist	2026-02-27T00:56:41.0530878Z [36;1m                1 for item in attempts[0m
+scheduled-ingest	Ensure ingest diagnostics artifacts exist	2026-02-27T00:56:41.0531328Z [36;1m                if (item.get("failure_class") == "timeout" or item.get("cause_code") == "timeout_request")[0m
+scheduled-ingest	Ensure ingest diagnostics artifacts exist	2026-02-27T00:56:41.0531768Z [36;1m            ),[0m
+scheduled-ingest	Ensure ingest diagnostics artifacts exist	2026-02-27T00:56:41.0532016Z [36;1m            "failure_class_counts": failure_counts,[0m
+scheduled-ingest	Ensure ingest diagnostics artifacts exist	2026-02-27T00:56:41.0532494Z [36;1m        },[0m
+scheduled-ingest	Ensure ingest diagnostics artifacts exist	2026-02-27T00:56:41.0532766Z [36;1m        "dead_letter_path": report.get("dead_letter_path"),[0m
+scheduled-ingest	Ensure ingest diagnostics artifacts exist	2026-02-27T00:56:41.0533106Z [36;1m        "attempt_timeline": attempts,[0m
+scheduled-ingest	Ensure ingest diagnostics artifacts exist	2026-02-27T00:56:41.0533367Z [36;1m    }[0m
+scheduled-ingest	Ensure ingest diagnostics artifacts exist	2026-02-27T00:56:41.0533663Z [36;1m    classification_path.parent.mkdir(parents=True, exist_ok=True)[0m
+scheduled-ingest	Ensure ingest diagnostics artifacts exist	2026-02-27T00:56:41.0534271Z [36;1m    classification_path.write_text(json.dumps(artifact, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")[0m
+scheduled-ingest	Ensure ingest diagnostics artifacts exist	2026-02-27T00:56:41.0534765Z [36;1m[0m
+scheduled-ingest	Ensure ingest diagnostics artifacts exist	2026-02-27T00:56:41.0535068Z [36;1mif not comment_template_path.exists() and report.get("success") is False:[0m
+scheduled-ingest	Ensure ingest diagnostics artifacts exist	2026-02-27T00:56:41.0535509Z [36;1m    repo = os.environ.get("GITHUB_REPOSITORY", "")[0m
+scheduled-ingest	Ensure ingest diagnostics artifacts exist	2026-02-27T00:56:41.0535855Z [36;1m    run_id = os.environ.get("GITHUB_RUN_ID", "")[0m
+scheduled-ingest	Ensure ingest diagnostics artifacts exist	2026-02-27T00:56:41.0536264Z [36;1m    server = os.environ.get("GITHUB_SERVER_URL", "https://github.com")[0m
+scheduled-ingest	Ensure ingest diagnostics artifacts exist	2026-02-27T00:56:41.0536761Z [36;1m    run_url = f"{server}/{repo}/actions/runs/{run_id}" if repo and run_id else ""[0m
+scheduled-ingest	Ensure ingest diagnostics artifacts exist	2026-02-27T00:56:41.0537516Z [36;1m    lines = [[0m
+scheduled-ingest	Ensure ingest diagnostics artifacts exist	2026-02-27T00:56:41.0537814Z [36;1m        "[DEVELOP][INGEST FAILURE TEMPLATE]",[0m
+scheduled-ingest	Ensure ingest diagnostics artifacts exist	2026-02-27T00:56:41.0538277Z [36;1m        "report_path: develop_report/YYYY-MM-DD_issueNNN_ingest_failure_report.md",[0m
+scheduled-ingest	Ensure ingest diagnostics artifacts exist	2026-02-27T00:56:41.0538692Z [36;1m        "evidence:",[0m
+scheduled-ingest	Ensure ingest diagnostics artifacts exist	2026-02-27T00:56:41.0538944Z [36;1m        f"- workflow_run: {run_url}",[0m
+scheduled-ingest	Ensure ingest diagnostics artifacts exist	2026-02-27T00:56:41.0539250Z [36;1m        f"- ingest_report: `{report_path}`",[0m
+scheduled-ingest	Ensure ingest diagnostics artifacts exist	2026-02-27T00:56:41.0539618Z [36;1m        f"- classification_artifact: `{classification_path}`",[0m
+scheduled-ingest	Ensure ingest diagnostics artifacts exist	2026-02-27T00:56:41.0540016Z [36;1m        f"- dead_letter: `{report.get('dead_letter_path')}`",[0m
+scheduled-ingest	Ensure ingest diagnostics artifacts exist	2026-02-27T00:56:41.0540399Z [36;1m        f"- failure_class: `{report.get('failure_class')}`",[0m
+scheduled-ingest	Ensure ingest diagnostics artifacts exist	2026-02-27T00:56:41.0540771Z [36;1m        f"- failure_type: `{report.get('failure_type')}`",[0m
+scheduled-ingest	Ensure ingest diagnostics artifacts exist	2026-02-27T00:56:41.0541140Z [36;1m        f"- cause_code: `{report.get('cause_code')}`",[0m
+scheduled-ingest	Ensure ingest diagnostics artifacts exist	2026-02-27T00:56:41.0541650Z [36;1m        f"- failure_reason: `{report.get('failure_reason')}`",[0m
+scheduled-ingest	Ensure ingest diagnostics artifacts exist	2026-02-27T00:56:41.0542009Z [36;1m        "next_status: status/in-progress",[0m
+scheduled-ingest	Ensure ingest diagnostics artifacts exist	2026-02-27T00:56:41.0542279Z [36;1m    ][0m
+scheduled-ingest	Ensure ingest diagnostics artifacts exist	2026-02-27T00:56:41.0542576Z [36;1m    comment_template_path.parent.mkdir(parents=True, exist_ok=True)[0m
+scheduled-ingest	Ensure ingest diagnostics artifacts exist	2026-02-27T00:56:41.0543077Z [36;1m    comment_template_path.write_text("\n".join(lines) + "\n", encoding="utf-8")[0m
+scheduled-ingest	Ensure ingest diagnostics artifacts exist	2026-02-27T00:56:41.0543464Z [36;1mPY[0m
+scheduled-ingest	Ensure ingest diagnostics artifacts exist	2026-02-27T00:56:41.0587031Z shell: /usr/bin/bash -e {0}
+scheduled-ingest	Ensure ingest diagnostics artifacts exist	2026-02-27T00:56:41.0587588Z env:
+scheduled-ingest	Ensure ingest diagnostics artifacts exist	2026-02-27T00:56:41.0587912Z   SUPABASE_URL: ***
+scheduled-ingest	Ensure ingest diagnostics artifacts exist	2026-02-27T00:56:41.0588232Z   SUPABASE_SERVICE_ROLE_KEY: ***
+scheduled-ingest	Ensure ingest diagnostics artifacts exist	2026-02-27T00:56:41.0588622Z   DATA_GO_KR_KEY: ***
+scheduled-ingest	Ensure ingest diagnostics artifacts exist	2026-02-27T00:56:41.0589275Z   DATABASE_URL: ***
+scheduled-ingest	Ensure ingest diagnostics artifacts exist	2026-02-27T00:56:41.0589540Z   INTERNAL_JOB_TOKEN: ***
+scheduled-ingest	Ensure ingest diagnostics artifacts exist	2026-02-27T00:56:41.0589777Z   API_BASE_URL: http://127.0.0.1:8100
+scheduled-ingest	Ensure ingest diagnostics artifacts exist	2026-02-27T00:56:41.0590125Z   INGEST_SCHEDULE_PAYLOAD: data/collector_live_payload.json
+scheduled-ingest	Ensure ingest diagnostics artifacts exist	2026-02-27T00:56:41.0590512Z   pythonLocation: /opt/hostedtoolcache/Python/3.13.12/x64
+scheduled-ingest	Ensure ingest diagnostics artifacts exist	2026-02-27T00:56:41.0590939Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.13.12/x64/lib/pkgconfig
+scheduled-ingest	Ensure ingest diagnostics artifacts exist	2026-02-27T00:56:41.0591358Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.13.12/x64
+scheduled-ingest	Ensure ingest diagnostics artifacts exist	2026-02-27T00:56:41.0591721Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.13.12/x64
+scheduled-ingest	Ensure ingest diagnostics artifacts exist	2026-02-27T00:56:41.0592075Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.13.12/x64
+scheduled-ingest	Ensure ingest diagnostics artifacts exist	2026-02-27T00:56:41.0592443Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.13.12/x64/lib
+scheduled-ingest	Ensure ingest diagnostics artifacts exist	2026-02-27T00:56:41.0592754Z ##[endgroup]
+scheduled-ingest	Upload ingest report artifact	﻿2026-02-27T00:56:41.1006691Z ##[group]Run actions/upload-artifact@v4
+scheduled-ingest	Upload ingest report artifact	2026-02-27T00:56:41.1006993Z with:
+scheduled-ingest	Upload ingest report artifact	2026-02-27T00:56:41.1007479Z   name: ingest-schedule-report
+scheduled-ingest	Upload ingest report artifact	2026-02-27T00:56:41.1008234Z   path: data/ingest_schedule_report.json
+scheduled-ingest	Upload ingest report artifact	data/ingest_schedule_payload_route_report.json
+scheduled-ingest	Upload ingest report artifact	data/ingest_schedule_failure_classification.json
+scheduled-ingest	Upload ingest report artifact	data/ingest_schedule_failure_comment_template.md
+scheduled-ingest	Upload ingest report artifact	
+scheduled-ingest	Upload ingest report artifact	2026-02-27T00:56:41.1009000Z   if-no-files-found: error
+scheduled-ingest	Upload ingest report artifact	2026-02-27T00:56:41.1009223Z   compression-level: 6
+scheduled-ingest	Upload ingest report artifact	2026-02-27T00:56:41.1009438Z   overwrite: false
+scheduled-ingest	Upload ingest report artifact	2026-02-27T00:56:41.1009641Z   include-hidden-files: false
+scheduled-ingest	Upload ingest report artifact	2026-02-27T00:56:41.1010121Z env:
+scheduled-ingest	Upload ingest report artifact	2026-02-27T00:56:41.1010541Z   SUPABASE_URL: ***
+scheduled-ingest	Upload ingest report artifact	2026-02-27T00:56:41.1010945Z   SUPABASE_SERVICE_ROLE_KEY: ***
+scheduled-ingest	Upload ingest report artifact	2026-02-27T00:56:41.1011515Z   DATA_GO_KR_KEY: ***
+scheduled-ingest	Upload ingest report artifact	2026-02-27T00:56:41.1012293Z   DATABASE_URL: ***
+scheduled-ingest	Upload ingest report artifact	2026-02-27T00:56:41.1012734Z   INTERNAL_JOB_TOKEN: ***
+scheduled-ingest	Upload ingest report artifact	2026-02-27T00:56:41.1013113Z   API_BASE_URL: http://127.0.0.1:8100
+scheduled-ingest	Upload ingest report artifact	2026-02-27T00:56:41.1013551Z   INGEST_SCHEDULE_PAYLOAD: data/collector_live_payload.json
+scheduled-ingest	Upload ingest report artifact	2026-02-27T00:56:41.1024481Z   pythonLocation: /opt/hostedtoolcache/Python/3.13.12/x64
+scheduled-ingest	Upload ingest report artifact	2026-02-27T00:56:41.1025151Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.13.12/x64/lib/pkgconfig
+scheduled-ingest	Upload ingest report artifact	2026-02-27T00:56:41.1025813Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.13.12/x64
+scheduled-ingest	Upload ingest report artifact	2026-02-27T00:56:41.1026331Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.13.12/x64
+scheduled-ingest	Upload ingest report artifact	2026-02-27T00:56:41.1026710Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.13.12/x64
+scheduled-ingest	Upload ingest report artifact	2026-02-27T00:56:41.1027296Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.13.12/x64/lib
+scheduled-ingest	Upload ingest report artifact	2026-02-27T00:56:41.1027635Z ##[endgroup]
+scheduled-ingest	Upload ingest report artifact	2026-02-27T00:56:41.3222647Z Multiple search paths detected. Calculating the least common ancestor of all paths
+scheduled-ingest	Upload ingest report artifact	2026-02-27T00:56:41.3229044Z The least common ancestor is /home/runner/work/2026-/2026-/data. This will be the root directory of the artifact
+scheduled-ingest	Upload ingest report artifact	2026-02-27T00:56:41.3230307Z With the provided path, there will be 4 files uploaded
+scheduled-ingest	Upload ingest report artifact	2026-02-27T00:56:41.3235633Z Artifact name is valid!
+scheduled-ingest	Upload ingest report artifact	2026-02-27T00:56:41.3236958Z Root directory input is valid!
+scheduled-ingest	Upload ingest report artifact	2026-02-27T00:56:41.6149270Z Beginning upload of artifact content to blob storage
+scheduled-ingest	Upload ingest report artifact	2026-02-27T00:56:41.9188210Z Uploaded bytes 2318
+scheduled-ingest	Upload ingest report artifact	2026-02-27T00:56:41.9947633Z Finished uploading artifact content to blob storage!
+scheduled-ingest	Upload ingest report artifact	2026-02-27T00:56:41.9951147Z SHA256 digest of uploaded artifact zip is 5c12685e884667bd49cb5b3dd45669c3fefb537250c3feda4a5327b2a11754bf
+scheduled-ingest	Upload ingest report artifact	2026-02-27T00:56:41.9953195Z Finalizing artifact upload
+scheduled-ingest	Upload ingest report artifact	2026-02-27T00:56:42.1445561Z Artifact ingest-schedule-report.zip successfully finalized. Artifact ID 5683008530
+scheduled-ingest	Upload ingest report artifact	2026-02-27T00:56:42.1447040Z Artifact ingest-schedule-report has been successfully uploaded! Final size is 2318 bytes. Artifact ID is 5683008530
+scheduled-ingest	Upload ingest report artifact	2026-02-27T00:56:42.1454510Z Artifact download URL: https://github.com/iAmSomething/2026-/actions/runs/22467650760/artifacts/5683008530
+scheduled-ingest	Upload dead-letter artifact (optional)	﻿2026-02-27T00:56:42.1579768Z ##[group]Run actions/upload-artifact@v4
+scheduled-ingest	Upload dead-letter artifact (optional)	2026-02-27T00:56:42.1580085Z with:
+scheduled-ingest	Upload dead-letter artifact (optional)	2026-02-27T00:56:42.1580296Z   name: ingest-schedule-dead-letter
+scheduled-ingest	Upload dead-letter artifact (optional)	2026-02-27T00:56:42.1580573Z   path: data/dead_letter/*.json
+scheduled-ingest	Upload dead-letter artifact (optional)	2026-02-27T00:56:42.1580830Z   if-no-files-found: ignore
+scheduled-ingest	Upload dead-letter artifact (optional)	2026-02-27T00:56:42.1581070Z   compression-level: 6
+scheduled-ingest	Upload dead-letter artifact (optional)	2026-02-27T00:56:42.1581282Z   overwrite: false
+scheduled-ingest	Upload dead-letter artifact (optional)	2026-02-27T00:56:42.1581491Z   include-hidden-files: false
+scheduled-ingest	Upload dead-letter artifact (optional)	2026-02-27T00:56:42.1581718Z env:
+scheduled-ingest	Upload dead-letter artifact (optional)	2026-02-27T00:56:42.1582054Z   SUPABASE_URL: ***
+scheduled-ingest	Upload dead-letter artifact (optional)	2026-02-27T00:56:42.1582384Z   SUPABASE_SERVICE_ROLE_KEY: ***
+scheduled-ingest	Upload dead-letter artifact (optional)	2026-02-27T00:56:42.1582782Z   DATA_GO_KR_KEY: ***
+scheduled-ingest	Upload dead-letter artifact (optional)	2026-02-27T00:56:42.1583471Z   DATABASE_URL: ***
+scheduled-ingest	Upload dead-letter artifact (optional)	2026-02-27T00:56:42.1583752Z   INTERNAL_JOB_TOKEN: ***
+scheduled-ingest	Upload dead-letter artifact (optional)	2026-02-27T00:56:42.1583996Z   API_BASE_URL: http://127.0.0.1:8100
+scheduled-ingest	Upload dead-letter artifact (optional)	2026-02-27T00:56:42.1584333Z   INGEST_SCHEDULE_PAYLOAD: data/collector_live_payload.json
+scheduled-ingest	Upload dead-letter artifact (optional)	2026-02-27T00:56:42.1584735Z   pythonLocation: /opt/hostedtoolcache/Python/3.13.12/x64
+scheduled-ingest	Upload dead-letter artifact (optional)	2026-02-27T00:56:42.1585156Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.13.12/x64/lib/pkgconfig
+scheduled-ingest	Upload dead-letter artifact (optional)	2026-02-27T00:56:42.1585613Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.13.12/x64
+scheduled-ingest	Upload dead-letter artifact (optional)	2026-02-27T00:56:42.1585995Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.13.12/x64
+scheduled-ingest	Upload dead-letter artifact (optional)	2026-02-27T00:56:42.1586369Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.13.12/x64
+scheduled-ingest	Upload dead-letter artifact (optional)	2026-02-27T00:56:42.1586749Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.13.12/x64/lib
+scheduled-ingest	Upload dead-letter artifact (optional)	2026-02-27T00:56:42.1587070Z ##[endgroup]
+scheduled-ingest	Upload dead-letter artifact (optional)	2026-02-27T00:56:42.3782441Z With the provided path, there will be 1 file uploaded
+scheduled-ingest	Upload dead-letter artifact (optional)	2026-02-27T00:56:42.3788139Z Artifact name is valid!
+scheduled-ingest	Upload dead-letter artifact (optional)	2026-02-27T00:56:42.3789524Z Root directory input is valid!
+scheduled-ingest	Upload dead-letter artifact (optional)	2026-02-27T00:56:42.6685036Z Beginning upload of artifact content to blob storage
+scheduled-ingest	Upload dead-letter artifact (optional)	2026-02-27T00:56:43.0054075Z Uploaded bytes 17283
+scheduled-ingest	Upload dead-letter artifact (optional)	2026-02-27T00:56:43.0774534Z Finished uploading artifact content to blob storage!
+scheduled-ingest	Upload dead-letter artifact (optional)	2026-02-27T00:56:43.0778439Z SHA256 digest of uploaded artifact zip is 1da26666b3df3f480e37963d2a20a0d703628bf3fe3d42e9dbac18b990fef55e
+scheduled-ingest	Upload dead-letter artifact (optional)	2026-02-27T00:56:43.0780412Z Finalizing artifact upload
+scheduled-ingest	Upload dead-letter artifact (optional)	2026-02-27T00:56:43.2192969Z Artifact ingest-schedule-dead-letter.zip successfully finalized. Artifact ID 5683008705
+scheduled-ingest	Upload dead-letter artifact (optional)	2026-02-27T00:56:43.2194423Z Artifact ingest-schedule-dead-letter has been successfully uploaded! Final size is 17283 bytes. Artifact ID is 5683008705
+scheduled-ingest	Upload dead-letter artifact (optional)	2026-02-27T00:56:43.2202843Z Artifact download URL: https://github.com/iAmSomething/2026-/actions/runs/22467650760/artifacts/5683008705
+scheduled-ingest	Post Checkout	﻿2026-02-27T00:56:43.2363168Z Post job cleanup.
+scheduled-ingest	Post Checkout	2026-02-27T00:56:43.3356352Z [command]/usr/bin/git version
+scheduled-ingest	Post Checkout	2026-02-27T00:56:43.3400439Z git version 2.53.0
+scheduled-ingest	Post Checkout	2026-02-27T00:56:43.3447445Z Temporarily overriding HOME='/home/runner/work/_temp/ef81be0b-9b53-4197-b559-961f6af55e92' before making global git config changes
+scheduled-ingest	Post Checkout	2026-02-27T00:56:43.3449047Z Adding repository directory to the temporary git global config as a safe directory
+scheduled-ingest	Post Checkout	2026-02-27T00:56:43.3463178Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/2026-/2026-
+scheduled-ingest	Post Checkout	2026-02-27T00:56:43.3503995Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+scheduled-ingest	Post Checkout	2026-02-27T00:56:43.3542283Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+scheduled-ingest	Post Checkout	2026-02-27T00:56:43.3809384Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+scheduled-ingest	Post Checkout	2026-02-27T00:56:43.3831947Z http.https://github.com/.extraheader
+scheduled-ingest	Post Checkout	2026-02-27T00:56:43.3846360Z [command]/usr/bin/git config --local --unset-all http.https://github.com/.extraheader
+scheduled-ingest	Post Checkout	2026-02-27T00:56:43.3879917Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+scheduled-ingest	Post Checkout	2026-02-27T00:56:43.4118983Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+scheduled-ingest	Post Checkout	2026-02-27T00:56:43.4151726Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+scheduled-ingest	Complete job	﻿2026-02-27T00:56:43.4508513Z Cleaning up orphan processes
+scheduled-ingest	Complete job	2026-02-27T00:56:43.4922804Z Terminate orphan process: pid (2375) (uvicorn)
