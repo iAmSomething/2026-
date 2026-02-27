@@ -1,0 +1,24 @@
+{
+  "schema_version": "collector_ingest_failure_classification.v1",
+  "generated_at": "2026-02-27T00:16:38.624752+00:00",
+  "source_input_path": "data/collector_live_payload.json",
+  "payload_run_type": "collector_live_coverage_v2",
+  "payload_record_count": 30,
+  "runner": {
+    "success": false,
+    "raw_success": false,
+    "attempt_count": 0,
+    "run_ids": [],
+    "started_at": null,
+    "finished_at": null,
+    "elapsed_seconds": null,
+    "failure_class": "workflow_step_interrupted",
+    "failure_type": "workflow_interrupted",
+    "cause_code": "unknown",
+    "failure_reason": "ingest step interrupted",
+    "timeout_attempts": 0,
+    "failure_class_counts": {}
+  },
+  "dead_letter_path": null,
+  "attempt_timeline": []
+}

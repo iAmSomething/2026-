@@ -1,0 +1,69 @@
+{
+  "issue": 339,
+  "evaluated_at": "2026-02-27T00:17:17.614832+00:00",
+  "matchup_id": "2026_local|기초자치단체장|26-710",
+  "region_code": "26-710",
+  "office_type": "기초자치단체장",
+  "scenario_count": 1,
+  "scenario_keys": [
+    "default"
+  ],
+  "scenario_summaries": [
+    {
+      "scenario_key": "default",
+      "scenario_type": "multi_candidate",
+      "scenario_title": "다자대결: 김도읍, 박형준, 전재수",
+      "option_names": [
+        "김도읍",
+        "박형준",
+        "전재수"
+      ]
+    }
+  ],
+  "required_three_blocks_detail": {
+    "h2h-전재수-박형준": {
+      "present": false,
+      "expected_option_names": [
+        "박형준",
+        "전재수"
+      ],
+      "observed_option_names": [],
+      "option_set_match": false,
+      "all_values_present": false
+    },
+    "h2h-전재수-김도읍": {
+      "present": false,
+      "expected_option_names": [
+        "김도읍",
+        "전재수"
+      ],
+      "observed_option_names": [],
+      "option_set_match": false,
+      "all_values_present": false
+    },
+    "multi-전재수": {
+      "present": false,
+      "expected_option_names": [
+        "김도읍",
+        "박형준",
+        "전재수"
+      ],
+      "observed_option_names": [],
+      "option_set_match": false,
+      "all_values_present": false
+    }
+  },
+  "acceptance_checks": {
+    "scenario_count_ge_3": false,
+    "has_required_three_blocks": false,
+    "block_option_mixing_zero": false,
+    "required_block_values_present": false,
+    "default_removed": false,
+    "acceptance_pass": false
+  },
+  "capture": {
+    "url": "https://2026-api-production.up.railway.app/api/v1/matchups/2026_local%7C%EA%B8%B0%EC%B4%88%EC%9E%90%EC%B9%98%EB%8B%A8%EC%B2%B4%EC%9E%A5%7C26-710",
+    "captured_at": "2026-02-27T00:17:17.613772+00:00",
+    "capture_output_path": "data/issue339_runtime_after_capture_blocked_update10.json"
+  }
+}
