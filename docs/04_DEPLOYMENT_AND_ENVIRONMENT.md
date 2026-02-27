@@ -116,6 +116,7 @@ PYTHONPATH=. .venv/bin/python scripts/sync_elections_master.py \
 - `INTERNAL_JOB_TOKEN`
 4. 선택 환경변수:
 - `RELATIVE_DATE_POLICY` (`strict_fail` 기본, `allow_estimated_timestamp` 선택)
+- `API_READ_CACHE_TTL_SEC` (초 단위, 기본 `0`=비활성, 권장 `15~30`)
 4. CI 부트스트랩 전략:
 - `DATABASE_URL` secret가 비어 있으면 workflow service postgres(`postgresql://postgres:postgres@127.0.0.1:5432/app`)로 자동 fallback
 - secret preflight는 fallback 반영 후 실행되어 DB URL 누락 원인을 즉시 표시

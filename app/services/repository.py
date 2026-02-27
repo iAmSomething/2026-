@@ -1,7 +1,12 @@
+import copy
 import json
 import re
+import time
 from datetime import date
+from threading import Lock
+from typing import Any
 
+from app.config import get_settings
 from app.services.candidate_token_policy import is_noise_candidate_token
 from app.services.errors import DuplicateConflictError
 from app.services.fingerprint import merge_observation_by_priority
@@ -11,12 +16,66 @@ def _is_noise_candidate_option(option_name: str | None, candidate_id: str | None
     return is_noise_candidate_token(option_name)
 
 
+_API_READ_CACHE: dict[str, tuple[float, Any]] = {}
+_API_READ_CACHE_LOCK = Lock()
+
+
+def clear_api_read_cache() -> None:
+    with _API_READ_CACHE_LOCK:
+        _API_READ_CACHE.clear()
+
+
+def _api_read_cache_ttl_sec() -> float:
+    try:
+        ttl = float(get_settings().api_read_cache_ttl_sec)
+    except Exception:  # noqa: BLE001
+        return 0.0
+    return max(ttl, 0.0)
+
+
+def _api_read_cache_get(cache_key: str) -> Any | None:
+    ttl = _api_read_cache_ttl_sec()
+    if ttl <= 0:
+        return None
+    now = time.monotonic()
+    with _API_READ_CACHE_LOCK:
+        item = _API_READ_CACHE.get(cache_key)
+        if item is None:
+            return None
+        expire_at, payload = item
+        if expire_at <= now:
+            _API_READ_CACHE.pop(cache_key, None)
+            return None
+        return copy.deepcopy(payload)
+
+
+def _api_read_cache_set(cache_key: str, payload: Any) -> None:
+    ttl = _api_read_cache_ttl_sec()
+    if ttl <= 0:
+        return
+    with _API_READ_CACHE_LOCK:
+        _API_READ_CACHE[cache_key] = (time.monotonic() + ttl, copy.deepcopy(payload))
+
+
+def _api_read_cache_key(*parts: object) -> str:
+    normalized: list[str] = []
+    for part in parts:
+        if isinstance(part, date):
+            normalized.append(part.isoformat())
+        else:
+            normalized.append(str(part))
+    return "|".join(normalized)
+
+
 class PostgresRepository:
     def __init__(self, conn):
         self.conn = conn
 
     def rollback(self) -> None:
         self.conn.rollback()
+
+    def _invalidate_api_read_cache(self) -> None:
+        clear_api_read_cache()
 
     def create_ingestion_run(self, run_type: str, extractor_version: str, llm_model: str | None) -> int:
         with self.conn.cursor() as cur:
@@ -30,6 +89,7 @@ class PostgresRepository:
             )
             run_id = cur.fetchone()["id"]
         self.conn.commit()
+        self._invalidate_api_read_cache()
         return run_id
 
     def finish_ingestion_run(self, run_id: int, status: str, processed_count: int, error_count: int) -> None:
@@ -43,6 +103,7 @@ class PostgresRepository:
                 (status, processed_count, error_count, run_id),
             )
         self.conn.commit()
+        self._invalidate_api_read_cache()
 
     def update_ingestion_policy_counters(
         self,
@@ -62,6 +123,7 @@ class PostgresRepository:
                 (date_inference_failed_count, date_inference_estimated_count, run_id),
             )
         self.conn.commit()
+        self._invalidate_api_read_cache()
 
     def upsert_region(self, region: dict) -> None:
         with self.conn.cursor() as cur:
@@ -79,6 +141,7 @@ class PostgresRepository:
                 region,
             )
         self.conn.commit()
+        self._invalidate_api_read_cache()
 
     def upsert_candidate(self, candidate: dict) -> None:
         payload = dict(candidate)
@@ -145,6 +208,7 @@ class PostgresRepository:
                 payload,
             )
         self.conn.commit()
+        self._invalidate_api_read_cache()
 
     def upsert_article(self, article: dict) -> int:
         with self.conn.cursor() as cur:
@@ -165,6 +229,7 @@ class PostgresRepository:
             )
             article_id = cur.fetchone()["id"]
         self.conn.commit()
+        self._invalidate_api_read_cache()
         return article_id
 
     def _find_observation_by_fingerprint(self, poll_fingerprint: str) -> dict | None:
@@ -298,6 +363,7 @@ class PostgresRepository:
             )
             observation_id = cur.fetchone()["id"]
         self.conn.commit()
+        self._invalidate_api_read_cache()
         return observation_id
 
     def upsert_matchup(self, matchup: dict) -> None:
@@ -320,6 +386,7 @@ class PostgresRepository:
                 matchup,
             )
         self.conn.commit()
+        self._invalidate_api_read_cache()
 
     def upsert_poll_option(self, observation_id: int, option: dict) -> None:
         payload = dict(option)
@@ -400,6 +467,7 @@ class PostgresRepository:
                 payload,
             )
         self.conn.commit()
+        self._invalidate_api_read_cache()
 
     def delete_candidate_default_poll_options(self, observation_id: int) -> int:
         with self.conn.cursor() as cur:
@@ -414,6 +482,7 @@ class PostgresRepository:
             )
             deleted = int(cur.rowcount or 0)
         self.conn.commit()
+        self._invalidate_api_read_cache()
         return deleted
 
     def fetch_candidate_default_poll_options(self, observation_id: int) -> list[dict]:
@@ -448,6 +517,7 @@ class PostgresRepository:
                 (entity_type, entity_id, issue_type, review_note),
             )
         self.conn.commit()
+        self._invalidate_api_read_cache()
 
     def count_review_queue(self) -> int:
         with self.conn.cursor() as cur:
@@ -456,6 +526,11 @@ class PostgresRepository:
         return int(row.get("count", 0) or 0)
 
     def fetch_dashboard_summary(self, as_of: date | None):
+        cache_key = _api_read_cache_key("dashboard_summary", as_of or "none")
+        cached = _api_read_cache_get(cache_key)
+        if cached is not None:
+            return cached
+
         params = []
         as_of_filter = ""
         if as_of is not None:
@@ -541,11 +616,17 @@ class PostgresRepository:
 
         with self.conn.cursor() as cur:
             cur.execute(query, params)
-            rows = cur.fetchall()
+            rows = [dict(row) for row in (cur.fetchall() or [])]
 
+        _api_read_cache_set(cache_key, rows)
         return rows
 
     def fetch_dashboard_map_latest(self, as_of: date | None, limit: int = 100):
+        cache_key = _api_read_cache_key("dashboard_map_latest", as_of or "none", limit)
+        cached = _api_read_cache_get(cache_key)
+        if cached is not None:
+            return cached
+
         params = []
         as_of_filter = ""
         if as_of is not None:
@@ -614,9 +695,17 @@ class PostgresRepository:
 
         with self.conn.cursor() as cur:
             cur.execute(query, params)
-            return cur.fetchall()
+            rows = [dict(row) for row in (cur.fetchall() or [])]
+
+        _api_read_cache_set(cache_key, rows)
+        return rows
 
     def fetch_dashboard_big_matches(self, as_of: date | None, limit: int = 3):
+        cache_key = _api_read_cache_key("dashboard_big_matches", as_of or "none", limit)
+        cached = _api_read_cache_get(cache_key)
+        if cached is not None:
+            return cached
+
         params = []
         as_of_filter = ""
         if as_of is not None:
@@ -701,7 +790,10 @@ class PostgresRepository:
 
         with self.conn.cursor() as cur:
             cur.execute(query, params)
-            return cur.fetchall()
+            rows = [dict(row) for row in (cur.fetchall() or [])]
+
+        _api_read_cache_set(cache_key, rows)
+        return rows
 
     def fetch_dashboard_quality(self):
         with self.conn.cursor() as cur:
@@ -1415,6 +1507,7 @@ class PostgresRepository:
                 payload,
             )
         self.conn.commit()
+        self._invalidate_api_read_cache()
 
     def fetch_all_regions(self) -> list[dict]:
         with self.conn.cursor() as cur:
@@ -1816,11 +1909,23 @@ class PostgresRepository:
             return cur.fetchone()
 
     def get_matchup(self, matchup_id: str):
+        cache_key = _api_read_cache_key("matchup", matchup_id)
+        cached = _api_read_cache_get(cache_key)
+        if cached is not None:
+            return cached
+
         matchup_meta = self._find_matchup_meta(matchup_id)
         if not matchup_meta:
             return None
 
         canonical_matchup_id = matchup_meta["matchup_id"]
+        canonical_cache_key = _api_read_cache_key("matchup", canonical_matchup_id)
+        if canonical_cache_key != cache_key:
+            canonical_cached = _api_read_cache_get(canonical_cache_key)
+            if canonical_cached is not None:
+                _api_read_cache_set(cache_key, canonical_cached)
+                return canonical_cached
+
         region_for_title = self._fetch_region_for_matchup_title(matchup_meta.get("region_code"))
         canonical_title = self._derive_matchup_title_from_region(
             region_for_title,
@@ -1829,7 +1934,7 @@ class PostgresRepository:
         )
         observation = self._fetch_latest_matchup_observation(canonical_matchup_id)
         if not observation:
-            return {
+            result = {
                 "matchup_id": canonical_matchup_id,
                 "region_code": matchup_meta["region_code"],
                 "office_type": matchup_meta["office_type"],
@@ -1866,6 +1971,10 @@ class PostgresRepository:
                 "scenarios": [],
                 "options": [],
             }
+            _api_read_cache_set(canonical_cache_key, result)
+            if canonical_cache_key != cache_key:
+                _api_read_cache_set(cache_key, result)
+            return result
 
         options = self._normalize_options(observation.get("options"))
         scenarios, primary_options = self._build_matchup_scenarios(options)
@@ -1875,7 +1984,7 @@ class PostgresRepository:
         article_title = observation_title or None
         if article_title and article_title == canonical_title:
             article_title = None
-        return {
+        result = {
             "matchup_id": observation["matchup_id"],
             "region_code": observation["region_code"],
             "office_type": observation["office_type"],
@@ -1912,6 +2021,10 @@ class PostgresRepository:
             "scenarios": scenarios,
             "options": primary_options,
         }
+        _api_read_cache_set(canonical_cache_key, result)
+        if canonical_cache_key != cache_key:
+            _api_read_cache_set(cache_key, result)
+        return result
 
     def get_candidate(self, candidate_id: str):
         with self.conn.cursor() as cur:
@@ -2146,6 +2259,7 @@ class PostgresRepository:
             )
             row = cur.fetchone()
         self.conn.commit()
+        self._invalidate_api_read_cache()
         return row
 
     def fetch_review_queue_stats(self, *, window_hours: int = 24):
