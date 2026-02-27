@@ -31,6 +31,9 @@ class ContractTest(unittest.TestCase):
             REVIEW_QUEUE_SCHEMA["properties"]["issue_type"]["enum"],
             list(ISSUE_TAXONOMY),
         )
+        self.assertIn("scenario_key", POLL_OPTION_SCHEMA["properties"])
+        self.assertIn("scenario_type", POLL_OPTION_SCHEMA["properties"])
+        self.assertIn("scenario_title", POLL_OPTION_SCHEMA["properties"])
 
     def test_normalization_contract_single(self) -> None:
         out = normalize_value("38%")

@@ -176,6 +176,66 @@ class CollectorExtractTest(unittest.TestCase):
         self.assertEqual(errors[0].issue_type, "extract_error")
         self.assertEqual(errors[0].error_code, "POLICY_ONLY_SIGNAL")
 
+    def test_extract_candidate_options_include_default_scenario_fields(self) -> None:
+        collector = PollCollector()
+        article = Article(
+            id=stable_id("art", "https://example.com/default-scenario"),
+            url="https://example.com/default-scenario",
+            title="서울시장 가상대결",
+            publisher="테스트",
+            published_at="2026-02-18T00:00:00+09:00",
+            snippet="서울시장 여론조사",
+            collected_at="2026-02-18T00:00:00+00:00",
+            raw_hash="h8",
+            raw_text="서울시장 여론조사에서 정원오 44% vs 오세훈 31%",
+        )
+        observations, options, errors = collector.extract(article)
+        self.assertEqual(len(errors), 0)
+        self.assertEqual(len(observations), 1)
+        self.assertGreaterEqual(len(options), 2)
+        for option in options:
+            self.assertEqual(option.scenario_key, "default")
+            self.assertIsNone(option.scenario_type)
+            self.assertIsNone(option.scenario_title)
+
+    def test_extract_splits_mixed_h2h_multi_scenarios(self) -> None:
+        collector = PollCollector()
+        mixed_title = (
+            "[2026지방선거] 부산시장, 전재수 43.4-박형준 32.3%, "
+            "전재수 43.8%-김도읍33.2%...다자대결 전재수26.8% 선두"
+        )
+        article = Article(
+            id=stable_id("art", "https://example.com/mixed-scenario"),
+            url="https://example.com/mixed-scenario",
+            title=mixed_title,
+            publisher="테스트",
+            published_at="2026-02-18T00:00:00+09:00",
+            snippet=mixed_title[:120],
+            collected_at="2026-02-18T00:00:00+00:00",
+            raw_hash="h9",
+            raw_text=f"{mixed_title} 부산 기장군 여론조사",
+        )
+        observations, options, errors = collector.extract(article)
+        self.assertEqual(len(errors), 0)
+        self.assertEqual(len(observations), 1)
+        candidate_rows = [row for row in options if row.option_type == "candidate"]
+        scenario_keys = {row.scenario_key for row in candidate_rows}
+        scenario_types = {row.scenario_type for row in candidate_rows}
+        self.assertNotIn("default", scenario_keys)
+        self.assertIn("h2h-전재수-박형준", scenario_keys)
+        self.assertIn("h2h-전재수-김도읍", scenario_keys)
+        self.assertIn("multi-전재수", scenario_keys)
+        self.assertIn("head_to_head", scenario_types)
+        self.assertIn("multi_candidate", scenario_types)
+        self.assertEqual({row.option_name for row in candidate_rows}, {"전재수", "박형준", "김도읍"})
+
+        grouped: dict[str, set[str]] = {}
+        for row in candidate_rows:
+            key = str(row.scenario_key)
+            grouped.setdefault(key, set()).add(row.option_name)
+        self.assertEqual(grouped["h2h-전재수-박형준"], {"전재수", "박형준"})
+        self.assertEqual(grouped["h2h-전재수-김도읍"], {"전재수", "김도읍"})
+
     def test_relative_date_strict_fail_routes_to_review_queue(self) -> None:
         collector = PollCollector(relative_date_policy="strict_fail")
         article = Article(

@@ -127,6 +127,11 @@ class PollCollector:
         (re.compile(r"지난\s*주"), -7, "relative_week", 0.60),
         (re.compile(r"최근"), 0, "relative_recent", 0.45),
     )
+    _SCENARIO_NAME_RE = re.compile(r"[가-힣]{2,6}")
+    _SCENARIO_H2H_PAIR_RE = re.compile(
+        r"([가-힣]{2,6})\s*([0-9]{1,2}(?:\.[0-9]+)?)\s*%?\s*[-~]\s*([가-힣]{2,6})\s*([0-9]{1,2}(?:\.[0-9]+)?)\s*%?"
+    )
+    _SCENARIO_MULTI_SINGLE_RE = re.compile(r"다자대결[^가-힣0-9%]*([가-힣]{2,6})\s*([0-9]{1,2}(?:\.[0-9]+)?)\s*%?")
 
     def __init__(
         self,
@@ -468,6 +473,13 @@ class PollCollector:
                         payload={"article_id": article.id},
                     )
                 )
+            else:
+                self._split_candidate_matchup_scenarios(
+                    survey_name=article.title,
+                    body_text=article.raw_text,
+                    observation=observation,
+                    options=options,
+                )
         except Exception as exc:
             errors.append(
                 new_review_queue_item(
@@ -580,11 +592,15 @@ class PollCollector:
         option_name: str,
         value_raw: str,
         evidence_text: str,
+        scenario_key: str | None = "default",
+        scenario_type: str | None = None,
+        scenario_title: str | None = None,
     ) -> PollOption:
         normalized = normalize_value(value_raw)
         candidate_id = build_candidate_id(option_name)
+        normalized_scenario_key = (scenario_key or "default").strip() or "default"
         return PollOption(
-            id=stable_id("opt", observation.id, candidate_id, value_raw),
+            id=stable_id("opt", observation.id, candidate_id, value_raw, normalized_scenario_key),
             observation_id=observation.id,
             option_type=option_type,
             option_name=option_name,
@@ -596,6 +612,265 @@ class PollCollector:
             is_missing=normalized.is_missing,
             margin_of_error=observation.margin_of_error,
             evidence_text=evidence_text,
+            scenario_key=normalized_scenario_key,
+            scenario_type=scenario_type,
+            scenario_title=scenario_title,
+        )
+
+    def _split_candidate_matchup_scenarios(
+        self,
+        *,
+        survey_name: str | None,
+        body_text: str | None,
+        observation: PollObservation,
+        options: list[PollOption],
+    ) -> bool:
+        text = self._cleanup_space(f"{survey_name or ''} {body_text or ''}")
+        if "다자대결" not in text:
+            return False
+
+        candidate_indexes = [idx for idx, row in enumerate(options) if row.option_type == "candidate"]
+        if len(candidate_indexes) < 3:
+            return False
+
+        for idx in candidate_indexes:
+            if not options[idx].scenario_key:
+                options[idx].scenario_key = "default"
+
+        h2h_pairs = self._extract_h2h_pairs(text)
+        if len(h2h_pairs) < 2:
+            return False
+
+        names_by_index = {idx: self._scenario_name_token(options[idx].option_name) for idx in candidate_indexes}
+        candidate_indexes_all = list(candidate_indexes)
+        names_all = dict(names_by_index)
+        used_indexes: set[int] = set()
+        assigned = False
+        anchor_for_multi: str | None = None
+
+        for left_name, left_value, right_name, right_value in h2h_pairs:
+            left_idx = self._match_candidate_index(
+                options=options,
+                candidate_indexes=candidate_indexes_all,
+                names_by_index=names_all,
+                name=left_name,
+                value=left_value,
+                exclude=used_indexes,
+            )
+            if left_idx is None:
+                left_idx = self._clone_candidate_option(
+                    options=options,
+                    observation=observation,
+                    candidate_indexes=candidate_indexes_all,
+                    names_by_index=names_all,
+                    name=left_name,
+                    value=left_value,
+                    evidence_text=text,
+                )
+                if left_idx is not None:
+                    candidate_indexes_all.append(left_idx)
+                    names_all[left_idx] = left_name
+
+            right_idx = self._match_candidate_index(
+                options=options,
+                candidate_indexes=candidate_indexes_all,
+                names_by_index=names_all,
+                name=right_name,
+                value=right_value,
+                exclude=used_indexes,
+            )
+            if right_idx is None:
+                right_idx = self._clone_candidate_option(
+                    options=options,
+                    observation=observation,
+                    candidate_indexes=candidate_indexes_all,
+                    names_by_index=names_all,
+                    name=right_name,
+                    value=right_value,
+                    evidence_text=text,
+                )
+                if right_idx is not None:
+                    candidate_indexes_all.append(right_idx)
+                    names_all[right_idx] = right_name
+
+            if left_idx is None or right_idx is None or left_idx == right_idx:
+                continue
+
+            scenario_key = f"h2h-{left_name}-{right_name}"
+            scenario_title = f"{left_name} vs {right_name}"
+            for idx, name, value in (
+                (left_idx, left_name, left_value),
+                (right_idx, right_name, right_value),
+            ):
+                row = options[idx]
+                self._override_option_value(row, value)
+                row.option_name = name
+                row.candidate_id = build_candidate_id(name)
+                row.scenario_key = scenario_key
+                row.scenario_type = "head_to_head"
+                row.scenario_title = scenario_title
+                self._refresh_option_identity(option=row, observation=observation)
+                used_indexes.add(idx)
+
+            if anchor_for_multi is None:
+                anchor_for_multi = left_name
+            assigned = True
+
+        multi_indexes = [idx for idx in candidate_indexes_all if idx not in used_indexes and names_all.get(idx)]
+        multi_anchor = self._extract_multi_anchor(text)
+        if multi_anchor is not None:
+            multi_name, multi_value = multi_anchor
+            multi_idx = self._match_candidate_index(
+                options=options,
+                candidate_indexes=candidate_indexes_all,
+                names_by_index=names_all,
+                name=multi_name,
+                value=multi_value,
+                exclude=used_indexes,
+            )
+            if multi_idx is None:
+                multi_idx = self._clone_candidate_option(
+                    options=options,
+                    observation=observation,
+                    candidate_indexes=candidate_indexes_all,
+                    names_by_index=names_all,
+                    name=multi_name,
+                    value=multi_value,
+                    evidence_text=text,
+                )
+                if multi_idx is not None:
+                    candidate_indexes_all.append(multi_idx)
+                    names_all[multi_idx] = multi_name
+            if multi_idx is not None:
+                self._override_option_value(options[multi_idx], multi_value)
+                options[multi_idx].option_name = multi_name
+                options[multi_idx].candidate_id = build_candidate_id(multi_name)
+                self._refresh_option_identity(option=options[multi_idx], observation=observation)
+                if multi_idx not in multi_indexes and multi_idx not in used_indexes:
+                    multi_indexes.append(multi_idx)
+
+        if not assigned or not multi_indexes:
+            return False
+
+        multi_key = f"multi-{anchor_for_multi or names_all.get(multi_indexes[0]) or '후보'}"
+        for idx in multi_indexes:
+            row = options[idx]
+            row.scenario_key = multi_key
+            row.scenario_type = "multi_candidate"
+            row.scenario_title = "다자대결"
+            self._refresh_option_identity(option=row, observation=observation)
+        return True
+
+    def _extract_h2h_pairs(self, text: str) -> list[tuple[str, float, str, float]]:
+        pairs: list[tuple[str, float, str, float]] = []
+        seen: set[tuple[str, float, str, float]] = set()
+        for match in self._SCENARIO_H2H_PAIR_RE.finditer(text):
+            left_name = self._scenario_name_token(match.group(1))
+            right_name = self._scenario_name_token(match.group(3))
+            if not left_name or not right_name or left_name == right_name:
+                continue
+            try:
+                left_value = float(match.group(2))
+                right_value = float(match.group(4))
+            except (TypeError, ValueError):
+                continue
+            key = (left_name, left_value, right_name, right_value)
+            if key in seen:
+                continue
+            seen.add(key)
+            pairs.append(key)
+        return pairs
+
+    def _extract_multi_anchor(self, text: str) -> tuple[str, float] | None:
+        match = self._SCENARIO_MULTI_SINGLE_RE.search(text)
+        if not match:
+            return None
+        name = self._scenario_name_token(match.group(1))
+        if not name:
+            return None
+        try:
+            value = float(match.group(2))
+        except (TypeError, ValueError):
+            return None
+        return name, value
+
+    def _scenario_name_token(self, value: str | None) -> str:
+        text = str(value or "").strip()
+        if not text:
+            return ""
+        match = self._SCENARIO_NAME_RE.search(text)
+        return match.group(0) if match else text
+
+    def _scenario_value(self, option: PollOption) -> float:
+        if option.value_mid is None:
+            return float("-inf")
+        try:
+            return float(option.value_mid)
+        except (TypeError, ValueError):
+            return float("-inf")
+
+    def _match_candidate_index(
+        self,
+        *,
+        options: list[PollOption],
+        candidate_indexes: list[int],
+        names_by_index: dict[int, str],
+        name: str,
+        value: float,
+        exclude: set[int],
+    ) -> int | None:
+        candidates = [idx for idx in candidate_indexes if idx not in exclude and names_by_index.get(idx) == name]
+        if not candidates:
+            return None
+        exact = [idx for idx in candidates if abs(self._scenario_value(options[idx]) - value) <= 0.15]
+        if not exact:
+            return None
+        exact.sort(key=lambda idx: abs(self._scenario_value(options[idx]) - value))
+        return exact[0]
+
+    def _clone_candidate_option(
+        self,
+        *,
+        options: list[PollOption],
+        observation: PollObservation,
+        candidate_indexes: list[int],
+        names_by_index: dict[int, str],
+        name: str,
+        value: float,
+        evidence_text: str,
+    ) -> int | None:
+        template_indexes = [idx for idx in candidate_indexes if names_by_index.get(idx) == name]
+        if not template_indexes:
+            return None
+        template_indexes.sort(key=lambda idx: abs(self._scenario_value(options[idx]) - value))
+        template = options[template_indexes[0]]
+        cloned = self._build_option(
+            observation=observation,
+            option_type=template.option_type,
+            option_name=name,
+            value_raw=f"{value:.1f}%",
+            evidence_text=template.evidence_text or evidence_text,
+            scenario_key="default",
+        )
+        options.append(cloned)
+        return len(options) - 1
+
+    def _override_option_value(self, option: PollOption, value: float) -> None:
+        raw = f"{value:.1f}%"
+        normalized = normalize_value(raw)
+        option.value_raw = raw
+        option.value_min = normalized.value_min
+        option.value_max = normalized.value_max
+        option.value_mid = normalized.value_mid
+        option.is_missing = normalized.is_missing
+
+    def _refresh_option_identity(self, *, option: PollOption, observation: PollObservation) -> None:
+        option.id = stable_id(
+            "opt",
+            observation.id,
+            option.candidate_id or "",
+            option.value_raw or "",
+            option.scenario_key or "default",
         )
 
     def _canonicalize_url(self, url: str) -> str:
