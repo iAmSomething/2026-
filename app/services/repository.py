@@ -1959,6 +1959,12 @@ class PostgresRepository:
             if isinstance(party_name, str):
                 party_name = party_name.strip() or None
             row["party_name"] = party_name or "미확정(검수대기)"
+            if row.get("candidate_id"):
+                row["name_validity"] = "valid"
+            elif row["party_name"] != "미확정(검수대기)":
+                row["name_validity"] = "valid"
+            else:
+                row["name_validity"] = "unknown"
 
             normalized.append(row)
         if include_stats:

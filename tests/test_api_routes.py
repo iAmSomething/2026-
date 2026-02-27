@@ -792,9 +792,11 @@ def test_api_contract_fields():
     assert matchup.json()["options"][0]["party_inference_evidence"] == '{"rule":"name_rule","version":"v1"}'
     assert matchup.json()["options"][0]["candidate_id"] == "cand-jwo"
     assert matchup.json()["options"][0]["party_name"] == "더불어민주당"
+    assert matchup.json()["options"][0]["name_validity"] == "valid"
     assert matchup.json()["options"][0]["needs_manual_review"] is False
     assert matchup.json()["options"][1]["needs_manual_review"] is True
     assert matchup.json()["options"][1]["candidate_id"] == "cand-oh"
+    assert matchup.json()["options"][1]["name_validity"] == "valid"
     assert matchup.json()["candidate_noise_block_count"] == 0
     matchup_alias = client.get("/api/v1/matchups/m_2026_seoul_mayor")
     assert matchup_alias.status_code == 200

@@ -177,6 +177,7 @@ def test_get_matchup_groups_options_by_scenario_without_overwrite():
     )
     assert unknown_party_count == 1
     assert all(scenario["scenario_type"] in {"head_to_head", "multi_candidate"} for scenario in out["scenarios"])
+    assert all("name_validity" in option for scenario in out["scenarios"] for option in scenario["options"])
     assert len(out["options"]) == 2
 
 
