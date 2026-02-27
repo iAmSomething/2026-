@@ -337,7 +337,6 @@ def _derive_source_meta(row: dict) -> dict:
         "is_official_confirmed": has_nesdc,
     }
 
-
 def _build_source_trace(
     *,
     row: dict,
@@ -368,6 +367,36 @@ def _normalize_title_fields(
     if normalized_article and normalized_article == normalized_canonical:
         normalized_article = None
     return normalized_canonical or fallback_title, normalized_canonical, normalized_article
+
+
+def _selection_freshness_anchor(row: dict) -> tuple[str, datetime | None]:
+    official_release_at = _to_datetime(row.get("official_release_at"))
+    article_published_at = _to_datetime(row.get("article_published_at"))
+    observation_updated_at = _to_datetime(row.get("observation_updated_at"))
+    if official_release_at is not None:
+        return "official_release_at", official_release_at
+    if article_published_at is not None:
+        return "article_published_at", article_published_at
+    if observation_updated_at is not None:
+        return "observation_updated_at", observation_updated_at
+    return "none", None
+
+
+def _build_selection_trace(row: dict, *, selected_tier: str, source_meta: dict) -> dict:
+    anchor_field, anchor_at = _selection_freshness_anchor(row)
+    return {
+        "algorithm_version": "representative_v2",
+        "selected_source_tier": selected_tier,
+        "selected_source_channel": row.get("source_channel"),
+        "source_priority": source_meta.get("source_priority"),
+        "freshness_anchor_field": anchor_field,
+        "freshness_anchor_at": anchor_at,
+        "legal_completeness_score": row.get("legal_completeness_score"),
+        "legal_filled_count": row.get("legal_filled_count"),
+        "legal_required_count": row.get("legal_required_count"),
+        "source_grade": row.get("source_grade"),
+        "audience_scope": row.get("audience_scope"),
+    }
 
 
 def _is_cutoff_eligible_row(row: dict) -> bool:
@@ -618,6 +647,7 @@ def get_dashboard_summary(
     for (bucket, _option_name), candidates in sorted(grouped.items(), key=lambda x: (x[0][0], x[0][1])):
         selected_row, selected_tier = _select_summary_representative(candidates)
         source_meta = _derive_source_meta(selected_row)
+        selection_trace = _build_selection_trace(selected_row, selected_tier=selected_tier, source_meta=source_meta)
         point = SummaryPoint(
             option_name=selected_row["option_name"],
             value_mid=selected_row["value_mid"],
@@ -640,6 +670,7 @@ def get_dashboard_summary(
                 selected_source_tier=selected_tier,
                 selected_source_channel=selected_row.get("source_channel"),
             ),
+            selection_trace=selection_trace,
             verified=selected_row["verified"],
         )
         if bucket == "party_support":
@@ -761,12 +792,14 @@ def get_dashboard_map_latest(
     )
 
     for row in kept_rows:
+        selected_tier = _summary_source_tier(row)
         source_meta = _derive_source_meta(row)
         title, canonical_title, article_title = _normalize_title_fields(
             canonical_title=row.get("canonical_title"),
             article_title=row.get("article_title"),
             fallback_title=row["title"],
         )
+        selection_trace = _build_selection_trace(row, selected_tier=selected_tier, source_meta=source_meta)
         items.append(
             MapLatestPoint(
                 region_code=row["region_code"],
@@ -780,6 +813,8 @@ def get_dashboard_map_latest(
                 audience_scope=row.get("audience_scope"),
                 audience_region_code=row.get("audience_region_code"),
                 source_priority=source_meta["source_priority"],
+                selected_source_tier=selected_tier,
+                selected_source_channel=row.get("source_channel"),
                 official_release_at=source_meta["official_release_at"],
                 article_published_at=source_meta["article_published_at"],
                 freshness_hours=source_meta["freshness_hours"],
@@ -787,6 +822,7 @@ def get_dashboard_map_latest(
                 source_channel=row.get("source_channel"),
                 source_channels=row.get("source_channels") or [],
                 source_trace=_build_source_trace(row=row, source_meta=source_meta),
+                selection_trace=selection_trace,
             )
         )
     return DashboardMapLatestOut(

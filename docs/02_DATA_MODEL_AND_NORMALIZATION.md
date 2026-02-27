@@ -150,6 +150,12 @@
 5. API 파생 필드:
 - `source_priority`: `official|article|mixed`
 - `source_trace`: 공통 출처 메타 묶음(v2 표준 필드)
+ - `source_trace`: 공통 출처 메타 묶음(v2 표준 필드)
+6. 대표값 선택 추적 필드(`dashboard/summary`, `dashboard/map-latest`):
+- `selected_source_tier`, `selected_source_channel`
+- `selection_trace.algorithm_version`
+- `selection_trace.freshness_anchor_field`, `selection_trace.freshness_anchor_at`
+- `selection_trace.legal_completeness_score`, `selection_trace.legal_filled_count`, `selection_trace.legal_required_count`
 
 ## 8.1 후보 상세 결측/출처 계약 (`GET /api/v1/candidates/{candidate_id}`)
 1. 문자열 결측값(`''`, 공백)은 API 응답에서 `null`로 정규화한다.

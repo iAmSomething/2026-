@@ -1,0 +1,12 @@
+{
+  "summary": {
+    "has_legal_completeness_order": true,
+    "has_source_priority_score": true
+  },
+  "map_latest": {
+    "partition_includes_audience_scope": true,
+    "has_scope_rank": true,
+    "has_scope_rn_filter": true,
+    "has_legal_completeness_order": true
+  }
+}
