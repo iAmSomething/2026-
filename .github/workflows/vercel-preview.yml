@@ -80,6 +80,7 @@ jobs:
           DEPLOY_LOG=/tmp/vercel-preview-deploy.log
           # Deploy from repository root to avoid rootDirectory double-appending
           # when the Vercel project itself already has rootDirectory configured.
+          set +e
           npx vercel@latest deploy \
             --yes \
             --token "$VERCEL_TOKEN" \
@@ -90,6 +91,19 @@ jobs:
             --env API_BASE_URL="$WEB_API_BASE_URL" \
             --env NEXT_PUBLIC_API_BASE_URL="$WEB_API_BASE_URL" \
             2>&1 | tee "$DEPLOY_LOG"
+          deploy_exit=${PIPESTATUS[0]}
+          set -e
+
+          if [ "$deploy_exit" -ne 0 ]; then
+            if grep -Eiq "rate[ -]?limit|deployment rate limited|too many requests" "$DEPLOY_LOG"; then
+              echo "::warning::Vercel deployment was rate-limited. Treating as non-blocking signal."
+              echo "rate_limited=true" >> "$GITHUB_OUTPUT"
+              echo "preview_url=" >> "$GITHUB_OUTPUT"
+              exit 0
+            fi
+            echo "::error::Vercel deploy failed (exit=${deploy_exit})"
+            exit "$deploy_exit"
+          fi
 
           PREVIEW_URL=$(grep -Eo 'https://[^ ]+' "$DEPLOY_LOG" | grep 'vercel.app' | tail -n 1)
           if [ -z "$PREVIEW_URL" ]; then
@@ -97,11 +111,19 @@ jobs:
             exit 1
           fi
 
+          echo "rate_limited=false" >> "$GITHUB_OUTPUT"
           echo "preview_url=$PREVIEW_URL" >> "$GITHUB_OUTPUT"
 
       - name: Verify preview URL accessibility
         id: verify
         run: |
+          if [ "${{ steps.deploy.outputs.rate_limited }}" = "true" ]; then
+            echo "verified=false" >> "$GITHUB_OUTPUT"
+            echo "access_mode=rate_limited" >> "$GITHUB_OUTPUT"
+            echo "status_code=none" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
           PREVIEW_URL="${{ steps.deploy.outputs.preview_url }}"
           status_code=""
           for _ in $(seq 1 10); do
@@ -123,7 +145,7 @@ jobs:
           exit 1
 
       - name: Comment preview URL to issue
-        if: ${{ success() && env.ISSUE_NUMBER != '' }}
+        if: ${{ success() && env.ISSUE_NUMBER != '' && steps.deploy.outputs.rate_limited != 'true' }}
         uses: actions/github-script@v7
         with:
           script: |
@@ -147,6 +169,30 @@ jobs:
                 `- status_code: ${statusCode}`,
                 "",
                 "Access verification: curl status check"
+              ].join("\n")
+            });
+
+      - name: Comment rate-limit non-blocking note to issue
+        if: ${{ success() && env.ISSUE_NUMBER != '' && steps.deploy.outputs.rate_limited == 'true' }}
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const issueNumber = Number(process.env.ISSUE_NUMBER);
+            const rootDir = process.env.ROOT_DIR;
+            const runUrl = `${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: issueNumber,
+              body: [
+                "[DEVELOP] Vercel preview deployment was rate-limited (non-blocking policy applied).",
+                "",
+                `- root_dir: ${rootDir}`,
+                `- action_run: ${runUrl}`,
+                "- deploy_status: rate_limited_non_blocking",
+                "- required_followup: attach manual staging smoke evidence for feature validation",
+                "",
+                "Operational policy: Vercel rate-limit is treated as deploy-signal only, not a functional gate."
               ].join("\n")
             });
 
