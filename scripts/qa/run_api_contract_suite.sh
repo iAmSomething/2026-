@@ -143,7 +143,7 @@ class FakeRepo:
             }
         ]
 
-    def search_regions(self, query, limit=20):
+    def search_regions(self, query, limit=20, has_data=None):  # noqa: ARG002
         self._maybe_fail()
         if self.mode == "empty":
             return []
@@ -156,7 +156,7 @@ class FakeRepo:
             }
         ]
 
-    def fetch_region_elections(self, region_code):
+    def fetch_region_elections(self, region_code, topology="official", version_id=None):  # noqa: ARG002
         self._maybe_fail()
         if self.mode == "empty":
             return []
@@ -196,6 +196,7 @@ class FakeRepo:
             "options": [
                 {
                     "option_name": "정원오",
+                    "candidate_id": "cand-jwo",
                     "value_mid": 44.0,
                     "value_raw": "44%",
                     "party_inferred": True,
@@ -205,6 +206,7 @@ class FakeRepo:
                 },
                 {
                     "option_name": "오세훈",
+                    "candidate_id": "cand-oh",
                     "value_mid": 42.0,
                     "value_raw": "42%",
                     "party_inferred": False,
@@ -1070,6 +1072,20 @@ def main() -> int:
         ),
     )
 
+    expected_total = int(os.getenv("QA_API_CONTRACT_EXPECTED_TOTAL", "31"))
+    if len(cases) != expected_total:
+        cases.append(
+            {
+                "name": "suite_case_count_alignment",
+                "category": "meta",
+                "endpoint": "qa_api_contract_suite",
+                "status": "fail",
+                "error": f"expected_total={expected_total}, actual_total={len(cases)}",
+                "details": "case count mismatch between expected and executed suite cases",
+                "executed_at": datetime.now(timezone.utc).isoformat(),
+            }
+        )
+
     total = len(cases)
     passed = sum(1 for c in cases if c["status"] == "pass")
     failed = total - passed
@@ -1085,6 +1101,7 @@ def main() -> int:
         "suite": "qa_api_contract_suite",
         "generated_at": datetime.now(timezone.utc).isoformat(),
         "python": platform.python_version(),
+        "expected_total": expected_total,
         "summary": {
             "total": total,
             "pass": passed,
