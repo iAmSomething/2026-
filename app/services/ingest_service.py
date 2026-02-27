@@ -18,6 +18,7 @@ from app.services.errors import DuplicateConflictError
 from app.services.fingerprint import build_poll_fingerprint
 from app.services.ingest_input_normalization import normalize_option_type
 from app.services.normalization import normalize_percentage
+from app.services.region_code_normalizer import normalize_region_code_input
 
 PARTY_INFERENCE_REVIEW_THRESHOLD = 0.8
 SCENARIO_NAME_RE = re.compile(r"[가-힣]{2,6}")
@@ -43,6 +44,98 @@ CANDIDATE_PROFILE_REQUIRED_FOR_REVIEW = (
     "career_summary",
     "election_history",
 )
+SCOPE_INFERENCE_CONFLICT_THRESHOLD = 0.8
+SCOPE_INFERENCE_LOW_CONFIDENCE_THRESHOLD = 0.75
+POPULATION_CODE_RE = re.compile(r"\b(?:(?:KR-?)?\d{2}(?:-\d{3})?|\d{5})\b", re.IGNORECASE)
+SCOPE_NATIONAL_TOKENS = (
+    "전국",
+    "전국민",
+    "전국거주",
+    "대한민국",
+)
+SCOPE_REGIONAL_HINT_TOKENS = (
+    "광역",
+    "특별시",
+    "광역시",
+    "특별자치시",
+    "특별자치도",
+    "도거주",
+    "시도",
+)
+SCOPE_LOCAL_HINT_TOKENS = (
+    "시군구",
+    "구거주",
+    "군거주",
+    "읍면동",
+    "동거주",
+)
+POPULATION_REGION_ALIAS_TO_CODE = {
+    "서울특별시": "11-000",
+    "서울시": "11-000",
+    "서울": "11-000",
+    "부산광역시": "26-000",
+    "부산시": "26-000",
+    "부산": "26-000",
+    "대구광역시": "27-000",
+    "대구시": "27-000",
+    "대구": "27-000",
+    "인천광역시": "28-000",
+    "인천시": "28-000",
+    "인천": "28-000",
+    "광주광역시": "29-000",
+    "광주시": "29-000",
+    "광주": "29-000",
+    "대전광역시": "30-000",
+    "대전시": "30-000",
+    "대전": "30-000",
+    "울산광역시": "31-000",
+    "울산시": "31-000",
+    "울산": "31-000",
+    "세종특별자치시": "36-000",
+    "세종시": "36-000",
+    "세종": "36-000",
+    "경기도": "41-000",
+    "경기": "41-000",
+    "강원특별자치도": "42-000",
+    "강원도": "42-000",
+    "강원": "42-000",
+    "충청북도": "43-000",
+    "충북": "43-000",
+    "충청남도": "44-000",
+    "충남": "44-000",
+    "전북특별자치도": "45-000",
+    "전라북도": "45-000",
+    "전북": "45-000",
+    "전라남도": "46-000",
+    "전남": "46-000",
+    "경상북도": "47-000",
+    "경북": "47-000",
+    "경상남도": "48-000",
+    "경남": "48-000",
+    "제주특별자치도": "50-000",
+    "제주도": "50-000",
+    "제주": "50-000",
+    "강남구": "11-680",
+    "송파구": "11-710",
+    "서초구": "11-650",
+    "기장군": "26-710",
+    "해운대구": "26-350",
+    "연수구": "28-450",
+    "춘천시": "42-110",
+    "청주시": "43-110",
+    "천안시": "44-130",
+    "전주시": "45-110",
+    "목포시": "46-110",
+    "포항시": "47-110",
+    "창원시": "48-110",
+    "제주시": "50-110",
+    "서귀포시": "50-130",
+}
+SORTED_POPULATION_REGION_ALIASES = sorted(
+    POPULATION_REGION_ALIAS_TO_CODE.items(),
+    key=lambda item: len(item[0]),
+    reverse=True,
+)
 
 
 @dataclass
@@ -53,12 +146,192 @@ class IngestResult:
     status: str
 
 
+@dataclass
+class ScopeInferenceResolution:
+    scope: str | None
+    audience_region_code: str | None
+    inferred_scope: str | None
+    inferred_region_code: str | None
+    confidence: float
+    hard_fail_reason: str | None
+    low_confidence_reason: str | None
+
+
 def _infer_election_id(matchup_id: str) -> str:
     if "|" in matchup_id:
         return matchup_id.split("|", 1)[0]
     if ":" in matchup_id:
         return matchup_id.split(":", 1)[0]
     return "unknown"
+
+
+def _normalize_region_code(value: Any) -> str | None:
+    if value is None:
+        return None
+    normalized = normalize_region_code_input(str(value))
+    if normalized.canonical:
+        return normalized.canonical
+    raw = str(value).strip()
+    return raw or None
+
+
+def _to_sido_region_code(region_code: str | None) -> str | None:
+    normalized = _normalize_region_code(region_code)
+    if not normalized:
+        return None
+    if len(normalized) >= 2:
+        return f"{normalized[:2]}-000"
+    return normalized
+
+
+def _normalize_population_text(value: Any) -> tuple[str, str]:
+    if not isinstance(value, str):
+        return "", ""
+    raw = " ".join(value.strip().split())
+    compact = re.sub(r"\s+", "", raw)
+    return raw, compact
+
+
+def _infer_population_region_code(population_text: str, compact_text: str) -> str | None:
+    if not population_text and not compact_text:
+        return None
+
+    explicit_match = POPULATION_CODE_RE.search(population_text)
+    if explicit_match:
+        explicit_code = _normalize_region_code(explicit_match.group(0))
+        if explicit_code:
+            return explicit_code
+
+    for alias, code in SORTED_POPULATION_REGION_ALIASES:
+        if alias in population_text or alias in compact_text:
+            return code
+    return None
+
+
+def _infer_scope_from_sampling_population(
+    *,
+    sampling_population_text: Any,
+) -> tuple[str | None, str | None, float]:
+    population_text, compact_text = _normalize_population_text(sampling_population_text)
+    if not population_text and not compact_text:
+        return None, None, 0.0
+
+    scores = {"national": 0.0, "regional": 0.0, "local": 0.0}
+    if any(token in compact_text for token in SCOPE_NATIONAL_TOKENS):
+        scores["national"] += 3.0
+    if any(token in compact_text for token in SCOPE_REGIONAL_HINT_TOKENS):
+        scores["regional"] += 1.0
+    if any(token in compact_text for token in SCOPE_LOCAL_HINT_TOKENS):
+        scores["local"] += 1.0
+
+    inferred_region_code = _infer_population_region_code(population_text, compact_text)
+    if inferred_region_code:
+        if inferred_region_code.endswith("-000"):
+            scores["regional"] += 2.0
+        else:
+            scores["local"] += 2.0
+
+    ordered = sorted(scores.items(), key=lambda item: item[1], reverse=True)
+    top_scope, top_score = ordered[0]
+    second_score = ordered[1][1]
+    if top_score <= 0:
+        return None, inferred_region_code, 0.0
+    if top_score == second_score:
+        return None, inferred_region_code, 0.6
+    confidence = 0.92 if top_score - second_score >= 2 else 0.8
+    return top_scope, inferred_region_code, confidence
+
+
+def _resolve_observation_scope(observation_payload: dict[str, Any]) -> ScopeInferenceResolution:
+    explicit_scope = observation_payload.get("audience_scope")
+    explicit_region_code = _normalize_region_code(observation_payload.get("audience_region_code"))
+    observation_region_code = _normalize_region_code(observation_payload.get("region_code"))
+
+    inferred_scope, inferred_region_code, confidence = _infer_scope_from_sampling_population(
+        sampling_population_text=observation_payload.get("sampling_population_text")
+    )
+
+    if (
+        explicit_scope in {"national", "regional", "local"}
+        and inferred_scope in {"national", "regional", "local"}
+        and explicit_scope != inferred_scope
+        and confidence >= SCOPE_INFERENCE_CONFLICT_THRESHOLD
+    ):
+        return ScopeInferenceResolution(
+            scope=explicit_scope,
+            audience_region_code=explicit_region_code,
+            inferred_scope=inferred_scope,
+            inferred_region_code=inferred_region_code,
+            confidence=confidence,
+            hard_fail_reason=(
+                "AUDIENCE_SCOPE_CONFLICT_POPULATION "
+                f"declared={explicit_scope} inferred={inferred_scope} "
+                f"confidence={confidence:.2f} sampling_population={observation_payload.get('sampling_population_text')}"
+            ),
+            low_confidence_reason=None,
+        )
+
+    final_scope = explicit_scope if explicit_scope in {"national", "regional", "local"} else inferred_scope
+    if final_scope is None and observation_region_code:
+        final_scope = "regional" if observation_region_code.endswith("-000") else "local"
+
+    final_region_code = explicit_region_code
+    if final_scope == "national":
+        final_region_code = None
+    elif final_scope in {"regional", "local"}:
+        if final_region_code is None and inferred_region_code:
+            final_region_code = inferred_region_code
+        if final_region_code is None:
+            final_region_code = observation_region_code
+
+        if final_scope == "regional":
+            final_region_code = _to_sido_region_code(final_region_code)
+        elif final_scope == "local" and final_region_code and final_region_code.endswith("-000"):
+            if observation_region_code and not observation_region_code.endswith("-000"):
+                final_region_code = observation_region_code
+
+    region_conflict = False
+    if final_scope == "regional" and explicit_region_code and inferred_region_code:
+        region_conflict = _to_sido_region_code(explicit_region_code) != _to_sido_region_code(inferred_region_code)
+    elif final_scope == "local" and explicit_region_code and inferred_region_code:
+        region_conflict = _normalize_region_code(explicit_region_code) != _normalize_region_code(inferred_region_code)
+
+    if region_conflict and confidence >= SCOPE_INFERENCE_CONFLICT_THRESHOLD:
+        return ScopeInferenceResolution(
+            scope=final_scope,
+            audience_region_code=final_region_code,
+            inferred_scope=inferred_scope,
+            inferred_region_code=inferred_region_code,
+            confidence=confidence,
+            hard_fail_reason=(
+                "AUDIENCE_SCOPE_CONFLICT_REGION "
+                f"declared_region={explicit_region_code} inferred_region={inferred_region_code} "
+                f"scope={final_scope} confidence={confidence:.2f}"
+            ),
+            low_confidence_reason=None,
+        )
+
+    low_confidence_reason = None
+    if (
+        inferred_scope is not None
+        and confidence < SCOPE_INFERENCE_LOW_CONFIDENCE_THRESHOLD
+        and explicit_scope not in {"national", "regional", "local"}
+    ):
+        low_confidence_reason = (
+            "AUDIENCE_SCOPE_LOW_CONFIDENCE "
+            f"inferred={inferred_scope} confidence={confidence:.2f} "
+            f"sampling_population={observation_payload.get('sampling_population_text')}"
+        )
+
+    return ScopeInferenceResolution(
+        scope=final_scope,
+        audience_region_code=final_region_code,
+        inferred_scope=inferred_scope,
+        inferred_region_code=inferred_region_code,
+        confidence=confidence,
+        hard_fail_reason=None,
+        low_confidence_reason=low_confidence_reason,
+    )
 
 
 def _office_type_sg_types(office_type: str | None) -> tuple[str, ...]:
@@ -852,6 +1125,34 @@ def ingest_payload(payload: IngestPayload, repo) -> IngestResult:
                 }
             )
 
+            observation_payload = record.observation.model_dump()
+            scope_resolution = _resolve_observation_scope(observation_payload)
+            if scope_resolution.hard_fail_reason:
+                error_count += 1
+                try:
+                    repo.insert_review_queue(
+                        entity_type="poll_observation",
+                        entity_id=record.observation.observation_key,
+                        issue_type="mapping_error",
+                        review_note=scope_resolution.hard_fail_reason,
+                    )
+                except Exception:  # noqa: BLE001
+                    pass
+                continue
+
+            observation_payload["audience_scope"] = scope_resolution.scope
+            observation_payload["audience_region_code"] = scope_resolution.audience_region_code
+            if scope_resolution.low_confidence_reason:
+                try:
+                    repo.insert_review_queue(
+                        entity_type="poll_observation",
+                        entity_id=record.observation.observation_key,
+                        issue_type="mapping_error",
+                        review_note=scope_resolution.low_confidence_reason,
+                    )
+                except Exception:  # noqa: BLE001
+                    pass
+
             candidate_rows: list[dict[str, Any]] = []
             for candidate in record.candidates:
                 candidate_payload = candidate.model_dump()
@@ -876,7 +1177,6 @@ def ingest_payload(payload: IngestPayload, repo) -> IngestResult:
                         pass
 
             article_id = repo.upsert_article(record.article.model_dump())
-            observation_payload = record.observation.model_dump()
             if not observation_payload.get("poll_fingerprint"):
                 observation_payload["poll_fingerprint"] = build_poll_fingerprint(observation_payload)
 

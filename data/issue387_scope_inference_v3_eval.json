@@ -1,0 +1,16 @@
+{
+  "issue": 387,
+  "algorithm_version": "scope_inference_v3",
+  "sample_count": 38,
+  "eval_sample_count": 34,
+  "conflict_sample_count": 4,
+  "scope_precision": 1.0,
+  "scope_region_precision": 1.0,
+  "hard_fail_detection_recall": 1.0,
+  "acceptance_checks": {
+    "sample_count_ge_30": true,
+    "scope_precision_ge_0_9": true,
+    "scope_region_precision_ge_0_9": true,
+    "hard_fail_detection_recall_ge_0_9": true
+  }
+}

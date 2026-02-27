@@ -141,7 +141,7 @@ PAYLOAD = {
                 "matchup_id": "20260603|광역자치단체장|11-000",
                 "audience_scope": "national",
                 "audience_region_code": "11-000",
-                "sampling_population_text": "서울 거주 만 18세 이상",
+                "sampling_population_text": "전국 만 18세 이상 남녀",
                 "legal_completeness_score": 0.86,
                 "legal_filled_count": 6,
                 "legal_required_count": 7,
@@ -189,6 +189,85 @@ def test_ingest_error_pushes_review_queue():
     assert result.error_count == 1
     assert len(repo.review) == 1
     assert repo.review[0][2] == "ingestion_error"
+
+
+def test_scope_inference_from_population_text_sets_regional_scope_and_region_code():
+    repo = FakeRepo()
+    payload_data = deepcopy(PAYLOAD)
+    payload_data["records"][0]["observation"]["audience_scope"] = None
+    payload_data["records"][0]["observation"]["audience_region_code"] = None
+    payload_data["records"][0]["observation"]["sampling_population_text"] = "서울시 거주 만 18세 이상 남녀"
+    payload = IngestPayload.model_validate(payload_data)
+
+    result = ingest_payload(payload, repo)
+
+    assert result.status == "success"
+    assert result.error_count == 0
+    assert repo.observations["obs-1"]["audience_scope"] == "regional"
+    assert repo.observations["obs-1"]["audience_region_code"] == "11-000"
+
+
+def test_scope_conflict_between_declared_and_population_hard_fails_record():
+    repo = FakeRepo()
+    payload_data = deepcopy(PAYLOAD)
+    payload_data["records"][0]["observation"]["audience_scope"] = "national"
+    payload_data["records"][0]["observation"]["audience_region_code"] = None
+    payload_data["records"][0]["observation"]["sampling_population_text"] = "서울시 거주 만 18세 이상 남녀"
+    payload = IngestPayload.model_validate(payload_data)
+
+    result = ingest_payload(payload, repo)
+
+    assert result.status == "partial_success"
+    assert result.processed_count == 0
+    assert result.error_count == 1
+    assert "obs-1" not in repo.observations
+    assert any(
+        row[2] == "mapping_error" and "AUDIENCE_SCOPE_CONFLICT_POPULATION" in row[3]
+        for row in repo.review
+    )
+
+
+def test_scope_conflict_between_declared_and_population_region_hard_fails_record():
+    repo = FakeRepo()
+    payload_data = deepcopy(PAYLOAD)
+    payload_data["records"][0]["observation"]["audience_scope"] = "regional"
+    payload_data["records"][0]["observation"]["audience_region_code"] = "26-000"
+    payload_data["records"][0]["observation"]["sampling_population_text"] = "서울시 거주 만 18세 이상 남녀"
+    payload = IngestPayload.model_validate(payload_data)
+
+    result = ingest_payload(payload, repo)
+
+    assert result.status == "partial_success"
+    assert result.processed_count == 0
+    assert result.error_count == 1
+    assert "obs-1" not in repo.observations
+    assert any(
+        row[2] == "mapping_error" and "AUDIENCE_SCOPE_CONFLICT_REGION" in row[3]
+        for row in repo.review
+    )
+
+
+def test_scope_inference_from_population_text_sets_local_scope_and_region_code():
+    repo = FakeRepo()
+    payload_data = deepcopy(PAYLOAD)
+    payload_data["records"][0]["observation"]["region_code"] = "11-680"
+    payload_data["records"][0]["observation"]["matchup_id"] = "20260603|기초자치단체장|11-680"
+    payload_data["records"][0]["observation"]["office_type"] = "기초자치단체장"
+    payload_data["records"][0]["observation"]["audience_scope"] = None
+    payload_data["records"][0]["observation"]["audience_region_code"] = None
+    payload_data["records"][0]["observation"]["sampling_population_text"] = "서울 강남구 거주 만 18세 이상 남녀"
+    payload_data["records"][0]["region"]["region_code"] = "11-680"
+    payload_data["records"][0]["region"]["sigungu_name"] = "강남구"
+    payload_data["records"][0]["region"]["admin_level"] = "sigungu"
+    payload_data["records"][0]["region"]["parent_region_code"] = "11-000"
+    payload = IngestPayload.model_validate(payload_data)
+
+    result = ingest_payload(payload, repo)
+
+    assert result.status == "success"
+    assert result.error_count == 0
+    assert repo.observations["obs-1"]["audience_scope"] == "local"
+    assert repo.observations["obs-1"]["audience_region_code"] == "11-680"
 
 
 def test_duplicate_conflict_routes_to_specific_review_issue_type():
