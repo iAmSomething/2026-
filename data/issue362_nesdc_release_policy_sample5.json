@@ -1,0 +1,84 @@
+{
+  "issue": 362,
+  "generated_at_kst": "2026-02-27T11:19:27+09:00",
+  "as_of_kst": "2026-02-18T21:30:00+09:00",
+  "sample_size": 5,
+  "sample_note": "24h/48h mixed sample from pre-release probe run",
+  "rows": [
+    {
+      "ntt_id": "17354",
+      "pollster": "메타보이스(주)",
+      "release_policy_hours": 48,
+      "first_publish_at_kst": "2026-02-12 09:00",
+      "earliest_release_at_kst": "2026-02-14T09:00:00+09:00",
+      "collect_status": "fallback_collected",
+      "pending_reason_code": "pdf_pending",
+      "retry_schedule_hours": [
+        2,
+        6,
+        24
+      ],
+      "next_retry_at_kst": null
+    },
+    {
+      "ntt_id": "17298",
+      "pollster": "(주)데일리리서치",
+      "release_policy_hours": 24,
+      "first_publish_at_kst": "2026-02-13 09:00",
+      "earliest_release_at_kst": "2026-02-15T09:00:00+09:00",
+      "collect_status": "fallback_collected",
+      "pending_reason_code": "pdf_pending",
+      "retry_schedule_hours": [
+        2,
+        6,
+        24
+      ],
+      "next_retry_at_kst": null
+    },
+    {
+      "ntt_id": "17311",
+      "pollster": "조원씨앤아이",
+      "release_policy_hours": 24,
+      "first_publish_at_kst": "2026-02-11 05:00",
+      "earliest_release_at_kst": "2026-02-13T05:00:00+09:00",
+      "collect_status": "fallback_collected",
+      "pending_reason_code": "pdf_pending",
+      "retry_schedule_hours": [
+        2,
+        6,
+        24
+      ],
+      "next_retry_at_kst": null
+    },
+    {
+      "ntt_id": "17316",
+      "pollster": "한국갤럽조사연구소",
+      "release_policy_hours": 24,
+      "first_publish_at_kst": "2026-02-10 17:00",
+      "earliest_release_at_kst": "2026-02-12T17:00:00+09:00",
+      "collect_status": "fallback_collected",
+      "pending_reason_code": "pdf_pending",
+      "retry_schedule_hours": [
+        2,
+        6,
+        24
+      ],
+      "next_retry_at_kst": null
+    },
+    {
+      "ntt_id": "17417",
+      "pollster": "(주)리얼미터",
+      "release_policy_hours": 24,
+      "first_publish_at_kst": "2026-02-17 05:00",
+      "earliest_release_at_kst": "2026-02-19T05:00:00+09:00",
+      "collect_status": "pending_official_release",
+      "pending_reason_code": "release_not_open",
+      "retry_schedule_hours": [
+        2,
+        6,
+        24
+      ],
+      "next_retry_at_kst": "2026-02-19T07:00:00+09:00"
+    }
+  ]
+}

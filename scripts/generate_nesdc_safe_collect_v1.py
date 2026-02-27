@@ -20,6 +20,7 @@ OUT_REVIEW_QUEUE = "data/collector_nesdc_safe_collect_v1_review_queue_candidates
 
 GENERAL_RELEASE_HOURS = 24
 PERIODICAL_RELEASE_HOURS = 48
+RETRY_SCHEDULE_HOURS = (2, 6, 24)
 
 
 def _parse_json(path: str) -> dict[str, Any]:
@@ -108,6 +109,27 @@ def _extract_option_items(adapter_row: dict[str, Any]) -> list[dict[str, Any]]:
     return items
 
 
+def _build_retry_plan(release_at: datetime | None, *, as_of: datetime) -> tuple[list[dict[str, Any]], str | None]:
+    if release_at is None:
+        return [], None
+
+    retry_plan: list[dict[str, Any]] = []
+    next_retry_at_kst: str | None = None
+    for retry_after_hours in RETRY_SCHEDULE_HOURS:
+        retry_at = release_at + timedelta(hours=retry_after_hours)
+        due = as_of >= retry_at
+        retry_plan.append(
+            {
+                "retry_after_hours": retry_after_hours,
+                "retry_at_kst": retry_at.isoformat(timespec="seconds"),
+                "due": due,
+            }
+        )
+        if next_retry_at_kst is None and not due:
+            next_retry_at_kst = retry_at.isoformat(timespec="seconds")
+    return retry_plan, next_retry_at_kst
+
+
 def generate_nesdc_safe_collect_v1(
     *,
     registry_path: str = INPUT_REGISTRY,
@@ -144,6 +166,8 @@ def generate_nesdc_safe_collect_v1(
     fallback_count = 0
     template_fallback_count = 0
     hard_fallback_count = 0
+    release_not_open_count = 0
+    pdf_pending_count = 0
     eligibility_parse_error_count = 0
     safe_window_guard_block_count = 0
     manual_opt_out_count = 0
@@ -195,6 +219,7 @@ def generate_nesdc_safe_collect_v1(
             continue
 
         if not release_gate_passed:
+            retry_plan, next_retry_at_kst = _build_retry_plan(release_at, as_of=as_of)
             pending_records.append(
                 {
                     "ntt_id": ntt_id,
@@ -203,10 +228,15 @@ def generate_nesdc_safe_collect_v1(
                     "first_publish_at_kst": row.get("first_publish_at_kst"),
                     "release_policy_hours": release_policy_hours,
                     "release_at_kst": release_at.isoformat(timespec="seconds") if release_at else None,
+                    "earliest_release_at_kst": release_at.isoformat(timespec="seconds") if release_at else None,
                     "release_gate_passed": False,
                     "collect_status": "pending_official_release",
+                    "pending_reason_code": "release_not_open",
                     "source_channel": "nesdc",
                     "detail_url": row.get("detail_url"),
+                    "retry_schedule_hours": list(RETRY_SCHEDULE_HOURS),
+                    "retry_plan": retry_plan,
+                    "next_retry_at_kst": next_retry_at_kst,
                     "legal_meta": {
                         "survey_datetime": row.get("survey_datetime_text"),
                         "survey_population": row.get("survey_population"),
@@ -221,6 +251,7 @@ def generate_nesdc_safe_collect_v1(
                     "fallback_applied": False,
                 }
             )
+            release_not_open_count += 1
             if parsed_explicit is True:
                 safe_window_guard_block_count += 1
                 review_queue_candidates.append(
@@ -268,11 +299,16 @@ def generate_nesdc_safe_collect_v1(
             "first_publish_at_kst": row.get("first_publish_at_kst"),
             "release_policy_hours": release_policy_hours,
             "release_at_kst": release_at.isoformat(timespec="seconds") if release_at else None,
+            "earliest_release_at_kst": release_at.isoformat(timespec="seconds") if release_at else None,
             "release_gate_passed": True,
             "collect_status": "collected",
             "safe_window_eligible": True,
+            "pending_reason_code": None,
             "source_channel": "nesdc",
             "detail_url": row.get("detail_url"),
+            "retry_schedule_hours": list(RETRY_SCHEDULE_HOURS),
+            "retry_plan": [],
+            "next_retry_at_kst": None,
             "legal_meta": {
                 "survey_datetime": row.get("survey_datetime_text"),
                 "survey_population": row.get("survey_population"),
@@ -328,16 +364,21 @@ def generate_nesdc_safe_collect_v1(
         else:
             fallback_count += 1
             hard_fallback_count += 1
+            pdf_pending_count += 1
             record["fallback_applied"] = True
             record["collect_status"] = "fallback_collected"
+            record["pending_reason_code"] = "pdf_pending"
+            retry_plan, next_retry_at_kst = _build_retry_plan(release_at, as_of=as_of)
+            record["retry_plan"] = retry_plan
+            record["next_retry_at_kst"] = next_retry_at_kst
             review_queue_candidates.append(
                 new_review_queue_item(
                     entity_type="poll_observation",
                     entity_id=ntt_id or f"ntt-missing-{fallback_count}",
                     issue_type="extract_error",
                     stage="nesdc_safe_collect_v1",
-                    error_code="ADAPTER_FALLBACK_APPLIED",
-                    error_message="NESDC adapter parse failed or result items missing; fallback record emitted",
+                    error_code="pdf_pending",
+                    error_message="NESDC adapter parse failed or result items missing; pdf pending retry path scheduled",
                     source_url=row.get("detail_url"),
                     payload={
                         "ntt_id": ntt_id,
@@ -352,6 +393,26 @@ def generate_nesdc_safe_collect_v1(
     unique_pollsters = len([k for k, v in pollster_counter.items() if v > 0])
     normalization_ratio = round(normalization_ok_option_count / total_option_count, 4) if total_option_count else 0.0
     adapter_profile_counter = Counter((r.get("adapter_profile") or {}).get("profile_key") for r in output_records)
+    pending_reason_counts = {
+        "release_not_open": release_not_open_count,
+        "pdf_pending": pdf_pending_count,
+    }
+    release_plus2h_window_total = 0
+    release_plus2h_window_success = 0
+    for rec in output_records:
+        release_at_text = rec.get("release_at_kst")
+        release_at_dt = _parse_kst(release_at_text)
+        if release_at_dt is None:
+            continue
+        if as_of <= (release_at_dt + timedelta(hours=2)):
+            release_plus2h_window_total += 1
+            if rec.get("collect_status") in {"collected", "collected_template_fallback"}:
+                release_plus2h_window_success += 1
+    release_plus2h_success_rate = (
+        round(release_plus2h_window_success / release_plus2h_window_total, 4)
+        if release_plus2h_window_total
+        else None
+    )
 
     recent_registry_count = min(20, len(registry_rows))
     recent_pending = len(pending_records[:recent_registry_count])
@@ -369,6 +430,7 @@ def generate_nesdc_safe_collect_v1(
             "general_hours": general_release_hours,
             "periodical_hours": periodical_release_hours,
         },
+        "retry_schedule_hours": list(RETRY_SCHEDULE_HOURS),
         "counts": {
             "registry_total": len(registry_rows),
             "eligible_48h_total": len(eligible_rows),
@@ -388,8 +450,18 @@ def generate_nesdc_safe_collect_v1(
             "total_option_count": total_option_count,
             "recent20_pending_official_release_count": recent_pending,
             "recent20_release_policy_violation_count": release_policy_violation_count_recent20,
+            "release_not_open_count": release_not_open_count,
+            "pdf_pending_count": pdf_pending_count,
+            "release_plus2h_window_total": release_plus2h_window_total,
+            "release_plus2h_window_success": release_plus2h_window_success,
         },
+        "pending_reason_counts": pending_reason_counts,
         "adapter_profile_counts": dict(adapter_profile_counter),
+        "recollect_within_plus2h": {
+            "window_total": release_plus2h_window_total,
+            "success_count": release_plus2h_window_success,
+            "success_rate": release_plus2h_success_rate,
+        },
         "value_normalization": {
             "raw_and_normalized_option_count": normalization_ok_option_count,
             "raw_and_normalized_ratio": normalization_ratio,
