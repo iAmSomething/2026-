@@ -134,6 +134,23 @@ bash scripts/pm/link_report_to_issue.sh iAmSomething/2026- <issue_no> <보고서
 3. 해결 후 `status/in-review` -> PR -> `status/done`
 4. 최종 판단/변경사항은 `docs/`에 반영 후 close
 
+## 7.1 PM 코멘트 계약 규약
+1. `[PM ...]` 형식 코멘트는 아래 키를 반드시 포함한다.
+- `decision:`
+- `next_status:`
+2. 자동 생성 권장:
+```bash
+bash scripts/pm/comment_template.sh \
+  --kind pm \
+  --input reports/pm/pm_cycle_apply_YYYYMMDD_HHMMSS.md \
+  --output /tmp/pm_comment.md
+```
+3. 사전 검증:
+```bash
+bash scripts/pm/comment_template.sh --kind pm --input /tmp/pm_comment.md --validate-only
+```
+4. 검증 실패 시 코멘트 작성 중단(워크플로/스크립트 동일 정책).
+
 ## 8. 현재 운영상 주의사항
 1. Collector 보고서 경로는 `Collector_reports/`로 고정
 2. UIUX 보고서는 `UIUX_reports/` 기준으로 유지
