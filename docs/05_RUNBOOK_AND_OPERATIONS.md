@@ -226,6 +226,39 @@ python scripts/qa/reprocess_single_matchup.py \
 - `report.idempotency_evidence.new_observation_ids`가 빈 배열
 - `report.delta_after_first_to_after_second`의 집계 delta가 모두 0
 
+## 7.3 운영 복구 번들 CLI (Issue #391)
+1. 목적:
+- ingest 재실행 + 단건 매치업 재처리 + 핵심 API 캡처를 단일 명령으로 실행
+- dry-run/apply 모드를 공통으로 제공하고, 실패 시 재시도/롤백 가이드를 자동 출력
+2. 엔트리포인트:
+- `scripts/qa/run_ops_recovery_bundle.py`
+3. dry-run 예시:
+```bash
+python scripts/qa/run_ops_recovery_bundle.py \
+  --mode dry-run \
+  --api-base "http://127.0.0.1:8100" \
+  --matchup-id "20260603|광역자치단체장|11-000" \
+  --input "data/sample_ingest.json"
+```
+4. apply 예시:
+```bash
+python scripts/qa/run_ops_recovery_bundle.py \
+  --mode apply \
+  --api-base "http://127.0.0.1:8100" \
+  --matchup-id "20260603|광역자치단체장|11-000" \
+  --input "data/sample_ingest.json" \
+  --continue-on-error
+```
+5. 주요 산출물:
+- `recovery_bundle_report.json`
+- `ingest_retry_report.json` (ingest step 실행 시)
+- `reprocess_report.json` (reprocess step 실행 시)
+- `api_capture.json` (capture step 실행 시)
+6. 자동 체크리스트:
+- preflight(`DATABASE_URL`, `INTERNAL_JOB_TOKEN`)
+- ingest/reprocess/capture 단계별 성공 여부
+- 실패 단계별 `retry-guide`/`rollback-guide`
+
 ## 8. 모니터링 체크리스트
 1. 배치 성공률
 2. 기사 수집량 대비 추출 성공률
