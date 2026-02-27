@@ -435,6 +435,80 @@ def _scenario_key_is_default(value: Any) -> bool:
     return key in {"", "default"}
 
 
+def _has_explicit_candidate_scenarios(options: list[dict[str, Any]]) -> bool:
+    for row in options:
+        if row.get("option_type") != "candidate_matchup":
+            continue
+        if _scenario_key_is_default(row.get("scenario_key")):
+            continue
+        return True
+    return False
+
+
+def _backfill_multi_from_default_candidates(
+    *,
+    options: list[dict[str, Any]],
+    default_rows: list[dict[str, Any]],
+) -> bool:
+    multi_key = ""
+    multi_title = "다자대결"
+    multi_names: set[str] = set()
+
+    for row in options:
+        if row.get("option_type") != "candidate_matchup":
+            continue
+        key = str(row.get("scenario_key") or "").strip()
+        scenario_type = str(row.get("scenario_type") or "").strip()
+        if scenario_type != "multi_candidate" and not key.startswith("multi-"):
+            continue
+        if not multi_key:
+            multi_key = key
+        title = str(row.get("scenario_title") or "").strip()
+        if title:
+            multi_title = title
+        name = _scenario_name_token(row.get("option_name"))
+        if name:
+            multi_names.add(name)
+            row["option_name"] = name
+            row["scenario_type"] = "multi_candidate"
+            row["scenario_title"] = multi_title
+
+    if not multi_key:
+        return False
+
+    changed = False
+    for default_row in default_rows:
+        name = _scenario_name_token(default_row.get("option_name"))
+        if not name or name in multi_names:
+            continue
+        options.append(
+            {
+                "option_type": "candidate_matchup",
+                "option_name": name,
+                "candidate_id": None,
+                "party_name": None,
+                "scenario_key": multi_key,
+                "scenario_type": "multi_candidate",
+                "scenario_title": multi_title,
+                "value_raw": default_row.get("value_raw"),
+                "value_min": default_row.get("value_min"),
+                "value_max": default_row.get("value_max"),
+                "value_mid": default_row.get("value_mid"),
+                "is_missing": bool(default_row.get("is_missing", False)),
+                "party_inferred": False,
+                "party_inference_source": None,
+                "party_inference_confidence": None,
+                "candidate_verified": True,
+                "candidate_verify_source": None,
+                "candidate_verify_confidence": None,
+                "needs_manual_review": False,
+            }
+        )
+        multi_names.add(name)
+        changed = True
+    return changed
+
+
 def _repair_candidate_matchup_scenarios(
     *,
     survey_name: str | None,
@@ -825,6 +899,18 @@ def ingest_payload(payload: IngestPayload, repo) -> IngestResult:
                 survey_name=record.observation.survey_name,
                 options=normalized_options,
             )
+            if _has_explicit_candidate_scenarios(normalized_options):
+                fetch_default = getattr(repo, "fetch_candidate_default_poll_options", None)
+                if callable(fetch_default):
+                    prior_defaults = fetch_default(observation_id) or []
+                    if prior_defaults:
+                        _backfill_multi_from_default_candidates(
+                            options=normalized_options,
+                            default_rows=prior_defaults,
+                        )
+                cleanup_default = getattr(repo, "delete_candidate_default_poll_options", None)
+                if callable(cleanup_default):
+                    cleanup_default(observation_id)
 
             for normalized_option in normalized_options:
                 classification_reason = classification_reason_by_id.get(id(normalized_option))

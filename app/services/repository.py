@@ -456,6 +456,43 @@ class PostgresRepository:
             )
         self.conn.commit()
 
+    def delete_candidate_default_poll_options(self, observation_id: int) -> int:
+        with self.conn.cursor() as cur:
+            cur.execute(
+                """
+                DELETE FROM poll_options
+                WHERE observation_id = %s
+                  AND option_type = 'candidate_matchup'
+                  AND scenario_key = 'default'
+                """,
+                (observation_id,),
+            )
+            deleted = int(cur.rowcount or 0)
+        self.conn.commit()
+        return deleted
+
+    def fetch_candidate_default_poll_options(self, observation_id: int) -> list[dict]:
+        with self.conn.cursor() as cur:
+            cur.execute(
+                """
+                SELECT
+                    option_name,
+                    value_raw,
+                    value_min,
+                    value_max,
+                    value_mid,
+                    is_missing
+                FROM poll_options
+                WHERE observation_id = %s
+                  AND option_type = 'candidate_matchup'
+                  AND scenario_key = 'default'
+                ORDER BY option_name
+                """,
+                (observation_id,),
+            )
+            rows = cur.fetchall() or []
+        return [dict(row) for row in rows]
+
     def insert_review_queue(self, entity_type: str, entity_id: str, issue_type: str, review_note: str) -> None:
         with self.conn.cursor() as cur:
             cur.execute(
