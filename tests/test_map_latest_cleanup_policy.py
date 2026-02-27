@@ -46,6 +46,10 @@ def test_map_latest_exclusion_reason_classifies_noise_and_legacy() -> None:
     context_noise["option_name"] = "대비"
     assert _map_latest_exclusion_reason(context_noise) == "invalid_candidate_option_name"
 
+    runtime_noise = dict(row)
+    runtime_noise["option_name"] = "엔비디아"
+    assert _map_latest_exclusion_reason(runtime_noise) == "invalid_candidate_option_name"
+
     legacy = dict(row)
     legacy["title"] = "[2022 지방선거] 서울시장 가상대결"
     assert _map_latest_exclusion_reason(legacy) == "legacy_matchup_title"

@@ -306,6 +306,7 @@ class MatchupOut(BaseModel):
     date_inference_confidence: float | None = None
     nesdc_enriched: bool = False
     needs_manual_review: bool = False
+    candidate_noise_block_count: int = 0
     source_priority: Literal["official", "article", "mixed"] = Field(default="article", deprecated=True)
     official_release_at: datetime | None = Field(default=None, deprecated=True)
     article_published_at: datetime | None = Field(default=None, deprecated=True)

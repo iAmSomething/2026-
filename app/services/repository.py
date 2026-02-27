@@ -553,6 +553,33 @@ class PostgresRepository:
         self.conn.commit()
         self._invalidate_api_read_cache()
 
+    def ensure_review_queue_pending(self, entity_type: str, entity_id: str, issue_type: str, review_note: str) -> bool:
+        with self.conn.cursor() as cur:
+            cur.execute(
+                """
+                SELECT 1
+                FROM review_queue
+                WHERE entity_type = %s
+                  AND entity_id = %s
+                  AND issue_type = %s
+                  AND status IN ('pending', 'in_progress')
+                LIMIT 1
+                """,
+                (entity_type, entity_id, issue_type),
+            )
+            if cur.fetchone():
+                return False
+            cur.execute(
+                """
+                INSERT INTO review_queue (entity_type, entity_id, issue_type, status, review_note)
+                VALUES (%s, %s, %s, 'pending', %s)
+                """,
+                (entity_type, entity_id, issue_type, review_note),
+            )
+        self.conn.commit()
+        self._invalidate_api_read_cache()
+        return True
+
     def count_review_queue(self) -> int:
         with self.conn.cursor() as cur:
             cur.execute("SELECT COUNT(*)::int AS count FROM review_queue")
@@ -1876,7 +1903,7 @@ class PostgresRepository:
             return rows
 
     @staticmethod
-    def _normalize_options(options_payload) -> list[dict]:
+    def _normalize_options(options_payload, *, include_stats: bool = False) -> list[dict] | tuple[list[dict], dict]:
         options = options_payload
         if isinstance(options, str):
             try:
@@ -1888,6 +1915,7 @@ class PostgresRepository:
         if not isinstance(options, list):
             options = []
         normalized: list[dict] = []
+        candidate_noise_block_count = 0
         for option in options:
             if not isinstance(option, dict):
                 continue
@@ -1921,6 +1949,7 @@ class PostgresRepository:
             row["option_name"] = option_name
 
             if _is_noise_candidate_option(option_name, candidate_id):
+                candidate_noise_block_count += 1
                 continue
 
             if _is_low_quality_manual_candidate_option(row):
@@ -1932,6 +1961,10 @@ class PostgresRepository:
             row["party_name"] = party_name or "미확정(검수대기)"
 
             normalized.append(row)
+        if include_stats:
+            return normalized, {
+                "candidate_noise_block_count": candidate_noise_block_count,
+            }
         return normalized
 
     @staticmethod
@@ -2040,15 +2073,21 @@ class PostgresRepository:
         explicit_scenario_count = len([key for key in scenario_keys if key != "default"])
         return scenario_count, explicit_scenario_count
 
-    def _select_matchup_observation_bundle(self, observations: list[dict]) -> tuple[dict, list[dict], list[dict]]:
-        normalized_rows: list[tuple[dict, list[dict]]] = []
+    def _select_matchup_observation_bundle(self, observations: list[dict]) -> tuple[dict, list[dict], list[dict], int]:
+        normalized_rows: list[tuple[dict, list[dict], int]] = []
         selected_observation: dict | None = None
         selected_options: list[dict] = []
         selected_score: tuple[int, int, int, int] | None = None
+        fallback_noise_observation: dict | None = None
+        fallback_noise_block_count = 0
 
         for observation in observations:
-            normalized_options = self._normalize_options(observation.get("options"))
-            normalized_rows.append((observation, normalized_options))
+            normalized_options, stats = self._normalize_options(observation.get("options"), include_stats=True)
+            noise_block_count = int(stats.get("candidate_noise_block_count", 0) or 0)
+            normalized_rows.append((observation, normalized_options, noise_block_count))
+            if noise_block_count > fallback_noise_block_count:
+                fallback_noise_observation = observation
+                fallback_noise_block_count = noise_block_count
             if not normalized_options:
                 continue
             scenario_count, explicit_scenario_count = self._scenario_key_stats(normalized_options)
@@ -2064,15 +2103,19 @@ class PostgresRepository:
                 selected_options = normalized_options
 
         if selected_observation is None:
-            return observations[0], [], []
+            if fallback_noise_observation is not None:
+                return fallback_noise_observation, [], [], fallback_noise_block_count
+            return observations[0], [], [], 0
 
         bundle_key = self._observation_bundle_key(selected_observation)
         merged_options: list[dict] = []
         seen_option_keys: set[tuple] = set()
-        for observation, normalized_options in normalized_rows:
-            if not normalized_options:
-                continue
+        candidate_noise_block_count = 0
+        for observation, normalized_options, noise_block_count in normalized_rows:
             if self._observation_bundle_key(observation) != bundle_key:
+                continue
+            candidate_noise_block_count += noise_block_count
+            if not normalized_options:
                 continue
             for option in normalized_options:
                 option_key = self._matchup_option_identity(option)
@@ -2085,7 +2128,7 @@ class PostgresRepository:
             merged_options = [dict(row) for row in selected_options]
 
         scenarios, primary_options = self._build_matchup_scenarios(merged_options)
-        return selected_observation, scenarios, primary_options
+        return selected_observation, scenarios, primary_options, candidate_noise_block_count
 
     @staticmethod
     def _strip_region_suffix(name: str) -> str:
@@ -2213,6 +2256,7 @@ class PostgresRepository:
                 "article_published_at": None,
                 "nesdc_enriched": False,
                 "needs_manual_review": False,
+                "candidate_noise_block_count": 0,
                 "poll_fingerprint": None,
                 "source_channel": None,
                 "source_channels": [],
@@ -2225,7 +2269,26 @@ class PostgresRepository:
                 _api_read_cache_set(cache_key, result)
             return result
 
-        observation, scenarios, primary_options = self._select_matchup_observation_bundle(observations)
+        observation, scenarios, primary_options, candidate_noise_block_count = self._select_matchup_observation_bundle(
+            observations
+        )
+        needs_manual_review = bool(observation["needs_manual_review"])
+        if candidate_noise_block_count > 0 and not primary_options:
+            observation_key = str(observation.get("observation_key") or "").strip()
+            if observation_key:
+                try:
+                    self.ensure_review_queue_pending(
+                        entity_type="poll_observation",
+                        entity_id=observation_key,
+                        issue_type="mapping_error",
+                        review_note=(
+                            "runtime candidate noise guard removed all candidate options "
+                            f"(blocked={candidate_noise_block_count})"
+                        ),
+                    )
+                except Exception:
+                    pass
+            needs_manual_review = True
         observation_title = str(observation.get("title") or "").strip()
         if not canonical_title:
             canonical_title = observation_title or canonical_matchup_id
@@ -2261,7 +2324,8 @@ class PostgresRepository:
             "official_release_at": observation["official_release_at"],
             "article_published_at": observation["article_published_at"],
             "nesdc_enriched": observation["nesdc_enriched"],
-            "needs_manual_review": observation["needs_manual_review"],
+            "needs_manual_review": needs_manual_review,
+            "candidate_noise_block_count": candidate_noise_block_count,
             "poll_fingerprint": observation["poll_fingerprint"],
             "source_channel": observation["source_channel"],
             "source_channels": observation["source_channels"],

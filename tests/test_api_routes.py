@@ -795,6 +795,7 @@ def test_api_contract_fields():
     assert matchup.json()["options"][0]["needs_manual_review"] is False
     assert matchup.json()["options"][1]["needs_manual_review"] is True
     assert matchup.json()["options"][1]["candidate_id"] == "cand-oh"
+    assert matchup.json()["candidate_noise_block_count"] == 0
     matchup_alias = client.get("/api/v1/matchups/m_2026_seoul_mayor")
     assert matchup_alias.status_code == 200
     assert matchup_alias.json()["matchup_id"] == "20260603|광역자치단체장|11-000"
@@ -804,6 +805,7 @@ def test_api_contract_fields():
     assert matchup_meta_only.json()["has_data"] is False
     assert matchup_meta_only.json()["scenarios"] == []
     assert matchup_meta_only.json()["options"] == []
+    assert matchup_meta_only.json()["candidate_noise_block_count"] == 0
 
     candidate = client.get("/api/v1/candidates/cand-jwo")
     assert candidate.status_code == 200
