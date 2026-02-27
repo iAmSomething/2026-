@@ -1,4 +1,6 @@
+from collections import Counter
 from dataclasses import dataclass
+import json
 import re
 from typing import Any
 
@@ -21,6 +23,8 @@ from app.services.normalization import normalize_percentage
 from app.services.region_code_normalizer import normalize_region_code_input
 
 PARTY_INFERENCE_REVIEW_THRESHOLD = 0.8
+PARTY_INFERENCE_SOURCE_OFFICIAL_REGISTRY_V3 = "official_registry_v3"
+PARTY_INFERENCE_SOURCE_INCUMBENT_CONTEXT_V3 = "incumbent_context_v3"
 SCENARIO_NAME_RE = re.compile(r"[가-힣]{2,6}")
 SCENARIO_H2H_PAIR_RE = re.compile(
     r"([가-힣]{2,6})\s*([0-9]{1,2}(?:\.[0-9]+)?)\s*%?\s*[-~]\s*([가-힣]{2,6})\s*([0-9]{1,2}(?:\.[0-9]+)?)\s*%?"
@@ -361,6 +365,115 @@ def _candidate_verify_matched_key(
     return source
 
 
+def _normalize_party_name(value: Any) -> str | None:
+    if not isinstance(value, str):
+        return None
+    normalized = value.strip()
+    return normalized or None
+
+
+def _encode_party_inference_evidence(payload: dict[str, Any] | None) -> str | None:
+    if not payload:
+        return None
+    return json.dumps(payload, ensure_ascii=False, separators=(",", ":"), sort_keys=True)
+
+
+def _apply_party_inference_v3(
+    *,
+    option_payload: dict[str, Any],
+    record,
+    candidate_party_counter_map: dict[str, Counter[str]],
+    service_cache: dict[tuple[str, str | None, str | None, str], DataGoCandidateService | None],
+) -> None:
+    option_type = option_payload.get("option_type")
+    if option_type not in {"candidate", "candidate_matchup"}:
+        return
+
+    option_name = str(option_payload.get("option_name") or "").strip()
+    if not option_name or _looks_like_noise_candidate(option_name):
+        return
+
+    existing_party = _normalize_party_name(option_payload.get("party_name"))
+    if existing_party:
+        option_payload["party_name"] = existing_party
+        if option_payload.get("party_inferred") and option_payload.get("party_inference_evidence") in (None, ""):
+            option_payload["party_inference_evidence"] = _encode_party_inference_evidence(
+                {
+                    "method": "party_inference_v3",
+                    "rule": "prepopulated_party_name",
+                    "party_name": existing_party,
+                }
+            )
+        return
+
+    normalized_name = _normalize_candidate_token(option_name)
+    if not normalized_name:
+        return
+
+    context_counter = candidate_party_counter_map.get(normalized_name)
+    if context_counter:
+        top_party, top_count = context_counter.most_common(1)[0]
+        total = int(sum(context_counter.values()))
+        ratio = float(top_count) / float(max(1, total))
+        if total == 1:
+            confidence = 0.93
+            source = PARTY_INFERENCE_SOURCE_OFFICIAL_REGISTRY_V3
+        else:
+            confidence = round(max(0.55, min(0.95, ratio)), 3)
+            source = PARTY_INFERENCE_SOURCE_INCUMBENT_CONTEXT_V3
+
+        option_payload["party_name"] = top_party
+        option_payload["party_inferred"] = True
+        option_payload["party_inference_source"] = source
+        option_payload["party_inference_confidence"] = confidence
+        option_payload["party_inference_evidence"] = _encode_party_inference_evidence(
+            {
+                "method": "party_inference_v3",
+                "rule": "candidate_context_counter",
+                "candidate_name": option_name,
+                "selected_party": top_party,
+                "candidate_party_counter": dict(context_counter),
+                "selected_count": top_count,
+                "total_count": total,
+                "support_ratio": round(ratio, 4),
+            }
+        )
+        if confidence < PARTY_INFERENCE_REVIEW_THRESHOLD:
+            option_payload["needs_manual_review"] = True
+        return
+
+    for sg_typecode in _office_type_sg_types(record.observation.office_type):
+        service = _build_or_get_candidate_service(
+            record=record,
+            sg_typecode=sg_typecode,
+            service_cache=service_cache,
+        )
+        if service is None:
+            continue
+        enriched = service.enrich_candidate({"name_ko": option_name, "party_name": None})
+        inferred_party = _normalize_party_name(enriched.get("party_name"))
+        if not inferred_party:
+            continue
+
+        confidence = 0.88
+        option_payload["party_name"] = inferred_party
+        option_payload["party_inferred"] = True
+        option_payload["party_inference_source"] = PARTY_INFERENCE_SOURCE_OFFICIAL_REGISTRY_V3
+        option_payload["party_inference_confidence"] = confidence
+        option_payload["party_inference_evidence"] = _encode_party_inference_evidence(
+            {
+                "method": "party_inference_v3",
+                "rule": "data_go_enrich_lookup",
+                "candidate_name": option_name,
+                "selected_party": inferred_party,
+                "sg_typecode": sg_typecode,
+            }
+        )
+        if confidence < PARTY_INFERENCE_REVIEW_THRESHOLD:
+            option_payload["needs_manual_review"] = True
+        return
+
+
 def _resolve_region_names(record) -> tuple[str | None, str | None]:
     region = getattr(record, "region", None)
     if region is None:
@@ -422,7 +535,7 @@ def _apply_candidate_verification(
 
     option_name = str(option_payload.get("option_name") or "").strip()
     normalized_name = _normalize_candidate_token(option_name)
-    party_name = candidate_party_map.get(normalized_name)
+    party_name = candidate_party_map.get(normalized_name) or _normalize_party_name(option_payload.get("party_name"))
     matched_candidate_id = candidate_id_map.get(normalized_name)
 
     if _looks_like_noise_candidate(option_name):
@@ -584,6 +697,20 @@ def _normalize_option(option: PollOptionInput) -> tuple[dict, str | None]:
     if isinstance(candidate_verify_matched_key, str):
         candidate_verify_matched_key = candidate_verify_matched_key.strip() or None
     payload["candidate_verify_matched_key"] = candidate_verify_matched_key
+
+    party_inference_evidence = payload.get("party_inference_evidence")
+    if isinstance(party_inference_evidence, (dict, list)):
+        party_inference_evidence = json.dumps(
+            party_inference_evidence,
+            ensure_ascii=False,
+            separators=(",", ":"),
+            sort_keys=True,
+        )
+    elif isinstance(party_inference_evidence, str):
+        party_inference_evidence = party_inference_evidence.strip() or None
+    else:
+        party_inference_evidence = None
+    payload["party_inference_evidence"] = party_inference_evidence
 
     normalized_option_type, classification_needs_review, classification_reason = normalize_option_type(
         payload.get("option_type"),
@@ -775,6 +902,7 @@ def _backfill_multi_from_default_candidates(
                 "party_inferred": False,
                 "party_inference_source": None,
                 "party_inference_confidence": None,
+                "party_inference_evidence": None,
                 "candidate_verified": True,
                 "candidate_verify_source": None,
                 "candidate_verify_confidence": None,
@@ -1203,10 +1331,17 @@ def ingest_payload(payload: IngestPayload, repo) -> IngestResult:
                 for candidate in candidate_rows
                 if _normalize_candidate_token(candidate.get("name_ko"))
             }
+            candidate_party_counter_map: dict[str, Counter[str]] = {}
+            for candidate in candidate_rows:
+                normalized_name = _normalize_candidate_token(candidate.get("name_ko"))
+                party_name = _normalize_party_name(candidate.get("party_name"))
+                if not normalized_name or not party_name:
+                    continue
+                candidate_party_counter_map.setdefault(normalized_name, Counter())[party_name] += 1
             candidate_party_map = {
-                _normalize_candidate_token(candidate.get("name_ko")): candidate.get("party_name")
-                for candidate in candidate_rows
-                if _normalize_candidate_token(candidate.get("name_ko"))
+                name: counter.most_common(1)[0][0]
+                for name, counter in candidate_party_counter_map.items()
+                if counter
             }
             candidate_id_map = {
                 _normalize_candidate_token(candidate.get("name_ko")): str(candidate.get("candidate_id") or "").strip()
@@ -1242,6 +1377,12 @@ def ingest_payload(payload: IngestPayload, repo) -> IngestResult:
 
             for normalized_option in normalized_options:
                 classification_reason = classification_reason_by_id.get(id(normalized_option))
+                _apply_party_inference_v3(
+                    option_payload=normalized_option,
+                    record=record,
+                    candidate_party_counter_map=candidate_party_counter_map,
+                    service_cache=candidate_service_cache,
+                )
                 candidate_verify_reason = _apply_candidate_verification(
                     option_payload=normalized_option,
                     record=record,

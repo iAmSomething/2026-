@@ -184,6 +184,12 @@
 - `audience_scope='local'`이면 시군구코드(`xx-yyy`) 우선 보정, 필요 시 `region_code` fallback
 
 ## 10. 정당 추정 메타 정책
-1. 옵션 단위 정당 추론 결과는 `party_inferred`, `party_inference_source`, `party_inference_confidence`로 저장한다.
+1. 옵션 단위 정당 추론 결과는 `party_inferred`, `party_inference_source`, `party_inference_confidence`, `party_inference_evidence`로 저장한다.
 2. `party_inferred=false`면 `party_inference_source`, `party_inference_confidence`는 `null` 허용이다.
 3. `party_inference_confidence < 0.8`이면 `review_queue.issue_type='party_inference_low_confidence'`로 검수 큐에 적재한다.
+4. `party_inference_source` 허용값:
+- `name_rule`
+- `article_context`
+- `manual`
+- `official_registry_v3`
+- `incumbent_context_v3`

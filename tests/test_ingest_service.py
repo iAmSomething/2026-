@@ -1,4 +1,5 @@
 from copy import deepcopy
+import json
 
 from app.models.schemas import IngestPayload
 from app.services.errors import DuplicateConflictError
@@ -310,6 +311,56 @@ def test_low_party_inference_confidence_routes_review_queue():
 
     assert result.status == "success"
     assert any(row[2] == "party_inference_low_confidence" for row in repo.review)
+
+
+def test_party_inference_v3_uses_candidate_registry_context_with_evidence():
+    repo = FakeRepo()
+    payload_data = deepcopy(PAYLOAD)
+    payload_data["records"][0]["candidates"] = [
+        {"candidate_id": "cand-jwo", "name_ko": "정원오", "party_name": "더불어민주당"}
+    ]
+    payload_data["records"][0]["options"] = [
+        {"option_type": "candidate_matchup", "option_name": "정원오", "value_raw": "44%"}
+    ]
+    payload = IngestPayload.model_validate(payload_data)
+
+    result = ingest_payload(payload, repo)
+
+    assert result.status == "success"
+    row = repo.option_rows[0]
+    assert row["party_name"] == "더불어민주당"
+    assert row["party_inferred"] is True
+    assert row["party_inference_source"] == "official_registry_v3"
+    assert float(row["party_inference_confidence"]) >= 0.9
+    evidence = json.loads(str(row["party_inference_evidence"]))
+    assert evidence["rule"] == "candidate_context_counter"
+    assert evidence["selected_party"] == "더불어민주당"
+
+
+def test_party_inference_v3_conflict_routes_low_confidence_review():
+    repo = FakeRepo()
+    payload_data = deepcopy(PAYLOAD)
+    payload_data["records"][0]["candidates"] = [
+        {"candidate_id": "cand-a1", "name_ko": "홍길동", "party_name": "더불어민주당"},
+        {"candidate_id": "cand-a2", "name_ko": "홍길동", "party_name": "국민의힘"},
+    ]
+    payload_data["records"][0]["options"] = [
+        {"option_type": "candidate_matchup", "option_name": "홍길동", "value_raw": "41%"}
+    ]
+    payload = IngestPayload.model_validate(payload_data)
+
+    result = ingest_payload(payload, repo)
+
+    assert result.status == "success"
+    row = repo.option_rows[0]
+    assert row["party_inferred"] is True
+    assert row["party_inference_source"] == "incumbent_context_v3"
+    assert float(row["party_inference_confidence"]) < 0.8
+    assert row["needs_manual_review"] is True
+    assert any(item[2] == "party_inference_low_confidence" for item in repo.review)
+    evidence = json.loads(str(row["party_inference_evidence"]))
+    assert evidence["rule"] == "candidate_context_counter"
+    assert evidence["total_count"] == 2
 
 
 def test_ambiguous_presidential_option_routes_mapping_error_review_queue():

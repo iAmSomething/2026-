@@ -1,0 +1,28 @@
+{
+  "run_type": "issue386_party_inference_v3_eval",
+  "input_path": "data/collector_party_inference_v2_batch50.json",
+  "ingest_result": {
+    "run_id": 1,
+    "processed_count": 50,
+    "error_count": 0,
+    "status": "success"
+  },
+  "evaluation": {
+    "covered_option_count": 25,
+    "predicted_option_count": 25,
+    "true_positive": 25,
+    "false_positive": 0,
+    "false_negative": 0,
+    "precision": 1.0,
+    "recall": 1.0,
+    "f1": 1.0,
+    "low_confidence_count": 0,
+    "source_counts": {
+      "official_registry_v3": 25
+    }
+  },
+  "review_queue_counts": {
+    "total": 75,
+    "party_inference_low_confidence": 0
+  }
+}

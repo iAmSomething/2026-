@@ -410,6 +410,9 @@ class PostgresRepository:
         payload.setdefault("party_inferred", False)
         payload.setdefault("party_inference_source", None)
         payload.setdefault("party_inference_confidence", None)
+        payload.setdefault("party_inference_evidence", None)
+        if isinstance(payload.get("party_inference_evidence"), str):
+            payload["party_inference_evidence"] = payload["party_inference_evidence"].strip() or None
         payload.setdefault("candidate_verified", True)
         payload.setdefault("candidate_verify_source", "manual")
         payload.setdefault("candidate_verify_confidence", None)
@@ -427,7 +430,7 @@ class PostgresRepository:
                     observation_id, option_type, option_name,
                     candidate_id, party_name, scenario_key, scenario_type, scenario_title,
                     value_raw, value_min, value_max, value_mid, is_missing,
-                    party_inferred, party_inference_source, party_inference_confidence,
+                    party_inferred, party_inference_source, party_inference_confidence, party_inference_evidence,
                     candidate_verified, candidate_verify_source, candidate_verify_confidence, candidate_verify_matched_key,
                     needs_manual_review
                 )
@@ -435,7 +438,7 @@ class PostgresRepository:
                     %(observation_id)s, %(option_type)s, %(option_name)s,
                     %(candidate_id)s, %(party_name)s, %(scenario_key)s, %(scenario_type)s, %(scenario_title)s,
                     %(value_raw)s, %(value_min)s, %(value_max)s, %(value_mid)s, %(is_missing)s,
-                    %(party_inferred)s, %(party_inference_source)s, %(party_inference_confidence)s,
+                    %(party_inferred)s, %(party_inference_source)s, %(party_inference_confidence)s, %(party_inference_evidence)s,
                     %(candidate_verified)s, %(candidate_verify_source)s, %(candidate_verify_confidence)s, %(candidate_verify_matched_key)s,
                     %(needs_manual_review)s
                 )
@@ -452,6 +455,7 @@ class PostgresRepository:
                     party_inferred=EXCLUDED.party_inferred,
                     party_inference_source=EXCLUDED.party_inference_source,
                     party_inference_confidence=EXCLUDED.party_inference_confidence,
+                    party_inference_evidence=COALESCE(EXCLUDED.party_inference_evidence, poll_options.party_inference_evidence),
                     candidate_verified=EXCLUDED.candidate_verified,
                     candidate_verify_source=COALESCE(EXCLUDED.candidate_verify_source, poll_options.candidate_verify_source, 'manual'),
                     candidate_verify_confidence=COALESCE(EXCLUDED.candidate_verify_confidence, poll_options.candidate_verify_confidence),
@@ -1786,6 +1790,10 @@ class PostgresRepository:
                                 'party_inference_confidence', CASE
                                     WHEN COALESCE(c.party_name, '') <> '' THEN NULL
                                     ELSE po.party_inference_confidence
+                                END,
+                                'party_inference_evidence', CASE
+                                    WHEN COALESCE(c.party_name, '') <> '' THEN NULL
+                                    ELSE po.party_inference_evidence
                                 END,
                                 'needs_manual_review', (
                                     po.needs_manual_review

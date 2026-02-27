@@ -366,6 +366,7 @@ class FakeApiRepo:
                             "party_inferred": True,
                             "party_inference_source": "name_rule",
                             "party_inference_confidence": 0.86,
+                            "party_inference_evidence": '{"rule":"name_rule","version":"v1"}',
                             "needs_manual_review": False,
                         },
                         {
@@ -380,6 +381,7 @@ class FakeApiRepo:
                             "party_inferred": False,
                             "party_inference_source": None,
                             "party_inference_confidence": None,
+                            "party_inference_evidence": None,
                             "needs_manual_review": True,
                         },
                     ],
@@ -398,6 +400,7 @@ class FakeApiRepo:
                     "party_inferred": True,
                     "party_inference_source": "name_rule",
                     "party_inference_confidence": 0.86,
+                    "party_inference_evidence": '{"rule":"name_rule","version":"v1"}',
                     "needs_manual_review": False,
                 },
                 {
@@ -412,6 +415,7 @@ class FakeApiRepo:
                     "party_inferred": False,
                     "party_inference_source": None,
                     "party_inference_confidence": None,
+                    "party_inference_evidence": None,
                     "needs_manual_review": True,
                 },
             ],
@@ -785,6 +789,7 @@ def test_api_contract_fields():
     assert matchup.json()["options"][0]["party_inferred"] is True
     assert matchup.json()["options"][0]["party_inference_source"] == "name_rule"
     assert matchup.json()["options"][0]["party_inference_confidence"] == 0.86
+    assert matchup.json()["options"][0]["party_inference_evidence"] == '{"rule":"name_rule","version":"v1"}'
     assert matchup.json()["options"][0]["candidate_id"] == "cand-jwo"
     assert matchup.json()["options"][0]["party_name"] == "더불어민주당"
     assert matchup.json()["options"][0]["needs_manual_review"] is False

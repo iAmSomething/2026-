@@ -207,3 +207,30 @@ def test_normalize_payload_candidate_verify_fields() -> None:
     assert option["candidate_verify_source"] == "article_context"
     assert option["candidate_verify_confidence"] == 0.83
     assert option["candidate_verify_matched_key"] == "data_go:cand-1"
+
+
+def test_normalize_payload_party_inference_v3_source_and_evidence() -> None:
+    payload = {
+        "records": [
+            {
+                "options": [
+                    {
+                        "option_type": "candidate_matchup",
+                        "option_name": "홍길동",
+                        "value_raw": "47%",
+                        "party_inferred": True,
+                        "party_inference_source": "official_registry_v3",
+                        "party_inference_evidence": {
+                            "method": "party_inference_v3",
+                            "rule": "candidate_context_counter",
+                        },
+                    }
+                ]
+            }
+        ]
+    }
+
+    out = normalize_payload(payload)
+    option = out["records"][0]["options"][0]
+    assert option["party_inference_source"] == "official_registry_v3"
+    assert option["party_inference_evidence"] == '{"method":"party_inference_v3","rule":"candidate_context_counter"}'
