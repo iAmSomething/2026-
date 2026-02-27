@@ -107,6 +107,8 @@
 7. `presidential_approval`는 하위호환(deprecated) 필드로 `president_job_approval`와 동일 데이터를 유지한다.
 8. `GET /api/v1/matchups/{matchup_id}`는 관측치가 없어도 `matchups` 메타가 존재하면 `200`을 반환하며 `has_data=false`, `options=[]`를 반환한다.
 9. `GET /api/v1/regions/search`는 `has_data`, `matchup_count` 보조 필드를 포함한다.
+10. `GET /api/v1/regions/search`는 `q/query`가 비어도 기본적으로 공식 선거구 전체를 반환한다.
+11. `GET /api/v1/regions/search`는 선택 필터 `has_data`(`true|false`)를 지원한다.
 
 ## 6.1 운영 품질 요약 규칙 (`GET /api/v1/dashboard/quality`)
 1. `freshness_p50_hours`, `freshness_p90_hours`는 검증 완료(`verified=true`) 관측치의 freshness 분포 백분위를 시간 단위로 노출한다.

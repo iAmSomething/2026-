@@ -111,8 +111,8 @@ class FakeApiRepo:
             },
         ]
 
-    def search_regions(self, query, limit=20):
-        return [
+    def search_regions(self, query, limit=20, has_data=None):
+        rows = [
             {
                 "region_code": "11-000",
                 "sido_name": "서울특별시",
@@ -122,10 +122,13 @@ class FakeApiRepo:
                 "matchup_count": 1,
             }
         ]
+        if has_data is None:
+            return rows
+        return [row for row in rows if row["has_data"] is has_data][:limit]
 
-    def search_regions_by_code(self, region_code, limit=20):  # noqa: ARG002
+    def search_regions_by_code(self, region_code, limit=20, has_data=None):  # noqa: ARG002
         if region_code == "42-000":
-            return [
+            rows = [
                 {
                     "region_code": "42-000",
                     "sido_name": "강원특별자치도",
@@ -135,7 +138,10 @@ class FakeApiRepo:
                     "matchup_count": 1,
                 }
             ]
-        return self.search_regions(query=region_code, limit=limit)
+            if has_data is None:
+                return rows
+            return [row for row in rows if row["has_data"] is has_data][:limit]
+        return self.search_regions(query=region_code, limit=limit, has_data=has_data)
 
     def fetch_dashboard_map_latest(self, as_of, limit=100):
         return [
@@ -587,7 +593,8 @@ def test_api_contract_fields():
     assert regions_query_alias.status_code == 200
     assert regions_query_alias.json()[0]["region_code"] == "11-000"
     regions_missing = client.get("/api/v1/regions/search")
-    assert regions_missing.status_code == 422
+    assert regions_missing.status_code == 200
+    assert regions_missing.json()[0]["region_code"] == "11-000"
 
     map_latest = client.get("/api/v1/dashboard/map-latest")
     assert map_latest.status_code == 200
@@ -1003,10 +1010,12 @@ def test_regions_search_normalizes_non_ascii_and_encoded_query_forms():
         def __init__(self):
             super().__init__()
             self.last_query = None
+            self.last_has_data = None
 
-        def search_regions(self, query, limit=20):
+        def search_regions(self, query, limit=20, has_data=None):
             self.last_query = query
-            return super().search_regions(query=query, limit=limit)
+            self.last_has_data = has_data
+            return super().search_regions(query=query, limit=limit, has_data=has_data)
 
     repo = CaptureRegionQueryRepo()
 
@@ -1029,6 +1038,79 @@ def test_regions_search_normalizes_non_ascii_and_encoded_query_forms():
     full_width_space = client.get("/api/v1/regions/search", params={"q": "  서울　특별시  "})
     assert full_width_space.status_code == 200
     assert repo.last_query == "서울 특별시"
+    assert repo.last_has_data is None
+
+    has_data_filtered = client.get("/api/v1/regions/search", params={"q": "서울", "has_data": "true"})
+    assert has_data_filtered.status_code == 200
+    assert repo.last_query == "서울"
+    assert repo.last_has_data is True
+
+    app.dependency_overrides.clear()
+
+
+def test_regions_search_default_includes_official_no_data_regions():
+    class OfficialRegionExposureRepo(FakeApiRepo):
+        def __init__(self):
+            super().__init__()
+            self.last_query = None
+            self.last_has_data = None
+
+        def search_regions(self, query, limit=20, has_data=None):
+            self.last_query = query
+            self.last_has_data = has_data
+            rows = [
+                {
+                    "region_code": "29-000",
+                    "sido_name": "세종특별자치시",
+                    "sigungu_name": "전체",
+                    "admin_level": "sido",
+                    "has_data": False,
+                    "matchup_count": 1,
+                },
+                {
+                    "region_code": "42-000",
+                    "sido_name": "강원특별자치도",
+                    "sigungu_name": "전체",
+                    "admin_level": "sido",
+                    "has_data": False,
+                    "matchup_count": 1,
+                },
+                {
+                    "region_code": "11-000",
+                    "sido_name": "서울특별시",
+                    "sigungu_name": "전체",
+                    "admin_level": "sido",
+                    "has_data": True,
+                    "matchup_count": 1,
+                },
+            ]
+            if has_data is None:
+                return rows[:limit]
+            return [row for row in rows if row["has_data"] is has_data][:limit]
+
+    repo = OfficialRegionExposureRepo()
+
+    def override_capture_repo():
+        yield repo
+
+    app.dependency_overrides[get_repository] = override_capture_repo
+    client = TestClient(app)
+
+    baseline = client.get("/api/v1/regions/search")
+    assert baseline.status_code == 200
+    assert repo.last_query == ""
+    assert repo.last_has_data is None
+    codes = [row["region_code"] for row in baseline.json()]
+    assert "29-000" in codes
+    assert "42-000" in codes
+    assert any(row["region_code"] == "29-000" and row["has_data"] is False for row in baseline.json())
+    assert any(row["region_code"] == "42-000" and row["has_data"] is False for row in baseline.json())
+
+    data_only = client.get("/api/v1/regions/search", params={"has_data": "true"})
+    assert data_only.status_code == 200
+    assert repo.last_query == ""
+    assert repo.last_has_data is True
+    assert [row["region_code"] for row in data_only.json()] == ["11-000"]
 
     app.dependency_overrides.clear()
 
@@ -1039,14 +1121,17 @@ def test_regions_search_normalizes_region_code_aliases_to_canonical_code():
             super().__init__()
             self.last_region_code = None
             self.last_query = None
+            self.last_has_data = None
 
-        def search_regions(self, query, limit=20):
+        def search_regions(self, query, limit=20, has_data=None):
             self.last_query = query
-            return super().search_regions(query=query, limit=limit)
+            self.last_has_data = has_data
+            return super().search_regions(query=query, limit=limit, has_data=has_data)
 
-        def search_regions_by_code(self, region_code, limit=20):
+        def search_regions_by_code(self, region_code, limit=20, has_data=None):
             self.last_region_code = region_code
-            return super().search_regions_by_code(region_code=region_code, limit=limit)
+            self.last_has_data = has_data
+            return super().search_regions_by_code(region_code=region_code, limit=limit, has_data=has_data)
 
     repo = CaptureRegionCodeRepo()
 
@@ -1066,6 +1151,11 @@ def test_regions_search_normalizes_region_code_aliases_to_canonical_code():
     assert canonical_response.status_code == 200
     assert canonical_response.json() == alias_response.json()
     assert repo.last_region_code == "42-000"
+
+    canonical_filtered = client.get("/api/v1/regions/search", params={"q": "42-000", "has_data": "true"})
+    assert canonical_filtered.status_code == 200
+    assert repo.last_region_code == "42-000"
+    assert repo.last_has_data is True
 
     app.dependency_overrides.clear()
 

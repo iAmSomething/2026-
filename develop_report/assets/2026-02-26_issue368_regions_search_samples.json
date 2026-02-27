@@ -1,0 +1,38 @@
+{
+  "baseline_official_regions": [
+    {
+      "region_code": "29-000",
+      "sido_name": "세종특별자치시",
+      "sigungu_name": "전체",
+      "admin_level": "sido",
+      "has_data": false,
+      "matchup_count": 1
+    },
+    {
+      "region_code": "42-000",
+      "sido_name": "강원특별자치도",
+      "sigungu_name": "전체",
+      "admin_level": "sido",
+      "has_data": false,
+      "matchup_count": 1
+    },
+    {
+      "region_code": "11-000",
+      "sido_name": "서울특별시",
+      "sigungu_name": "전체",
+      "admin_level": "sido",
+      "has_data": true,
+      "matchup_count": 1
+    }
+  ],
+  "has_data_true_filtered": [
+    {
+      "region_code": "11-000",
+      "sido_name": "서울특별시",
+      "sigungu_name": "전체",
+      "admin_level": "sido",
+      "has_data": true,
+      "matchup_count": 1
+    }
+  ]
+}

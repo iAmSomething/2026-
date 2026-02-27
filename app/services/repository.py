@@ -904,16 +904,44 @@ class PostgresRepository:
             },
         }
 
-    def search_regions(self, query: str, limit: int = 20):
+    def search_regions(self, query: str, limit: int = 20, has_data: bool | None = None):
         normalized_query = " ".join(query.split()).strip()
-        if not normalized_query:
-            return []
+        q = f"%{normalized_query}%" if normalized_query else None
+        compact_q = f"%{normalized_query.replace(' ', '')}%" if normalized_query else None
 
-        q = f"%{normalized_query}%"
-        compact_q = f"%{normalized_query.replace(' ', '')}%"
+        where_clauses: list[str] = []
+        params: list[object] = []
+        if normalized_query:
+            where_clauses.append(
+                """
+                (
+                    (sido_name || ' ' || sigungu_name) ILIKE %s
+                    OR sido_name ILIKE %s
+                    OR sigungu_name ILIKE %s
+                    OR REPLACE((sido_name || sigungu_name), ' ', '') ILIKE %s
+                    OR REPLACE(sido_name, ' ', '') ILIKE %s
+                    OR REPLACE(sigungu_name, ' ', '') ILIKE %s
+                )
+                """
+            )
+            params.extend([q, q, q, compact_q, compact_q, compact_q])
+
+        if has_data is not None:
+            where_clauses.append("COALESCE(o.observation_count, 0)::int > 0 = %s")
+            params.append(has_data)
+
+        where_sql = ""
+        if where_clauses:
+            where_sql = "WHERE " + " AND ".join(where_clauses)
+
         with self.conn.cursor() as cur:
             cur.execute(
-                """
+                f"""
+                WITH official_regions AS (
+                    SELECT DISTINCT region_code
+                    FROM elections
+                    WHERE is_active = TRUE
+                )
                 SELECT
                     r.region_code,
                     r.sido_name,
@@ -922,6 +950,7 @@ class PostgresRepository:
                     COALESCE(o.observation_count, 0)::int > 0 AS has_data,
                     COALESCE(m.matchup_count, 0)::int AS matchup_count
                 FROM regions r
+                JOIN official_regions e ON e.region_code = r.region_code
                 LEFT JOIN (
                     SELECT region_code, COUNT(*)::int AS matchup_count
                     FROM matchups
@@ -932,12 +961,7 @@ class PostgresRepository:
                     FROM poll_observations
                     GROUP BY region_code
                 ) o ON o.region_code = r.region_code
-                WHERE (sido_name || ' ' || sigungu_name) ILIKE %s
-                   OR sido_name ILIKE %s
-                   OR sigungu_name ILIKE %s
-                   OR REPLACE((sido_name || sigungu_name), ' ', '') ILIKE %s
-                   OR REPLACE(sido_name, ' ', '') ILIKE %s
-                   OR REPLACE(sigungu_name, ' ', '') ILIKE %s
+                {where_sql}
                 ORDER BY
                     CASE r.admin_level
                         WHEN 'sido' THEN 0
@@ -948,18 +972,29 @@ class PostgresRepository:
                     r.sigungu_name
                 LIMIT %s
                 """,
-                (q, q, q, compact_q, compact_q, compact_q, limit),
+                tuple(params + [limit]),
             )
             return cur.fetchall()
 
-    def search_regions_by_code(self, region_code: str, limit: int = 20):
+    def search_regions_by_code(self, region_code: str, limit: int = 20, has_data: bool | None = None):
         normalized_region_code = " ".join(region_code.split()).strip()
         if not normalized_region_code:
             return []
 
+        where_sql = "WHERE r.region_code = %s"
+        params: list[object] = [normalized_region_code]
+        if has_data is not None:
+            where_sql += " AND COALESCE(o.observation_count, 0)::int > 0 = %s"
+            params.append(has_data)
+
         with self.conn.cursor() as cur:
             cur.execute(
-                """
+                f"""
+                WITH official_regions AS (
+                    SELECT DISTINCT region_code
+                    FROM elections
+                    WHERE is_active = TRUE
+                )
                 SELECT
                     r.region_code,
                     r.sido_name,
@@ -968,6 +1003,7 @@ class PostgresRepository:
                     COALESCE(o.observation_count, 0)::int > 0 AS has_data,
                     COALESCE(m.matchup_count, 0)::int AS matchup_count
                 FROM regions r
+                JOIN official_regions e ON e.region_code = r.region_code
                 LEFT JOIN (
                     SELECT region_code, COUNT(*)::int AS matchup_count
                     FROM matchups
@@ -978,7 +1014,7 @@ class PostgresRepository:
                     FROM poll_observations
                     GROUP BY region_code
                 ) o ON o.region_code = r.region_code
-                WHERE r.region_code = %s
+                {where_sql}
                 ORDER BY
                     CASE r.admin_level
                         WHEN 'sido' THEN 0
@@ -989,7 +1025,7 @@ class PostgresRepository:
                     r.sigungu_name
                 LIMIT %s
                 """,
-                (normalized_region_code, limit),
+                tuple(params + [limit]),
             )
             return cur.fetchall()
 
