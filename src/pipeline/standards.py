@@ -19,6 +19,7 @@ ISSUE_TAXONOMY: tuple[str, ...] = (
     "extract_error",
     "mapping_error",
     "ingestion_error",
+    "metadata_cross_contamination",
 )
 
 

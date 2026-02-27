@@ -1,0 +1,97 @@
+{
+  "issue": 472,
+  "input_payload_path": "data/issue472_multi_survey_probe_payload.json",
+  "keyset_path": "data/issue472_multi_survey_probe_keys.json",
+  "requested_key_count": 2,
+  "matched_record_count": 2,
+  "total_after_observation_count": 3,
+  "total_metadata_cross_contamination_count": 1,
+  "acceptance_checks": {
+    "multi_survey_split_generated": true,
+    "cross_contamination_detected_or_zero": true
+  },
+  "items": [
+    {
+      "observation_key": "issue472-probe-multi-1",
+      "article_url": "https://example.com/issue472/probe-1",
+      "article_title": "서울시장 복수 조사 결과",
+      "before_observation_count": 1,
+      "after_observation_count": 2,
+      "after_option_count": 4,
+      "metadata_cross_contamination_count": 0,
+      "observations": [
+        {
+          "id": "obs_7a763f286ea89878",
+          "pollster": "KSOI",
+          "survey_start_date": "2026-02-03",
+          "survey_end_date": "2026-02-04",
+          "sample_size": 1000,
+          "response_rate": 10.1,
+          "margin_of_error": 3.1,
+          "region_code": "11-000",
+          "office_type": "광역자치단체장",
+          "matchup_id": "2026_local|광역자치단체장|11-000"
+        },
+        {
+          "id": "obs_c7eed4b42a8f1b16",
+          "pollster": "리얼미터",
+          "survey_start_date": "2026-02-05",
+          "survey_end_date": "2026-02-06",
+          "sample_size": 800,
+          "response_rate": 8.5,
+          "margin_of_error": 3.5,
+          "region_code": "11-000",
+          "office_type": "광역자치단체장",
+          "matchup_id": "2026_local|광역자치단체장|11-000"
+        }
+      ],
+      "errors": []
+    },
+    {
+      "observation_key": "issue472-probe-contam-1",
+      "article_url": "https://example.com/issue472/probe-2",
+      "article_title": "서울시장 공동조사",
+      "before_observation_count": 1,
+      "after_observation_count": 1,
+      "after_option_count": 2,
+      "metadata_cross_contamination_count": 1,
+      "observations": [
+        {
+          "id": "obs_cd6da3c35f776c01",
+          "pollster": "KSOI",
+          "survey_start_date": null,
+          "survey_end_date": "2026-02-07",
+          "sample_size": 1000,
+          "response_rate": 9.9,
+          "margin_of_error": 3.1,
+          "region_code": "11-000",
+          "office_type": "광역자치단체장",
+          "matchup_id": "2026_local|광역자치단체장|11-000"
+        }
+      ],
+      "errors": [
+        {
+          "id": "rvq_c9fb1706f3ce8824",
+          "entity_type": "poll_observation",
+          "entity_id": "obs_cd6da3c35f776c01",
+          "issue_type": "metadata_cross_contamination",
+          "stage": "extract",
+          "error_code": "MULTIPLE_POLLSTER_TOKENS_IN_OBSERVATION",
+          "error_message": "multiple pollster tokens detected in one survey block",
+          "source_url": "https://example.com/issue472/probe-2",
+          "payload": {
+            "article_id": "art_99fe40e82142d705",
+            "pollsters": [
+              "KSOI",
+              "리얼미터"
+            ],
+            "block_index": 0,
+            "block_text": "서울시장 여론조사에서 KSOI·리얼미터 공동 조사로 표본 1000명, 응답률 9.9%, 표본오차 ±3.1%, 정원오 42% vs 오세훈 36%가 나왔다."
+          },
+          "status": "pending",
+          "created_at": "2026-02-27T08:57:19.711113+00:00"
+        }
+      ]
+    }
+  ]
+}
