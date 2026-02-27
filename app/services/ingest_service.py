@@ -12,6 +12,7 @@ from app.services.cutoff_policy import (
     published_at_cutoff_reason,
     survey_end_date_cutoff_reason,
 )
+from app.services.candidate_token_policy import is_noise_candidate_token
 from app.services.data_go_candidate import DataGoCandidateConfig, DataGoCandidateService
 from app.services.errors import DuplicateConflictError
 from app.services.fingerprint import build_poll_fingerprint
@@ -19,33 +20,6 @@ from app.services.ingest_input_normalization import normalize_option_type
 from app.services.normalization import normalize_percentage
 
 PARTY_INFERENCE_REVIEW_THRESHOLD = 0.8
-CANDIDATE_NOISE_EXACT_TOKENS = {
-    "오차는",
-    "응답률은",
-    "지지율은",
-    "오차범위",
-    "표본오차",
-    "응답률",
-    "조사기관",
-    "여론조사",
-    "지지율",
-    "민주",
-    "민주당",
-    "더불어민주당",
-    "국힘",
-    "국민의힘",
-    "차이",
-    "같은",
-    "외",
-}
-CANDIDATE_NOISE_CONTAINS_TOKENS = {
-    "오차범위",
-    "표본오차",
-    "응답률",
-    "조사기관",
-    "여론조사",
-    "지지율",
-}
 SCENARIO_NAME_RE = re.compile(r"[가-힣]{2,6}")
 SCENARIO_H2H_PAIR_RE = re.compile(
     r"([가-힣]{2,6})\s*([0-9]{1,2}(?:\.[0-9]+)?)\s*%?\s*[-~]\s*([가-힣]{2,6})\s*([0-9]{1,2}(?:\.[0-9]+)?)\s*%?"
@@ -98,20 +72,20 @@ def _normalize_candidate_token(value: Any) -> str:
 
 
 def _looks_like_noise_candidate(option_name: str) -> bool:
-    token = _normalize_candidate_token(option_name)
-    if not token:
-        return True
-    if token in CANDIDATE_NOISE_EXACT_TOKENS:
-        return True
-    if any(part in token for part in CANDIDATE_NOISE_CONTAINS_TOKENS):
-        return True
-    if any(ch.isdigit() for ch in token):
-        return True
-    if "%" in token:
-        return True
-    if len(token) < 2:
-        return True
-    return False
+    return is_noise_candidate_token(option_name)
+
+
+def _candidate_verify_matched_key(
+    *,
+    source: str,
+    normalized_name: str,
+    candidate_id: str | None,
+) -> str:
+    if candidate_id:
+        return f"{source}:{candidate_id}"
+    if normalized_name:
+        return f"{source}:{normalized_name}"
+    return source
 
 
 def _resolve_region_names(record) -> tuple[str | None, str | None]:
@@ -162,6 +136,7 @@ def _apply_candidate_verification(
     record,
     candidate_name_set: set[str],
     candidate_party_map: dict[str, str | None],
+    candidate_id_map: dict[str, str],
     service_cache: dict[tuple[str, str | None, str | None, str], DataGoCandidateService | None],
 ) -> str | None:
     option_type = option_payload.get("option_type")
@@ -169,16 +144,23 @@ def _apply_candidate_verification(
         option_payload["candidate_verified"] = True
         option_payload["candidate_verify_source"] = "manual"
         option_payload["candidate_verify_confidence"] = 1.0
+        option_payload["candidate_verify_matched_key"] = None
         return None
 
     option_name = str(option_payload.get("option_name") or "").strip()
     normalized_name = _normalize_candidate_token(option_name)
     party_name = candidate_party_map.get(normalized_name)
+    matched_candidate_id = candidate_id_map.get(normalized_name)
 
     if _looks_like_noise_candidate(option_name):
         option_payload["candidate_verified"] = False
         option_payload["candidate_verify_source"] = "manual"
         option_payload["candidate_verify_confidence"] = 0.0
+        option_payload["candidate_verify_matched_key"] = _candidate_verify_matched_key(
+            source="noise",
+            normalized_name=normalized_name,
+            candidate_id=matched_candidate_id,
+        )
         option_payload["needs_manual_review"] = True
         return "CANDIDATE_TOKEN_NOISE"
 
@@ -195,17 +177,32 @@ def _apply_candidate_verification(
             option_payload["candidate_verified"] = True
             option_payload["candidate_verify_source"] = "data_go"
             option_payload["candidate_verify_confidence"] = round(float(confidence), 3)
+            option_payload["candidate_verify_matched_key"] = _candidate_verify_matched_key(
+                source="data_go",
+                normalized_name=normalized_name,
+                candidate_id=matched_candidate_id,
+            )
             return None
 
     if normalized_name in candidate_name_set:
         option_payload["candidate_verified"] = True
         option_payload["candidate_verify_source"] = "article_context"
         option_payload["candidate_verify_confidence"] = 0.68
+        option_payload["candidate_verify_matched_key"] = _candidate_verify_matched_key(
+            source="article_context",
+            normalized_name=normalized_name,
+            candidate_id=matched_candidate_id,
+        )
         return None
 
     option_payload["candidate_verified"] = False
     option_payload["candidate_verify_source"] = "manual"
     option_payload["candidate_verify_confidence"] = 0.2
+    option_payload["candidate_verify_matched_key"] = _candidate_verify_matched_key(
+        source="manual",
+        normalized_name=normalized_name,
+        candidate_id=matched_candidate_id,
+    )
     option_payload["needs_manual_review"] = True
     return "CANDIDATE_NOT_VERIFIED"
 
@@ -309,6 +306,11 @@ def _normalize_option(option: PollOptionInput) -> tuple[dict, str | None]:
     if isinstance(scenario_title, str):
         scenario_title = scenario_title.strip() or None
     payload["scenario_title"] = scenario_title
+
+    candidate_verify_matched_key = payload.get("candidate_verify_matched_key")
+    if isinstance(candidate_verify_matched_key, str):
+        candidate_verify_matched_key = candidate_verify_matched_key.strip() or None
+    payload["candidate_verify_matched_key"] = candidate_verify_matched_key
 
     normalized_option_type, classification_needs_review, classification_reason = normalize_option_type(
         payload.get("option_type"),
@@ -832,6 +834,11 @@ def ingest_payload(payload: IngestPayload, repo) -> IngestResult:
                 for candidate in candidate_rows
                 if _normalize_candidate_token(candidate.get("name_ko"))
             }
+            candidate_id_map = {
+                _normalize_candidate_token(candidate.get("name_ko")): str(candidate.get("candidate_id") or "").strip()
+                for candidate in candidate_rows
+                if _normalize_candidate_token(candidate.get("name_ko")) and str(candidate.get("candidate_id") or "").strip()
+            }
 
             party_inference_low_confidence: list[tuple[str, float]] = []
             option_type_manual_review: list[tuple[str, str]] = []
@@ -854,6 +861,7 @@ def ingest_payload(payload: IngestPayload, repo) -> IngestResult:
                     record=record,
                     candidate_name_set=candidate_name_set,
                     candidate_party_map=candidate_party_map,
+                    candidate_id_map=candidate_id_map,
                     service_cache=candidate_service_cache,
                 )
                 repo.upsert_poll_option(observation_id, normalized_option)

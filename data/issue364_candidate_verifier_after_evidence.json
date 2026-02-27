@@ -1,0 +1,87 @@
+{
+  "issue": 364,
+  "generated_at_kst": "2026-02-27T11:31:03+09:00",
+  "ingest_result": {
+    "status": "success",
+    "processed_count": 1,
+    "error_count": 0
+  },
+  "noise_token_hotspot_after": [
+    {
+      "token": "더불어민주당은",
+      "is_noise_candidate_token": true
+    },
+    {
+      "token": "국민의힘은",
+      "is_noise_candidate_token": true
+    },
+    {
+      "token": "전라는",
+      "is_noise_candidate_token": true
+    }
+  ],
+  "option_rows_after": [
+    {
+      "option_name": "정원오",
+      "candidate_verified": true,
+      "candidate_verify_source": "data_go",
+      "candidate_verify_confidence": 0.97,
+      "candidate_verify_matched_key": "data_go:cand-jwo",
+      "needs_manual_review": false
+    },
+    {
+      "option_name": "오세훈",
+      "candidate_verified": true,
+      "candidate_verify_source": "article_context",
+      "candidate_verify_confidence": 0.68,
+      "candidate_verify_matched_key": "article_context:cand-oh",
+      "needs_manual_review": false
+    },
+    {
+      "option_name": "국민의힘은",
+      "candidate_verified": false,
+      "candidate_verify_source": "manual",
+      "candidate_verify_confidence": 0.0,
+      "candidate_verify_matched_key": "noise:국민의힘은",
+      "needs_manual_review": true
+    }
+  ],
+  "review_queue_samples": [
+    {
+      "entity_type": "candidate",
+      "entity_id": "cand-jwo",
+      "issue_type": "mapping_error",
+      "review_note": "candidate profile manual review required: CANDIDATE_PROFILE_INCOMPLETE:career_summary,election_history"
+    },
+    {
+      "entity_type": "candidate",
+      "entity_id": "cand-oh",
+      "issue_type": "mapping_error",
+      "review_note": "candidate profile manual review required: CANDIDATE_PROFILE_INCOMPLETE:career_summary,election_history"
+    },
+    {
+      "entity_type": "poll_observation",
+      "entity_id": "obs-issue364",
+      "issue_type": "mapping_error",
+      "review_note": "candidate verification manual review required: 국민의힘은:CANDIDATE_TOKEN_NOISE"
+    }
+  ],
+  "source_score_matched_key_samples": [
+    {
+      "option_name": "정원오",
+      "candidate_verified": true,
+      "candidate_verify_source": "data_go",
+      "candidate_verify_confidence": 0.97,
+      "candidate_verify_matched_key": "data_go:cand-jwo",
+      "needs_manual_review": false
+    },
+    {
+      "option_name": "오세훈",
+      "candidate_verified": true,
+      "candidate_verify_source": "article_context",
+      "candidate_verify_confidence": 0.68,
+      "candidate_verify_matched_key": "article_context:cand-oh",
+      "needs_manual_review": false
+    }
+  ]
+}

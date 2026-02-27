@@ -198,6 +198,7 @@ class MatchupOptionOut(BaseModel):
     candidate_verified: bool = True
     candidate_verify_source: Literal["data_go", "article_context", "manual"] | None = None
     candidate_verify_confidence: float | None = None
+    candidate_verify_matched_key: str | None = None
     needs_manual_review: bool = False
 
 
@@ -448,6 +449,7 @@ class PollOptionInput(BaseModel):
     candidate_verified: bool = True
     candidate_verify_source: Literal["data_go", "article_context", "manual"] | None = None
     candidate_verify_confidence: float | None = None
+    candidate_verify_matched_key: str | None = None
     needs_manual_review: bool = False
 
 
