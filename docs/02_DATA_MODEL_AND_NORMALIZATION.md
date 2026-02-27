@@ -120,6 +120,8 @@
 19. trends 포인트는 동일 `survey_end_date + option_name` 그룹에서 대표값 선택 trace(`source_trace.selected_source_tier`)를 포함한다.
 20. `GET /api/v1/dashboard/summary`는 응답 루트에 `selection_policy_version`을 노출한다.
 21. `GET /api/v1/dashboard/summary` 각 카드는 `selected_reason`(`official_preferred|latest_fallback`)를 포함한다.
+22. `GET /api/v1/matchups/{matchup_id}`는 `office_type/region_code`와 충돌하는 `article_title` 문맥을 비노출(`null`) 처리한다.
+23. `GET /api/v1/dashboard/map-latest`는 `scope_title_intent_leak` 행을 제외해 로컬/광역 제목 문맥 오염을 차단한다.
 
 ## 6.1 운영 품질 요약 규칙 (`GET /api/v1/dashboard/quality`)
 1. `freshness_p50_hours`, `freshness_p90_hours`는 검증 완료(`verified=true`) 관측치의 freshness 분포 백분위를 시간 단위로 노출한다.

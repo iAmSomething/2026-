@@ -171,6 +171,28 @@ MAP_LATEST_LEGACY_TITLE_KEYWORDS = {
     "국회의원선거",
 }
 MAP_LATEST_TARGET_YEAR = "2026"
+TITLE_INTENT_REGION_PREFIX = {
+    "서울시장": "11",
+    "부산시장": "26",
+    "대구시장": "27",
+    "인천시장": "28",
+    "광주시장": "29",
+    "대전시장": "30",
+    "울산시장": "31",
+    "세종시장": "36",
+    "경기도지사": "41",
+    "강원도지사": "42",
+    "강원특별자치도지사": "42",
+    "충청북도지사": "43",
+    "충청남도지사": "44",
+    "전라북도지사": "45",
+    "전북특별자치도지사": "45",
+    "전라남도지사": "46",
+    "경상북도지사": "47",
+    "경상남도지사": "48",
+    "제주도지사": "50",
+    "제주특별자치도지사": "50",
+}
 CANDIDATE_PROFILE_TRACKED_FIELDS = (
     "party_name",
     "gender",
@@ -370,6 +392,50 @@ def _normalize_title_fields(
     return normalized_canonical or fallback_title, normalized_canonical, normalized_article
 
 
+def _normalize_region_prefix(region_code: str | None) -> str | None:
+    text = str(region_code or "").strip()
+    if not text:
+        return None
+    m = re.match(r"^(\d{2})-\d{3}$", text)
+    if m:
+        return m.group(1)
+    m = re.match(r"^(\d{2})$", text)
+    if m:
+        return m.group(1)
+    return None
+
+
+def _extract_title_intent_region_prefix(title_text: str | None) -> str | None:
+    normalized = re.sub(r"\s+", "", str(title_text or "").strip())
+    if not normalized:
+        return None
+    for keyword, prefix in TITLE_INTENT_REGION_PREFIX.items():
+        if keyword in normalized:
+            return prefix
+    return None
+
+
+def _is_scope_title_intent_leak(
+    *,
+    office_type: str | None,
+    region_code: str | None,
+    title_text: str | None,
+) -> bool:
+    title_prefix = _extract_title_intent_region_prefix(title_text)
+    if title_prefix is None:
+        return False
+
+    office = str(office_type or "").strip()
+    # Local office responses must not expose metro/provincial governor intent.
+    if "기초" in office:
+        return True
+
+    region_prefix = _normalize_region_prefix(region_code)
+    if region_prefix and title_prefix != region_prefix:
+        return True
+    return False
+
+
 def _selection_freshness_anchor(row: dict) -> tuple[str, datetime | None]:
     official_release_at = _to_datetime(row.get("official_release_at"))
     article_published_at = _to_datetime(row.get("article_published_at"))
@@ -464,8 +530,16 @@ def _map_latest_exclusion_reason(row: dict) -> str | None:
         return "invalid_candidate_option_name"
     if drop_reason == "legacy_title":
         return "legacy_matchup_title"
+    if drop_reason == "scope_title_intent_leak":
+        return "scope_title_intent_leak"
     if _is_legacy_matchup_title(row.get("title")):
         return "legacy_matchup_title"
+    if _is_scope_title_intent_leak(
+        office_type=row.get("office_type"),
+        region_code=row.get("region_code"),
+        title_text=row.get("article_title") or row.get("title"),
+    ):
+        return "scope_title_intent_leak"
     if _is_map_latest_noise_option_name(row.get("option_name")):
         return "invalid_candidate_option_name"
     return None
@@ -649,6 +723,13 @@ def _map_latest_drop_reason(row: dict) -> str | None:
 
     if _is_legacy_map_title(row.get("title")):
         return "legacy_title"
+
+    if _is_scope_title_intent_leak(
+        office_type=row.get("office_type"),
+        region_code=row.get("region_code"),
+        title_text=row.get("article_title") or row.get("title"),
+    ):
+        return "scope_title_intent_leak"
 
     return None
 
@@ -1014,6 +1095,12 @@ def get_matchup(matchup_id: str, repo=Depends(get_repository)):
         article_title=payload.get("article_title"),
         fallback_title=payload.get("title") or payload.get("matchup_id") or "",
     )
+    if _is_scope_title_intent_leak(
+        office_type=payload.get("office_type"),
+        region_code=payload.get("region_code"),
+        title_text=article_title,
+    ):
+        article_title = None
     payload["title"] = title
     payload["canonical_title"] = canonical_title
     payload["article_title"] = article_title

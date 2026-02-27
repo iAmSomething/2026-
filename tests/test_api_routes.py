@@ -997,6 +997,121 @@ def test_map_latest_sanity_filter_drops_invalid_candidate_and_legacy_title_rows(
     app.dependency_overrides.clear()
 
 
+def test_map_latest_excludes_scope_title_intent_leak_rows():
+    class MapScopeLeakRepo(FakeApiRepo):
+        def fetch_dashboard_map_latest(self, as_of, limit=100):  # noqa: ARG002
+            rows = [
+                {
+                    "region_code": "28-450",
+                    "office_type": "기초자치단체장",
+                    "title": "연수구청장 가상대결",
+                    "canonical_title": "연수구청장",
+                    "article_title": "[여론조사] 인천시장 가상대결",
+                    "value_mid": 42.0,
+                    "survey_end_date": date(2026, 2, 21),
+                    "option_name": "김민수",
+                    "audience_scope": "local",
+                    "audience_region_code": "28-450",
+                    "observation_updated_at": "2026-02-21T03:00:00+00:00",
+                    "article_published_at": "2026-02-21T01:00:00+00:00",
+                    "source_channel": "article",
+                    "source_channels": ["article"],
+                },
+                {
+                    "region_code": "11-010",
+                    "office_type": "기초자치단체장",
+                    "title": "종로구청장 가상대결",
+                    "canonical_title": "종로구청장",
+                    "article_title": "[여론조사] 종로구청장 가상대결",
+                    "value_mid": 44.0,
+                    "survey_end_date": date(2026, 2, 21),
+                    "option_name": "이재훈",
+                    "audience_scope": "local",
+                    "audience_region_code": "11-010",
+                    "observation_updated_at": "2026-02-21T03:00:00+00:00",
+                    "article_published_at": "2026-02-21T01:00:00+00:00",
+                    "source_channel": "article",
+                    "source_channels": ["article"],
+                },
+            ]
+            return rows[:limit]
+
+    def override_map_scope_leak_repo():
+        yield MapScopeLeakRepo()
+
+    app.dependency_overrides[get_repository] = override_map_scope_leak_repo
+    client = TestClient(app)
+
+    res = client.get("/api/v1/dashboard/map-latest")
+    assert res.status_code == 200
+    body = res.json()
+    assert len(body["items"]) == 1
+    assert body["items"][0]["region_code"] == "11-010"
+    assert body["filter_stats"]["reason_counts"]["scope_title_intent_leak"] == 1
+    assert body["scope_breakdown"] == {"national": 0, "regional": 0, "local": 1, "unknown": 0}
+
+    app.dependency_overrides.clear()
+
+
+def test_matchup_masks_scope_title_intent_leak_for_local_matchup():
+    class MatchupScopeLeakRepo(FakeApiRepo):
+        def get_matchup(self, matchup_id):
+            if matchup_id == "2026_local|기초자치단체장|26-710":
+                return {
+                    "matchup_id": "20260603|기초자치단체장|26-710",
+                    "region_code": "26-710",
+                    "office_type": "기초자치단체장",
+                    "title": "부산 중구청장 가상대결",
+                    "canonical_title": "부산 중구청장",
+                    "article_title": "[여론조사] 부산시장 가상대결",
+                    "has_data": True,
+                    "pollster": "부산일보",
+                    "survey_start_date": date(2026, 2, 20),
+                    "survey_end_date": date(2026, 2, 21),
+                    "confidence_level": 95.0,
+                    "sample_size": 600,
+                    "response_rate": 12.1,
+                    "margin_of_error": 4.0,
+                    "source_grade": "B",
+                    "audience_scope": "local",
+                    "audience_region_code": "26-710",
+                    "sampling_population_text": "부산 중구 거주 만 18세 이상",
+                    "legal_completeness_score": 0.8,
+                    "legal_filled_count": 6,
+                    "legal_required_count": 7,
+                    "date_resolution": "exact",
+                    "date_inference_mode": "exact",
+                    "date_inference_confidence": 1.0,
+                    "observation_updated_at": "2026-02-21T03:00:00+00:00",
+                    "article_published_at": "2026-02-21T01:00:00+00:00",
+                    "official_release_at": None,
+                    "nesdc_enriched": False,
+                    "needs_manual_review": False,
+                    "candidate_noise_block_count": 0,
+                    "poll_fingerprint": "f" * 64,
+                    "source_channel": "article",
+                    "source_channels": ["article"],
+                    "verified": True,
+                    "scenarios": [],
+                    "options": [],
+                }
+            return super().get_matchup(matchup_id)
+
+    def override_matchup_scope_leak_repo():
+        yield MatchupScopeLeakRepo()
+
+    app.dependency_overrides[get_repository] = override_matchup_scope_leak_repo
+    client = TestClient(app)
+
+    res = client.get("/api/v1/matchups/2026_local|기초자치단체장|26-710")
+    assert res.status_code == 200
+    body = res.json()
+    assert body["canonical_title"] == "부산 중구청장"
+    assert body["article_title"] is None
+
+    app.dependency_overrides.clear()
+
+
 def test_dashboard_summary_selects_single_representative_by_source_priority():
     class SummaryRepresentativeRepo(FakeApiRepo):
         def fetch_dashboard_summary(self, as_of):  # noqa: ARG002
