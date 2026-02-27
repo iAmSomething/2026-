@@ -132,6 +132,9 @@ POLL_OPTION_SCHEMA: dict[str, Any] = {
         "value_mid": {"type": ["number", "null"]},
         "is_missing": {"type": "boolean"},
         "margin_of_error": {"type": ["number", "null"]},
+        "scenario_key": {"type": ["string", "null"]},
+        "scenario_type": {"type": ["string", "null"], "enum": ["head_to_head", "multi_candidate", None]},
+        "scenario_title": {"type": ["string", "null"]},
         "evidence_text": {"type": ["string", "null"]},
     },
     "additionalProperties": False,
@@ -242,7 +245,10 @@ class PollOption:
     value_mid: float | None
     is_missing: bool
     margin_of_error: float | None
-    evidence_text: str | None
+    evidence_text: str | None = None
+    scenario_key: str | None = None
+    scenario_type: str | None = None
+    scenario_title: str | None = None
 
     def to_dict(self) -> dict[str, Any]:
         return asdict(self)
