@@ -111,6 +111,77 @@ class FakeApiRepo:
             },
         ]
 
+    def fetch_trends(self, metric, scope, region_code, days):  # noqa: ARG002
+        if metric != "party_support":
+            return []
+
+        rows = [
+            {
+                "option_name": "더불어민주당",
+                "value_mid": 35.0,
+                "pollster": "기사집계센터",
+                "survey_end_date": date(2026, 2, 20),
+                "source_grade": "A",
+                "audience_scope": "national",
+                "audience_region_code": None,
+                "observation_updated_at": "2026-02-20T03:00:00+00:00",
+                "official_release_at": None,
+                "article_published_at": "2026-02-20T01:00:00+00:00",
+                "source_channel": "article",
+                "source_channels": ["article"],
+                "verified": True,
+            },
+            {
+                "option_name": "더불어민주당",
+                "value_mid": 34.0,
+                "pollster": "NBS",
+                "survey_end_date": date(2026, 2, 20),
+                "source_grade": "B",
+                "audience_scope": "national",
+                "audience_region_code": None,
+                "observation_updated_at": "2026-02-20T04:00:00+00:00",
+                "official_release_at": "2026-02-20T02:00:00+00:00",
+                "article_published_at": None,
+                "source_channel": "nesdc",
+                "source_channels": ["nesdc"],
+                "verified": True,
+            },
+            {
+                "option_name": "국민의힘",
+                "value_mid": 39.0,
+                "pollster": "기사집계센터",
+                "survey_end_date": date(2026, 2, 20),
+                "source_grade": "A",
+                "audience_scope": "national",
+                "audience_region_code": None,
+                "observation_updated_at": "2026-02-20T03:10:00+00:00",
+                "official_release_at": None,
+                "article_published_at": "2026-02-20T01:10:00+00:00",
+                "source_channel": "article",
+                "source_channels": ["article"],
+                "verified": True,
+            },
+            {
+                "option_name": "지역정당A",
+                "value_mid": 22.0,
+                "pollster": "지역기사",
+                "survey_end_date": date(2026, 2, 19),
+                "source_grade": "A",
+                "audience_scope": "regional",
+                "audience_region_code": "11-000",
+                "observation_updated_at": "2026-02-19T03:00:00+00:00",
+                "official_release_at": None,
+                "article_published_at": "2026-02-19T01:00:00+00:00",
+                "source_channel": "article",
+                "source_channels": ["article"],
+                "verified": True,
+            },
+        ]
+        scoped = [row for row in rows if row["audience_scope"] == scope]
+        if scope != "national" and region_code:
+            scoped = [row for row in scoped if row.get("audience_region_code") == region_code]
+        return scoped
+
     def search_regions(self, query, limit=20, has_data=None):
         rows = [
             {
@@ -1035,6 +1106,59 @@ def test_dashboard_summary_selects_single_representative_by_source_priority():
     assert body["president_job_approval"][0]["selected_source_channel"] == "article"
     assert body["president_job_approval"][0]["source_trace"]["selected_source_tier"] == "article"
     assert body["president_job_approval"][0]["source_trace"]["selected_source_channel"] == "article"
+
+    app.dependency_overrides.clear()
+
+
+def test_trends_contract_and_representative_trace():
+    app.dependency_overrides[get_repository] = override_repo
+    app.dependency_overrides[get_candidate_data_go_service] = override_candidate_data_go_service
+    client = TestClient(app)
+
+    res = client.get("/api/v1/trends/party_support", params={"scope": "national", "days": 30})
+    assert res.status_code == 200
+    body = res.json()
+    assert body["metric"] == "party_support"
+    assert body["scope"] == "national"
+    assert body["days"] == 30
+    assert body["region_code"] is None
+    assert len(body["points"]) == 2
+
+    dem = next(point for point in body["points"] if point["option_name"] == "더불어민주당")
+    assert dem["value_mid"] == 34.0
+    assert dem["source_trace"]["selected_source_tier"] == "nesdc"
+    assert dem["source_trace"]["source_priority"] == "official"
+    assert dem["source_trace"]["is_official_confirmed"] is True
+
+    app.dependency_overrides.clear()
+
+
+def test_trends_regional_scope_requires_region_code():
+    app.dependency_overrides[get_repository] = override_repo
+    app.dependency_overrides[get_candidate_data_go_service] = override_candidate_data_go_service
+    client = TestClient(app)
+
+    res = client.get("/api/v1/trends/party_support", params={"scope": "regional", "days": 30})
+    assert res.status_code == 422
+    assert "region_code is required" in res.json()["detail"]
+
+    app.dependency_overrides.clear()
+
+
+def test_trends_regional_scope_filters_region():
+    app.dependency_overrides[get_repository] = override_repo
+    app.dependency_overrides[get_candidate_data_go_service] = override_candidate_data_go_service
+    client = TestClient(app)
+
+    res = client.get("/api/v1/trends/party_support", params={"scope": "regional", "region_code": "11-000", "days": 90})
+    assert res.status_code == 200
+    body = res.json()
+    assert body["scope"] == "regional"
+    assert body["region_code"] == "11-000"
+    assert body["days"] == 90
+    assert len(body["points"]) == 1
+    assert body["points"][0]["audience_scope"] == "regional"
+    assert body["points"][0]["audience_region_code"] == "11-000"
 
     app.dependency_overrides.clear()
 

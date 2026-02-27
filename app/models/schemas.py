@@ -97,6 +97,25 @@ class DashboardSummaryOut(BaseModel):
     scope_breakdown: ScopeBreakdownOut = Field(default_factory=ScopeBreakdownOut)
 
 
+class TrendPoint(BaseModel):
+    survey_end_date: date
+    option_name: str
+    value_mid: float | None = None
+    pollster: str | None = None
+    audience_scope: Literal["national", "regional", "local"] | None = None
+    audience_region_code: str | None = None
+    source_trace: SourceTraceOut = Field(default_factory=SourceTraceOut)
+
+
+class TrendsOut(BaseModel):
+    metric: Literal["party_support", "president_job_approval", "election_frame"]
+    scope: Literal["national", "regional", "local"]
+    region_code: str | None = None
+    days: int
+    points: list[TrendPoint] = Field(default_factory=list)
+    generated_at: datetime
+
+
 class MapLatestPoint(BaseModel):
     region_code: str
     office_type: str

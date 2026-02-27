@@ -43,6 +43,8 @@ from app.models.schemas import (
     RegionOut,
     SourceTraceOut,
     SummaryPoint,
+    TrendPoint,
+    TrendsOut,
 )
 from app.services.cutoff_policy import (
     SURVEY_END_DATE_CUTOFF,
@@ -658,6 +660,71 @@ def get_dashboard_summary(
         presidential_approval=deprecated_presidential_approval,
         presidential_approval_deprecated=True,
         scope_breakdown=ScopeBreakdownOut(**_build_scope_breakdown(eligible_rows)),
+    )
+
+
+@router.get("/trends/{metric}", response_model=TrendsOut)
+def get_trends(
+    metric: Literal["party_support", "president_job_approval", "election_frame"],
+    scope: Literal["national", "regional", "local"] = Query(default="national"),
+    region_code: str | None = Query(default=None),
+    days: int = Query(default=30, ge=1, le=365),
+    repo=Depends(get_repository),
+):
+    resolved_region_code = None
+    if scope != "national":
+        if not region_code:
+            raise HTTPException(status_code=422, detail="region_code is required for regional/local scope")
+        region_normalized = normalize_region_code_input(region_code)
+        resolved_region_code = region_normalized.canonical or region_code
+    elif region_code:
+        region_normalized = normalize_region_code_input(region_code)
+        resolved_region_code = region_normalized.canonical or region_code
+
+    rows = repo.fetch_trends(
+        metric=metric,
+        scope=scope,
+        region_code=resolved_region_code,
+        days=days,
+    )
+    eligible_rows = [row for row in rows if _is_cutoff_eligible_row(row)]
+
+    grouped: dict[tuple[date, str], list[dict]] = {}
+    for row in eligible_rows:
+        survey_end_date = row.get("survey_end_date")
+        option_name = str(row.get("option_name") or "").strip()
+        if not isinstance(survey_end_date, date) or not option_name:
+            continue
+        grouped.setdefault((survey_end_date, option_name), []).append(row)
+
+    points: list[TrendPoint] = []
+    for (survey_end_date, option_name), candidates in sorted(grouped.items(), key=lambda item: (item[0][0], item[0][1])):
+        selected_row, selected_tier = _select_summary_representative(candidates)
+        source_meta = _derive_source_meta(selected_row)
+        points.append(
+            TrendPoint(
+                survey_end_date=survey_end_date,
+                option_name=option_name,
+                value_mid=selected_row.get("value_mid"),
+                pollster=selected_row.get("pollster"),
+                audience_scope=selected_row.get("audience_scope"),
+                audience_region_code=selected_row.get("audience_region_code"),
+                source_trace=_build_source_trace(
+                    row=selected_row,
+                    source_meta=source_meta,
+                    selected_source_tier=selected_tier,
+                    selected_source_channel=selected_row.get("source_channel"),
+                ),
+            )
+        )
+
+    return TrendsOut(
+        metric=metric,
+        scope=scope,
+        region_code=resolved_region_code,
+        days=days,
+        points=points,
+        generated_at=datetime.now(timezone.utc),
     )
 
 

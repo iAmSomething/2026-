@@ -621,6 +621,61 @@ class PostgresRepository:
         _api_read_cache_set(cache_key, rows)
         return rows
 
+    def fetch_trends(
+        self,
+        *,
+        metric: str,
+        scope: str,
+        region_code: str | None,
+        days: int,
+    ) -> list[dict]:
+        cache_key = _api_read_cache_key("trends", metric, scope, region_code or "none", days)
+        cached = _api_read_cache_get(cache_key)
+        if cached is not None:
+            return cached
+
+        params: list[object] = [metric, scope, days]
+        region_filter = ""
+        if scope in {"regional", "local"} and region_code:
+            region_filter = "AND COALESCE(o.audience_region_code, o.region_code) = %s"
+            params.append(region_code)
+
+        query = f"""
+            SELECT
+                po.option_name,
+                po.value_mid,
+                o.pollster,
+                o.survey_end_date,
+                o.source_grade,
+                o.audience_scope,
+                o.audience_region_code,
+                o.updated_at AS observation_updated_at,
+                o.official_release_at,
+                a.published_at AS article_published_at,
+                o.source_channel,
+                COALESCE(
+                    o.source_channels,
+                    CASE WHEN o.source_channel IS NULL THEN ARRAY[]::text[] ELSE ARRAY[o.source_channel] END
+                ) AS source_channels
+            FROM poll_options po
+            JOIN poll_observations o ON o.id = po.observation_id
+            LEFT JOIN articles a ON a.id = o.article_id
+            WHERE po.option_type = %s
+              AND o.verified = TRUE
+              AND o.audience_scope = %s
+              AND o.survey_end_date IS NOT NULL
+              AND o.survey_end_date >= CURRENT_DATE - (%s::int - 1)
+              {region_filter}
+            ORDER BY o.survey_end_date ASC, po.option_name, o.id DESC
+        """
+
+        with self.conn.cursor() as cur:
+            cur.execute(query, params)
+            rows = [dict(row) for row in (cur.fetchall() or [])]
+
+        _api_read_cache_set(cache_key, rows)
+        return rows
+
     def fetch_dashboard_map_latest(self, as_of: date | None, limit: int = 100):
         cache_key = _api_read_cache_key("dashboard_map_latest", as_of or "none", limit)
         cached = _api_read_cache_get(cache_key)
