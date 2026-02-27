@@ -18,7 +18,13 @@ class CandidateOut(BaseModel):
     name_ko: str
     party_name: str | None = None
     party_inferred: bool = False
-    party_inference_source: Literal["name_rule", "article_context", "manual"] | None = None
+    party_inference_source: Literal[
+        "name_rule",
+        "article_context",
+        "manual",
+        "official_registry_v3",
+        "incumbent_context_v3",
+    ] | None = None
     party_inference_confidence: float | None = None
     needs_manual_review: bool = False
     source_channel: Literal["article", "nesdc"] | None = None
@@ -250,8 +256,15 @@ class MatchupOptionOut(BaseModel):
     value_mid: float | None = None
     value_raw: str | None = None
     party_inferred: bool = False
-    party_inference_source: Literal["name_rule", "article_context", "manual"] | None = None
+    party_inference_source: Literal[
+        "name_rule",
+        "article_context",
+        "manual",
+        "official_registry_v3",
+        "incumbent_context_v3",
+    ] | None = None
     party_inference_confidence: float | None = None
+    party_inference_evidence: str | None = None
     candidate_verified: bool = True
     candidate_verify_source: Literal["data_go", "article_context", "manual"] | None = None
     candidate_verify_confidence: float | None = None
@@ -442,7 +455,13 @@ class CandidateInput(BaseModel):
     name_ko: str
     party_name: str | None = None
     party_inferred: bool = False
-    party_inference_source: Literal["name_rule", "article_context", "manual"] | None = None
+    party_inference_source: Literal[
+        "name_rule",
+        "article_context",
+        "manual",
+        "official_registry_v3",
+        "incumbent_context_v3",
+    ] | None = None
     party_inference_confidence: float | None = None
     needs_manual_review: bool = False
     source_channel: Literal["article", "nesdc"] = "article"
@@ -502,8 +521,15 @@ class PollOptionInput(BaseModel):
     value_mid: float | None = None
     is_missing: bool = False
     party_inferred: bool = False
-    party_inference_source: Literal["name_rule", "article_context", "manual"] | None = None
+    party_inference_source: Literal[
+        "name_rule",
+        "article_context",
+        "manual",
+        "official_registry_v3",
+        "incumbent_context_v3",
+    ] | None = None
     party_inference_confidence: float | None = None
+    party_inference_evidence: str | None = None
     candidate_verified: bool = True
     candidate_verify_source: Literal["data_go", "article_context", "manual"] | None = None
     candidate_verify_confidence: float | None = None

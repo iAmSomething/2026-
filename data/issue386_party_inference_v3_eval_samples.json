@@ -1,0 +1,254 @@
+{
+  "samples": [
+    {
+      "observation_key": "obs_1beca86ca98386bb",
+      "option_name": "김병욱",
+      "gold_party": "더불어민주당",
+      "pred_party": "더불어민주당",
+      "party_inferred": true,
+      "source": "official_registry_v3",
+      "confidence": 0.93,
+      "evidence": "{\"candidate_name\":\"김병욱\",\"candidate_party_counter\":{\"더불어민주당\":1},\"method\":\"party_inference_v3\",\"rule\":\"candidate_context_counter\",\"selected_count\":1,\"selected_party\":\"더불어민주당\",\"support_ratio\":1.0,\"total_count\":1}"
+    },
+    {
+      "observation_key": "obs_28eb3ac87760e5d3",
+      "option_name": "서태경",
+      "gold_party": "더불어민주당",
+      "pred_party": "더불어민주당",
+      "party_inferred": true,
+      "source": "official_registry_v3",
+      "confidence": 0.93,
+      "evidence": "{\"candidate_name\":\"서태경\",\"candidate_party_counter\":{\"더불어민주당\":1},\"method\":\"party_inference_v3\",\"rule\":\"candidate_context_counter\",\"selected_count\":1,\"selected_party\":\"더불어민주당\",\"support_ratio\":1.0,\"total_count\":1}"
+    },
+    {
+      "observation_key": "obs_1b304a647ade54cf",
+      "option_name": "조지훈",
+      "gold_party": "더불어민주당",
+      "pred_party": "더불어민주당",
+      "party_inferred": true,
+      "source": "official_registry_v3",
+      "confidence": 0.93,
+      "evidence": "{\"candidate_name\":\"조지훈\",\"candidate_party_counter\":{\"더불어민주당\":1},\"method\":\"party_inference_v3\",\"rule\":\"candidate_context_counter\",\"selected_count\":1,\"selected_party\":\"더불어민주당\",\"support_ratio\":1.0,\"total_count\":1}"
+    },
+    {
+      "observation_key": "obs_9210db1b70c7c97e",
+      "option_name": "허태정",
+      "gold_party": "더불어민주당",
+      "pred_party": "더불어민주당",
+      "party_inferred": true,
+      "source": "official_registry_v3",
+      "confidence": 0.93,
+      "evidence": "{\"candidate_name\":\"허태정\",\"candidate_party_counter\":{\"더불어민주당\":1},\"method\":\"party_inference_v3\",\"rule\":\"candidate_context_counter\",\"selected_count\":1,\"selected_party\":\"더불어민주당\",\"support_ratio\":1.0,\"total_count\":1}"
+    },
+    {
+      "observation_key": "obs_2abffbb597220668",
+      "option_name": "김병욱",
+      "gold_party": "국민의힘",
+      "pred_party": "국민의힘",
+      "party_inferred": true,
+      "source": "official_registry_v3",
+      "confidence": 0.93,
+      "evidence": "{\"candidate_name\":\"김병욱\",\"candidate_party_counter\":{\"국민의힘\":1},\"method\":\"party_inference_v3\",\"rule\":\"candidate_context_counter\",\"selected_count\":1,\"selected_party\":\"국민의힘\",\"support_ratio\":1.0,\"total_count\":1}"
+    },
+    {
+      "observation_key": "obs_2abffbb597220668",
+      "option_name": "박승호",
+      "gold_party": "국민의힘",
+      "pred_party": "국민의힘",
+      "party_inferred": true,
+      "source": "official_registry_v3",
+      "confidence": 0.93,
+      "evidence": "{\"candidate_name\":\"박승호\",\"candidate_party_counter\":{\"국민의힘\":1},\"method\":\"party_inference_v3\",\"rule\":\"candidate_context_counter\",\"selected_count\":1,\"selected_party\":\"국민의힘\",\"support_ratio\":1.0,\"total_count\":1}"
+    },
+    {
+      "observation_key": "obs_e2bc30a4e716291f",
+      "option_name": "이재준",
+      "gold_party": "더불어민주당",
+      "pred_party": "더불어민주당",
+      "party_inferred": true,
+      "source": "official_registry_v3",
+      "confidence": 0.93,
+      "evidence": "{\"candidate_name\":\"이재준\",\"candidate_party_counter\":{\"더불어민주당\":1},\"method\":\"party_inference_v3\",\"rule\":\"candidate_context_counter\",\"selected_count\":1,\"selected_party\":\"더불어민주당\",\"support_ratio\":1.0,\"total_count\":1}"
+    },
+    {
+      "observation_key": "obs_9961c9bafbda6f30",
+      "option_name": "김상욱",
+      "gold_party": "더불어민주당",
+      "pred_party": "더불어민주당",
+      "party_inferred": true,
+      "source": "official_registry_v3",
+      "confidence": 0.93,
+      "evidence": "{\"candidate_name\":\"김상욱\",\"candidate_party_counter\":{\"더불어민주당\":1},\"method\":\"party_inference_v3\",\"rule\":\"candidate_context_counter\",\"selected_count\":1,\"selected_party\":\"더불어민주당\",\"support_ratio\":1.0,\"total_count\":1}"
+    },
+    {
+      "observation_key": "obs_eb296d307d9f189a",
+      "option_name": "김종인",
+      "gold_party": "더불어민주당",
+      "pred_party": "더불어민주당",
+      "party_inferred": true,
+      "source": "official_registry_v3",
+      "confidence": 0.93,
+      "evidence": "{\"candidate_name\":\"김종인\",\"candidate_party_counter\":{\"더불어민주당\":1},\"method\":\"party_inference_v3\",\"rule\":\"candidate_context_counter\",\"selected_count\":1,\"selected_party\":\"더불어민주당\",\"support_ratio\":1.0,\"total_count\":1}"
+    },
+    {
+      "observation_key": "obs_6490a50035ace1dd",
+      "option_name": "이권재",
+      "gold_party": "국민의힘",
+      "pred_party": "국민의힘",
+      "party_inferred": true,
+      "source": "official_registry_v3",
+      "confidence": 0.93,
+      "evidence": "{\"candidate_name\":\"이권재\",\"candidate_party_counter\":{\"국민의힘\":1},\"method\":\"party_inference_v3\",\"rule\":\"candidate_context_counter\",\"selected_count\":1,\"selected_party\":\"국민의힘\",\"support_ratio\":1.0,\"total_count\":1}"
+    },
+    {
+      "observation_key": "obs_6490a50035ace1dd",
+      "option_name": "장인수",
+      "gold_party": "더불어민주당",
+      "pred_party": "더불어민주당",
+      "party_inferred": true,
+      "source": "official_registry_v3",
+      "confidence": 0.93,
+      "evidence": "{\"candidate_name\":\"장인수\",\"candidate_party_counter\":{\"더불어민주당\":1},\"method\":\"party_inference_v3\",\"rule\":\"candidate_context_counter\",\"selected_count\":1,\"selected_party\":\"더불어민주당\",\"support_ratio\":1.0,\"total_count\":1}"
+    },
+    {
+      "observation_key": "obs_452db4024c0a564f",
+      "option_name": "김병욱",
+      "gold_party": "국민의힘",
+      "pred_party": "국민의힘",
+      "party_inferred": true,
+      "source": "official_registry_v3",
+      "confidence": 0.93,
+      "evidence": "{\"candidate_name\":\"김병욱\",\"candidate_party_counter\":{\"국민의힘\":1},\"method\":\"party_inference_v3\",\"rule\":\"candidate_context_counter\",\"selected_count\":1,\"selected_party\":\"국민의힘\",\"support_ratio\":1.0,\"total_count\":1}"
+    },
+    {
+      "observation_key": "obs_452db4024c0a564f",
+      "option_name": "박승호",
+      "gold_party": "국민의힘",
+      "pred_party": "국민의힘",
+      "party_inferred": true,
+      "source": "official_registry_v3",
+      "confidence": 0.93,
+      "evidence": "{\"candidate_name\":\"박승호\",\"candidate_party_counter\":{\"국민의힘\":1},\"method\":\"party_inference_v3\",\"rule\":\"candidate_context_counter\",\"selected_count\":1,\"selected_party\":\"국민의힘\",\"support_ratio\":1.0,\"total_count\":1}"
+    },
+    {
+      "observation_key": "obs_452db4024c0a564f",
+      "option_name": "공원식",
+      "gold_party": "국민의힘",
+      "pred_party": "국민의힘",
+      "party_inferred": true,
+      "source": "official_registry_v3",
+      "confidence": 0.93,
+      "evidence": "{\"candidate_name\":\"공원식\",\"candidate_party_counter\":{\"국민의힘\":1},\"method\":\"party_inference_v3\",\"rule\":\"candidate_context_counter\",\"selected_count\":1,\"selected_party\":\"국민의힘\",\"support_ratio\":1.0,\"total_count\":1}"
+    },
+    {
+      "observation_key": "obs_452db4024c0a564f",
+      "option_name": "박용선",
+      "gold_party": "국민의힘",
+      "pred_party": "국민의힘",
+      "party_inferred": true,
+      "source": "official_registry_v3",
+      "confidence": 0.93,
+      "evidence": "{\"candidate_name\":\"박용선\",\"candidate_party_counter\":{\"국민의힘\":1},\"method\":\"party_inference_v3\",\"rule\":\"candidate_context_counter\",\"selected_count\":1,\"selected_party\":\"국민의힘\",\"support_ratio\":1.0,\"total_count\":1}"
+    },
+    {
+      "observation_key": "obs_4466ab3585586751",
+      "option_name": "강성휘",
+      "gold_party": "더불어민주당",
+      "pred_party": "더불어민주당",
+      "party_inferred": true,
+      "source": "official_registry_v3",
+      "confidence": 0.93,
+      "evidence": "{\"candidate_name\":\"강성휘\",\"candidate_party_counter\":{\"더불어민주당\":1},\"method\":\"party_inference_v3\",\"rule\":\"candidate_context_counter\",\"selected_count\":1,\"selected_party\":\"더불어민주당\",\"support_ratio\":1.0,\"total_count\":1}"
+    },
+    {
+      "observation_key": "obs_267a35b25c0310e6",
+      "option_name": "박홍률",
+      "gold_party": "무소속",
+      "pred_party": "무소속",
+      "party_inferred": true,
+      "source": "official_registry_v3",
+      "confidence": 0.93,
+      "evidence": "{\"candidate_name\":\"박홍률\",\"candidate_party_counter\":{\"무소속\":1},\"method\":\"party_inference_v3\",\"rule\":\"candidate_context_counter\",\"selected_count\":1,\"selected_party\":\"무소속\",\"support_ratio\":1.0,\"total_count\":1}"
+    },
+    {
+      "observation_key": "obs_267a35b25c0310e6",
+      "option_name": "강성휘",
+      "gold_party": "더불어민주당",
+      "pred_party": "더불어민주당",
+      "party_inferred": true,
+      "source": "official_registry_v3",
+      "confidence": 0.93,
+      "evidence": "{\"candidate_name\":\"강성휘\",\"candidate_party_counter\":{\"더불어민주당\":1},\"method\":\"party_inference_v3\",\"rule\":\"candidate_context_counter\",\"selected_count\":1,\"selected_party\":\"더불어민주당\",\"support_ratio\":1.0,\"total_count\":1}"
+    },
+    {
+      "observation_key": "obs_ca5a62c853918c7d",
+      "option_name": "조지훈",
+      "gold_party": "더불어민주당",
+      "pred_party": "더불어민주당",
+      "party_inferred": true,
+      "source": "official_registry_v3",
+      "confidence": 0.93,
+      "evidence": "{\"candidate_name\":\"조지훈\",\"candidate_party_counter\":{\"더불어민주당\":1},\"method\":\"party_inference_v3\",\"rule\":\"candidate_context_counter\",\"selected_count\":1,\"selected_party\":\"더불어민주당\",\"support_ratio\":1.0,\"total_count\":1}"
+    },
+    {
+      "observation_key": "obs_9db6bb1b8a4c24af",
+      "option_name": "박승호",
+      "gold_party": "국민의힘",
+      "pred_party": "국민의힘",
+      "party_inferred": true,
+      "source": "official_registry_v3",
+      "confidence": 0.93,
+      "evidence": "{\"candidate_name\":\"박승호\",\"candidate_party_counter\":{\"국민의힘\":1},\"method\":\"party_inference_v3\",\"rule\":\"candidate_context_counter\",\"selected_count\":1,\"selected_party\":\"국민의힘\",\"support_ratio\":1.0,\"total_count\":1}"
+    },
+    {
+      "observation_key": "obs_9db6bb1b8a4c24af",
+      "option_name": "김병욱",
+      "gold_party": "국민의힘",
+      "pred_party": "국민의힘",
+      "party_inferred": true,
+      "source": "official_registry_v3",
+      "confidence": 0.93,
+      "evidence": "{\"candidate_name\":\"김병욱\",\"candidate_party_counter\":{\"국민의힘\":1},\"method\":\"party_inference_v3\",\"rule\":\"candidate_context_counter\",\"selected_count\":1,\"selected_party\":\"국민의힘\",\"support_ratio\":1.0,\"total_count\":1}"
+    },
+    {
+      "observation_key": "obs_9db6bb1b8a4c24af",
+      "option_name": "이칠구",
+      "gold_party": "국민의힘",
+      "pred_party": "국민의힘",
+      "party_inferred": true,
+      "source": "official_registry_v3",
+      "confidence": 0.93,
+      "evidence": "{\"candidate_name\":\"이칠구\",\"candidate_party_counter\":{\"국민의힘\":1},\"method\":\"party_inference_v3\",\"rule\":\"candidate_context_counter\",\"selected_count\":1,\"selected_party\":\"국민의힘\",\"support_ratio\":1.0,\"total_count\":1}"
+    },
+    {
+      "observation_key": "obs_dce561b2d5190dbd",
+      "option_name": "김경수",
+      "gold_party": "더불어민주당",
+      "pred_party": "더불어민주당",
+      "party_inferred": true,
+      "source": "official_registry_v3",
+      "confidence": 0.93,
+      "evidence": "{\"candidate_name\":\"김경수\",\"candidate_party_counter\":{\"더불어민주당\":1},\"method\":\"party_inference_v3\",\"rule\":\"candidate_context_counter\",\"selected_count\":1,\"selected_party\":\"더불어민주당\",\"support_ratio\":1.0,\"total_count\":1}"
+    },
+    {
+      "observation_key": "obs_dce561b2d5190dbd",
+      "option_name": "박완수",
+      "gold_party": "국민의힘",
+      "pred_party": "국민의힘",
+      "party_inferred": true,
+      "source": "official_registry_v3",
+      "confidence": 0.93,
+      "evidence": "{\"candidate_name\":\"박완수\",\"candidate_party_counter\":{\"국민의힘\":1},\"method\":\"party_inference_v3\",\"rule\":\"candidate_context_counter\",\"selected_count\":1,\"selected_party\":\"국민의힘\",\"support_ratio\":1.0,\"total_count\":1}"
+    },
+    {
+      "observation_key": "obs_13d822a5fd33a42a",
+      "option_name": "신용한",
+      "gold_party": "더불어민주당",
+      "pred_party": "더불어민주당",
+      "party_inferred": true,
+      "source": "official_registry_v3",
+      "confidence": 0.93,
+      "evidence": "{\"candidate_name\":\"신용한\",\"candidate_party_counter\":{\"더불어민주당\":1},\"method\":\"party_inference_v3\",\"rule\":\"candidate_context_counter\",\"selected_count\":1,\"selected_party\":\"더불어민주당\",\"support_ratio\":1.0,\"total_count\":1}"
+    }
+  ]
+}

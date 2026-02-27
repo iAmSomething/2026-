@@ -1,9 +1,16 @@
 from __future__ import annotations
 
+import json
 import re
 from typing import Any
 
-ALLOWED_PARTY_INFERENCE_SOURCES = {"name_rule", "article_context", "manual"}
+ALLOWED_PARTY_INFERENCE_SOURCES = {
+    "name_rule",
+    "article_context",
+    "manual",
+    "official_registry_v3",
+    "incumbent_context_v3",
+}
 ALLOWED_CANDIDATE_VERIFY_SOURCES = {"data_go", "article_context", "manual"}
 TRUE_TOKENS = {"1", "true", "yes", "y", "on"}
 FALSE_TOKENS = {"0", "false", "no", "n", "off"}
@@ -146,6 +153,17 @@ def _normalize_float(value: Any) -> float | None:
     return None
 
 
+def _normalize_party_inference_evidence(value: Any) -> str | None:
+    if value is None:
+        return None
+    if isinstance(value, str):
+        normalized = value.strip()
+        return normalized or None
+    if isinstance(value, (dict, list)):
+        return json.dumps(value, ensure_ascii=False, separators=(",", ":"), sort_keys=True)
+    return None
+
+
 def _normalize_audience_scope(value: Any) -> str | None:
     if not isinstance(value, str):
         return None
@@ -207,6 +225,7 @@ def normalize_option_fields(option: dict[str, Any]) -> dict[str, Any]:
     inferred = _normalize_party_inferred(option.get("party_inferred"), option_name)
     option["party_inferred"] = inferred
     option["party_inference_source"] = _normalize_party_inference_source(option.get("party_inference_source"), inferred)
+    option["party_inference_evidence"] = _normalize_party_inference_evidence(option.get("party_inference_evidence"))
 
     if option.get("option_type") in {"candidate", "candidate_matchup"}:
         candidate_verified = _normalize_party_inferred(option.get("candidate_verified"), option_name)
