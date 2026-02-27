@@ -2004,6 +2004,69 @@ class PostgresRepository:
         return scenarios, primary["options"]
 
     @staticmethod
+    def _observation_bundle_key(observation: dict) -> tuple:
+        poll_fingerprint = str(observation.get("poll_fingerprint") or "").strip()
+        if poll_fingerprint:
+            return ("poll_fingerprint", poll_fingerprint)
+        return (
+            "poll_meta",
+            str(observation.get("pollster") or "").strip().lower(),
+            observation.get("survey_start_date"),
+            observation.get("survey_end_date"),
+            observation.get("sample_size"),
+            observation.get("margin_of_error"),
+            observation.get("confidence_level"),
+            str(observation.get("source_channel") or "").strip().lower(),
+            observation.get("article_published_at"),
+        )
+
+    @staticmethod
+    def _matchup_option_identity(option: dict) -> tuple:
+        return (
+            str(option.get("scenario_key") or "default"),
+            str(option.get("option_name") or "").strip(),
+            str(option.get("candidate_id") or "").strip(),
+            option.get("value_mid"),
+            str(option.get("value_raw") or "").strip(),
+        )
+
+    def _select_matchup_observation_bundle(self, observations: list[dict]) -> tuple[dict, list[dict], list[dict]]:
+        normalized_rows: list[tuple[dict, list[dict]]] = []
+        selected_observation: dict | None = None
+        selected_options: list[dict] = []
+
+        for observation in observations:
+            normalized_options = self._normalize_options(observation.get("options"))
+            normalized_rows.append((observation, normalized_options))
+            if selected_observation is None and normalized_options:
+                selected_observation = observation
+                selected_options = normalized_options
+
+        if selected_observation is None:
+            return observations[0], [], []
+
+        bundle_key = self._observation_bundle_key(selected_observation)
+        merged_options: list[dict] = []
+        seen_option_keys: set[tuple] = set()
+        for observation, normalized_options in normalized_rows:
+            if not normalized_options:
+                continue
+            if self._observation_bundle_key(observation) != bundle_key:
+                continue
+            for option in normalized_options:
+                option_key = self._matchup_option_identity(option)
+                if option_key in seen_option_keys:
+                    continue
+                seen_option_keys.add(option_key)
+                merged_options.append(dict(option))
+
+        if not merged_options:
+            merged_options = [dict(row) for row in selected_options]
+
+        scenarios, primary_options = self._build_matchup_scenarios(merged_options)
+        return selected_observation, scenarios, primary_options
+
+    @staticmethod
     def _strip_region_suffix(name: str) -> str:
         for suffix in ("특별자치도", "특별자치시", "특별시", "광역시", "자치시", "도", "시"):
             if name.endswith(suffix):
@@ -2141,18 +2204,7 @@ class PostgresRepository:
                 _api_read_cache_set(cache_key, result)
             return result
 
-        selected_observation = observations[0]
-        scenarios: list[dict] = []
-        primary_options: list[dict] = []
-        for row in observations:
-            normalized_options = self._normalize_options(row.get("options"))
-            if not normalized_options:
-                continue
-            selected_observation = row
-            scenarios, primary_options = self._build_matchup_scenarios(normalized_options)
-            break
-
-        observation = selected_observation
+        observation, scenarios, primary_options = self._select_matchup_observation_bundle(observations)
         observation_title = str(observation.get("title") or "").strip()
         if not canonical_title:
             canonical_title = observation_title or canonical_matchup_id

@@ -409,6 +409,266 @@ def test_get_matchup_falls_back_to_previous_observation_when_latest_is_invalid()
     assert [row["option_name"] for row in out["options"]] == ["정원오", "오세훈"]
 
 
+class _BundleCursor:
+    def __init__(self):
+        self.execs: list[str] = []
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, exc_type, exc, tb):  # noqa: ANN001
+        return False
+
+    def execute(self, query, params=None):  # noqa: ARG002
+        self.execs.append(query)
+
+    def fetchone(self):
+        step = len(self.execs)
+        if step == 1:
+            return {
+                "matchup_id": "m-bundle",
+                "region_code": "26-000",
+                "office_type": "광역자치단체장",
+                "title": "부산시장 가상대결",
+                "is_active": True,
+            }
+        if step == 2:
+            return {
+                "region_code": "26-000",
+                "sido_name": "부산광역시",
+                "sigungu_name": "전체",
+                "admin_level": "sido",
+            }
+        return None
+
+    def fetchall(self):
+        step = len(self.execs)
+        if step != 3:
+            return []
+        return [
+            {
+                "matchup_id": "m-bundle",
+                "region_code": "26-000",
+                "office_type": "광역자치단체장",
+                "title": "[여론조사] 부산시장 가상대결 A",
+                "pollster": "부산리서치",
+                "survey_start_date": date(2026, 2, 19),
+                "survey_end_date": date(2026, 2, 21),
+                "confidence_level": 95.0,
+                "sample_size": 1000,
+                "response_rate": 12.3,
+                "margin_of_error": 3.1,
+                "source_grade": "B",
+                "audience_scope": "regional",
+                "audience_region_code": "26-000",
+                "sampling_population_text": "부산 거주 만 18세 이상",
+                "legal_completeness_score": 0.86,
+                "legal_filled_count": 6,
+                "legal_required_count": 7,
+                "date_resolution": "exact",
+                "date_inference_mode": "relative_published_at",
+                "date_inference_confidence": 0.92,
+                "observation_updated_at": "2026-02-21T03:00:00+00:00",
+                "official_release_at": None,
+                "article_published_at": "2026-02-21T01:00:00+00:00",
+                "nesdc_enriched": False,
+                "needs_manual_review": False,
+                "poll_fingerprint": "fp-busan-a",
+                "source_channel": "article",
+                "source_channels": ["article"],
+                "verified": True,
+                "observation_id": 2002,
+                "options": [
+                    {
+                        "option_name": "전재수",
+                        "candidate_id": "cand-jjs",
+                        "party_name": "더불어민주당",
+                        "scenario_key": "h2h-a",
+                        "scenario_type": "head_to_head",
+                        "scenario_title": "전재수 vs 박형준",
+                        "value_mid": 43.4,
+                        "value_raw": "43.4%",
+                        "party_inferred": False,
+                        "party_inference_source": None,
+                        "party_inference_confidence": None,
+                        "needs_manual_review": False,
+                    },
+                    {
+                        "option_name": "박형준",
+                        "candidate_id": "cand-phj",
+                        "party_name": "국민의힘",
+                        "scenario_key": "h2h-a",
+                        "scenario_type": "head_to_head",
+                        "scenario_title": "전재수 vs 박형준",
+                        "value_mid": 32.3,
+                        "value_raw": "32.3%",
+                        "party_inferred": False,
+                        "party_inference_source": None,
+                        "party_inference_confidence": None,
+                        "needs_manual_review": False,
+                    },
+                ],
+            },
+            {
+                "matchup_id": "m-bundle",
+                "region_code": "26-000",
+                "office_type": "광역자치단체장",
+                "title": "[여론조사] 부산시장 가상대결 A",
+                "pollster": "부산리서치",
+                "survey_start_date": date(2026, 2, 19),
+                "survey_end_date": date(2026, 2, 21),
+                "confidence_level": 95.0,
+                "sample_size": 1000,
+                "response_rate": 12.3,
+                "margin_of_error": 3.1,
+                "source_grade": "B",
+                "audience_scope": "regional",
+                "audience_region_code": "26-000",
+                "sampling_population_text": "부산 거주 만 18세 이상",
+                "legal_completeness_score": 0.86,
+                "legal_filled_count": 6,
+                "legal_required_count": 7,
+                "date_resolution": "exact",
+                "date_inference_mode": "relative_published_at",
+                "date_inference_confidence": 0.92,
+                "observation_updated_at": "2026-02-21T02:00:00+00:00",
+                "official_release_at": None,
+                "article_published_at": "2026-02-21T01:00:00+00:00",
+                "nesdc_enriched": False,
+                "needs_manual_review": False,
+                "poll_fingerprint": "fp-busan-a",
+                "source_channel": "article",
+                "source_channels": ["article"],
+                "verified": True,
+                "observation_id": 2001,
+                "options": [
+                    {
+                        "option_name": "전재수",
+                        "candidate_id": "cand-jjs",
+                        "party_name": "더불어민주당",
+                        "scenario_key": "h2h-b",
+                        "scenario_type": "head_to_head",
+                        "scenario_title": "전재수 vs 김도읍",
+                        "value_mid": 43.8,
+                        "value_raw": "43.8%",
+                        "party_inferred": False,
+                        "party_inference_source": None,
+                        "party_inference_confidence": None,
+                        "needs_manual_review": False,
+                    },
+                    {
+                        "option_name": "김도읍",
+                        "candidate_id": "cand-kdu",
+                        "party_name": "국민의힘",
+                        "scenario_key": "h2h-b",
+                        "scenario_type": "head_to_head",
+                        "scenario_title": "전재수 vs 김도읍",
+                        "value_mid": 33.2,
+                        "value_raw": "33.2%",
+                        "party_inferred": False,
+                        "party_inference_source": None,
+                        "party_inference_confidence": None,
+                        "needs_manual_review": False,
+                    },
+                    {
+                        "option_name": "전재수",
+                        "candidate_id": "cand-jjs",
+                        "party_name": "더불어민주당",
+                        "scenario_key": "multi-a",
+                        "scenario_type": "multi_candidate",
+                        "scenario_title": "다자대결",
+                        "value_mid": 26.8,
+                        "value_raw": "26.8%",
+                        "party_inferred": False,
+                        "party_inference_source": None,
+                        "party_inference_confidence": None,
+                        "needs_manual_review": False,
+                    },
+                ],
+            },
+            {
+                "matchup_id": "m-bundle",
+                "region_code": "26-000",
+                "office_type": "광역자치단체장",
+                "title": "[여론조사] 부산시장 가상대결 B",
+                "pollster": "다른리서치",
+                "survey_start_date": date(2026, 2, 10),
+                "survey_end_date": date(2026, 2, 12),
+                "confidence_level": 95.0,
+                "sample_size": 1000,
+                "response_rate": 12.3,
+                "margin_of_error": 3.1,
+                "source_grade": "B",
+                "audience_scope": "regional",
+                "audience_region_code": "26-000",
+                "sampling_population_text": "부산 거주 만 18세 이상",
+                "legal_completeness_score": 0.86,
+                "legal_filled_count": 6,
+                "legal_required_count": 7,
+                "date_resolution": "exact",
+                "date_inference_mode": "relative_published_at",
+                "date_inference_confidence": 0.92,
+                "observation_updated_at": "2026-02-12T02:00:00+00:00",
+                "official_release_at": None,
+                "article_published_at": "2026-02-12T01:00:00+00:00",
+                "nesdc_enriched": False,
+                "needs_manual_review": False,
+                "poll_fingerprint": "fp-busan-b",
+                "source_channel": "article",
+                "source_channels": ["article"],
+                "verified": True,
+                "observation_id": 1900,
+                "options": [
+                    {
+                        "option_name": "홍길동",
+                        "candidate_id": "cand-hgd",
+                        "party_name": "무소속",
+                        "scenario_key": "default",
+                        "scenario_type": "head_to_head",
+                        "scenario_title": "홍길동 단독",
+                        "value_mid": 9.0,
+                        "value_raw": "9.0%",
+                        "party_inferred": False,
+                        "party_inference_source": None,
+                        "party_inference_confidence": None,
+                        "needs_manual_review": False,
+                    }
+                ],
+            },
+        ]
+
+
+class _BundleConn:
+    def __init__(self):
+        self.cur = _BundleCursor()
+
+    def cursor(self):
+        return self.cur
+
+
+def test_get_matchup_merges_recent_observations_with_same_poll_fingerprint():
+    repo = PostgresRepository(_BundleConn())
+
+    out = repo.get_matchup("m-bundle")
+
+    assert out is not None
+    assert out["has_data"] is True
+    assert out["pollster"] == "부산리서치"
+    assert out["survey_end_date"] == date(2026, 2, 21)
+    assert len(out["scenarios"]) == 3
+    assert {row["scenario_key"] for row in out["scenarios"]} == {"h2h-a", "h2h-b", "multi-a"}
+    option_names = [row["option_name"] for scenario in out["scenarios"] for row in scenario["options"]]
+    assert "홍길동" not in option_names
+
+    jeon_values = [
+        option["value_mid"]
+        for scenario in out["scenarios"]
+        for option in scenario["options"]
+        if option["candidate_id"] == "cand-jjs"
+    ]
+    assert sorted(jeon_values) == [26.8, 43.4, 43.8]
+
+
 class _AllInvalidCursor(_FallbackCursor):
     def fetchall(self):
         step = len(self.execs)
