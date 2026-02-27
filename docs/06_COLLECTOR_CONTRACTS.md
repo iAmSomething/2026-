@@ -87,6 +87,7 @@
 4. `extract_error`
 5. `mapping_error`
 6. `ingestion_error`
+7. `metadata_cross_contamination`
 
 코드 기준 스키마 원본:
 - `src/pipeline/contracts.py`의 `REVIEW_QUEUE_SCHEMA`
@@ -195,7 +196,8 @@ PYTHONPATH=. .venv/bin/python scripts/evaluate_classify_gate_effect.py
 3. 후보명 필터:
 - 비후보 토큰/정책 토큰(예: `찬성`, `반대`, `정부`, `정당`) 제외
 4. taxonomy 유지:
-- `issue_type`는 기존 enum 유지(`extract_error`)
+- `issue_type`는 계약 enum 내에서 사용
+- 다중 조사 블록 오염 감지는 `issue_type=metadata_cross_contamination`으로 라우팅
 - 원인 세분화는 `error_code`로 처리
 
 v2 `extract_error` 세분화 코드:
@@ -203,6 +205,9 @@ v2 `extract_error` 세분화 코드:
 2. `NO_NUMERIC_SIGNAL`
 3. `NO_TITLE_CANDIDATE_SIGNAL`
 4. `NO_BODY_CANDIDATE_SIGNAL`
+
+다중 조사 메타 오염 코드:
+1. `MULTIPLE_POLLSTER_TOKENS_IN_OBSERVATION`
 
 성능 비교 실행:
 ```bash

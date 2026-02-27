@@ -1,0 +1,87 @@
+{
+  "issue": 472,
+  "input_payload_path": "data/collector_live_coverage_v2_payload.json",
+  "keyset_path": "data/issue472_user_report_keys.json",
+  "requested_key_count": 3,
+  "matched_record_count": 3,
+  "total_after_observation_count": 3,
+  "total_metadata_cross_contamination_count": 0,
+  "acceptance_checks": {
+    "multi_survey_split_generated": false,
+    "cross_contamination_detected_or_zero": true
+  },
+  "items": [
+    {
+      "observation_key": "live30d-v2-12-obs_b61d10f49a5d5fdd",
+      "article_url": "https://news.google.com/rss/articles/CBMibkFVX3lxTE9tU29Yc0dzaDhTR3BHUFNsaTdhb3h6N3Z2b3M4eEFxVHBtZzYwU3BrZV9DdEdNSWoxZV8wWk1lanEwRk4yLTJucFpwNnBZQ3hZdUNfNFNWOG1SVGdRc21qZjVVY3p0UFR2NHoycjRR0gFyQVVfeXFMUDc1RnNZaFhKeVE1NXMwbUtWSDJNMmYxWWJGY09Ea1Bxb191UlRiblBVWXhwRzNRT1JIWFRuME5DeF9YTjBjRHNOOE1WMFRWVWN5Nlo3U3d2OUVlX2ZzSVJ3bTRTQ3ZjWGRGdExlQTdnV2x3?live_cov_v2=12",
+      "article_title": "[2026지방선거] 부산시장, 전재수 43.4-박형준 32.3%, 전재수 43.8%-김도읍33.2%...다자대결 전재수26.8% 선두",
+      "before_observation_count": 1,
+      "after_observation_count": 1,
+      "after_option_count": 5,
+      "metadata_cross_contamination_count": 0,
+      "observations": [
+        {
+          "id": "obs_d3aee5fa7f5c4bc5",
+          "pollster": "미상조사기관",
+          "survey_start_date": null,
+          "survey_end_date": "2026-02-10",
+          "sample_size": null,
+          "response_rate": null,
+          "margin_of_error": null,
+          "region_code": "26-000",
+          "office_type": "광역자치단체장",
+          "matchup_id": "2026_local|광역자치단체장|26-000"
+        }
+      ],
+      "errors": []
+    },
+    {
+      "observation_key": "live30d-v2-18-obs_8dc5d149038ab97c",
+      "article_url": "https://news.google.com/rss/articles/CBMicEFVX3lxTE9TYVNqLXN0aW1lemlIME05b25KX09HNFYydlg1Zk9iaUgyZ2kwcG12b0tTVHRtSEZNVTBoRm1xYS1zMlVCQzZaSnVYZjJlWjNZSkI2cUZlUVZ4TlY1M1BJUUFLd09UV2hiV0taaERtbi0?live_cov_v2=18",
+      "article_title": "[여론조사] 인천시장 양자대결 박찬대 51.2%, 유정복 37.1% 오차 밖 앞서",
+      "before_observation_count": 1,
+      "after_observation_count": 1,
+      "after_option_count": 2,
+      "metadata_cross_contamination_count": 0,
+      "observations": [
+        {
+          "id": "obs_f41b709bdcc5f711",
+          "pollster": "미상조사기관",
+          "survey_start_date": null,
+          "survey_end_date": "2026-02-04",
+          "sample_size": null,
+          "response_rate": null,
+          "margin_of_error": null,
+          "region_code": "28-000",
+          "office_type": "광역자치단체장",
+          "matchup_id": "2026_local|광역자치단체장|28-000"
+        }
+      ],
+      "errors": []
+    },
+    {
+      "observation_key": "live30d-v2-19-obs_8aff3ed1d23504f8",
+      "article_url": "https://news.google.com/rss/articles/CBMiPEFVX3lxTE56ZzduSTFSc2FmQUxiT2wzUGswSVIzcXM2Z0Z3dHRwWTNaclBRZ3RsZTBxVUx3dXN1YWQ2NdIBWEFVX3lxTE92RlNERThyckZnRmxlb2cxbFJ5WDhQX21lS2Qxb21KSkZxb2VPWkVQVU9RYnFuWHc4dDJJX3JNdGxFQXFyVm1BamU1enZHeERjcHpkN1FPb0I?live_cov_v2=19",
+      "article_title": "서울시장 여론조사 가상대결 박주민 41.9% vs 오세훈 35.3%:서울의 소리",
+      "before_observation_count": 1,
+      "after_observation_count": 1,
+      "after_option_count": 2,
+      "metadata_cross_contamination_count": 0,
+      "observations": [
+        {
+          "id": "obs_6e95f405f29e305d",
+          "pollster": "미상조사기관",
+          "survey_start_date": null,
+          "survey_end_date": "2026-02-03",
+          "sample_size": null,
+          "response_rate": null,
+          "margin_of_error": null,
+          "region_code": "11-000",
+          "office_type": "광역자치단체장",
+          "matchup_id": "2026_local|광역자치단체장|11-000"
+        }
+      ],
+      "errors": []
+    }
+  ]
+}

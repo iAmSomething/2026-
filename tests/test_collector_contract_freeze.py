@@ -74,6 +74,7 @@ def test_dojisa_variant_mapping():
 def test_review_queue_issue_type_must_be_fixed_taxonomy():
     assert "discover_error" in ISSUE_TAXONOMY
     assert "ingestion_error" in ISSUE_TAXONOMY
+    assert "metadata_cross_contamination" in ISSUE_TAXONOMY
     with pytest.raises(ValueError):
         new_review_queue_item(
             entity_type="article",

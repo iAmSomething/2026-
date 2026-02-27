@@ -59,7 +59,37 @@ class PollCollector:
         r"([가-힣A-Za-z]{2,20})\s*(\d{1,3}(?:\.\d+)?)%\s*(?:vs|VS|대)\s*([가-힣A-Za-z]{2,20})\s*(\d{1,3}(?:\.\d+)?)%"
     )
     _NAME_VALUE_RE = re.compile(r"([가-힣A-Za-z]{2,20})\s*(\d{1,3}(?:\.\d+)?(?:\s*[~\-]\s*\d{1,3}(?:\.\d+)?)?%대?)")
-    _POLLSTER_RE = re.compile(r"\b(KBS|MBC|SBS|한국갤럽|리얼미터|NBS|조원씨앤아이|미디어리서치)\b")
+    _POLLSTER_TOKENS = (
+        "한국사회여론연구소",
+        "KSOI",
+        "리얼미터",
+        "한국갤럽",
+        "갤럽",
+        "NBS",
+        "조원씨앤아이",
+        "미디어리서치",
+        "한국리서치",
+        "엠브레인퍼블릭",
+        "케이스탯리서치",
+        "코리아리서치",
+        "KBS",
+        "MBC",
+        "SBS",
+    )
+    _POLLSTER_ALIAS_MAP = {
+        "한국사회여론연구소": "KSOI",
+        "갤럽": "한국갤럽",
+    }
+    _POLLSTER_RE = re.compile(
+        "(" + "|".join(re.escape(token) for token in sorted(_POLLSTER_TOKENS, key=len, reverse=True)) + ")"
+    )
+    _SURVEY_PERIOD_YMD_RANGE_RE = re.compile(
+        r"(20\d{2})\s*[.\-/년]\s*(\d{1,2})\s*[.\-/월]\s*(\d{1,2})\s*일?\s*(?:~|∼|-|부터)\s*"
+        r"(?:(20\d{2})\s*[.\-/년]\s*)?(\d{1,2})\s*[.\-/월]\s*(\d{1,2})\s*일?(?:까지)?"
+    )
+    _SURVEY_PERIOD_MD_RANGE_RE = re.compile(
+        r"(\d{1,2})\s*월\s*(\d{1,2})\s*일?\s*(?:~|∼|-|부터)\s*(?:(\d{1,2})\s*월\s*)?(\d{1,2})\s*일?(?:까지)?"
+    )
     _GATE_POLICY_KEYWORDS = (
         "국정지지율",
         "국정 안정",
@@ -424,85 +454,135 @@ class PollCollector:
             date_inference_confidence,
             date_inference_error,
         ) = self._resolve_survey_date_inference(article)
-
-        observation = PollObservation(
-            id=stable_id("obs", article.id, matchup_id, pollster or "unknown"),
-            article_id=article.id,
-            survey_name=article.title,
-            pollster=pollster or "미상조사기관",
-            survey_start_date=None,
-            survey_end_date=survey_end_date,
-            sample_size=sample_size,
-            response_rate=response_rate,
-            margin_of_error=margin_of_error,
-            sponsor=None,
-            method=None,
-            region_code=region_code,
-            office_type=office_type,
-            matchup_id=matchup_id,
-            verified=False,
-            source_grade=None,
-            ingestion_run_id=None,
-            evidence_text=article.raw_text[:280],
-            source_url=article.url,
-            source_channel="article",
-            source_channels=["article"],
-            date_resolution=date_resolution,
-            date_inference_mode=date_inference_mode,
-            date_inference_confidence=date_inference_confidence,
-        )
-        observations.append(observation)
         if date_inference_error is not None:
             errors.append(date_inference_error)
 
-        try:
-            extracted_pairs = self.extract_candidate_pairs(article.raw_text, title=article.title, mode="v2")
-            extracted_any = len(extracted_pairs) > 0
-            for pair in extracted_pairs:
-                options.append(
-                    self._build_option(
-                        observation=observation,
-                        option_type="candidate",
-                        option_name=pair["name"],
-                        value_raw=pair["value_raw"],
-                        evidence_text=pair["evidence_text"],
+        survey_blocks = self._split_survey_blocks(article.raw_text)
+        if not survey_blocks:
+            survey_blocks = [article.raw_text]
+        has_multi_blocks = len(survey_blocks) > 1
+
+        for block_index, raw_block in enumerate(survey_blocks):
+            block_text = self._cleanup_space(raw_block)
+            if not block_text:
+                continue
+
+            pollster_tokens = self._extract_pollster_tokens(block_text)
+            pollster = pollster_tokens[0] if pollster_tokens else self._extract_pollster(article.raw_text)
+            block_margin = self._extract_margin_of_error(block_text)
+            block_sample = self._extract_sample_size(block_text)
+            block_response_rate = self._extract_response_rate(block_text)
+
+            if not has_multi_blocks:
+                if block_margin is None:
+                    block_margin = margin_of_error
+                if block_sample is None:
+                    block_sample = sample_size
+                if block_response_rate is None:
+                    block_response_rate = response_rate
+
+            block_start_date, block_end_date = self._extract_survey_period(block_text, article=article)
+            observation = PollObservation(
+                id=stable_id("obs", article.id, matchup_id, pollster or "unknown", str(block_index)),
+                article_id=article.id,
+                survey_name=article.title,
+                pollster=pollster or "미상조사기관",
+                survey_start_date=block_start_date,
+                survey_end_date=block_end_date or survey_end_date,
+                sample_size=block_sample,
+                response_rate=block_response_rate,
+                margin_of_error=block_margin,
+                sponsor=None,
+                method=None,
+                region_code=region_code,
+                office_type=office_type,
+                matchup_id=matchup_id,
+                verified=False,
+                source_grade=None,
+                ingestion_run_id=None,
+                evidence_text=block_text[:280],
+                source_url=article.url,
+                source_channel="article",
+                source_channels=["article"],
+                date_resolution=date_resolution,
+                date_inference_mode=date_inference_mode,
+                date_inference_confidence=date_inference_confidence,
+            )
+            observations.append(observation)
+
+            if len(pollster_tokens) >= 2:
+                errors.append(
+                    new_review_queue_item(
+                        entity_type="poll_observation",
+                        entity_id=observation.id,
+                        issue_type="metadata_cross_contamination",
+                        stage="extract",
+                        error_code="MULTIPLE_POLLSTER_TOKENS_IN_OBSERVATION",
+                        error_message="multiple pollster tokens detected in one survey block",
+                        source_url=article.url,
+                        payload={
+                            "article_id": article.id,
+                            "pollsters": pollster_tokens,
+                            "block_index": block_index,
+                            "block_text": block_text[:400],
+                        },
                     )
                 )
 
-            if not extracted_any:
-                reason = self._diagnose_extract_failure(article.raw_text, article.title)
+            try:
+                extracted_pairs = self.extract_candidate_pairs(
+                    block_text,
+                    title=None if has_multi_blocks else article.title,
+                    mode="v2",
+                )
+                extracted_any = len(extracted_pairs) > 0
+                block_options: list[PollOption] = []
+                for pair in extracted_pairs:
+                    block_options.append(
+                        self._build_option(
+                            observation=observation,
+                            option_type="candidate",
+                            option_name=pair["name"],
+                            value_raw=pair["value_raw"],
+                            evidence_text=pair["evidence_text"],
+                        )
+                    )
+
+                if not extracted_any:
+                    reason = self._diagnose_extract_failure(block_text, article.title)
+                    errors.append(
+                        new_review_queue_item(
+                            entity_type="poll_observation",
+                            entity_id=observation.id,
+                            issue_type="extract_error",
+                            stage="extract",
+                            error_code=reason,
+                            error_message="no candidate/value pair extracted",
+                            source_url=article.url,
+                            payload={"article_id": article.id, "block_index": block_index},
+                        )
+                    )
+                else:
+                    self._split_candidate_matchup_scenarios(
+                        survey_name=article.title,
+                        body_text=block_text,
+                        observation=observation,
+                        options=block_options,
+                    )
+                    options.extend(block_options)
+            except Exception as exc:
                 errors.append(
                     new_review_queue_item(
                         entity_type="poll_observation",
                         entity_id=observation.id,
                         issue_type="extract_error",
                         stage="extract",
-                        error_code=reason,
-                        error_message="no candidate/value pair extracted",
+                        error_code=exc.__class__.__name__,
+                        error_message=str(exc),
                         source_url=article.url,
-                        payload={"article_id": article.id},
+                        payload={"article_id": article.id, "block_index": block_index},
                     )
                 )
-            else:
-                self._split_candidate_matchup_scenarios(
-                    survey_name=article.title,
-                    body_text=article.raw_text,
-                    observation=observation,
-                    options=options,
-                )
-        except Exception as exc:
-            errors.append(
-                new_review_queue_item(
-                    entity_type="poll_observation",
-                    entity_id=observation.id,
-                    issue_type="extract_error",
-                    stage="extract",
-                    error_code=exc.__class__.__name__,
-                    error_message=str(exc),
-                    source_url=article.url,
-                    payload={"article_id": article.id},
-                )
-            )
 
         return observations, options, errors
 
@@ -980,6 +1060,96 @@ class PollCollector:
         m = self._RESPONSE_RATE_RE.search(text)
         return float(m.group(1)) if m else None
 
+    def _split_survey_blocks(self, text: str) -> list[str]:
+        cleaned = self._cleanup_space(text)
+        if not cleaned:
+            return []
+
+        pollster_matches = list(self._POLLSTER_RE.finditer(cleaned))
+        if len(pollster_matches) < 2:
+            return [cleaned]
+
+        blocks: list[str] = []
+        prefix = cleaned[: pollster_matches[0].start()].strip()
+        for idx, match in enumerate(pollster_matches):
+            start = match.start()
+            end = pollster_matches[idx + 1].start() if idx + 1 < len(pollster_matches) else len(cleaned)
+            segment = self._cleanup_space(cleaned[start:end])
+            if idx == 0 and prefix:
+                segment = self._cleanup_space(f"{prefix} {segment}")
+            if not segment:
+                continue
+            if blocks and self._extract_pollster(segment) == self._extract_pollster(blocks[-1]):
+                blocks[-1] = self._cleanup_space(f"{blocks[-1]} {segment}")
+            else:
+                blocks.append(segment)
+
+        merged: list[str] = []
+        pending_prefix = ""
+        for block in blocks:
+            merged_block = self._cleanup_space(f"{pending_prefix} {block}") if pending_prefix else block
+            has_candidate_signal = bool(self.extract_candidate_pairs(merged_block, title=None, mode="v2"))
+            if has_candidate_signal:
+                merged.append(merged_block)
+                pending_prefix = ""
+                continue
+            if merged:
+                merged[-1] = self._cleanup_space(f"{merged[-1]} {merged_block}")
+            else:
+                pending_prefix = merged_block
+
+        if pending_prefix:
+            if merged:
+                merged[0] = self._cleanup_space(f"{pending_prefix} {merged[0]}")
+            else:
+                merged = [pending_prefix]
+
+        return merged if len(merged) >= 2 else [cleaned]
+
+    def _safe_date(self, year: int, month: int, day: int) -> date | None:
+        try:
+            return date(year, month, day)
+        except ValueError:
+            return None
+
+    def _extract_survey_period(self, text: str, *, article: Article) -> tuple[str | None, str | None]:
+        year_anchor = (self._parse_anchor_date(article.published_at) or self._parse_anchor_date(article.collected_at))
+        base_year = year_anchor.year if year_anchor else datetime.now(self._DATE_INFERENCE_TZ).year
+
+        ymd_match = self._SURVEY_PERIOD_YMD_RANGE_RE.search(text)
+        if ymd_match:
+            start_year = int(ymd_match.group(1))
+            start_month = int(ymd_match.group(2))
+            start_day = int(ymd_match.group(3))
+            end_year = int(ymd_match.group(4)) if ymd_match.group(4) else start_year
+            end_month = int(ymd_match.group(5))
+            end_day = int(ymd_match.group(6))
+            start_date = self._safe_date(start_year, start_month, start_day)
+            end_date = self._safe_date(end_year, end_month, end_day)
+            if start_date and end_date:
+                return start_date.isoformat(), end_date.isoformat()
+            return None, None
+
+        md_match = self._SURVEY_PERIOD_MD_RANGE_RE.search(text)
+        if not md_match:
+            return None, None
+
+        start_month = int(md_match.group(1))
+        start_day = int(md_match.group(2))
+        end_month = int(md_match.group(3)) if md_match.group(3) else start_month
+        end_day = int(md_match.group(4))
+
+        start_year = base_year
+        end_year = base_year
+        if end_month < start_month:
+            end_year += 1
+
+        start_date = self._safe_date(start_year, start_month, start_day)
+        end_date = self._safe_date(end_year, end_month, end_day)
+        if start_date and end_date:
+            return start_date.isoformat(), end_date.isoformat()
+        return None, None
+
     def _clean_body_for_extraction(self, text: str) -> str:
         normalized = self._cleanup_space(text)
         if not normalized:
@@ -1052,9 +1222,24 @@ class PollCollector:
             return True
         return False
 
+    def _normalize_pollster(self, raw_token: str) -> str:
+        token = self._cleanup_space(raw_token)
+        return self._POLLSTER_ALIAS_MAP.get(token, token)
+
+    def _extract_pollster_tokens(self, text: str) -> list[str]:
+        tokens: list[str] = []
+        seen: set[str] = set()
+        for match in self._POLLSTER_RE.finditer(text):
+            normalized = self._normalize_pollster(match.group(0))
+            if not normalized or normalized in seen:
+                continue
+            seen.add(normalized)
+            tokens.append(normalized)
+        return tokens
+
     def _extract_pollster(self, text: str) -> str | None:
-        m = self._POLLSTER_RE.search(text)
-        return m.group(1) if m else None
+        tokens = self._extract_pollster_tokens(text)
+        return tokens[0] if tokens else None
 
     def _extract_region_office(self, text: str) -> tuple[str, str] | None:
         for needle, region_code, office_type in REGION_OFFICE_DIRECT_PATTERNS:

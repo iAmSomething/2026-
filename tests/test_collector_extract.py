@@ -105,6 +105,81 @@ class CollectorExtractTest(unittest.TestCase):
         self.assertIn("is_missing", opt)
         self.assertEqual(opt["margin_of_error"], obs["margin_of_error"])
 
+    def test_extract_splits_multi_survey_blocks_with_block_bound_metadata(self) -> None:
+        collector = PollCollector(election_id="20260603")
+        article_text = (
+            "서울시장 여론조사에서 KSOI는 2월 3~4일 조사, 표본 1000명, 응답률 10.1%, 표본오차 ±3.1%, "
+            "정원오 41% vs 오세훈 37%라고 밝혔다. "
+            "리얼미터는 2월 5~6일 조사, 표본 800명, 응답률 8.5%, 표본오차 ±3.5%, "
+            "정원오 44% vs 오세훈 34%를 발표했다."
+        )
+        article = Article(
+            id=stable_id("art", "https://example.com/multi-survey-meta"),
+            url="https://example.com/multi-survey-meta",
+            title="서울시장 복수 조사 결과",
+            publisher="테스트",
+            published_at="2026-02-07T00:00:00+09:00",
+            snippet=article_text[:120],
+            collected_at="2026-02-07T00:00:00+00:00",
+            raw_hash="h-multi-meta",
+            raw_text=article_text,
+        )
+
+        observations, options, errors = collector.extract(article)
+        self.assertEqual(len(errors), 0)
+        self.assertEqual(len(observations), 2)
+
+        by_pollster = {row.pollster: row for row in observations}
+        self.assertIn("KSOI", by_pollster)
+        self.assertIn("리얼미터", by_pollster)
+
+        ksoi = by_pollster["KSOI"]
+        self.assertEqual(ksoi.survey_start_date, "2026-02-03")
+        self.assertEqual(ksoi.survey_end_date, "2026-02-04")
+        self.assertEqual(ksoi.sample_size, 1000)
+        self.assertAlmostEqual(float(ksoi.response_rate or 0), 10.1, places=2)
+        self.assertAlmostEqual(float(ksoi.margin_of_error or 0), 3.1, places=2)
+
+        realmeter = by_pollster["리얼미터"]
+        self.assertEqual(realmeter.survey_start_date, "2026-02-05")
+        self.assertEqual(realmeter.survey_end_date, "2026-02-06")
+        self.assertEqual(realmeter.sample_size, 800)
+        self.assertAlmostEqual(float(realmeter.response_rate or 0), 8.5, places=2)
+        self.assertAlmostEqual(float(realmeter.margin_of_error or 0), 3.5, places=2)
+
+        options_by_observation: dict[str, list] = {}
+        for row in options:
+            options_by_observation.setdefault(row.observation_id, []).append(row)
+        self.assertEqual(len(options_by_observation.get(ksoi.id, [])), 2)
+        self.assertEqual(len(options_by_observation.get(realmeter.id, [])), 2)
+
+    def test_extract_routes_metadata_cross_contamination_when_two_pollsters_in_one_block(self) -> None:
+        collector = PollCollector(election_id="20260603")
+        article_text = (
+            "서울시장 여론조사에서 KSOI·리얼미터 공동 조사로 표본 1000명, 응답률 9.9%, "
+            "표본오차 ±3.1%, 정원오 42% vs 오세훈 36%가 나왔다."
+        )
+        article = Article(
+            id=stable_id("art", "https://example.com/multi-pollster-single-block"),
+            url="https://example.com/multi-pollster-single-block",
+            title="서울시장 공동조사",
+            publisher="테스트",
+            published_at="2026-02-07T00:00:00+09:00",
+            snippet=article_text[:120],
+            collected_at="2026-02-07T00:00:00+00:00",
+            raw_hash="h-multi-pollster",
+            raw_text=article_text,
+        )
+
+        observations, options, errors = collector.extract(article)
+        self.assertEqual(len(observations), 1)
+        self.assertGreaterEqual(len(options), 2)
+        contamination = [row for row in errors if row.issue_type == "metadata_cross_contamination"]
+        self.assertEqual(len(contamination), 1)
+        self.assertEqual(contamination[0].error_code, "MULTIPLE_POLLSTER_TOKENS_IN_OBSERVATION")
+        self.assertIn("KSOI", str(contamination[0].payload.get("pollsters")))
+        self.assertIn("리얼미터", str(contamination[0].payload.get("pollsters")))
+
     def test_pre_extract_gate_rejects_policy_only_poll(self) -> None:
         collector = PollCollector()
         article = Article(

@@ -1,0 +1,28 @@
+{
+  "records": [
+    {
+      "article": {
+        "url": "https://example.com/issue472/probe-1",
+        "title": "서울시장 복수 조사 결과",
+        "publisher": "테스트",
+        "published_at": "2026-02-07T00:00:00+09:00",
+        "raw_text": "서울시장 여론조사에서 KSOI는 2월 3~4일 조사, 표본 1000명, 응답률 10.1%, 표본오차 ±3.1%, 정원오 41% vs 오세훈 37%라고 밝혔다. 리얼미터는 2월 5~6일 조사, 표본 800명, 응답률 8.5%, 표본오차 ±3.5%, 정원오 44% vs 오세훈 34%를 발표했다."
+      },
+      "observation": {
+        "observation_key": "issue472-probe-multi-1"
+      }
+    },
+    {
+      "article": {
+        "url": "https://example.com/issue472/probe-2",
+        "title": "서울시장 공동조사",
+        "publisher": "테스트",
+        "published_at": "2026-02-07T00:00:00+09:00",
+        "raw_text": "서울시장 여론조사에서 KSOI·리얼미터 공동 조사로 표본 1000명, 응답률 9.9%, 표본오차 ±3.1%, 정원오 42% vs 오세훈 36%가 나왔다."
+      },
+      "observation": {
+        "observation_key": "issue472-probe-contam-1"
+      }
+    }
+  ]
+}
