@@ -1734,6 +1734,7 @@ def ingest_payload(payload: IngestPayload, repo) -> IngestResult:
             party_inference_low_confidence: list[tuple[str, float]] = []
             option_type_manual_review: list[tuple[str, str]] = []
             candidate_verify_manual_review: list[tuple[str, str]] = []
+            candidate_name_noise_manual_review: list[str] = []
             normalized_options: list[dict[str, Any]] = []
             classification_reason_by_id: dict[int, str | None] = {}
             for option in record.options:
@@ -1795,6 +1796,9 @@ def ingest_payload(payload: IngestPayload, repo) -> IngestResult:
                     candidate_id_map=candidate_id_map,
                     service_cache=candidate_service_cache,
                 )
+                if candidate_verify_reason == "CANDIDATE_TOKEN_NOISE":
+                    candidate_name_noise_manual_review.append(normalized_option.get("option_name", "unknown"))
+                    continue
                 repo.upsert_poll_option(observation_id, normalized_option)
                 if classification_reason:
                     option_type_manual_review.append(
@@ -1849,6 +1853,17 @@ def ingest_payload(payload: IngestPayload, repo) -> IngestResult:
                         entity_id=record.observation.observation_key,
                         issue_type="mapping_error",
                         review_note=f"option_type manual review required: {detail}",
+                    )
+                except Exception:  # noqa: BLE001
+                    pass
+            if candidate_name_noise_manual_review:
+                detail = ", ".join(candidate_name_noise_manual_review)
+                try:
+                    repo.insert_review_queue(
+                        entity_type="poll_observation",
+                        entity_id=record.observation.observation_key,
+                        issue_type="candidate_name_noise",
+                        review_note=f"candidate noise token filtered and skipped: {detail}",
                     )
                 except Exception:  # noqa: BLE001
                     pass
