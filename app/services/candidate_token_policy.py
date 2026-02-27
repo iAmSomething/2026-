@@ -50,6 +50,38 @@ _NOISE_EXACT_TOKENS = {
     "전라",
     "경상",
     "충청",
+    "최고치",
+    "접촉률",
+    "접촉률은",
+    "엔비디아",
+    "가격",
+    "조정",
+    "조정했는데도",
+    "보다",
+    "주전보다",
+    "지지율이",
+    "하위",
+    "주째",
+    "상승한",
+    "평가는",
+    "라인업에도",
+    "반영하면",
+    "각각",
+    "차의",
+    "구청장이",
+    "성동구청장이",
+    "시장이",
+    "의원이",
+    "시장",
+    "구청장",
+    "군수",
+    "도지사",
+    "의원",
+    "국회의원",
+    "시의원",
+    "도의원",
+    "위원",
+    "위원장",
 }
 
 _NOISE_SUBSTRING_TOKENS = {
@@ -83,6 +115,30 @@ _NOISE_SUBSTRING_TOKENS = {
     "전라",
     "경상",
     "충청",
+    "접촉률",
+    "엔비디아",
+    "주전보다",
+    "조정했는데도",
+    "최고치",
+    "지지율이",
+    "하위",
+    "주째",
+    "상승한",
+    "평가는",
+    "라인업",
+    "반영하면",
+    "각각",
+    "차의",
+    "구청장",
+    "성동구청장",
+    "시장",
+    "의원",
+    "시장",
+    "구청장",
+    "군수",
+    "도지사",
+    "의원",
+    "위원장",
 }
 
 _POSTPOSITION_SUFFIXES = (
@@ -135,6 +191,10 @@ def is_noise_candidate_token(
     substring_tokens = _NOISE_SUBSTRING_TOKENS | {normalize_candidate_token(x) for x in extra_substring_tokens}
     for v in variants:
         if any(part and part in v for part in substring_tokens):
+            return True
+        if len(v) >= 3 and v.endswith("보다"):
+            return True
+        if v.endswith("는데도"):
             return True
 
     if any(ch.isdigit() for ch in token):
