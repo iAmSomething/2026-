@@ -1099,6 +1099,32 @@ main {
   background: #f8fbff;
 }
 
+.fallback-panel {
+  border-style: solid;
+}
+
+.fallback-candidate-list {
+  list-style: none;
+  margin: 10px 0 0;
+  padding: 0;
+  display: grid;
+  gap: 10px;
+}
+
+.fallback-candidate-item {
+  border: 1px solid #dbe6f2;
+  border-radius: 12px;
+  padding: 10px 12px;
+  background: #fafcff;
+}
+
+.fallback-candidate-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
 .loading-callout {
   border: 1px solid #93c5fd;
   background: #eff6ff;

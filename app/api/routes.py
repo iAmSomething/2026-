@@ -285,6 +285,21 @@ def _normalize_candidate_text(value) -> str | None:
     return text or None
 
 
+def _matchup_has_poll_payload(payload: dict) -> bool:
+    options = payload.get("options")
+    if isinstance(options, list) and options:
+        return True
+    scenarios = payload.get("scenarios")
+    if isinstance(scenarios, list):
+        for scenario in scenarios:
+            if not isinstance(scenario, dict):
+                continue
+            scenario_options = scenario.get("options")
+            if isinstance(scenario_options, list) and scenario_options:
+                return True
+    return False
+
+
 def _build_candidate_profile_provenance(*, base_row: dict, final_row: dict) -> dict[str, str]:
     provenance: dict[str, str] = {}
     for field in CANDIDATE_PROFILE_TRACKED_FIELDS:
@@ -1105,6 +1120,22 @@ def get_matchup(matchup_id: str, repo=Depends(get_repository)):
     payload["canonical_title"] = canonical_title
     payload["article_title"] = article_title
     payload["source_trace"] = _build_source_trace(row=payload, source_meta=source_meta)
+    payload["fallback_mode"] = "none"
+    payload["incumbent_candidates"] = []
+
+    has_poll_payload = _matchup_has_poll_payload(payload)
+    if not has_poll_payload:
+        fetch_fallback_candidates = getattr(repo, "fetch_incumbent_candidates", None)
+        if callable(fetch_fallback_candidates):
+            fallback_candidates = fetch_fallback_candidates(
+                region_code=payload.get("region_code"),
+                office_type=payload.get("office_type"),
+                limit=4,
+            )
+            if isinstance(fallback_candidates, list) and fallback_candidates:
+                payload["fallback_mode"] = "incumbent"
+                payload["incumbent_candidates"] = fallback_candidates
+
     return MatchupOut(**payload)
 
 

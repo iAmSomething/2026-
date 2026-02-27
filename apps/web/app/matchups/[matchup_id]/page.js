@@ -321,6 +321,15 @@ export default async function MatchupPage({ params, searchParams }) {
     ...scenario,
     options: [...scenario.options].sort((a, b) => (b.value_mid || 0) - (a.value_mid || 0))
   }));
+  const rawOptionCount = Array.isArray(matchup.options) ? matchup.options.length : 0;
+  const rawScenarioOptionCount = Array.isArray(matchup.scenarios)
+    ? matchup.scenarios.reduce((acc, scenario) => acc + (Array.isArray(scenario?.options) ? scenario.options.length : 0), 0)
+    : 0;
+  const hasPollPayload = rawOptionCount + rawScenarioOptionCount > 0;
+  const isIncumbentFallback = matchup.fallback_mode === "incumbent" && !hasPollPayload;
+  const fallbackCandidates = isIncumbentFallback && Array.isArray(matchup.incumbent_candidates)
+    ? matchup.incumbent_candidates
+    : [];
   const groupedScenarios = ["head_to_head", "multi_candidate"]
     .map((groupKey) => ({
       groupKey,
@@ -369,9 +378,15 @@ export default async function MatchupPage({ params, searchParams }) {
   if (scenarioDemo) {
     scenarioBadges.push(toScenarioBadge(`scenario_demo=${scenarioDemo}`, scenarioDemo === "triad" ? "ok" : "info"));
   }
+  if (isIncumbentFallback) {
+    scenarioBadges.push(toScenarioBadge("추정(현직 기반)", "warn"));
+    scenarioBadges.push(toScenarioBadge("여론조사 아님", "warn"));
+  }
 
   let scenarioCopy = "";
-  if (isOfficialScenario) {
+  if (isIncumbentFallback) {
+    scenarioCopy = "해당 매치업은 여론조사 관측치가 없어 현직자 문맥 기반 추정 후보만 제공합니다.";
+  } else if (isOfficialScenario) {
     scenarioCopy = "공식확정 데이터 기준으로 결과를 노출합니다.";
   } else if (isArticleScenario) {
     scenarioCopy = "기사 기반 추정 데이터 기준으로 결과를 노출합니다.";
@@ -437,6 +452,52 @@ export default async function MatchupPage({ params, searchParams }) {
         {scenarioCopy ? <p className="scenario-copy">{scenarioCopy}</p> : null}
       </section>
 
+      {isIncumbentFallback ? (
+        <section className="panel fallback-panel">
+          <header className="panel-header">
+            <div>
+              <h3>현직자 fallback 후보</h3>
+              <p>여론조사 데이터가 없어 현직자 문맥 기반 후보를 별도 블록으로 제공합니다.</p>
+            </div>
+          </header>
+          <div className="badge-row">
+            <span className="state-badge warn">추정(현직 기반)</span>
+            <span className="state-badge warn">여론조사 아님</span>
+          </div>
+          <ul className="fallback-candidate-list">
+            {fallbackCandidates.map((candidate, index) => {
+              const candidateHref = buildCandidateDetailHref(candidate.candidate_id, matchup.matchup_id);
+              return (
+                <li key={`${candidate.candidate_id || candidate.name}-${index}`} className="fallback-candidate-item">
+                  <div className="fallback-candidate-head">
+                    <strong>
+                      {candidateHref ? (
+                        <Link href={candidateHref} className="text-link small">
+                          {candidate.name}
+                        </Link>
+                      ) : (
+                        candidate.name
+                      )}
+                    </strong>
+                    <span>{typeof candidate.confidence === "number" ? `${(candidate.confidence * 100).toFixed(0)}%` : "-"}</span>
+                  </div>
+                  <p className="muted-text">정당: {candidate.party || "미확정(검수대기)"}</p>
+                  <p className="muted-text">직책: {candidate.office || matchup.office_type || "-"}</p>
+                  <p className="muted-text">
+                    근거: {Array.isArray(candidate.reasons) && candidate.reasons.length > 0 ? candidate.reasons.join(", ") : "-"}
+                  </p>
+                  {candidateHref ? (
+                    <Link href={candidateHref} className="text-link small">
+                      프로필
+                    </Link>
+                  ) : null}
+                </li>
+              );
+            })}
+          </ul>
+        </section>
+      ) : null}
+
       <section className="detail-grid">
         <article className="panel">
           <header className="panel-header">
@@ -445,89 +506,97 @@ export default async function MatchupPage({ params, searchParams }) {
               <p>양자/다자 시나리오를 분리해 동일 매치업 내부 구도를 비교합니다.</p>
             </div>
           </header>
-          <div className="scenario-tab-row" role="tablist" aria-label="시나리오 유형">
-            {groupedScenarios.map((group) => (
-              <a key={group.groupKey} href={`#scenario-${group.groupKey}`} className="scenario-tab">
-                {group.groupLabel} ({group.items.length})
-              </a>
-            ))}
-          </div>
-          {totalOptionCount === 0 ? (
+          {isIncumbentFallback ? (
             <div className="empty-state">
-              {matchup.has_data === false
-                ? "데이터 준비 중: 관측치 수집 전이며 매치업 메타데이터만 먼저 노출됩니다."
-                : "데이터 없음: 후보별 지표가 아직 수집되지 않았습니다."}
+              여론조사 시나리오/옵션이 없어 시나리오 카드 대신 현직자 fallback 후보를 상단 별도 섹션으로 표시합니다.
             </div>
           ) : (
-            <div className="scenario-group-stack">
-              {groupedScenarios.map((group) => (
-                <section id={`scenario-${group.groupKey}`} key={group.groupKey} className="scenario-group">
-                  <header className="scenario-group-head">
-                    <h4>{group.groupLabel}</h4>
-                    <span className="state-badge info">{group.items.length}개 시나리오</span>
-                  </header>
-                  <div className="scenario-card-grid">
-                    {group.items.map((scenario, scenarioIndex) => {
-                      const maxValue = Math.max(...scenario.options.map((option) => option.value_mid || 0), 1);
-                      const scenarioType = scenarioTypeLabel(scenario);
-                      return (
-                        <article key={`${scenario.scenario_key}-${scenarioIndex}`} className="scenario-block">
-                          <div className="scenario-block-head">
-                            <div className="badge-row option-row-meta">
-                              <span className="state-badge info">{scenarioType}</span>
-                              <span className="state-badge ok">{scenario.scenario_title || "시나리오"}</span>
-                            </div>
-                          </div>
-                          <ul className="option-bars scenario-options">
-                            {scenario.options.map((option, optionIndex) => {
-                              const width = Math.max(6, Math.round(((option.value_mid || 0) / maxValue) * 100));
-                              const review = optionNeedsReview(matchup, option);
-                              const candidateHref = buildCandidateDetailHref(option.candidate_id, matchup.matchup_id);
-                              return (
-                                <li key={`${scenario.scenario_key}-${option.candidate_id || option.option_name}-${optionIndex}`}>
-                                  <div className="option-row-head">
-                                    <strong>
+            <>
+              <div className="scenario-tab-row" role="tablist" aria-label="시나리오 유형">
+                {groupedScenarios.map((group) => (
+                  <a key={group.groupKey} href={`#scenario-${group.groupKey}`} className="scenario-tab">
+                    {group.groupLabel} ({group.items.length})
+                  </a>
+                ))}
+              </div>
+              {totalOptionCount === 0 ? (
+                <div className="empty-state">
+                  {matchup.has_data === false
+                    ? "데이터 준비 중: 관측치 수집 전이며 매치업 메타데이터만 먼저 노출됩니다."
+                    : "데이터 없음: 후보별 지표가 아직 수집되지 않았습니다."}
+                </div>
+              ) : (
+                <div className="scenario-group-stack">
+                  {groupedScenarios.map((group) => (
+                    <section id={`scenario-${group.groupKey}`} key={group.groupKey} className="scenario-group">
+                      <header className="scenario-group-head">
+                        <h4>{group.groupLabel}</h4>
+                        <span className="state-badge info">{group.items.length}개 시나리오</span>
+                      </header>
+                      <div className="scenario-card-grid">
+                        {group.items.map((scenario, scenarioIndex) => {
+                          const maxValue = Math.max(...scenario.options.map((option) => option.value_mid || 0), 1);
+                          const scenarioType = scenarioTypeLabel(scenario);
+                          return (
+                            <article key={`${scenario.scenario_key}-${scenarioIndex}`} className="scenario-block">
+                              <div className="scenario-block-head">
+                                <div className="badge-row option-row-meta">
+                                  <span className="state-badge info">{scenarioType}</span>
+                                  <span className="state-badge ok">{scenario.scenario_title || "시나리오"}</span>
+                                </div>
+                              </div>
+                              <ul className="option-bars scenario-options">
+                                {scenario.options.map((option, optionIndex) => {
+                                  const width = Math.max(6, Math.round(((option.value_mid || 0) / maxValue) * 100));
+                                  const review = optionNeedsReview(matchup, option);
+                                  const candidateHref = buildCandidateDetailHref(option.candidate_id, matchup.matchup_id);
+                                  return (
+                                    <li key={`${scenario.scenario_key}-${option.candidate_id || option.option_name}-${optionIndex}`}>
+                                      <div className="option-row-head">
+                                        <strong>
+                                          {candidateHref ? (
+                                            <Link href={candidateHref} className="text-link small">
+                                              {option.option_name}
+                                            </Link>
+                                          ) : (
+                                            option.option_name
+                                          )}
+                                        </strong>
+                                        <span>{formatPercent(option.value_mid)}</span>
+                                      </div>
+                                      <div className="bar-track">
+                                        <span className="bar-fill" style={{ width: `${width}%` }} />
+                                      </div>
+                                      <div className="badge-row option-row-meta">
+                                        <span className={`state-badge ${sourceTone(matchup)}`}>{sourceLabel(matchup)}</span>
+                                        <span className={`state-badge ${officialTone(matchup.is_official_confirmed)}`}>{officialLabel(matchup.is_official_confirmed)}</span>
+                                        {review ? <span className="state-badge warn">검수대기</span> : null}
+                                        {!option.candidate_id ? <span className="state-badge warn">candidate_id 누락</span> : null}
+                                      </div>
+                                      <p className="muted-text">정당: {option.party_name || "미확정(검수대기)"}</p>
+                                      <p className="muted-text">원문: {option.value_raw || "-"}</p>
                                       {candidateHref ? (
                                         <Link href={candidateHref} className="text-link small">
-                                          {option.option_name}
+                                          프로필
                                         </Link>
                                       ) : (
-                                        option.option_name
+                                        <button type="button" className="text-link small" disabled title="candidate_id가 없어 이동할 수 없습니다.">
+                                          프로필
+                                        </button>
                                       )}
-                                    </strong>
-                                    <span>{formatPercent(option.value_mid)}</span>
-                                  </div>
-                                  <div className="bar-track">
-                                    <span className="bar-fill" style={{ width: `${width}%` }} />
-                                  </div>
-                                  <div className="badge-row option-row-meta">
-                                    <span className={`state-badge ${sourceTone(matchup)}`}>{sourceLabel(matchup)}</span>
-                                    <span className={`state-badge ${officialTone(matchup.is_official_confirmed)}`}>{officialLabel(matchup.is_official_confirmed)}</span>
-                                    {review ? <span className="state-badge warn">검수대기</span> : null}
-                                    {!option.candidate_id ? <span className="state-badge warn">candidate_id 누락</span> : null}
-                                  </div>
-                                  <p className="muted-text">정당: {option.party_name || "미확정(검수대기)"}</p>
-                                  <p className="muted-text">원문: {option.value_raw || "-"}</p>
-                                  {candidateHref ? (
-                                    <Link href={candidateHref} className="text-link small">
-                                      프로필
-                                    </Link>
-                                  ) : (
-                                    <button type="button" className="text-link small" disabled title="candidate_id가 없어 이동할 수 없습니다.">
-                                      프로필
-                                    </button>
-                                  )}
-                                </li>
-                              );
-                            })}
-                          </ul>
-                        </article>
-                      );
-                    })}
-                  </div>
-                </section>
-              ))}
-            </div>
+                                    </li>
+                                  );
+                                })}
+                              </ul>
+                            </article>
+                          );
+                        })}
+                      </div>
+                    </section>
+                  ))}
+                </div>
+              )}
+            </>
           )}
         </article>
 

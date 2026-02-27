@@ -2193,6 +2193,134 @@ class PostgresRepository:
             )
             return cur.fetchone()
 
+    @staticmethod
+    def _office_hint_tokens(office_type: str | None) -> tuple[str, ...]:
+        office = str(office_type or "").strip()
+        if office == "광역자치단체장":
+            return ("시장", "도지사")
+        if office == "기초자치단체장":
+            return ("구청장", "군수", "시장")
+        if office == "교육감":
+            return ("교육감",)
+        if office == "광역의회":
+            return ("광역의원", "시의원", "도의원", "의장")
+        if office == "기초의회":
+            return ("기초의원", "구의원", "군의원", "시의원", "의장")
+        if office == "재보궐":
+            return ("시장", "도지사", "구청장", "군수", "교육감", "의원")
+        return ()
+
+    @staticmethod
+    def _build_region_keywords(region: dict | None) -> set[str]:
+        if not isinstance(region, dict):
+            return set()
+
+        keywords: set[str] = set()
+        sido_name = str(region.get("sido_name") or "").strip()
+        sigungu_name = str(region.get("sigungu_name") or "").strip()
+        for raw_name in (sido_name, sigungu_name):
+            if not raw_name or raw_name == "전체":
+                continue
+            keywords.add(raw_name)
+            stripped = PostgresRepository._strip_region_suffix(raw_name)
+            if stripped:
+                keywords.add(stripped)
+        return {token for token in keywords if token}
+
+    def fetch_incumbent_candidates(
+        self,
+        *,
+        region_code: str | None,
+        office_type: str | None,
+        limit: int = 4,
+    ) -> list[dict]:
+        try:
+            normalized_limit = min(max(int(limit), 1), 10)
+        except (TypeError, ValueError):
+            normalized_limit = 4
+        region = self._fetch_region_for_matchup_title(region_code)
+        region_keywords = self._build_region_keywords(region)
+        office_tokens = self._office_hint_tokens(office_type)
+        office_text = str(office_type or "").strip()
+
+        with self.conn.cursor() as cur:
+            cur.execute(
+                """
+                SELECT
+                    c.candidate_id,
+                    c.name_ko,
+                    c.party_name,
+                    c.job,
+                    c.profile_updated_at
+                FROM candidates c
+                WHERE COALESCE(c.name_ko, '') <> ''
+                ORDER BY c.profile_updated_at DESC NULLS LAST, c.updated_at DESC NULLS LAST
+                LIMIT 300
+                """
+            )
+            rows = cur.fetchall()
+
+        scored: list[tuple[float, int, dict]] = []
+        seen_ids: set[str] = set()
+        for index, row in enumerate(rows):
+            name = str(row.get("name_ko") or "").strip()
+            if not name or is_noise_candidate_token(name):
+                continue
+
+            candidate_id = str(row.get("candidate_id") or "").strip()
+            if candidate_id and candidate_id in seen_ids:
+                continue
+
+            job = str(row.get("job") or "").strip()
+            party_name = str(row.get("party_name") or "").strip() or None
+            score = 0.0
+            reasons: list[str] = []
+
+            if office_text and office_text in job:
+                score += 0.8
+                reasons.append("office_text_match")
+
+            if office_tokens and any(token and token in job for token in office_tokens):
+                score += 1.2
+                reasons.append("office_token_match")
+
+            if region_keywords and any(keyword in job for keyword in region_keywords):
+                score += 1.0
+                reasons.append("region_keyword_match")
+
+            if score <= 0:
+                continue
+
+            confidence = round(min(0.95, 0.35 + score * 0.2), 2)
+            office = job or office_text or None
+            reasons = sorted(set(reasons))
+            item = {
+                "name": name,
+                "party": party_name,
+                "office": office,
+                "confidence": confidence,
+                "reasons": reasons,
+                "candidate_id": candidate_id or None,
+            }
+            scored.append((score, index, item))
+            if candidate_id:
+                seen_ids.add(candidate_id)
+
+        scored.sort(key=lambda entry: (-entry[0], entry[1]))
+        if not scored:
+            return [
+                {
+                    "name": "현직자 정보 준비중",
+                    "party": None,
+                    "office": office_text or None,
+                    "confidence": 0.2,
+                    "reasons": ["incumbent_context_unavailable"],
+                    "candidate_id": None,
+                }
+            ]
+
+        return [entry[2] for entry in scored[:normalized_limit]]
+
     def get_matchup(self, matchup_id: str):
         cache_key = _api_read_cache_key("matchup", matchup_id)
         cached = _api_read_cache_get(cache_key)

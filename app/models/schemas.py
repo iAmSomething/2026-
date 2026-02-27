@@ -282,6 +282,15 @@ class MatchupScenarioOut(BaseModel):
     options: list[MatchupOptionOut]
 
 
+class IncumbentFallbackCandidateOut(BaseModel):
+    name: str
+    party: str | None = None
+    office: str | None = None
+    confidence: float = 0.0
+    reasons: list[str] = Field(default_factory=list)
+    candidate_id: str | None = None
+
+
 class MatchupOut(BaseModel):
     matchup_id: str
     region_code: str
@@ -290,6 +299,8 @@ class MatchupOut(BaseModel):
     canonical_title: str | None = None
     article_title: str | None = None
     has_data: bool = True
+    fallback_mode: Literal["none", "incumbent"] = "none"
+    incumbent_candidates: list[IncumbentFallbackCandidateOut] = Field(default_factory=list)
     pollster: str | None = None
     survey_start_date: date | None = None
     survey_end_date: date | None = None
