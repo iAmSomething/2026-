@@ -660,6 +660,7 @@ def test_api_contract_fields():
     assert [x["option_name"] for x in body["presidential_approval"]] == ["대통령 직무 긍정평가"]
     assert body["scope_breakdown"] == {"national": 3, "regional": 1, "local": 1, "unknown": 0}
     assert body["party_support"][0]["source_priority"] == "mixed"
+    assert body["party_support"][0]["selected_source_tier"] == "nesdc"
     assert body["party_support"][0]["is_official_confirmed"] is True
     assert isinstance(body["party_support"][0]["freshness_hours"], float)
     assert body["party_support"][0]["article_published_at"] is not None
@@ -667,6 +668,10 @@ def test_api_contract_fields():
     assert body["party_support"][0]["source_trace"]["source_priority"] == "mixed"
     assert body["party_support"][0]["source_trace"]["selected_source_tier"] == "nesdc"
     assert body["party_support"][0]["source_trace"]["source_channels"] == ["article", "nesdc"]
+    summary_trace = body["party_support"][0]["selection_trace"]
+    assert summary_trace["algorithm_version"] == "representative_v2"
+    assert summary_trace["source_priority"] == "mixed"
+    assert summary_trace["selected_source_tier"] == "nesdc"
 
     regions = client.get("/api/v1/regions/search", params={"q": "서울"})
     assert regions.status_code == 200
@@ -688,11 +693,14 @@ def test_api_contract_fields():
     assert map_latest.json()["items"][0]["audience_region_code"] == "11-000"
     assert map_latest.json()["scope_breakdown"] == {"national": 0, "regional": 1, "local": 0, "unknown": 0}
     assert map_latest.json()["items"][0]["source_priority"] == "mixed"
+    assert map_latest.json()["items"][0]["selected_source_tier"] == "nesdc"
     assert map_latest.json()["items"][0]["is_official_confirmed"] is True
     assert isinstance(map_latest.json()["items"][0]["freshness_hours"], float)
     assert map_latest.json()["items"][0]["canonical_title"] == "서울시장"
     assert map_latest.json()["items"][0]["article_title"] == "[여론조사] 서울시장 가상대결"
     assert map_latest.json()["items"][0]["source_trace"]["source_priority"] == "mixed"
+    assert map_latest.json()["items"][0]["selection_trace"]["algorithm_version"] == "representative_v2"
+    assert map_latest.json()["items"][0]["selection_trace"]["source_priority"] == "mixed"
     assert map_latest.json()["filter_stats"]["total_count"] == 1
     assert map_latest.json()["filter_stats"]["kept_count"] == 1
     assert map_latest.json()["filter_stats"]["excluded_count"] == 0

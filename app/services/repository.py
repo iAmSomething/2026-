@@ -546,8 +546,14 @@ class PostgresRepository:
                         PARTITION BY po.option_type, o.audience_scope
                         ORDER BY
                             o.survey_end_date DESC NULLS LAST,
-                            COALESCE(o.official_release_at, a.published_at, o.updated_at) DESC NULLS LAST,
                             CASE
+                                WHEN (
+                                    o.source_channel = 'nesdc'
+                                    OR 'nesdc' = ANY(COALESCE(o.source_channels, ARRAY[]::text[]))
+                                ) AND (
+                                    o.source_channel = 'article'
+                                    OR 'article' = ANY(COALESCE(o.source_channels, ARRAY[]::text[]))
+                                ) THEN 3
                                 WHEN (
                                     o.source_channel = 'nesdc'
                                     OR 'nesdc' = ANY(COALESCE(o.source_channels, ARRAY[]::text[]))
@@ -558,6 +564,8 @@ class PostgresRepository:
                                 ) THEN 1
                                 ELSE 0
                             END DESC,
+                            COALESCE(o.legal_completeness_score, 0.0) DESC,
+                            COALESCE(o.official_release_at, a.published_at, o.updated_at) DESC NULLS LAST,
                             o.id DESC
                     ) AS rn
                 FROM poll_options po
@@ -580,7 +588,8 @@ class PostgresRepository:
                     a.published_at,
                     o.updated_at,
                     o.source_channel,
-                    o.source_channels
+                    o.source_channels,
+                    o.legal_completeness_score
             )
             SELECT
                 po.option_type,
@@ -596,6 +605,9 @@ class PostgresRepository:
                 a.published_at AS article_published_at,
                 o.source_channel,
                 COALESCE(o.source_channels, CASE WHEN o.source_channel IS NULL THEN ARRAY[]::text[] ELSE ARRAY[o.source_channel] END) AS source_channels,
+                o.legal_completeness_score,
+                o.legal_filled_count,
+                o.legal_required_count,
                 o.verified
             FROM poll_options po
             JOIN poll_observations o ON o.id = po.observation_id
@@ -704,17 +716,42 @@ class PostgresRepository:
                     o.official_release_at,
                     a.published_at AS article_published_at,
                     a.title AS article_title,
+                    o.source_grade,
+                    o.legal_completeness_score,
+                    o.legal_filled_count,
+                    o.legal_required_count,
                     o.source_channel,
                     COALESCE(
                         o.source_channels,
                         CASE WHEN o.source_channel IS NULL THEN ARRAY[]::text[] ELSE ARRAY[o.source_channel] END
                     ) AS source_channels,
                     ROW_NUMBER() OVER (
-                        PARTITION BY o.region_code, o.office_type
-                        ORDER BY o.survey_end_date DESC NULLS LAST,
-                                 o.id DESC,
-                                 po.value_mid DESC NULLS LAST,
-                                 po.option_name
+                        PARTITION BY o.region_code, o.office_type, o.audience_scope
+                        ORDER BY
+                            o.survey_end_date DESC NULLS LAST,
+                            CASE
+                                WHEN (
+                                    o.source_channel = 'nesdc'
+                                    OR 'nesdc' = ANY(COALESCE(o.source_channels, ARRAY[]::text[]))
+                                ) AND (
+                                    o.source_channel = 'article'
+                                    OR 'article' = ANY(COALESCE(o.source_channels, ARRAY[]::text[]))
+                                ) THEN 3
+                                WHEN (
+                                    o.source_channel = 'nesdc'
+                                    OR 'nesdc' = ANY(COALESCE(o.source_channels, ARRAY[]::text[]))
+                                ) THEN 2
+                                WHEN (
+                                    o.source_channel = 'article'
+                                    OR 'article' = ANY(COALESCE(o.source_channels, ARRAY[]::text[]))
+                                ) THEN 1
+                                ELSE 0
+                            END DESC,
+                            COALESCE(o.legal_completeness_score, 0.0) DESC,
+                            COALESCE(o.official_release_at, a.published_at, o.updated_at) DESC NULLS LAST,
+                            o.id DESC,
+                            po.value_mid DESC NULLS LAST,
+                            po.option_name
                     ) AS rn
                 FROM poll_observations o
                 JOIN poll_options po ON po.observation_id = o.id
@@ -724,6 +761,26 @@ class PostgresRepository:
                   AND COALESCE(po.candidate_verified, TRUE) = TRUE
                   AND po.value_mid IS NOT NULL
                   {as_of_filter}
+            ),
+            scoped_rank AS (
+                SELECT
+                    r.*,
+                    ROW_NUMBER() OVER (
+                        PARTITION BY r.region_code, r.office_type
+                        ORDER BY
+                            CASE r.audience_scope
+                                WHEN 'regional' THEN 3
+                                WHEN 'local' THEN 2
+                                WHEN 'national' THEN 1
+                                ELSE 0
+                            END DESC,
+                            r.survey_end_date DESC NULLS LAST,
+                            COALESCE(r.official_release_at, r.article_published_at, r.observation_updated_at) DESC NULLS LAST,
+                            r.value_mid DESC NULLS LAST,
+                            r.option_name
+                    ) AS scope_rn
+                FROM ranked r
+                WHERE r.rn = 1
             )
             SELECT
                 r.region_code,
@@ -739,11 +796,15 @@ class PostgresRepository:
                 r.observation_updated_at,
                 r.official_release_at,
                 r.article_published_at,
+                r.source_grade,
+                r.legal_completeness_score,
+                r.legal_filled_count,
+                r.legal_required_count,
                 r.source_channel,
                 r.source_channels
-            FROM ranked r
+            FROM scoped_rank r
             LEFT JOIN matchups m ON m.matchup_id = r.matchup_id
-            WHERE r.rn = 1
+            WHERE r.scope_rn = 1
             ORDER BY r.region_code, r.office_type
             LIMIT %s
         """

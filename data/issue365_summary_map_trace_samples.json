@@ -1,0 +1,71 @@
+{
+  "summary_party_support_first": {
+    "option_name": "더불어민주당",
+    "value_mid": 42.0,
+    "pollster": "KBS",
+    "survey_end_date": "2026-02-18",
+    "audience_scope": "national",
+    "audience_region_code": null,
+    "source_priority": "mixed",
+    "selected_source_tier": "nesdc",
+    "selected_source_channel": "nesdc",
+    "official_release_at": "2026-02-18T03:00:00Z",
+    "article_published_at": "2026-02-18T01:00:00Z",
+    "freshness_hours": 216.01,
+    "is_official_confirmed": true,
+    "source_channel": "nesdc",
+    "source_channels": [
+      "article",
+      "nesdc"
+    ],
+    "selection_trace": {
+      "algorithm_version": "representative_v2",
+      "selected_source_tier": "nesdc",
+      "selected_source_channel": "nesdc",
+      "source_priority": "mixed",
+      "freshness_anchor_field": "article_published_at",
+      "freshness_anchor_at": "2026-02-18T01:00:00Z",
+      "legal_completeness_score": null,
+      "legal_filled_count": null,
+      "legal_required_count": null,
+      "source_grade": null,
+      "audience_scope": "national"
+    },
+    "verified": true
+  },
+  "map_latest_first": {
+    "region_code": "11-000",
+    "office_type": "광역자치단체장",
+    "title": "서울시장 가상대결",
+    "value_mid": 44.0,
+    "survey_end_date": "2026-02-18",
+    "option_name": "정원오",
+    "audience_scope": "regional",
+    "audience_region_code": "11-000",
+    "source_priority": "mixed",
+    "selected_source_tier": "nesdc",
+    "selected_source_channel": "nesdc",
+    "official_release_at": "2026-02-18T03:00:00Z",
+    "article_published_at": "2026-02-18T01:00:00Z",
+    "freshness_hours": 216.01,
+    "is_official_confirmed": true,
+    "source_channel": "nesdc",
+    "source_channels": [
+      "article",
+      "nesdc"
+    ],
+    "selection_trace": {
+      "algorithm_version": "representative_v2",
+      "selected_source_tier": "nesdc",
+      "selected_source_channel": "nesdc",
+      "source_priority": "mixed",
+      "freshness_anchor_field": "article_published_at",
+      "freshness_anchor_at": "2026-02-18T01:00:00Z",
+      "legal_completeness_score": null,
+      "legal_filled_count": null,
+      "legal_required_count": null,
+      "source_grade": null,
+      "audience_scope": "regional"
+    }
+  }
+}

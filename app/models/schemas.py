@@ -1,5 +1,5 @@
 from datetime import date, datetime
-from typing import Literal
+from typing import Any, Literal
 
 from pydantic import BaseModel, Field
 
@@ -76,6 +76,7 @@ class SummaryPoint(BaseModel):
     source_channel: Literal["article", "nesdc"] | None = Field(default=None, deprecated=True)
     source_channels: list[Literal["article", "nesdc"]] = Field(default_factory=list, deprecated=True)
     source_trace: SourceTraceOut = Field(default_factory=SourceTraceOut)
+    selection_trace: dict[str, Any] = Field(default_factory=dict)
     verified: bool
 
 
@@ -128,6 +129,11 @@ class MapLatestPoint(BaseModel):
     audience_scope: Literal["national", "regional", "local"] | None = None
     audience_region_code: str | None = None
     source_priority: Literal["official", "article", "mixed"] = Field(default="article", deprecated=True)
+    selected_source_tier: Literal["official", "nesdc", "article_aggregate", "article"] | None = Field(
+        default=None,
+        deprecated=True,
+    )
+    selected_source_channel: str | None = Field(default=None, deprecated=True)
     official_release_at: datetime | None = Field(default=None, deprecated=True)
     article_published_at: datetime | None = Field(default=None, deprecated=True)
     freshness_hours: float | None = Field(default=None, deprecated=True)
@@ -135,6 +141,7 @@ class MapLatestPoint(BaseModel):
     source_channel: Literal["article", "nesdc"] | None = Field(default=None, deprecated=True)
     source_channels: list[Literal["article", "nesdc"]] = Field(default_factory=list, deprecated=True)
     source_trace: SourceTraceOut = Field(default_factory=SourceTraceOut)
+    selection_trace: dict[str, Any] = Field(default_factory=dict)
 
 
 class DashboardFilterStatsOut(BaseModel):
