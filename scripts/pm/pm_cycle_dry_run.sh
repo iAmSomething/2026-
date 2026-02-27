@@ -443,6 +443,22 @@ fi
 echo "Wrote: ${OUT_FILE}"
 
 if [[ -n "$COMMENT_ISSUE" ]]; then
-  gh issue comment "$COMMENT_ISSUE" --repo "$REPO" --body-file "$OUT_FILE"
+  COMMENT_BODY_FILE="${OUT_FILE%.md}_comment.md"
+  if ! bash scripts/pm/comment_template.sh \
+      --kind pm \
+      --input "$OUT_FILE" \
+      --output "$COMMENT_BODY_FILE" \
+      --decision "cycle_${MODE}_summary_posted" \
+      --next-status "status/in-progress"; then
+    echo "WARN: PM comment template generation failed. Skip comment post to issue #${COMMENT_ISSUE}."
+    exit 0
+  fi
+
+  if ! bash scripts/pm/comment_template.sh --kind pm --input "$COMMENT_BODY_FILE" --validate-only; then
+    echo "WARN: PM comment schema validation failed. Skip comment post to issue #${COMMENT_ISSUE}."
+    exit 0
+  fi
+
+  gh issue comment "$COMMENT_ISSUE" --repo "$REPO" --body-file "$COMMENT_BODY_FILE"
   echo "Commented cycle summary to issue #${COMMENT_ISSUE}"
 fi

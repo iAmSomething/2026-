@@ -68,6 +68,7 @@ jobs:
         run: |
           set -euo pipefail
           chmod +x scripts/pm/pm_cycle_dry_run.sh
+          chmod +x scripts/pm/comment_template.sh
 
           ARGS=(--repo "${GITHUB_REPOSITORY}")
 
