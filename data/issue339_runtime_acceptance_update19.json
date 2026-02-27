@@ -1,0 +1,99 @@
+{
+  "issue": 339,
+  "evaluated_at": "2026-02-27T01:28:08.253300+00:00",
+  "matchup_id": "2026_local|기초자치단체장|26-710",
+  "region_code": "26-710",
+  "office_type": "기초자치단체장",
+  "scenario_count": 3,
+  "scenario_keys": [
+    "h2h-전재수-김도읍",
+    "h2h-전재수-박형준",
+    "multi-전재수"
+  ],
+  "scenario_summaries": [
+    {
+      "scenario_key": "h2h-전재수-김도읍",
+      "scenario_type": "head_to_head",
+      "scenario_title": "전재수 vs 김도읍",
+      "option_names": [
+        "김도읍",
+        "전재수"
+      ]
+    },
+    {
+      "scenario_key": "h2h-전재수-박형준",
+      "scenario_type": "head_to_head",
+      "scenario_title": "전재수 vs 박형준",
+      "option_names": [
+        "박형준",
+        "전재수"
+      ]
+    },
+    {
+      "scenario_key": "multi-전재수",
+      "scenario_type": "multi_candidate",
+      "scenario_title": "다자대결",
+      "option_names": [
+        "김도읍",
+        "박형준",
+        "전재수"
+      ]
+    }
+  ],
+  "required_three_blocks_detail": {
+    "h2h-전재수-박형준": {
+      "present": true,
+      "expected_option_names": [
+        "박형준",
+        "전재수"
+      ],
+      "observed_option_names": [
+        "박형준",
+        "전재수"
+      ],
+      "option_set_match": true,
+      "all_values_present": true
+    },
+    "h2h-전재수-김도읍": {
+      "present": true,
+      "expected_option_names": [
+        "김도읍",
+        "전재수"
+      ],
+      "observed_option_names": [
+        "김도읍",
+        "전재수"
+      ],
+      "option_set_match": true,
+      "all_values_present": true
+    },
+    "multi-전재수": {
+      "present": true,
+      "expected_option_names": [
+        "김도읍",
+        "박형준",
+        "전재수"
+      ],
+      "observed_option_names": [
+        "김도읍",
+        "박형준",
+        "전재수"
+      ],
+      "option_set_match": true,
+      "all_values_present": true
+    }
+  },
+  "acceptance_checks": {
+    "scenario_count_ge_3": true,
+    "has_required_three_blocks": true,
+    "block_option_mixing_zero": true,
+    "required_block_values_present": true,
+    "default_removed": true,
+    "acceptance_pass": true
+  },
+  "capture": {
+    "url": "https://2026-api-production.up.railway.app/api/v1/matchups/2026_local%7C%EA%B8%B0%EC%B4%88%EC%9E%90%EC%B9%98%EB%8B%A8%EC%B2%B4%EC%9E%A5%7C26-710",
+    "captured_at": "2026-02-27T01:28:08.252097+00:00",
+    "capture_output_path": "data/issue339_runtime_after_capture_targeted_update19.json"
+  }
+}
