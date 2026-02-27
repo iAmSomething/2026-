@@ -1,0 +1,45 @@
+{
+  "schema_version": "collector_ingest_failure_classification.v1",
+  "generated_at": "2026-02-27T01:26:42.169523+00:00",
+  "source_input_path": "data/issue339_target_single_reingest_payload.json",
+  "payload_run_type": "collector_issue339_target_single",
+  "payload_record_count": 1,
+  "runner": {
+    "success": true,
+    "raw_success": true,
+    "attempt_count": 1,
+    "run_ids": [
+      545
+    ],
+    "started_at": "2026-02-27T01:25:54.223069+00:00",
+    "finished_at": "2026-02-27T01:26:42.169206+00:00",
+    "elapsed_seconds": 47.946,
+    "failure_class": null,
+    "failure_type": null,
+    "cause_code": null,
+    "failure_reason": null,
+    "timeout_attempts": 0,
+    "failure_class_counts": {
+      "none": 1
+    }
+  },
+  "dead_letter_path": null,
+  "attempt_timeline": [
+    {
+      "attempt": 1,
+      "started_at": "2026-02-27T01:25:54.223140+00:00",
+      "finished_at": "2026-02-27T01:26:42.169067+00:00",
+      "duration_seconds": 47.946,
+      "request_timeout_seconds": 90.0,
+      "http_status": 200,
+      "job_status": "success",
+      "failure_class": null,
+      "failure_type": null,
+      "cause_code": null,
+      "retryable": false,
+      "next_backoff_seconds": null,
+      "error": null,
+      "detail": null
+    }
+  ]
+}
