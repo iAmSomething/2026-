@@ -184,3 +184,26 @@ bash scripts/pm/set_pm_cycle_mode.sh --repo iAmSomething/2026- --lane online
 5. 주의:
 - 자동화는 이슈를 `in-progress`까지 전진시킨다.
 - 최종 완료(`status/done`)는 QA PASS 계약을 만족해야 한다.
+
+## 12. Worktree/Runtime 위생 규칙
+1. 정리 대상 패턴:
+- `$HOME/election2026_codex_issue*`
+- `$HOME/election2026_issue*`
+- `$HOME/election2026_runtime*`
+- `$HOME/election2026_codex_runtime*`
+
+2. 안전 제외:
+- 메인 레포(`election2026_codex`)
+- `git worktree list`에 잡히는 활성 worktree 경로
+
+3. 로컬 실행:
+```bash
+bash scripts/pm/worktree_hygiene.sh --mode dry-run --hours 24 --base-dir "$HOME" --report data/worktree_hygiene_report_local.txt
+bash scripts/pm/worktree_hygiene.sh --mode apply --hours 24 --base-dir "$HOME" --report data/worktree_hygiene_report_apply.txt
+```
+
+4. 자동화:
+- 워크플로: `.github/workflows/worktree-hygiene.yml`
+- 스케줄: 주 1회(`dry-run`)
+- 수동 실행: `workflow_dispatch`에서 `dry-run/apply` 선택 가능
+- 산출물: 정리 후보/제외/삭제 결과를 artifact로 업로드
