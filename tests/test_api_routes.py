@@ -149,6 +149,8 @@ class FakeApiRepo:
                 "region_code": "11-000",
                 "office_type": "광역자치단체장",
                 "title": "서울시장 가상대결",
+                "canonical_title": "서울시장",
+                "article_title": "[여론조사] 서울시장 가상대결",
                 "value_mid": 44.0,
                 "survey_end_date": date(2026, 2, 18),
                 "option_name": "정원오",
@@ -166,6 +168,8 @@ class FakeApiRepo:
             {
                 "matchup_id": "20260603|광역자치단체장|11-000",
                 "title": "서울시장 가상대결",
+                "canonical_title": "서울시장",
+                "article_title": "[여론조사] 서울시장 가상대결",
                 "survey_end_date": date(2026, 2, 18),
                 "value_mid": 44.0,
                 "spread": 2.0,
@@ -208,6 +212,8 @@ class FakeApiRepo:
                 "region_code": "26-710",
                 "office_type": "기초자치단체장",
                 "title": "부산 중구청장 가상대결",
+                "canonical_title": "부산 중구청장",
+                "article_title": None,
                 "has_data": False,
                 "pollster": None,
                 "survey_start_date": None,
@@ -243,6 +249,8 @@ class FakeApiRepo:
             "region_code": "11-000",
             "office_type": "광역자치단체장",
             "title": "서울시장 가상대결",
+            "canonical_title": "서울시장",
+            "article_title": "[여론조사] 서울시장 가상대결",
             "has_data": True,
             "pollster": "KBS",
             "survey_start_date": date(2026, 2, 15),
@@ -585,6 +593,9 @@ def test_api_contract_fields():
     assert isinstance(body["party_support"][0]["freshness_hours"], float)
     assert body["party_support"][0]["article_published_at"] is not None
     assert body["party_support"][0]["official_release_at"] is not None
+    assert body["party_support"][0]["source_trace"]["source_priority"] == "mixed"
+    assert body["party_support"][0]["source_trace"]["selected_source_tier"] == "nesdc"
+    assert body["party_support"][0]["source_trace"]["source_channels"] == ["article", "nesdc"]
 
     regions = client.get("/api/v1/regions/search", params={"q": "서울"})
     assert regions.status_code == 200
@@ -608,6 +619,9 @@ def test_api_contract_fields():
     assert map_latest.json()["items"][0]["source_priority"] == "mixed"
     assert map_latest.json()["items"][0]["is_official_confirmed"] is True
     assert isinstance(map_latest.json()["items"][0]["freshness_hours"], float)
+    assert map_latest.json()["items"][0]["canonical_title"] == "서울시장"
+    assert map_latest.json()["items"][0]["article_title"] == "[여론조사] 서울시장 가상대결"
+    assert map_latest.json()["items"][0]["source_trace"]["source_priority"] == "mixed"
     assert map_latest.json()["filter_stats"]["total_count"] == 1
     assert map_latest.json()["filter_stats"]["kept_count"] == 1
     assert map_latest.json()["filter_stats"]["excluded_count"] == 0
@@ -624,6 +638,9 @@ def test_api_contract_fields():
     assert isinstance(big_matches.json()["items"][0]["freshness_hours"], float)
     assert big_matches.json()["items"][0]["article_published_at"] is not None
     assert big_matches.json()["items"][0]["official_release_at"] is not None
+    assert big_matches.json()["items"][0]["canonical_title"] == "서울시장"
+    assert big_matches.json()["items"][0]["article_title"] == "[여론조사] 서울시장 가상대결"
+    assert big_matches.json()["items"][0]["source_trace"]["source_priority"] == "mixed"
     assert big_matches.json()["scope_breakdown"] == {"national": 0, "regional": 1, "local": 0, "unknown": 0}
 
     quality = client.get("/api/v1/dashboard/quality")
@@ -680,6 +697,10 @@ def test_api_contract_fields():
     assert matchup.json()["official_release_at"] is not None
     assert matchup.json()["source_channel"] == "article"
     assert matchup.json()["source_channels"] == ["article", "nesdc"]
+    assert matchup.json()["canonical_title"] == "서울시장"
+    assert matchup.json()["article_title"] == "[여론조사] 서울시장 가상대결"
+    assert matchup.json()["source_trace"]["source_priority"] == "mixed"
+    assert matchup.json()["source_trace"]["source_channels"] == ["article", "nesdc"]
     assert matchup.json()["scenarios"][0]["scenario_type"] == "head_to_head"
     assert matchup.json()["scenarios"][0]["scenario_title"] == "정원오 vs 오세훈"
     assert matchup.json()["options"][0]["party_inferred"] is True
@@ -998,17 +1019,22 @@ def test_dashboard_summary_selects_single_representative_by_source_priority():
     selected_dem = next(x for x in body["party_support"] if x["option_name"] == "더불어민주당")
     assert selected_dem["source_channel"] == "nesdc"
     assert selected_dem["selected_source_tier"] == "nesdc"
+    assert selected_dem["source_trace"]["selected_source_tier"] == "nesdc"
+    assert selected_dem["source_trace"]["source_channel"] == "nesdc"
     assert selected_dem["value_mid"] == 34.0
 
     selected_kpp = next(x for x in body["party_support"] if x["option_name"] == "국민의힘")
     assert selected_kpp["pollster"] == "기사집계센터"
     assert selected_kpp["selected_source_tier"] == "article_aggregate"
+    assert selected_kpp["source_trace"]["selected_source_tier"] == "article_aggregate"
     assert selected_kpp["value_mid"] == 39.0
 
     assert len(body["president_job_approval"]) == 1
     assert body["president_job_approval"][0]["value_mid"] == 48.0
     assert body["president_job_approval"][0]["selected_source_tier"] == "article"
     assert body["president_job_approval"][0]["selected_source_channel"] == "article"
+    assert body["president_job_approval"][0]["source_trace"]["selected_source_tier"] == "article"
+    assert body["president_job_approval"][0]["source_trace"]["selected_source_channel"] == "article"
 
     app.dependency_overrides.clear()
 

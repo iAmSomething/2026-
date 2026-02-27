@@ -567,6 +567,7 @@ class PostgresRepository:
                     o.updated_at AS observation_updated_at,
                     o.official_release_at,
                     a.published_at AS article_published_at,
+                    a.title AS article_title,
                     o.source_channel,
                     COALESCE(
                         o.source_channels,
@@ -592,6 +593,8 @@ class PostgresRepository:
                 r.region_code,
                 r.office_type,
                 COALESCE(m.title, r.matchup_id) AS title,
+                COALESCE(m.title, r.matchup_id) AS canonical_title,
+                NULLIF(BTRIM(r.article_title), '') AS article_title,
                 r.value_mid,
                 r.survey_end_date,
                 r.option_name,
@@ -676,6 +679,8 @@ class PostgresRepository:
             SELECT
                 s.matchup_id,
                 COALESCE(m.title, s.matchup_id) AS title,
+                COALESCE(m.title, s.matchup_id) AS canonical_title,
+                NULLIF(BTRIM(a.title), '') AS article_title,
                 s.survey_end_date,
                 s.value_mid,
                 s.spread,

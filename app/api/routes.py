@@ -41,6 +41,7 @@ from app.models.schemas import (
     ReviewQueueErrorCountOut,
     RegionElectionOut,
     RegionOut,
+    SourceTraceOut,
     SummaryPoint,
 )
 from app.services.cutoff_policy import (
@@ -335,6 +336,38 @@ def _derive_source_meta(row: dict) -> dict:
     }
 
 
+def _build_source_trace(
+    *,
+    row: dict,
+    source_meta: dict,
+    selected_source_tier: Literal["official", "nesdc", "article_aggregate", "article"] | None = None,
+    selected_source_channel: str | None = None,
+) -> SourceTraceOut:
+    return SourceTraceOut(
+        source_priority=source_meta["source_priority"],
+        source_channel=row.get("source_channel"),
+        source_channels=row.get("source_channels") or [],
+        selected_source_tier=selected_source_tier,
+        selected_source_channel=selected_source_channel,
+        official_release_at=source_meta["official_release_at"],
+        article_published_at=source_meta["article_published_at"],
+        freshness_hours=source_meta["freshness_hours"],
+        is_official_confirmed=source_meta["is_official_confirmed"],
+    )
+
+
+def _normalize_title_fields(
+    canonical_title: str | None,
+    article_title: str | None,
+    fallback_title: str,
+) -> tuple[str, str | None, str | None]:
+    normalized_canonical = str(canonical_title or "").strip() or str(fallback_title or "").strip() or None
+    normalized_article = str(article_title or "").strip() or None
+    if normalized_article and normalized_article == normalized_canonical:
+        normalized_article = None
+    return normalized_canonical or fallback_title, normalized_canonical, normalized_article
+
+
 def _is_cutoff_eligible_row(row: dict) -> bool:
     if not is_survey_end_date_allowed(row.get("survey_end_date")):
         return False
@@ -599,6 +632,12 @@ def get_dashboard_summary(
             is_official_confirmed=source_meta["is_official_confirmed"],
             source_channel=selected_row.get("source_channel"),
             source_channels=selected_row.get("source_channels") or [],
+            source_trace=_build_source_trace(
+                row=selected_row,
+                source_meta=source_meta,
+                selected_source_tier=selected_tier,
+                selected_source_channel=selected_row.get("source_channel"),
+            ),
             verified=selected_row["verified"],
         )
         if bucket == "party_support":
@@ -656,11 +695,18 @@ def get_dashboard_map_latest(
 
     for row in kept_rows:
         source_meta = _derive_source_meta(row)
+        title, canonical_title, article_title = _normalize_title_fields(
+            canonical_title=row.get("canonical_title"),
+            article_title=row.get("article_title"),
+            fallback_title=row["title"],
+        )
         items.append(
             MapLatestPoint(
                 region_code=row["region_code"],
                 office_type=row["office_type"],
-                title=row["title"],
+                title=title,
+                canonical_title=canonical_title,
+                article_title=article_title,
                 value_mid=row.get("value_mid"),
                 survey_end_date=row.get("survey_end_date"),
                 option_name=row.get("option_name"),
@@ -673,6 +719,7 @@ def get_dashboard_map_latest(
                 is_official_confirmed=source_meta["is_official_confirmed"],
                 source_channel=row.get("source_channel"),
                 source_channels=row.get("source_channels") or [],
+                source_trace=_build_source_trace(row=row, source_meta=source_meta),
             )
         )
     return DashboardMapLatestOut(
@@ -699,10 +746,17 @@ def get_dashboard_big_matches(
     eligible_rows = [row for row in rows if _is_cutoff_eligible_row(row)]
     for row in eligible_rows:
         source_meta = _derive_source_meta(row)
+        title, canonical_title, article_title = _normalize_title_fields(
+            canonical_title=row.get("canonical_title"),
+            article_title=row.get("article_title"),
+            fallback_title=row["title"],
+        )
         items.append(
             BigMatchPoint(
                 matchup_id=row["matchup_id"],
-                title=row["title"],
+                title=title,
+                canonical_title=canonical_title,
+                article_title=article_title,
                 survey_end_date=row.get("survey_end_date"),
                 value_mid=row.get("value_mid"),
                 spread=row.get("spread"),
@@ -715,6 +769,7 @@ def get_dashboard_big_matches(
                 is_official_confirmed=source_meta["is_official_confirmed"],
                 source_channel=row.get("source_channel"),
                 source_channels=row.get("source_channels") or [],
+                source_trace=_build_source_trace(row=row, source_meta=source_meta),
             )
         )
     return DashboardBigMatchesOut(
@@ -812,6 +867,15 @@ def get_matchup(matchup_id: str, repo=Depends(get_repository)):
     source_meta = _derive_source_meta(matchup)
     payload = dict(matchup)
     payload.update(source_meta)
+    title, canonical_title, article_title = _normalize_title_fields(
+        canonical_title=payload.get("canonical_title"),
+        article_title=payload.get("article_title"),
+        fallback_title=payload.get("title") or payload.get("matchup_id") or "",
+    )
+    payload["title"] = title
+    payload["canonical_title"] = canonical_title
+    payload["article_title"] = article_title
+    payload["source_trace"] = _build_source_trace(row=payload, source_meta=source_meta)
     return MatchupOut(**payload)
 
 
