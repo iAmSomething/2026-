@@ -669,6 +669,75 @@ def test_get_matchup_merges_recent_observations_with_same_poll_fingerprint():
     assert sorted(jeon_values) == [26.8, 43.4, 43.8]
 
 
+class _RichScenarioCursor(_BundleCursor):
+    def fetchall(self):
+        step = len(self.execs)
+        if step != 3:
+            return []
+        rows = super().fetchall()
+        latest_minimal = dict(rows[0])
+        latest_minimal["pollster"] = "최신리서치"
+        latest_minimal["survey_end_date"] = date(2026, 2, 22)
+        latest_minimal["poll_fingerprint"] = "fp-latest-minimal"
+        latest_minimal["options"] = [
+            {
+                "option_name": "전재수",
+                "candidate_id": "cand-jjs",
+                "party_name": "더불어민주당",
+                "scenario_key": "default",
+                "scenario_type": "head_to_head",
+                "scenario_title": "전재수 vs 박형준",
+                "value_mid": 44.1,
+                "value_raw": "44.1%",
+                "party_inferred": False,
+                "party_inference_source": None,
+                "party_inference_confidence": None,
+                "needs_manual_review": False,
+            },
+            {
+                "option_name": "박형준",
+                "candidate_id": "cand-phj",
+                "party_name": "국민의힘",
+                "scenario_key": "default",
+                "scenario_type": "head_to_head",
+                "scenario_title": "전재수 vs 박형준",
+                "value_mid": 33.0,
+                "value_raw": "33.0%",
+                "party_inferred": False,
+                "party_inference_source": None,
+                "party_inference_confidence": None,
+                "needs_manual_review": False,
+            },
+        ]
+        rich_older = dict(rows[1])
+        rich_older["pollster"] = "풍부리서치"
+        rich_older["survey_end_date"] = date(2026, 2, 21)
+        rich_older["poll_fingerprint"] = "fp-rich-older"
+        rich_older["options"] = list(rows[0]["options"]) + list(rows[1]["options"])
+        return [latest_minimal, rich_older]
+
+
+class _RichScenarioConn:
+    def __init__(self):
+        self.cur = _RichScenarioCursor()
+
+    def cursor(self):
+        return self.cur
+
+
+def test_get_matchup_prefers_richer_scenario_observation_over_latest_minimal_default():
+    repo = PostgresRepository(_RichScenarioConn())
+
+    out = repo.get_matchup("m-bundle")
+
+    assert out is not None
+    assert out["has_data"] is True
+    assert out["pollster"] == "풍부리서치"
+    assert out["survey_end_date"] == date(2026, 2, 21)
+    assert len(out["scenarios"]) == 3
+    assert {row["scenario_key"] for row in out["scenarios"]} == {"h2h-b", "multi-a", "h2h-a"}
+
+
 class _AllInvalidCursor(_FallbackCursor):
     def fetchall(self):
         step = len(self.execs)

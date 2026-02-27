@@ -2030,15 +2030,36 @@ class PostgresRepository:
             str(option.get("value_raw") or "").strip(),
         )
 
+    @staticmethod
+    def _scenario_key_stats(options: list[dict]) -> tuple[int, int]:
+        scenario_keys: set[str] = set()
+        for option in options:
+            key = str(option.get("scenario_key") or "default").strip() or "default"
+            scenario_keys.add(key)
+        scenario_count = len(scenario_keys)
+        explicit_scenario_count = len([key for key in scenario_keys if key != "default"])
+        return scenario_count, explicit_scenario_count
+
     def _select_matchup_observation_bundle(self, observations: list[dict]) -> tuple[dict, list[dict], list[dict]]:
         normalized_rows: list[tuple[dict, list[dict]]] = []
         selected_observation: dict | None = None
         selected_options: list[dict] = []
+        selected_score: tuple[int, int, int, int] | None = None
 
         for observation in observations:
             normalized_options = self._normalize_options(observation.get("options"))
             normalized_rows.append((observation, normalized_options))
-            if selected_observation is None and normalized_options:
+            if not normalized_options:
+                continue
+            scenario_count, explicit_scenario_count = self._scenario_key_stats(normalized_options)
+            quality_score = (
+                1 if scenario_count >= 3 else 0,
+                1 if explicit_scenario_count > 0 else 0,
+                scenario_count,
+                len(normalized_options),
+            )
+            if selected_score is None or quality_score > selected_score:
+                selected_score = quality_score
                 selected_observation = observation
                 selected_options = normalized_options
 
