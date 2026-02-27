@@ -464,7 +464,7 @@ def test_nesdc_source_record_without_article_published_at_is_allowed():
     assert len(repo.articles) == 1
 
 
-def test_candidate_noise_token_routes_manual_review_mapping_error():
+def test_candidate_noise_token_routes_candidate_name_noise_and_skips_insert():
     repo = FakeRepo()
     payload_data = deepcopy(PAYLOAD)
     payload_data["records"][0]["options"] = [
@@ -475,14 +475,12 @@ def test_candidate_noise_token_routes_manual_review_mapping_error():
     result = ingest_payload(payload, repo)
 
     assert result.status == "success"
-    assert repo.option_rows[0]["candidate_verified"] is False
-    assert repo.option_rows[0]["candidate_verify_source"] == "manual"
-    assert str(repo.option_rows[0]["candidate_verify_matched_key"]).startswith("noise:")
-    assert repo.option_rows[0]["needs_manual_review"] is True
-    assert any(row[2] == "mapping_error" and "CANDIDATE_TOKEN_NOISE" in row[3] for row in repo.review)
+    assert repo.option_rows == []
+    assert any(row[2] == "candidate_name_noise" and "응답률은" in row[3] for row in repo.review)
+    assert not any(row[2] == "mapping_error" and "CANDIDATE_TOKEN_NOISE" in row[3] for row in repo.review)
 
 
-def test_candidate_party_alias_token_routes_manual_review_mapping_error():
+def test_candidate_party_alias_token_routes_candidate_name_noise_and_skips_insert():
     repo = FakeRepo()
     payload_data = deepcopy(PAYLOAD)
     payload_data["records"][0]["options"] = [
@@ -493,14 +491,12 @@ def test_candidate_party_alias_token_routes_manual_review_mapping_error():
     result = ingest_payload(payload, repo)
 
     assert result.status == "success"
-    assert repo.option_rows[0]["candidate_verified"] is False
-    assert repo.option_rows[0]["candidate_verify_source"] == "manual"
-    assert str(repo.option_rows[0]["candidate_verify_matched_key"]).startswith("noise:")
-    assert repo.option_rows[0]["needs_manual_review"] is True
-    assert any(row[2] == "mapping_error" and "CANDIDATE_TOKEN_NOISE" in row[3] for row in repo.review)
+    assert repo.option_rows == []
+    assert any(row[2] == "candidate_name_noise" and "민주" in row[3] for row in repo.review)
+    assert not any(row[2] == "mapping_error" and "CANDIDATE_TOKEN_NOISE" in row[3] for row in repo.review)
 
 
-def test_candidate_particle_noise_token_routes_manual_review_mapping_error():
+def test_candidate_particle_noise_token_routes_candidate_name_noise_and_skips_insert():
     repo = FakeRepo()
     payload_data = deepcopy(PAYLOAD)
     payload_data["records"][0]["options"] = [
@@ -511,11 +507,9 @@ def test_candidate_particle_noise_token_routes_manual_review_mapping_error():
     result = ingest_payload(payload, repo)
 
     assert result.status == "success"
-    assert repo.option_rows[0]["candidate_verified"] is False
-    assert repo.option_rows[0]["candidate_verify_source"] == "manual"
-    assert str(repo.option_rows[0]["candidate_verify_matched_key"]).startswith("noise:")
-    assert repo.option_rows[0]["needs_manual_review"] is True
-    assert any(row[2] == "mapping_error" and "CANDIDATE_TOKEN_NOISE" in row[3] for row in repo.review)
+    assert repo.option_rows == []
+    assert any(row[2] == "candidate_name_noise" and "국민의힘은" in row[3] for row in repo.review)
+    assert not any(row[2] == "mapping_error" and "CANDIDATE_TOKEN_NOISE" in row[3] for row in repo.review)
 
 
 def test_candidate_data_go_verified_sets_data_go_source(monkeypatch):
