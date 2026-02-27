@@ -16,6 +16,7 @@ class FakeRepo:
         self.candidate_rows = []
         self.review = []
         self.policy_counters = []
+        self.cleanup_default_calls = 0
 
     def create_ingestion_run(self, run_type, extractor_version, llm_model):
         self.run_id += 1
@@ -58,6 +59,45 @@ class FakeRepo:
                 option.get("needs_manual_review"),
             )
         )
+
+    def delete_candidate_default_poll_options(self, observation_id):  # noqa: ARG002
+        self.cleanup_default_calls += 1
+        self.option_rows = [
+            row
+            for row in self.option_rows
+            if not (row.get("option_type") == "candidate_matchup" and row.get("scenario_key") == "default")
+        ]
+        self.options = {
+            (
+                observation_id,
+                row["option_type"],
+                row["option_name"],
+                row["value_mid"],
+                row.get("party_inferred"),
+                row.get("party_inference_source"),
+                row.get("party_inference_confidence"),
+                row.get("candidate_verified"),
+                row.get("candidate_verify_source"),
+                row.get("candidate_verify_confidence"),
+                row.get("needs_manual_review"),
+            )
+            for row in self.option_rows
+        }
+        return 1
+
+    def fetch_candidate_default_poll_options(self, observation_id):  # noqa: ARG002
+        return [
+            {
+                "option_name": row.get("option_name"),
+                "value_raw": row.get("value_raw"),
+                "value_min": row.get("value_min"),
+                "value_max": row.get("value_max"),
+                "value_mid": row.get("value_mid"),
+                "is_missing": row.get("is_missing"),
+            }
+            for row in self.option_rows
+            if row.get("option_type") == "candidate_matchup" and row.get("scenario_key") == "default"
+        ]
 
     def insert_review_queue(self, entity_type, entity_id, issue_type, review_note):
         self.review.append((entity_type, entity_id, issue_type, review_note))
@@ -504,3 +544,63 @@ def test_candidate_matchup_scenarios_drop_default_when_explicit_and_multi_coexis
     multi_rows = [row for row in option_rows if row.get("scenario_key") == "multi-전재수"]
     assert {row["option_name"] for row in multi_rows} == {"전재수", "박형준", "김도읍"}
     assert {row.get("scenario_type") for row in multi_rows} == {"multi_candidate"}
+
+
+def test_explicit_candidate_scenario_ingest_cleans_previous_default_rows() -> None:
+    repo = FakeRepo()
+
+    baseline_payload = deepcopy(PAYLOAD)
+    baseline_payload["records"][0]["observation"]["survey_name"] = "부산시장 후보 지지도"
+    baseline_payload["records"][0]["options"] = [
+        {"option_type": "candidate_matchup", "option_name": "전재수", "value_raw": "26.8%"},
+        {"option_type": "candidate_matchup", "option_name": "박형준", "value_raw": "24.0%"},
+        {"option_type": "candidate_matchup", "option_name": "김도읍", "value_raw": "20.0%"},
+    ]
+    ingest_payload(IngestPayload.model_validate(baseline_payload), repo)
+
+    assert any(
+        row.get("option_type") == "candidate_matchup" and row.get("scenario_key") == "default"
+        for row in repo.option_rows
+    )
+
+    explicit_payload = deepcopy(PAYLOAD)
+    explicit_payload["records"][0]["observation"]["survey_name"] = "부산시장 양자대결/다자대결"
+    explicit_payload["records"][0]["options"] = [
+        {
+            "option_type": "candidate_matchup",
+            "option_name": "전재수",
+            "value_raw": "43.4%",
+            "scenario_key": "h2h-전재수-박형준",
+            "scenario_type": "head_to_head",
+            "scenario_title": "전재수 vs 박형준",
+        },
+        {
+            "option_type": "candidate_matchup",
+            "option_name": "박형준",
+            "value_raw": "32.3%",
+            "scenario_key": "h2h-전재수-박형준",
+            "scenario_type": "head_to_head",
+            "scenario_title": "전재수 vs 박형준",
+        },
+        {
+            "option_type": "candidate_matchup",
+            "option_name": "전재수",
+            "value_raw": "26.8%",
+            "scenario_key": "multi-전재수",
+            "scenario_type": "multi_candidate",
+            "scenario_title": "다자대결",
+        },
+    ]
+    ingest_payload(IngestPayload.model_validate(explicit_payload), repo)
+
+    assert repo.cleanup_default_calls >= 1
+    assert all(
+        not (row.get("option_type") == "candidate_matchup" and row.get("scenario_key") == "default")
+        for row in repo.option_rows
+    )
+    multi_rows = [
+        row
+        for row in repo.option_rows
+        if row.get("option_type") == "candidate_matchup" and row.get("scenario_key") == "multi-전재수"
+    ]
+    assert {row.get("option_name") for row in multi_rows} == {"전재수", "박형준", "김도읍"}
