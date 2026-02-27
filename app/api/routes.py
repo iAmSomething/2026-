@@ -689,26 +689,24 @@ def get_dashboard_quality(repo=Depends(get_repository)):
 @router.get("/regions/search", response_model=list[RegionOut])
 def search_regions(
     request: Request,
-    q: str | None = Query(default=None, min_length=1),
+    q: str | None = Query(default=None),
     limit: int = Query(default=20, ge=1, le=100),
+    has_data: bool | None = Query(default=None),
     repo=Depends(get_repository),
 ):
     query_fallback = request.query_params.get("query")
     resolved_query = _normalize_region_query(q or query_fallback or "")
-    if not resolved_query:
-        raise HTTPException(status_code=422, detail="q or query is required")
-
     region_normalized = normalize_region_code_input(resolved_query)
-    if region_normalized.canonical:
+    if resolved_query and region_normalized.canonical:
         if region_normalized.was_aliased:
             logger.info(
                 "region_code_alias_normalized endpoint=regions.search raw=%s canonical=%s",
                 resolved_query,
                 region_normalized.canonical,
             )
-        rows = repo.search_regions_by_code(region_code=region_normalized.canonical, limit=limit)
+        rows = repo.search_regions_by_code(region_code=region_normalized.canonical, limit=limit, has_data=has_data)
     else:
-        rows = repo.search_regions(query=resolved_query, limit=limit)
+        rows = repo.search_regions(query=resolved_query, limit=limit, has_data=has_data)
     return [RegionOut(**row) for row in rows]
 
 
