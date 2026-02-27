@@ -1,0 +1,30 @@
+{
+  "summary": {
+    "before_count": 3,
+    "after_count": 1,
+    "excluded_stale_cycle": 2,
+    "after_option_names": [
+      "최신조사"
+    ]
+  },
+  "map_latest": {
+    "before_count": 4,
+    "after_count": 1,
+    "excluded_count": 3,
+    "reason_counts": {
+      "stale_cycle": 2,
+      "invalid_candidate_option_name": 1
+    },
+    "after_option_names": [
+      "박형준"
+    ]
+  },
+  "big_matches": {
+    "before_count": 3,
+    "after_count": 1,
+    "excluded_stale_cycle": 2,
+    "after_matchup_ids": [
+      "20260603|기초자치단체장|11-020"
+    ]
+  }
+}

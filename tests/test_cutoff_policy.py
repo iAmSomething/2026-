@@ -2,10 +2,14 @@ from datetime import datetime, timezone
 
 from app.services.cutoff_policy import (
     ARTICLE_PUBLISHED_AT_CUTOFF_KST,
+    SURVEY_END_DATE_CUTOFF,
     has_article_source,
     is_article_published_at_allowed,
+    is_survey_end_date_allowed,
+    parse_date_like,
     parse_datetime_like,
     published_at_cutoff_reason,
+    survey_end_date_cutoff_reason,
 )
 
 
@@ -27,6 +31,14 @@ def test_cutoff_reason_and_allowance():
     assert published_at_cutoff_reason("2025-11-30T23:59:59+09:00") == "PUBLISHED_AT_BEFORE_CUTOFF"
     assert published_at_cutoff_reason("2025-12-01T00:00:00+09:00") == "PASS"
     assert is_article_published_at_allowed("2025-12-01T00:00:00+09:00") is True
+
+
+def test_survey_end_cutoff_reason_and_allowance():
+    assert parse_date_like("2025-12-01") == SURVEY_END_DATE_CUTOFF
+    assert survey_end_date_cutoff_reason(None) == "PASS"
+    assert survey_end_date_cutoff_reason("2025-11-30") == "SURVEY_END_DATE_BEFORE_CUTOFF"
+    assert survey_end_date_cutoff_reason("2025-12-01") == "PASS"
+    assert is_survey_end_date_allowed("2025-12-01") is True
 
 
 def test_has_article_source_defaults_to_true_without_source_fields():

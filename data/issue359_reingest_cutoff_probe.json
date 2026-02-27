@@ -1,0 +1,16 @@
+{
+  "run_result": {
+    "run_id": 1,
+    "status": "partial_success",
+    "processed_count": 1,
+    "error_count": 1
+  },
+  "review_queue": [
+    {
+      "entity_type": "ingest_record",
+      "entity_id": "obs-old",
+      "issue_type": "ingestion_error",
+      "review_note": "STALE_CYCLE_BLOCK reason=SURVEY_END_DATE_BEFORE_CUTOFF survey_end_date=2025-11-30 cutoff=2025-12-01"
+    }
+  ]
+}

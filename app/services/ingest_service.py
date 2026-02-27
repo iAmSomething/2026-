@@ -6,9 +6,11 @@ from app.config import get_settings
 from app.models.schemas import IngestPayload, PollOptionInput
 from app.services.cutoff_policy import (
     ARTICLE_PUBLISHED_AT_CUTOFF_ISO,
+    SURVEY_END_DATE_CUTOFF,
     has_article_source,
     parse_datetime_like,
     published_at_cutoff_reason,
+    survey_end_date_cutoff_reason,
 )
 from app.services.data_go_candidate import DataGoCandidateConfig, DataGoCandidateService
 from app.services.errors import DuplicateConflictError
@@ -790,6 +792,25 @@ def ingest_payload(payload: IngestPayload, repo) -> IngestResult:
 
     for record in payload.records:
         try:
+            survey_end_cutoff_reason = survey_end_date_cutoff_reason(record.observation.survey_end_date)
+            if survey_end_cutoff_reason != "PASS":
+                error_count += 1
+                try:
+                    repo.insert_review_queue(
+                        entity_type="ingest_record",
+                        entity_id=record.observation.observation_key,
+                        issue_type="ingestion_error",
+                        review_note=(
+                            "STALE_CYCLE_BLOCK "
+                            f"reason={survey_end_cutoff_reason} "
+                            f"survey_end_date={record.observation.survey_end_date} "
+                            f"cutoff={SURVEY_END_DATE_CUTOFF.isoformat()}"
+                        ),
+                    )
+                except Exception:  # noqa: BLE001
+                    pass
+                continue
+
             article_source = has_article_source(
                 source_channel=record.observation.source_channel,
                 source_channels=record.observation.source_channels,

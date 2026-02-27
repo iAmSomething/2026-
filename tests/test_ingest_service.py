@@ -262,6 +262,24 @@ def test_article_source_record_before_cutoff_is_blocked():
     assert any("ARTICLE_PUBLISHED_AT_CUTOFF_BLOCK" in row[3] for row in repo.review)
 
 
+def test_record_with_survey_end_before_cutoff_is_blocked_even_if_article_is_new():
+    repo = FakeRepo()
+    payload_data = deepcopy(PAYLOAD)
+    payload_data["records"][0]["article"]["published_at"] = "2026-01-15T09:00:00+09:00"
+    payload_data["records"][0]["observation"]["survey_end_date"] = "2025-11-30"
+    payload = IngestPayload.model_validate(payload_data)
+
+    result = ingest_payload(payload, repo)
+
+    assert result.status == "partial_success"
+    assert result.processed_count == 0
+    assert result.error_count == 1
+    assert len(repo.articles) == 0
+    assert len(repo.observations) == 0
+    assert any("STALE_CYCLE_BLOCK" in row[3] for row in repo.review)
+    assert any("SURVEY_END_DATE_BEFORE_CUTOFF" in row[3] for row in repo.review)
+
+
 def test_nesdc_source_record_without_article_published_at_is_allowed():
     repo = FakeRepo()
     payload_data = deepcopy(PAYLOAD)
