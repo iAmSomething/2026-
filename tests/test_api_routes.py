@@ -359,6 +359,8 @@ class FakeApiRepo:
             "job": "구청장",
             "career_summary": "성동구청장",
             "election_history": "지방선거 출마",
+            "profile_source_type": "manual",
+            "profile_source_url": None,
         }
 
     def fetch_ops_ingestion_metrics(self, window_hours=24):  # noqa: ARG002
@@ -714,6 +716,12 @@ def test_api_contract_fields():
     assert candidate.json()["source_channels"] == ["article", "nesdc"]
     assert candidate.json()["article_published_at"] is not None
     assert candidate.json()["official_release_at"] is not None
+    assert candidate.json()["profile_source"] == "ingest"
+    assert candidate.json()["profile_completeness"] == "complete"
+    assert candidate.json()["placeholder_name_applied"] is False
+    assert candidate.json()["profile_source_type"] == "manual"
+    assert candidate.json()["profile_provenance"]["career_summary"] == "ingest"
+    assert candidate.json()["profile_provenance"]["election_history"] == "ingest"
 
     ops = client.get("/api/v1/ops/metrics/summary")
     assert ops.status_code == 200
@@ -2034,6 +2042,11 @@ def test_candidate_endpoint_merges_data_go_fields():
     assert "official_release_at" in body
     assert "article_published_at" in body
     assert "is_official_confirmed" in body
+    assert body["profile_source"] == "mixed"
+    assert body["profile_provenance"]["party_name"] == "data_go"
+    assert body["profile_provenance"]["job"] == "data_go"
+    assert body["profile_provenance"]["career_summary"] == "ingest"
+    assert body["profile_completeness"] == "complete"
 
     app.dependency_overrides.clear()
 
@@ -2055,5 +2068,48 @@ def test_candidate_endpoint_falls_back_name_when_missing():
     body = res.json()
     assert body["name_ko"] == "cand-jwo"
     assert body["party_name"] is None
+    assert body["placeholder_name_applied"] is True
+    assert body["profile_completeness"] == "partial"
+    assert body["profile_provenance"]["party_name"] == "missing"
+
+    app.dependency_overrides.clear()
+
+
+def test_candidate_endpoint_handles_profile_missing_contract_with_nulls():
+    class SparseCandidateRepo(FakeApiRepo):
+        def get_candidate(self, candidate_id):
+            row = super().get_candidate(candidate_id)
+            row["party_name"] = None
+            row["career_summary"] = None
+            row["election_history"] = None
+            row["job"] = "  "
+            row["gender"] = "  "
+            row["name_ko"] = "   "
+            row["profile_source_type"] = None
+            row["profile_source_url"] = "  "
+            return row
+
+    app.dependency_overrides[get_repository] = lambda: SparseCandidateRepo()
+    app.dependency_overrides[get_candidate_data_go_service] = lambda: FakeCandidateDataGoService({})
+    client = TestClient(app)
+
+    res = client.get("/api/v1/candidates/cand-jwo")
+    assert res.status_code == 200
+    body = res.json()
+    assert body["name_ko"] == "cand-jwo"
+    assert body["placeholder_name_applied"] is True
+    assert body["party_name"] is None
+    assert body["job"] is None
+    assert body["gender"] is None
+    assert body["career_summary"] is None
+    assert body["election_history"] is None
+    assert body["profile_source"] == "ingest"
+    assert body["profile_completeness"] == "empty"
+    assert body["profile_source_type"] is None
+    assert body["profile_source_url"] is None
+    assert body["profile_provenance"]["party_name"] == "missing"
+    assert body["profile_provenance"]["career_summary"] == "missing"
+    assert body["profile_provenance"]["election_history"] == "missing"
+    assert body["profile_provenance"]["birth_date"] == "ingest"
 
     app.dependency_overrides.clear()

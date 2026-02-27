@@ -1926,7 +1926,9 @@ class PostgresRepository:
                     ) AS needs_manual_review,
                     c.gender,
                     c.birth_date, c.job,
-                    cp.career_summary, cp.election_history
+                    cp.career_summary, cp.election_history,
+                    cp.source_type AS profile_source_type,
+                    cp.source_url AS profile_source_url
                 FROM candidates c
                 LEFT JOIN candidate_profiles cp ON cp.candidate_id = c.candidate_id
                 WHERE c.candidate_id = %s

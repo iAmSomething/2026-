@@ -167,6 +167,19 @@ MAP_LATEST_LEGACY_TITLE_KEYWORDS = {
     "국회의원선거",
 }
 MAP_LATEST_TARGET_YEAR = "2026"
+CANDIDATE_PROFILE_TRACKED_FIELDS = (
+    "party_name",
+    "gender",
+    "birth_date",
+    "job",
+    "career_summary",
+    "election_history",
+)
+CANDIDATE_PROFILE_REQUIRED_FIELDS = (
+    "party_name",
+    "career_summary",
+    "election_history",
+)
 
 
 def _build_scope_breakdown(rows: list[dict]) -> dict[str, int]:
@@ -223,6 +236,65 @@ def _normalize_region_query(raw_query: str) -> str:
     text = unicodedata.normalize("NFC", text)
     text = re.sub(r"\s+", " ", text).strip()
     return text
+
+
+def _normalize_candidate_profile_field_value(value):
+    if value is None:
+        return None
+    if isinstance(value, datetime):
+        return value.isoformat()
+    if isinstance(value, date):
+        return value.isoformat()
+    if isinstance(value, str):
+        text = value.strip()
+        return text or None
+    text = str(value).strip()
+    return text or None
+
+
+def _normalize_candidate_text(value) -> str | None:
+    if value is None:
+        return None
+    text = str(value).strip()
+    return text or None
+
+
+def _build_candidate_profile_provenance(*, base_row: dict, final_row: dict) -> dict[str, str]:
+    provenance: dict[str, str] = {}
+    for field in CANDIDATE_PROFILE_TRACKED_FIELDS:
+        base_value = _normalize_candidate_profile_field_value(base_row.get(field))
+        final_value = _normalize_candidate_profile_field_value(final_row.get(field))
+        if final_value is None:
+            provenance[field] = "missing"
+        elif base_value is None:
+            provenance[field] = "data_go"
+        elif base_value == final_value:
+            provenance[field] = "ingest"
+        else:
+            provenance[field] = "data_go"
+    return provenance
+
+
+def _derive_candidate_profile_source(provenance: dict[str, str]) -> Literal["data_go", "ingest", "mixed", "none"]:
+    values = {value for value in provenance.values() if value in {"data_go", "ingest"}}
+    if values == {"data_go"}:
+        return "data_go"
+    if values == {"ingest"}:
+        return "ingest"
+    if values == {"data_go", "ingest"}:
+        return "mixed"
+    return "none"
+
+
+def _derive_candidate_profile_completeness(row: dict) -> Literal["complete", "partial", "empty"]:
+    required_presence = [
+        _normalize_candidate_profile_field_value(row.get(field)) is not None for field in CANDIDATE_PROFILE_REQUIRED_FIELDS
+    ]
+    if all(required_presence):
+        return "complete"
+    if any(required_presence):
+        return "partial"
+    return "empty"
 
 
 def _derive_source_meta(row: dict) -> dict:
@@ -752,15 +824,30 @@ def get_candidate(
     candidate = repo.get_candidate(candidate_id)
     if not candidate:
         raise HTTPException(status_code=404, detail="candidate not found")
+    base_row = dict(candidate)
     enriched = data_go_service.enrich_candidate(dict(candidate))
     source_meta = _derive_source_meta(enriched)
     payload = dict(enriched)
-    if not str(payload.get("name_ko") or "").strip():
+    payload["name_ko"] = _normalize_candidate_text(payload.get("name_ko"))
+    placeholder_name_applied = False
+    if not payload.get("name_ko"):
         payload["name_ko"] = candidate_id
-    if payload.get("party_name") is not None and not str(payload.get("party_name")).strip():
-        payload["party_name"] = None
+        placeholder_name_applied = True
+    payload["party_name"] = _normalize_candidate_text(payload.get("party_name"))
+    payload["job"] = _normalize_candidate_text(payload.get("job"))
+    payload["career_summary"] = _normalize_candidate_text(payload.get("career_summary"))
+    payload["election_history"] = _normalize_candidate_text(payload.get("election_history"))
+    payload["gender"] = _normalize_candidate_text(payload.get("gender"))
+
+    profile_provenance = _build_candidate_profile_provenance(base_row=base_row, final_row=payload)
     payload.update(source_meta)
     payload["source_channels"] = payload.get("source_channels") or []
+    payload["profile_provenance"] = profile_provenance
+    payload["profile_source"] = _derive_candidate_profile_source(profile_provenance)
+    payload["profile_completeness"] = _derive_candidate_profile_completeness(payload)
+    payload["profile_source_type"] = _normalize_candidate_text(payload.get("profile_source_type"))
+    payload["profile_source_url"] = _normalize_candidate_text(payload.get("profile_source_url"))
+    payload["placeholder_name_applied"] = placeholder_name_applied
     return CandidateOut(**payload)
 
 

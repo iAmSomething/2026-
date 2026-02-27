@@ -33,6 +33,15 @@ class CandidateOut(BaseModel):
     job: str | None = None
     career_summary: str | None = None
     election_history: str | None = None
+    profile_source: Literal["data_go", "ingest", "mixed", "none"] = "none"
+    profile_completeness: Literal["complete", "partial", "empty"] = "empty"
+    profile_provenance: dict[
+        Literal["party_name", "gender", "birth_date", "job", "career_summary", "election_history"],
+        Literal["data_go", "ingest", "missing"],
+    ] = Field(default_factory=dict)
+    profile_source_type: str | None = None
+    profile_source_url: str | None = None
+    placeholder_name_applied: bool = False
 
 
 class SummaryPoint(BaseModel):
