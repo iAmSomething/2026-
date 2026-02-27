@@ -66,7 +66,7 @@ jobs:
           print(json.dumps({"target_payload": str(dst), "record_count": len(targets)}, ensure_ascii=False))
           PY
 
-          .venv/bin/python scripts/qa/normalize_ingest_payload_for_schedule.py \
+          PYTHONPATH="." .venv/bin/python scripts/qa/normalize_ingest_payload_for_schedule.py \
             --input "$TARGET_PAYLOAD" \
             --output "$TARGET_PAYLOAD"
 
