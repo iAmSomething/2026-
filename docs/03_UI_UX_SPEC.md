@@ -48,6 +48,7 @@
 2. 최근 조사 카드(기관/표본/오차범위/조사기간)
 3. 출처 링크 및 검증 상태 배지
 4. 후보 클릭 시 후보자 상세 이동
+5. poll 데이터가 0건이면 전용 fallback 블록 노출(`추정(현직 기반)`, `여론조사 아님`), poll 카드/추세선 컴포넌트 재사용 금지
 
 ## 3.4 후보자 상세
 1. 후보 기본 정보(성명/정당/연령대/직업)
@@ -65,7 +66,7 @@
 | 추세선 카드(정당/직무평가/선거성격) | `GET /api/v1/trends/{metric}` | `poll_observations`, `poll_options` | `metric`, `scope`, `region_code`, `days`, `survey_end_date`, `option_name`, `value_mid`, `pollster`, `source_trace.selected_source_tier` |
 | 지역 검색 | `GET /api/v1/regions/search` (`q/query` optional, `has_data` optional) | `regions`, `elections` | `region_code`, `sido_name`, `sigungu_name`, `has_data`, `matchup_count` |
 | 지역별 선거 탭 | `GET /api/v1/regions/{region_code}/elections` | `matchups` | `region_code`, `office_type`, `is_active` |
-| 매치업 상세 | `GET /api/v1/matchups/{matchup_id}` | `matchups`, `poll_observations`, `poll_options`, `review_queue` | `matchup_id`, `canonical_title`, `article_title`, `title`(deprecated), `has_data`, `pollster`, `survey_start_date`, `survey_end_date`, `confidence_level`, `sample_size`, `response_rate`, `margin_of_error`, `date_inference_mode`, `date_inference_confidence`, `nesdc_enriched`, `needs_manual_review`, `source_trace`, `source_priority`, `official_release_at`, `article_published_at`, `freshness_hours`, `is_official_confirmed`, `source_channel`, `source_channels`, `source_grade`, `audience_scope`, `audience_region_code`, `legal_completeness_score`, `legal_filled_count`, `legal_required_count`, `poll_fingerprint`, `scenarios[]`, `scenarios[].scenario_key`, `scenarios[].scenario_type`, `scenarios[].scenario_title`, `scenarios[].options[]`, `options[]`, `options[].name_validity`, `options[].scenario_key`, `options[].scenario_type`, `options[].scenario_title`, `options[].value_mid`, `options[].value_raw`, `options[].party_inferred`, `options[].party_inference_source`, `options[].party_inference_confidence`, `options[].party_inference_evidence` |
+| 매치업 상세 | `GET /api/v1/matchups/{matchup_id}` | `matchups`, `poll_observations`, `poll_options`, `review_queue`, `candidates` | `matchup_id`, `canonical_title`, `article_title`, `title`(deprecated), `has_data`, `fallback_mode`, `incumbent_candidates[]`, `incumbent_candidates[].name`, `incumbent_candidates[].party`, `incumbent_candidates[].office`, `incumbent_candidates[].confidence`, `incumbent_candidates[].reasons`, `incumbent_candidates[].candidate_id`, `pollster`, `survey_start_date`, `survey_end_date`, `confidence_level`, `sample_size`, `response_rate`, `margin_of_error`, `date_inference_mode`, `date_inference_confidence`, `nesdc_enriched`, `needs_manual_review`, `source_trace`, `source_priority`, `official_release_at`, `article_published_at`, `freshness_hours`, `is_official_confirmed`, `source_channel`, `source_channels`, `source_grade`, `audience_scope`, `audience_region_code`, `legal_completeness_score`, `legal_filled_count`, `legal_required_count`, `poll_fingerprint`, `scenarios[]`, `scenarios[].scenario_key`, `scenarios[].scenario_type`, `scenarios[].scenario_title`, `scenarios[].options[]`, `options[]`, `options[].name_validity`, `options[].scenario_key`, `options[].scenario_type`, `options[].scenario_title`, `options[].value_mid`, `options[].value_raw`, `options[].party_inferred`, `options[].party_inference_source`, `options[].party_inference_confidence`, `options[].party_inference_evidence` |
 | 후보자 상세 | `GET /api/v1/candidates/{candidate_id}` | `candidates`, `candidate_profiles` | `candidate_id`, `name_ko`, `party_name`, `career_summary`, `election_history`, `profile_source`, `profile_completeness`, `profile_provenance`, `profile_source_type`, `profile_source_url`, `placeholder_name_applied` |
 
 ## 5. API-UI 필드명 일치 규칙
@@ -90,3 +91,5 @@
 19. 하위호환 필드(`title`, `source_priority`, `source_channel`, `source_channels`, `official_release_at`, `article_published_at`, `freshness_hours`, `is_official_confirmed`)는 deprecated 상태로 유지한다.
 20. `GET /api/v1/trends/{metric}`에서 `scope=regional|local` 요청은 `region_code` 필수다.
 21. trends 포인트는 동일 날짜/옵션 그룹 내 대표값 선택 trace(`source_trace.selected_source_tier`, `source_trace.selected_source_channel`)를 포함한다.
+22. 매치업 상세는 poll `scenario/option` 0건일 때만 `fallback_mode='incumbent'`와 `incumbent_candidates[]`를 노출한다.
+23. `fallback_mode='incumbent'` 상태에서는 UI에 `여론조사 아님` 문구를 상시 표시한다.

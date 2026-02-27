@@ -367,6 +367,7 @@ class FakeApiRepo:
                             "party_inference_source": "name_rule",
                             "party_inference_confidence": 0.86,
                             "party_inference_evidence": '{"rule":"name_rule","version":"v1"}',
+                            "name_validity": "valid",
                             "needs_manual_review": False,
                         },
                         {
@@ -382,6 +383,7 @@ class FakeApiRepo:
                             "party_inference_source": None,
                             "party_inference_confidence": None,
                             "party_inference_evidence": None,
+                            "name_validity": "valid",
                             "needs_manual_review": True,
                         },
                     ],
@@ -401,6 +403,7 @@ class FakeApiRepo:
                     "party_inference_source": "name_rule",
                     "party_inference_confidence": 0.86,
                     "party_inference_evidence": '{"rule":"name_rule","version":"v1"}',
+                    "name_validity": "valid",
                     "needs_manual_review": False,
                 },
                 {
@@ -416,6 +419,7 @@ class FakeApiRepo:
                     "party_inference_source": None,
                     "party_inference_confidence": None,
                     "party_inference_evidence": None,
+                    "name_validity": "valid",
                     "needs_manual_review": True,
                 },
             ],
@@ -801,6 +805,8 @@ def test_api_contract_fields():
     assert matchup.json()["options"][1]["candidate_id"] == "cand-oh"
     assert matchup.json()["options"][1]["name_validity"] == "valid"
     assert matchup.json()["candidate_noise_block_count"] == 0
+    assert matchup.json()["fallback_mode"] == "none"
+    assert matchup.json()["incumbent_candidates"] == []
     matchup_alias = client.get("/api/v1/matchups/m_2026_seoul_mayor")
     assert matchup_alias.status_code == 200
     assert matchup_alias.json()["matchup_id"] == "20260603|광역자치단체장|11-000"
@@ -811,6 +817,8 @@ def test_api_contract_fields():
     assert matchup_meta_only.json()["scenarios"] == []
     assert matchup_meta_only.json()["options"] == []
     assert matchup_meta_only.json()["candidate_noise_block_count"] == 0
+    assert matchup_meta_only.json()["fallback_mode"] == "none"
+    assert matchup_meta_only.json()["incumbent_candidates"] == []
 
     candidate = client.get("/api/v1/candidates/cand-jwo")
     assert candidate.status_code == 200
@@ -881,6 +889,44 @@ def test_api_contract_fields():
     assert trends_body["bucket_hours"] == 6
     assert len(trends_body["points"]) == 1
     assert trends_body["points"][0]["error_code"] == "region_not_found"
+
+    app.dependency_overrides.clear()
+
+
+def test_matchup_enables_incumbent_fallback_only_when_poll_payload_is_empty():
+    class IncumbentFallbackRepo(FakeApiRepo):
+        def fetch_incumbent_candidates(self, *, region_code, office_type, limit=4):  # noqa: ARG002
+            return [
+                {
+                    "name": "오세훈",
+                    "party": "국민의힘",
+                    "office": "서울특별시장",
+                    "confidence": 0.86,
+                    "reasons": ["office_token_match", "region_keyword_match"],
+                    "candidate_id": "cand-oh",
+                }
+            ][:limit]
+
+    def override_incumbent_fallback_repo():
+        yield IncumbentFallbackRepo()
+
+    app.dependency_overrides[get_repository] = override_incumbent_fallback_repo
+    app.dependency_overrides[get_candidate_data_go_service] = override_candidate_data_go_service
+    client = TestClient(app)
+
+    empty_poll_res = client.get("/api/v1/matchups/2026_local|기초자치단체장|26-710")
+    assert empty_poll_res.status_code == 200
+    empty_poll_body = empty_poll_res.json()
+    assert empty_poll_body["fallback_mode"] == "incumbent"
+    assert len(empty_poll_body["incumbent_candidates"]) == 1
+    assert empty_poll_body["incumbent_candidates"][0]["name"] == "오세훈"
+    assert empty_poll_body["incumbent_candidates"][0]["candidate_id"] == "cand-oh"
+
+    has_poll_res = client.get("/api/v1/matchups/20260603|광역자치단체장|11-000")
+    assert has_poll_res.status_code == 200
+    has_poll_body = has_poll_res.json()
+    assert has_poll_body["fallback_mode"] == "none"
+    assert has_poll_body["incumbent_candidates"] == []
 
     app.dependency_overrides.clear()
 
