@@ -1,0 +1,147 @@
+name: Collector Issue339 Targeted Reingest
+
+on:
+  workflow_dispatch:
+
+jobs:
+  targeted-reingest:
+    runs-on: ubuntu-latest
+    env:
+      SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+      SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+      DATA_GO_KR_KEY: ${{ secrets.DATA_GO_KR_KEY }}
+      DATABASE_URL: ${{ secrets.DATABASE_URL }}
+      INTERNAL_JOB_TOKEN: ${{ secrets.INTERNAL_JOB_TOKEN }}
+      API_BASE_URL: http://127.0.0.1:8100
+      TARGET_PAYLOAD: data/issue339_target_single_reingest_payload.json
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Secret preflight (fail-fast)
+        run: |
+          scripts/qa/preflight_required_secrets.sh
+
+      - name: Setup Python 3.13
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+
+      - name: Create venv and install deps
+        run: |
+          python -m venv .venv
+          .venv/bin/pip install -r requirements.txt
+
+      - name: Build issue339 targeted payload (single record)
+        run: |
+          .venv/bin/python - <<'PY'
+          import json
+          from pathlib import Path
+
+          src = Path("data/issue339_scenario_mix_reingest_payload.json")
+          dst = Path("data/issue339_target_single_reingest_payload.json")
+          payload = json.loads(src.read_text(encoding="utf-8"))
+          records = payload.get("records") or []
+
+          targets = []
+          for row in records:
+              obs = row.get("observation") or {}
+              if str(obs.get("region_code") or "") != "26-710":
+                  continue
+              if str(obs.get("office_type") or "") != "기초자치단체장":
+                  continue
+              targets.append(row)
+
+          if len(targets) != 1:
+              raise SystemExit(f"expected exactly one target record for 26-710, got {len(targets)}")
+
+          out = {
+              "run_type": "collector_issue339_target_single",
+              "extractor_version": "collector-issue339-target-single-v1",
+              "llm_model": None,
+              "records": targets,
+          }
+          dst.parent.mkdir(parents=True, exist_ok=True)
+          dst.write_text(json.dumps(out, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+          print(json.dumps({"target_payload": str(dst), "record_count": len(targets)}, ensure_ascii=False))
+          PY
+
+          .venv/bin/python scripts/qa/normalize_ingest_payload_for_schedule.py \
+            --input "$TARGET_PAYLOAD" \
+            --output "$TARGET_PAYLOAD"
+
+          .venv/bin/python - <<'PY'
+          import json
+          from pathlib import Path
+
+          payload_path = Path("data/issue339_target_single_reingest_payload.json")
+          route_path = Path("data/issue339_target_single_route_report.json")
+          payload = json.loads(payload_path.read_text(encoding="utf-8"))
+          route = {
+              "source_mode": "collector_issue339_target_single",
+              "canonical_payload": str(payload_path),
+              "record_count": len(payload.get("records") or []),
+              "run_type": payload.get("run_type"),
+              "extractor_version": payload.get("extractor_version"),
+          }
+          route_path.write_text(json.dumps(route, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+          print(json.dumps(route, ensure_ascii=False))
+          PY
+
+      - name: Start API server
+        run: |
+          nohup .venv/bin/uvicorn app.main:app --host 127.0.0.1 --port 8100 >/tmp/collector-issue339-targeted-api.log 2>&1 &
+          for _ in $(seq 1 30); do
+            if curl -fsS http://127.0.0.1:8100/health >/dev/null 2>&1; then
+              exit 0
+            fi
+            sleep 1
+          done
+          echo "::error::API server failed to start"
+          exit 1
+
+      - name: DB preflight via health/db
+        run: |
+          DB_HEALTH_STATUS="$(curl -sS -o /tmp/collector-issue339-health-db.json -w "%{http_code}" http://127.0.0.1:8100/health/db || true)"
+          echo "health_db_http_status=${DB_HEALTH_STATUS}"
+          echo "===== /tmp/collector-issue339-health-db.json ====="
+          cat /tmp/collector-issue339-health-db.json || true
+          if [ "${DB_HEALTH_STATUS}" != "200" ]; then
+            echo "::error::DB preflight failed (/health/db status=${DB_HEALTH_STATUS})"
+            exit 1
+          fi
+
+      - name: Run issue339 targeted ingest with retry
+        run: |
+          .venv/bin/python scripts/qa/run_ingest_with_retry.py \
+            --api-base "$API_BASE_URL" \
+            --input "$TARGET_PAYLOAD" \
+            --max-retries 2 \
+            --backoff-seconds 1 \
+            --timeout 90 \
+            --timeout-scale-on-timeout 1.5 \
+            --timeout-max 240 \
+            --classification-artifact data/issue339_targeted_failure_classification.json \
+            --comment-template-path data/issue339_targeted_failure_comment_template.md \
+            --dead-letter-dir data/dead_letter \
+            --report data/issue339_targeted_ingest_report.json
+
+      - name: Dump API server log on failure
+        if: failure()
+        run: |
+          echo "===== /tmp/collector-issue339-targeted-api.log ====="
+          cat /tmp/collector-issue339-targeted-api.log || true
+
+      - name: Upload targeted ingest artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: collector-issue339-targeted-reingest-report
+          path: |
+            data/issue339_target_single_reingest_payload.json
+            data/issue339_target_single_route_report.json
+            data/issue339_targeted_ingest_report.json
+            data/issue339_targeted_failure_classification.json
+            data/issue339_targeted_failure_comment_template.md
+            data/dead_letter/*.json
+          if-no-files-found: ignore
