@@ -1,0 +1,73 @@
+name: Worktree Hygiene
+
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: "Run mode"
+        required: false
+        default: "dry-run"
+        type: choice
+        options:
+          - dry-run
+          - apply
+      stale_hours:
+        description: "Stale threshold in hours"
+        required: false
+        default: "24"
+      base_dir:
+        description: "Scan base directory (empty = $HOME)"
+        required: false
+        default: ""
+  schedule:
+    - cron: "0 1 * * 1"
+
+jobs:
+  hygiene:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Resolve params
+        id: params
+        shell: bash
+        run: |
+          mode="${{ github.event.inputs.mode }}"
+          hours="${{ github.event.inputs.stale_hours }}"
+          base_dir="${{ github.event.inputs.base_dir }}"
+
+          if [[ "${{ github.event_name }}" == "schedule" ]]; then
+            mode="dry-run"
+          fi
+          if [[ -z "${mode}" ]]; then
+            mode="dry-run"
+          fi
+          if [[ -z "${hours}" ]]; then
+            hours="24"
+          fi
+          if [[ -z "${base_dir}" ]]; then
+            base_dir="${HOME}"
+          fi
+
+          echo "mode=${mode}" >> "${GITHUB_OUTPUT}"
+          echo "hours=${hours}" >> "${GITHUB_OUTPUT}"
+          echo "base_dir=${base_dir}" >> "${GITHUB_OUTPUT}"
+
+      - name: Run worktree hygiene
+        id: hygiene
+        shell: bash
+        run: |
+          report_path="data/worktree_hygiene_report_${GITHUB_RUN_ID}.txt"
+          bash scripts/pm/worktree_hygiene.sh \
+            --mode "${{ steps.params.outputs.mode }}" \
+            --hours "${{ steps.params.outputs.hours }}" \
+            --base-dir "${{ steps.params.outputs.base_dir }}" \
+            --report "${report_path}"
+          echo "report_path=${report_path}" >> "${GITHUB_OUTPUT}"
+
+      - name: Upload report artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: worktree-hygiene-report-${{ github.run_id }}
+          path: ${{ steps.hygiene.outputs.report_path }}
+          if-no-files-found: error
