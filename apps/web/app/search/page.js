@@ -101,6 +101,22 @@ export default async function SearchPage({ searchParams }) {
 
   const filteredElections =
     selectedOffice === "all" ? elections : elections.filter((election) => election.office_type === selectedOffice);
+  const regionRows = regions.map((region) => {
+    const summary = regionSummaryMap.get(region.region_code) || summarizeRegionElections([]);
+    const hasData = summary.hasPollDataCount > 0 || region.has_data;
+    return {
+      region,
+      summary,
+      hasData
+    };
+  });
+  const regionsWithDataCount = regionRows.filter((entry) => entry.hasData).length;
+  const latestAcrossRegions = regionRows.reduce((latest, entry) => {
+    const date = entry.summary.latestSurveyEndDate;
+    if (!date) return latest;
+    if (!latest) return date;
+    return date > latest ? date : latest;
+  }, null);
 
   const scenarioFixed = Boolean(demoQueryParam);
   const isScenarioEmptyCase = demoQueryParam === "없는지역명";
@@ -160,6 +176,20 @@ export default async function SearchPage({ searchParams }) {
           <div className="search-layout">
             <section className="panel inset-panel">
               <h3>검색 결과 ({regions.length})</h3>
+              <div className="search-summary-bar" role="status" aria-live="polite">
+                <div className="search-summary-item">
+                  <span>결과 수</span>
+                  <strong>{regions.length}개</strong>
+                </div>
+                <div className="search-summary-item">
+                  <span>데이터 보유 지역</span>
+                  <strong>{regionsWithDataCount}개</strong>
+                </div>
+                <div className="search-summary-item">
+                  <span>최신 데이터</span>
+                  <strong>{formatDate(latestAcrossRegions)}</strong>
+                </div>
+              </div>
               {regions.length === 0 ? <div className="empty-state">검색 결과가 없습니다. 시/도 포함 지역명을 입력해 다시 시도해 주세요.</div> : null}
               {isScenarioEmptyCase && regions.length === 0 ? (
                 <div className="empty-actions">
@@ -171,7 +201,7 @@ export default async function SearchPage({ searchParams }) {
                 </div>
               ) : null}
               <ul className="region-result-list">
-                {regions.map((region) => {
+                {regionRows.map(({ region, summary, hasData }) => {
                   const href = buildQueryString({
                     ...(scenarioFixed ? scenarioBaseParams : {}),
                     ...(!scenarioFixed ? topologyParams : {}),
@@ -180,21 +210,24 @@ export default async function SearchPage({ searchParams }) {
                     office: selectedOffice === "all" ? "" : selectedOffice
                   });
                   const active = region.region_code === regionCode;
-                  const summary = regionSummaryMap.get(region.region_code) || summarizeRegionElections([]);
                   const officePreview = summary.officeTypes.slice(0, 3);
                   const overflowCount = Math.max(0, summary.officeTypes.length - officePreview.length);
-                  const hasData = summary.hasPollDataCount > 0 || region.has_data;
                   return (
                     <li key={region.region_code}>
                       <Link className={active ? "active" : ""} href={`/search${href}`}>
-                        <div className="region-result-head">
-                          <strong>{regionLabel(region)}</strong>
+                        <div className="region-result-head stacked">
+                          <strong className="region-result-title">{regionLabel(region)}</strong>
+                          <span className="region-result-code">{region.region_code}</span>
+                        </div>
+                        <div className="region-result-status-row">
                           <span className={`state-badge ${hasData ? "ok" : "warn"}`}>
                             {hasData ? "데이터 있음" : "데이터 없음"}
                           </span>
+                          <span className="muted-text compact">선거 {summary.totalCount}건</span>
                         </div>
-                        <span>{region.region_code}</span>
-                        <div className="badge-row region-result-badges">
+                        <p className="muted-text compact">최신 데이터: {formatDate(summary.latestSurveyEndDate)}</p>
+                        <span className="result-cta">{active ? "현재 선택됨" : "지역 상세 보기"}</span>
+                        <div className="badge-row region-result-badges compact">
                           {officePreview.length > 0 ? officePreview.map((officeType) => (
                             <span key={`${region.region_code}-${officeType}`} className="state-badge info">
                               {officeType}
@@ -202,8 +235,6 @@ export default async function SearchPage({ searchParams }) {
                           )) : <span className="state-badge warn">선거유형 확인중</span>}
                           {overflowCount > 0 ? <span className="state-badge info">+{overflowCount}</span> : null}
                         </div>
-                        <p className="muted-text">최신 데이터: {formatDate(summary.latestSurveyEndDate)}</p>
-                        <span className="result-cta">{active ? "현재 선택됨" : "지역 상세 보기"}</span>
                       </Link>
                     </li>
                   );
