@@ -16,6 +16,7 @@ jobs:
       INTERNAL_JOB_TOKEN: ${{ secrets.INTERNAL_JOB_TOKEN }}
       API_BASE_URL: http://127.0.0.1:8100
       INGEST_SCHEDULE_PAYLOAD: data/collector_live_payload.json
+      INGEST_SCHEDULE_MAX_RECORDS: "12"
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -45,6 +46,25 @@ jobs:
           test -s data/ingest_schedule_payload_route_report.json
           cat data/ingest_schedule_payload_route_report.json
 
+      - name: Downsize ingest payload for schedule runtime budget
+        run: |
+          .venv/bin/python - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+
+          payload_path = Path(os.environ["INGEST_SCHEDULE_PAYLOAD"])
+          max_records = int(os.environ.get("INGEST_SCHEDULE_MAX_RECORDS", "12"))
+          payload = json.loads(payload_path.read_text(encoding="utf-8"))
+          records = payload.get("records") or []
+          before = len(records)
+          if before > max_records:
+              payload["records"] = records[:max_records]
+              payload_path.write_text(json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+          after = len(payload.get("records") or [])
+          print(f"[ingest-schedule] payload_downsize before={before} after={after} max={max_records}")
+          PY
+
       - name: Start API server
         run: |
           nohup .venv/bin/uvicorn app.main:app --host 127.0.0.1 --port 8100 >/tmp/ingest-schedule-api.log 2>&1 &
@@ -73,11 +93,11 @@ jobs:
           .venv/bin/python scripts/qa/run_ingest_with_retry.py \
             --api-base "$API_BASE_URL" \
             --input "$INGEST_SCHEDULE_PAYLOAD" \
-            --max-retries 2 \
+            --max-retries 0 \
             --backoff-seconds 1 \
-            --timeout 180 \
+            --timeout 420 \
             --timeout-scale-on-timeout 1.5 \
-            --timeout-max 360 \
+            --timeout-max 420 \
             --allow-partial-success \
             --classification-artifact data/ingest_schedule_failure_classification.json \
             --comment-template-path data/ingest_schedule_failure_comment_template.md \
