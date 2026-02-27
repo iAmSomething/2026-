@@ -186,6 +186,10 @@ scripts/qa/smoke_staging.sh --api-base "$API_BASE" --web-base "$WEB_BASE"
 - Preview URL 추출 후 `issue_number`에 코멘트 자동 작성
 - 접근 검증(`curl`) 로그와 배포 로그를 artifact로 업로드
 - Preview 접근정책은 `public` 고정이며 `401`이면 실패 처리한다.
+6. rate-limit 운영정책:
+- Vercel deploy 실패 원인이 `Deployment rate limited`/`rate limit`이면 non-blocking 신호로 처리한다.
+- 이 경우 워크플로는 실패로 종료하지 않고 issue 코멘트에 `rate_limited_non_blocking` 상태를 남긴다.
+- 기능 검증 게이트는 `staging-smoke` 증빙으로 대체한다(배포 성공 증빙과 분리 운영).
 
 ## 13. 웹 확인용 RC 고정값 (Issue #123)
 1. 공개 확인 URL(Production):
