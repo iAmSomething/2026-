@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from calendar import monthrange
 from dataclasses import dataclass, field
 from datetime import date, datetime, timedelta, timezone
 from hashlib import sha256
@@ -120,13 +121,22 @@ class PollCollector:
     )
     _DATE_POLICY_DEFAULT = "strict_fail"
     _DATE_POLICY_ALLOW_ESTIMATED = "allow_estimated_timestamp"
-    _RELATIVE_DATE_PATTERNS = (
-        (re.compile(r"어제"), -1, "relative_day", 0.95),
-        (re.compile(r"그제"), -2, "relative_day", 0.92),
-        (re.compile(r"오늘"), 0, "relative_day", 0.90),
-        (re.compile(r"지난\s*주"), -7, "relative_week", 0.60),
-        (re.compile(r"최근"), 0, "relative_recent", 0.45),
+    _DATE_INFERENCE_TZ = timezone(timedelta(hours=9))
+    _DATE_INFERENCE_TZ_NAME = "Asia/Seoul"
+    _RELATIVE_FIXED_DATE_PATTERNS = (
+        (re.compile(r"그저께"), -3, "relative_day", 0.93, "그저께"),
+        (re.compile(r"그제"), -2, "relative_day", 0.94, "그제"),
+        (re.compile(r"어제"), -1, "relative_day", 0.95, "어제"),
+        (re.compile(r"오늘|금일|당일"), 0, "relative_day", 0.9, "오늘"),
+        (re.compile(r"지난주|전주"), -7, "relative_week", 0.82, "지난주"),
+        (re.compile(r"이번주|금주"), 0, "relative_week_current", 0.58, "이번주"),
+        (re.compile(r"최근"), 0, "relative_recent", 0.45, "최근"),
     )
+    _RELATIVE_N_DAYS_AGO_RE = re.compile(r"(\d{1,2})일전")
+    _RELATIVE_N_WEEKS_AGO_RE = re.compile(r"(\d{1,2})주전")
+    _RELATIVE_N_MONTHS_AGO_RE = re.compile(r"(\d{1,2})개월전")
+    _RELATIVE_LAST_N_DAYS_RE = re.compile(r"지난(\d{1,2})일")
+    _RELATIVE_LAST_MONTH_RE = re.compile(r"지난달")
     _SCENARIO_NAME_RE = re.compile(r"[가-힣]{2,6}")
     _SCENARIO_H2H_PAIR_RE = re.compile(
         r"([가-힣]{2,6})\s*([0-9]{1,2}(?:\.[0-9]+)?)\s*%?\s*[-~]\s*([가-힣]{2,6})\s*([0-9]{1,2}(?:\.[0-9]+)?)\s*%?"
@@ -1092,28 +1102,88 @@ class PollCollector:
                     return code
         return None
 
-    def _coerce_date(self, iso_date_time: str | None) -> str | None:
-        if not iso_date_time:
+    @classmethod
+    def _parse_anchor_date(cls, value: str | None) -> date | None:
+        if not value:
             return None
+        text = str(value).strip()
+        if not text:
+            return None
+        if len(text) == 10 and text[4] == "-" and text[7] == "-":
+            try:
+                return date.fromisoformat(text)
+            except ValueError:
+                pass
         try:
-            dt = datetime.fromisoformat(iso_date_time.replace("Z", "+00:00"))
-            return dt.astimezone(timezone.utc).date().isoformat()
+            dt = datetime.fromisoformat(text.replace("Z", "+00:00"))
         except ValueError:
             return None
+        if dt.tzinfo is None:
+            dt = dt.replace(tzinfo=cls._DATE_INFERENCE_TZ)
+        return dt.astimezone(cls._DATE_INFERENCE_TZ).date()
+
+    @classmethod
+    def _coerce_date(cls, iso_date_time: str | None) -> str | None:
+        parsed = cls._parse_anchor_date(iso_date_time)
+        return parsed.isoformat() if parsed else None
 
     def _parse_date(self, iso_date_time: str | None) -> date | None:
-        coerced = self._coerce_date(iso_date_time)
-        if not coerced:
-            return None
-        try:
-            return date.fromisoformat(coerced)
-        except ValueError:
-            return None
+        return self._parse_anchor_date(iso_date_time)
 
-    def _find_relative_date_signal(self, text: str) -> tuple[int, str, float] | None:
-        for pattern, offset_days, resolution, confidence in self._RELATIVE_DATE_PATTERNS:
-            if pattern.search(text):
-                return offset_days, resolution, confidence
+    @staticmethod
+    def _shift_months(anchor: date, months: int) -> date:
+        zero_based = (anchor.year * 12) + (anchor.month - 1) + months
+        year = zero_based // 12
+        month = (zero_based % 12) + 1
+        day = min(anchor.day, monthrange(year, month)[1])
+        return date(year, month, day)
+
+    def _find_relative_date_signal(
+        self,
+        text: str,
+        *,
+        anchor_date: date,
+    ) -> tuple[date, str, float, str, int] | None:
+        compact = re.sub(r"\s+", "", text)
+
+        for pattern, offset_days, resolution, confidence, signal in self._RELATIVE_FIXED_DATE_PATTERNS:
+            if pattern.search(compact):
+                inferred = anchor_date + timedelta(days=offset_days)
+                return inferred, resolution, confidence, signal, offset_days
+
+        m_last_n_days = self._RELATIVE_LAST_N_DAYS_RE.search(compact)
+        if m_last_n_days:
+            day_count = min(max(int(m_last_n_days.group(1)), 1), 31)
+            offset_days = -day_count
+            inferred = anchor_date + timedelta(days=offset_days)
+            return inferred, "relative_day_range", 0.74, f"지난{day_count}일", offset_days
+
+        m_days = self._RELATIVE_N_DAYS_AGO_RE.search(compact)
+        if m_days:
+            day_count = min(max(int(m_days.group(1)), 1), 31)
+            offset_days = -day_count
+            inferred = anchor_date + timedelta(days=offset_days)
+            return inferred, "relative_day", 0.9, f"{day_count}일전", offset_days
+
+        m_weeks = self._RELATIVE_N_WEEKS_AGO_RE.search(compact)
+        if m_weeks:
+            week_count = min(max(int(m_weeks.group(1)), 1), 12)
+            offset_days = -7 * week_count
+            inferred = anchor_date + timedelta(days=offset_days)
+            return inferred, "relative_week", 0.86, f"{week_count}주전", offset_days
+
+        m_months = self._RELATIVE_N_MONTHS_AGO_RE.search(compact)
+        if m_months:
+            month_count = min(max(int(m_months.group(1)), 1), 12)
+            inferred = self._shift_months(anchor_date, -month_count)
+            offset_days = (inferred - anchor_date).days
+            return inferred, "relative_month", 0.84, f"{month_count}개월전", offset_days
+
+        if self._RELATIVE_LAST_MONTH_RE.search(compact):
+            inferred = self._shift_months(anchor_date, -1)
+            offset_days = (inferred - anchor_date).days
+            return inferred, "relative_month", 0.86, "지난달", offset_days
+
         return None
 
     def _resolve_survey_date_inference(
@@ -1121,18 +1191,18 @@ class PollCollector:
         article: Article,
     ) -> tuple[str | None, str | None, str | None, float | None, ReviewQueueItem | None]:
         full_text = f"{article.title}\n{article.raw_text}"
-        relative_signal = self._find_relative_date_signal(full_text)
         published_date = self._parse_date(article.published_at)
         collected_date = self._parse_date(article.collected_at)
+        anchor_date = published_date or collected_date
+        relative_signal = self._find_relative_date_signal(full_text, anchor_date=anchor_date) if anchor_date else None
 
         if relative_signal is None:
             if published_date is None:
                 return None, "missing", "published_at_missing", 0.0, None
             return published_date.isoformat(), "exact", "published_at_exact", 1.0, None
 
-        offset_days, resolution, confidence = relative_signal
+        inferred, resolution, confidence, signal, offset_days = relative_signal
         if published_date is not None:
-            inferred = published_date + timedelta(days=offset_days)
             uncertainty = None
             if confidence < 0.8:
                 uncertainty = new_review_queue_item(
@@ -1147,12 +1217,19 @@ class PollCollector:
                         "date_inference_mode": "relative_published_at",
                         "date_inference_confidence": confidence,
                         "relative_date_policy": self.relative_date_policy,
+                        "relative_signal": signal,
+                        "relative_offset_days": offset_days,
+                        "anchor_source": "published_at",
+                        "anchor_date": published_date.isoformat(),
+                        "inferred_survey_end_date": inferred.isoformat(),
+                        "published_at": article.published_at,
+                        "collected_at": article.collected_at,
+                        "timezone": self._DATE_INFERENCE_TZ_NAME,
                     },
                 )
             return inferred.isoformat(), resolution, "relative_published_at", confidence, uncertainty
 
         if self.relative_date_policy == self._DATE_POLICY_ALLOW_ESTIMATED and collected_date is not None:
-            inferred = collected_date + timedelta(days=offset_days)
             estimated_confidence = max(0.35, round(confidence - 0.25, 2))
             estimated_notice = new_review_queue_item(
                 entity_type="article",
@@ -1166,6 +1243,14 @@ class PollCollector:
                     "date_inference_mode": "estimated_timestamp",
                     "date_inference_confidence": estimated_confidence,
                     "relative_date_policy": self.relative_date_policy,
+                    "relative_signal": signal,
+                    "relative_offset_days": offset_days,
+                    "anchor_source": "collected_at",
+                    "anchor_date": collected_date.isoformat(),
+                    "inferred_survey_end_date": inferred.isoformat(),
+                    "published_at": article.published_at,
+                    "collected_at": article.collected_at,
+                    "timezone": self._DATE_INFERENCE_TZ_NAME,
                 },
             )
             return inferred.isoformat(), "estimated", "estimated_timestamp", estimated_confidence, estimated_notice
@@ -1182,6 +1267,14 @@ class PollCollector:
                 "date_inference_mode": "strict_fail_blocked",
                 "date_inference_confidence": 0.0,
                 "relative_date_policy": self.relative_date_policy,
+                "relative_signal": signal,
+                "relative_offset_days": offset_days,
+                "anchor_source": "none",
+                "anchor_date": None,
+                "inferred_survey_end_date": None,
+                "published_at": article.published_at,
+                "collected_at": article.collected_at,
+                "timezone": self._DATE_INFERENCE_TZ_NAME,
             },
         )
         return None, "failed", "strict_fail_blocked", 0.0, strict_fail_notice

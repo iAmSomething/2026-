@@ -254,7 +254,12 @@ class CollectorExtractTest(unittest.TestCase):
         self.assertEqual(len(options), 2)
         self.assertEqual(observations[0].survey_end_date, None)
         self.assertEqual(observations[0].date_inference_mode, "strict_fail_blocked")
-        self.assertTrue(any(err.error_code == "RELATIVE_DATE_STRICT_FAIL" for err in errors))
+        strict_err = next((err for err in errors if err.error_code == "RELATIVE_DATE_STRICT_FAIL"), None)
+        self.assertIsNotNone(strict_err)
+        assert strict_err is not None
+        self.assertEqual(strict_err.payload.get("relative_signal"), "어제")
+        self.assertEqual(strict_err.payload.get("timezone"), "Asia/Seoul")
+        self.assertEqual(strict_err.payload.get("relative_offset_days"), -1)
 
     def test_relative_date_allow_estimated_policy_uses_collected_at(self) -> None:
         collector = PollCollector(relative_date_policy="allow_estimated_timestamp")
@@ -283,17 +288,75 @@ class CollectorExtractTest(unittest.TestCase):
             title="서울시장 조사",
             publisher="테스트",
             published_at="2026-02-18T00:00:00+09:00",
-            snippet="지난주 조사",
+            snippet="최근 조사",
             collected_at="2026-02-19T00:00:00+00:00",
             raw_hash="h7",
-            raw_text="지난주 서울시장 여론조사에서 정원오 44% vs 오세훈 31%",
+            raw_text="최근 서울시장 여론조사에서 정원오 44% vs 오세훈 31%",
         )
         observations, _, errors = collector.extract(article)
         self.assertEqual(len(observations), 1)
-        self.assertEqual(observations[0].survey_end_date, "2026-02-10")
+        self.assertEqual(observations[0].survey_end_date, "2026-02-18")
         self.assertEqual(observations[0].date_inference_mode, "relative_published_at")
         self.assertLess(float(observations[0].date_inference_confidence or 0), 0.8)
         self.assertTrue(any(err.error_code == "RELATIVE_DATE_UNCERTAIN" for err in errors))
+
+    def test_relative_date_uses_kst_anchor_on_midnight_boundary(self) -> None:
+        collector = PollCollector(relative_date_policy="strict_fail")
+        article = Article(
+            id=stable_id("art", "https://example.com/relative-kst-boundary"),
+            url="https://example.com/relative-kst-boundary",
+            title="서울시장 조사",
+            publisher="테스트",
+            published_at="2026-02-17T16:30:00+00:00",
+            snippet="어제 조사",
+            collected_at="2026-02-19T00:00:00+00:00",
+            raw_hash="h10",
+            raw_text="어제 발표된 서울시장 여론조사에서 정원오 44% vs 오세훈 31%",
+        )
+        observations, _, _ = collector.extract(article)
+        self.assertEqual(len(observations), 1)
+        self.assertEqual(observations[0].survey_end_date, "2026-02-17")
+        self.assertEqual(observations[0].date_inference_mode, "relative_published_at")
+
+    def test_relative_date_last_month_clamps_day(self) -> None:
+        collector = PollCollector(relative_date_policy="strict_fail")
+        article = Article(
+            id=stable_id("art", "https://example.com/relative-last-month"),
+            url="https://example.com/relative-last-month",
+            title="서울시장 조사",
+            publisher="테스트",
+            published_at="2026-03-31T10:00:00+09:00",
+            snippet="지난달 조사",
+            collected_at="2026-04-01T00:00:00+00:00",
+            raw_hash="h11",
+            raw_text="지난달 실시된 서울시장 여론조사에서 정원오 44% vs 오세훈 31%",
+        )
+        observations, _, errors = collector.extract(article)
+        self.assertEqual(len(observations), 1)
+        self.assertEqual(observations[0].survey_end_date, "2026-02-28")
+        self.assertEqual(observations[0].date_resolution, "relative_month")
+        self.assertEqual(observations[0].date_inference_mode, "relative_published_at")
+        self.assertFalse(any(err.error_code == "RELATIVE_DATE_UNCERTAIN" for err in errors))
+
+    def test_relative_date_n_days_ago_resolves_with_signal_payload(self) -> None:
+        collector = PollCollector(relative_date_policy="strict_fail")
+        article = Article(
+            id=stable_id("art", "https://example.com/relative-days-ago"),
+            url="https://example.com/relative-days-ago",
+            title="서울시장 조사",
+            publisher="테스트",
+            published_at="2026-02-20T08:00:00+09:00",
+            snippet="3일 전 조사",
+            collected_at="2026-02-20T00:00:00+00:00",
+            raw_hash="h12",
+            raw_text="3일 전 발표된 서울시장 여론조사에서 정원오 44% vs 오세훈 31%",
+        )
+        observations, _, errors = collector.extract(article)
+        self.assertEqual(len(observations), 1)
+        self.assertEqual(observations[0].survey_end_date, "2026-02-17")
+        self.assertEqual(observations[0].date_resolution, "relative_day")
+        self.assertEqual(observations[0].date_inference_mode, "relative_published_at")
+        self.assertFalse(any(err.error_code == "RELATIVE_DATE_UNCERTAIN" for err in errors))
 
 
 if __name__ == "__main__":
