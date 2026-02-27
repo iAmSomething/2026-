@@ -294,3 +294,28 @@ def test_safe_collect_missing_adapter_routes_pdf_pending_reason(tmp_path: Path) 
     assert record["pending_reason_code"] == "pdf_pending"
     assert record["retry_schedule_hours"] == [2, 6, 24]
     assert out["review_queue_candidates"][0]["error_code"] == "pdf_pending"
+
+
+def test_safe_collect_rule_fallback_parser_extracts_options(tmp_path: Path) -> None:
+    row = _registry_row(ntt_id="1", pollster="A", eligible=True)
+    row["result_text"] = "후보A 51.2% 후보B 38.7%"
+    registry = {"records": [row]}
+    adapter = {"records": []}
+
+    reg_path = tmp_path / "registry.json"
+    adp_path = tmp_path / "adapter.json"
+    reg_path.write_text(json.dumps(registry, ensure_ascii=False), encoding="utf-8")
+    adp_path.write_text(json.dumps(adapter, ensure_ascii=False), encoding="utf-8")
+
+    out = generate_nesdc_safe_collect_v1(
+        registry_path=str(reg_path),
+        adapter_path=str(adp_path),
+        as_of_kst=datetime(2026, 2, 23, 12, 0, tzinfo=KST),
+    )
+
+    record = out["data"]["records"][0]
+    assert record["collect_status"] == "collected_fallback_parser"
+    assert record["adapter_mode"] == "adapter_rule_fallback"
+    assert record["adapter_parser"] == "rule_regex_v1"
+    assert len(record["result_options"]) == 2
+    assert out["report"]["counts"]["adapter_fallback_parser_success_count"] == 1

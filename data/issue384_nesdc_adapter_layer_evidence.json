@@ -1,0 +1,165 @@
+{
+  "counts": {
+    "registry_total": 110,
+    "eligible_48h_total": 92,
+    "release_gate_eligible_total": 92,
+    "pending_official_release_count": 0,
+    "collected_success_count": 34,
+    "adapter_exact_success_count": 3,
+    "adapter_template_success_count": 31,
+    "adapter_fallback_parser_success_count": 0,
+    "fallback_count": 89,
+    "template_fallback_count": 31,
+    "hard_fallback_count": 58,
+    "manual_opt_out_count": 18,
+    "eligibility_parse_error_count": 0,
+    "safe_window_guard_block_count": 0,
+    "review_queue_candidate_count": 89,
+    "unique_pollster_count": 5,
+    "total_option_count": 544,
+    "recent20_pending_official_release_count": 0,
+    "recent20_release_policy_violation_count": 0,
+    "release_not_open_count": 0,
+    "pdf_pending_count": 58,
+    "release_plus2h_window_total": 0,
+    "release_plus2h_window_success": 0
+  },
+  "adapter_mode_counts": {
+    "adapter_exact": 3,
+    "adapter_pollster_template_fallback": 31,
+    "fallback": 58
+  },
+  "failure_comparison": {
+    "fallback_total": 89,
+    "template_fallback_count": 31,
+    "fallback_parser_success_count": 0,
+    "hard_fallback_count": 58,
+    "hard_fallback_rate_within_fallback": 0.6517
+  },
+  "top10_profile": {
+    "top_n": 10,
+    "top_pollsters": [
+      {
+        "pollster": "(주)엠브레인퍼블릭",
+        "registry_count": 20,
+        "adapter_record_count": 1,
+        "adapter_result_item_ready_count": 1,
+        "template_ntt_ids": [
+          "17469"
+        ],
+        "adapter_strategy": "pollster_template"
+      },
+      {
+        "pollster": "(주)리얼미터",
+        "registry_count": 14,
+        "adapter_record_count": 1,
+        "adapter_result_item_ready_count": 1,
+        "template_ntt_ids": [
+          "17470"
+        ],
+        "adapter_strategy": "pollster_template"
+      },
+      {
+        "pollster": "(주)코리아정보리서치",
+        "registry_count": 8,
+        "adapter_record_count": 0,
+        "adapter_result_item_ready_count": 0,
+        "template_ntt_ids": [],
+        "adapter_strategy": "fallback_ocr_rule"
+      },
+      {
+        "pollster": "케이스탯리서치",
+        "registry_count": 8,
+        "adapter_record_count": 1,
+        "adapter_result_item_ready_count": 1,
+        "template_ntt_ids": [
+          "17435"
+        ],
+        "adapter_strategy": "pollster_template"
+      },
+      {
+        "pollster": "한국갤럽조사연구소",
+        "registry_count": 6,
+        "adapter_record_count": 0,
+        "adapter_result_item_ready_count": 0,
+        "template_ntt_ids": [],
+        "adapter_strategy": "fallback_ocr_rule"
+      },
+      {
+        "pollster": "입소스 주식회사",
+        "registry_count": 4,
+        "adapter_record_count": 0,
+        "adapter_result_item_ready_count": 0,
+        "template_ntt_ids": [],
+        "adapter_strategy": "fallback_ocr_rule"
+      },
+      {
+        "pollster": "(주)비전코리아",
+        "registry_count": 4,
+        "adapter_record_count": 0,
+        "adapter_result_item_ready_count": 0,
+        "template_ntt_ids": [],
+        "adapter_strategy": "fallback_ocr_rule"
+      },
+      {
+        "pollster": "(주)한국리서치",
+        "registry_count": 4,
+        "adapter_record_count": 0,
+        "adapter_result_item_ready_count": 0,
+        "template_ntt_ids": [],
+        "adapter_strategy": "fallback_ocr_rule"
+      },
+      {
+        "pollster": "케이에스오아이 주식회사(한국사회여론연구소)",
+        "registry_count": 4,
+        "adapter_record_count": 0,
+        "adapter_result_item_ready_count": 0,
+        "template_ntt_ids": [],
+        "adapter_strategy": "fallback_ocr_rule"
+      },
+      {
+        "pollster": "한길리서치",
+        "registry_count": 3,
+        "adapter_record_count": 0,
+        "adapter_result_item_ready_count": 0,
+        "template_ntt_ids": [],
+        "adapter_strategy": "fallback_ocr_rule"
+      }
+    ],
+    "covered_pollster_count": 3,
+    "coverage_ratio": 0.3,
+    "recommended_seed_pollsters": [
+      "(주)코리아정보리서치",
+      "한국갤럽조사연구소",
+      "입소스 주식회사",
+      "(주)비전코리아",
+      "(주)한국리서치",
+      "케이에스오아이 주식회사(한국사회여론연구소)",
+      "한길리서치"
+    ],
+    "target_reference": [
+      "(주)엠브레인퍼블릭",
+      "(주)리얼미터",
+      "케이스탯리서치",
+      "(주)코리아정보리서치",
+      "한국갤럽조사연구소",
+      "케이에스오아이 주식회사(한국사회여론연구소)",
+      "입소스 주식회사",
+      "(주)한국리서치",
+      "(주)비전코리아",
+      "한길리서치"
+    ]
+  },
+  "acceptance_checks": {
+    "safe_window_applied_all": true,
+    "release_gate_applied_all": true,
+    "pending_nonpublic_state_preserved": true,
+    "recent20_policy_violation_zero": true,
+    "eligible_collection_success_present": true,
+    "pollster_coverage_ge_5": true,
+    "top10_template_profile_present": true,
+    "fallback_chain_defined": true,
+    "fallback_review_queue_synced": true,
+    "value_raw_and_normalized_present": true
+  }
+}

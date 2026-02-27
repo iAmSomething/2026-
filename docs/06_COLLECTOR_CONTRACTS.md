@@ -242,3 +242,36 @@ PYTHONPATH=. .venv/bin/python scripts/analyze_domain_extraction_quality.py
   1) 역의미 필드를 `risk_signals`로 이관
   2) `acceptance_checks`에는 동기화/정합성 조건만 유지
   3) 문서/테스트를 같은 PR에서 함께 갱신
+
+## 12. NESDC PDF 어댑터 계층 계약(v1)
+`#384` 기준 NESDC PDF 파싱은 공통 인터페이스 + 기관별 템플릿 + fallback 체인으로 동작한다.
+
+구현 위치:
+- `src/pipeline/nesdc_pdf_adapters.py`
+- `scripts/generate_nesdc_safe_collect_v1.py`
+
+인터페이스:
+1. `NesdcPdfAdapterEngine.resolve(registry_row) -> AdapterResolution`
+2. `AdapterResolution` 필드:
+- `result_items`
+- `adapter_mode`
+- `adapter_profile`
+- `fallback_applied`
+- `parser_name`
+- `matched_adapter_ntt_id`
+
+`adapter_mode` 계약:
+1. `adapter_exact` (ntt_id exact 매칭)
+2. `adapter_pollster_template_fallback` (기관 템플릿 fallback)
+3. `adapter_ocr_fallback` (OCR 텍스트 regex 파서)
+4. `adapter_rule_fallback` (규칙 기반 텍스트 파서)
+5. `fallback` (hard fallback, `pdf_pending`)
+
+운영 리포트 필드:
+1. `adapter_mode_counts`
+2. `pollster_template_top10_profile`
+3. `failure_comparison`
+
+top10 프로파일 집계:
+1. `build_top10_pollster_template_profile(registry_rows, adapter_rows, top_n=10)`
+2. 출력: `covered_pollster_count`, `coverage_ratio`, `recommended_seed_pollsters`
