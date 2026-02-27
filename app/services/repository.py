@@ -2,79 +2,13 @@ import json
 import re
 from datetime import date
 
+from app.services.candidate_token_policy import is_noise_candidate_token
 from app.services.errors import DuplicateConflictError
 from app.services.fingerprint import merge_observation_by_priority
 
-_CANDIDATE_NAME_RE = re.compile(r"^[가-힣]{2,8}$")
-_CANDIDATE_NOISE_EXACT_TOKENS = {
-    "오차는",
-    "응답률은",
-    "지지율은",
-    "오차범위",
-    "표본오차",
-    "응답률",
-    "조사기관",
-    "여론조사",
-    "지지율",
-    "차이",
-    "같은",
-    "외",
-    "민주",
-    "민주당",
-    "더불어민주당",
-    "국힘",
-    "국민의힘",
-    "지지",
-    "지지도",
-    "재정자립도",
-    "적합도",
-    "선호도",
-    "인지도",
-    "호감도",
-    "비호감도",
-    "국정안정론",
-    "국정견제론",
-    "정권교체",
-    "정권재창출",
-    "정권심판",
-    "정권지원",
-    "긍정평가",
-    "부정평가",
-}
-_CANDIDATE_NOISE_SUBSTRING_TOKENS = {
-    "오차범위",
-    "표본오차",
-    "응답률",
-    "여론조사",
-    "지지율",
-    "신뢰수준",
-    "표본",
-    "재정자립",
-    "안정론",
-    "견제론",
-    "정권",
-    "긍정평가",
-    "부정평가",
-}
-
-
-def _normalize_candidate_option_token(value: str | None) -> str:
-    token = re.sub(r"\s+", "", str(value or "").strip().lower())
-    token = re.sub(r"[^0-9a-z가-힣]", "", token)
-    return token
-
-
 def _is_noise_candidate_option(option_name: str | None, candidate_id: str | None) -> bool:
-    token = _normalize_candidate_option_token(option_name)
-    if not token:
-        return True
-    if token in _CANDIDATE_NOISE_EXACT_TOKENS:
-        return True
-    if any(part in token for part in _CANDIDATE_NOISE_SUBSTRING_TOKENS):
-        return True
-    if any(ch.isdigit() for ch in token):
-        return True
-    return _CANDIDATE_NAME_RE.fullmatch(token) is None
+    _ = candidate_id
+    return is_noise_candidate_token(option_name)
 
 
 class PostgresRepository:
@@ -410,8 +344,13 @@ class PostgresRepository:
         payload.setdefault("party_inference_source", None)
         payload.setdefault("party_inference_confidence", None)
         payload.setdefault("candidate_verified", True)
-        payload.setdefault("candidate_verify_source", None)
+        payload.setdefault("candidate_verify_source", "manual")
         payload.setdefault("candidate_verify_confidence", None)
+        payload.setdefault("candidate_verify_matched_key", None)
+        if payload.get("candidate_verify_confidence") is None:
+            payload["candidate_verify_confidence"] = 1.0 if payload.get("candidate_verified") else 0.0
+        if isinstance(payload.get("candidate_verify_matched_key"), str):
+            payload["candidate_verify_matched_key"] = payload["candidate_verify_matched_key"].strip() or None
         payload.setdefault("needs_manual_review", False)
 
         with self.conn.cursor() as cur:
@@ -422,7 +361,7 @@ class PostgresRepository:
                     candidate_id, party_name, scenario_key, scenario_type, scenario_title,
                     value_raw, value_min, value_max, value_mid, is_missing,
                     party_inferred, party_inference_source, party_inference_confidence,
-                    candidate_verified, candidate_verify_source, candidate_verify_confidence,
+                    candidate_verified, candidate_verify_source, candidate_verify_confidence, candidate_verify_matched_key,
                     needs_manual_review
                 )
                 VALUES (
@@ -430,7 +369,7 @@ class PostgresRepository:
                     %(candidate_id)s, %(party_name)s, %(scenario_key)s, %(scenario_type)s, %(scenario_title)s,
                     %(value_raw)s, %(value_min)s, %(value_max)s, %(value_mid)s, %(is_missing)s,
                     %(party_inferred)s, %(party_inference_source)s, %(party_inference_confidence)s,
-                    %(candidate_verified)s, %(candidate_verify_source)s, %(candidate_verify_confidence)s,
+                    %(candidate_verified)s, %(candidate_verify_source)s, %(candidate_verify_confidence)s, %(candidate_verify_matched_key)s,
                     %(needs_manual_review)s
                 )
                 ON CONFLICT (observation_id, option_type, option_name, scenario_key) DO UPDATE
@@ -447,8 +386,14 @@ class PostgresRepository:
                     party_inference_source=EXCLUDED.party_inference_source,
                     party_inference_confidence=EXCLUDED.party_inference_confidence,
                     candidate_verified=EXCLUDED.candidate_verified,
-                    candidate_verify_source=EXCLUDED.candidate_verify_source,
-                    candidate_verify_confidence=EXCLUDED.candidate_verify_confidence,
+                    candidate_verify_source=COALESCE(EXCLUDED.candidate_verify_source, poll_options.candidate_verify_source, 'manual'),
+                    candidate_verify_confidence=COALESCE(EXCLUDED.candidate_verify_confidence, poll_options.candidate_verify_confidence),
+                    candidate_verify_matched_key=COALESCE(
+                        EXCLUDED.candidate_verify_matched_key,
+                        poll_options.candidate_verify_matched_key,
+                        EXCLUDED.candidate_id,
+                        EXCLUDED.option_name
+                    ),
                     needs_manual_review=EXCLUDED.needs_manual_review,
                     updated_at=NOW()
                 """,
@@ -1600,8 +1545,14 @@ class PostgresRepository:
                                     )
                                 ),
                                 'candidate_verified', po.candidate_verified,
-                                'candidate_verify_source', po.candidate_verify_source,
-                                'candidate_verify_confidence', po.candidate_verify_confidence
+                                'candidate_verify_source', COALESCE(po.candidate_verify_source, 'manual'),
+                                'candidate_verify_confidence',
+                                    COALESCE(
+                                        po.candidate_verify_confidence,
+                                        CASE WHEN COALESCE(po.candidate_verified, TRUE) THEN 1.0 ELSE 0.0 END
+                                    ),
+                                'candidate_verify_matched_key',
+                                    COALESCE(po.candidate_verify_matched_key, po.candidate_id, po.option_name)
                             )
                             ORDER BY po.scenario_key, po.value_mid DESC NULLS LAST, po.option_name
                         ) AS options

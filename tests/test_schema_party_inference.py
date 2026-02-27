@@ -9,6 +9,7 @@ def test_schema_contains_party_inference_columns() -> None:
     assert "candidate_verified BOOLEAN NOT NULL DEFAULT TRUE" in sql
     assert "candidate_verify_source TEXT NULL" in sql
     assert "candidate_verify_confidence FLOAT NULL" in sql
+    assert "candidate_verify_matched_key TEXT NULL" in sql
     assert "needs_manual_review BOOLEAN NOT NULL DEFAULT FALSE" in sql
     assert "ALTER TABLE candidates" in sql
     assert "ADD COLUMN IF NOT EXISTS source_channel TEXT NULL" in sql

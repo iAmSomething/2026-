@@ -379,6 +379,7 @@ CREATE TABLE IF NOT EXISTS poll_options (
     candidate_verified BOOLEAN NOT NULL DEFAULT TRUE,
     candidate_verify_source TEXT NULL,
     candidate_verify_confidence FLOAT NULL,
+    candidate_verify_matched_key TEXT NULL,
     needs_manual_review BOOLEAN NOT NULL DEFAULT FALSE,
     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
@@ -398,6 +399,7 @@ ALTER TABLE poll_options
     ADD COLUMN IF NOT EXISTS candidate_verified BOOLEAN NOT NULL DEFAULT TRUE,
     ADD COLUMN IF NOT EXISTS candidate_verify_source TEXT NULL,
     ADD COLUMN IF NOT EXISTS candidate_verify_confidence FLOAT NULL,
+    ADD COLUMN IF NOT EXISTS candidate_verify_matched_key TEXT NULL,
     ADD COLUMN IF NOT EXISTS needs_manual_review BOOLEAN NOT NULL DEFAULT FALSE;
 
 DO $$
