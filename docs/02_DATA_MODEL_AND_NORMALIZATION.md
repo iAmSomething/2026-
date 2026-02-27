@@ -140,6 +140,13 @@
 4. 기존 레거시 데이터는 마이그레이션 시 `source_channels = [source_channel]`로 백필한다.
 5. API 파생 필드:
 - `source_priority`: `official|article|mixed`
+
+## 8.1 후보 상세 결측/출처 계약 (`GET /api/v1/candidates/{candidate_id}`)
+1. 문자열 결측값(`''`, 공백)은 API 응답에서 `null`로 정규화한다.
+2. `name_ko`가 결측이면 `candidate_id`를 placeholder로 사용하고 `placeholder_name_applied=true`를 노출한다.
+3. `profile_provenance`는 후보 프로필 필드별 출처(`data_go|ingest|missing`)를 노출한다.
+4. `profile_source`는 전체 출처 집계(`data_go|ingest|mixed|none`)를 노출한다.
+5. `profile_completeness`는 필수 프로필(`party_name`, `career_summary`, `election_history`) 기준으로 `complete|partial|empty`를 노출한다.
 - `is_official_confirmed`: `source_channels`에 `nesdc` 포함 시 `true`
 - `official_release_at`: 공식소스 포함 시 관측치 최신 갱신시각 기준
 - `article_published_at`: 연결 기사의 `published_at`
