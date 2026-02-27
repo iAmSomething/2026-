@@ -1,0 +1,1546 @@
+[
+  {
+    "id": "rvq_5ebc76336e5fe93c",
+    "entity_type": "poll_observation",
+    "entity_id": "17456",
+    "issue_type": "mapping_error",
+    "stage": "nesdc_safe_collect_v1",
+    "error_code": "ADAPTER_TEMPLATE_FALLBACK",
+    "error_message": "exact ntt_id adapter row missing; pollster template fallback applied",
+    "source_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17456&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=1",
+    "payload": {
+      "ntt_id": "17456",
+      "pollster": "(주)리얼미터",
+      "template_ntt_id": "17470",
+      "release_policy_hours": 24
+    },
+    "status": "pending",
+    "created_at": "2026-02-27T02:53:31.210823+00:00"
+  },
+  {
+    "id": "rvq_772e84b7f72edac0",
+    "entity_type": "poll_observation",
+    "entity_id": "17399",
+    "issue_type": "mapping_error",
+    "stage": "nesdc_safe_collect_v1",
+    "error_code": "ADAPTER_TEMPLATE_FALLBACK",
+    "error_message": "exact ntt_id adapter row missing; pollster template fallback applied",
+    "source_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17399&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=1",
+    "payload": {
+      "ntt_id": "17399",
+      "pollster": "(주)엠브레인퍼블릭",
+      "template_ntt_id": "17469",
+      "release_policy_hours": 24
+    },
+    "status": "pending",
+    "created_at": "2026-02-27T02:53:31.210949+00:00"
+  },
+  {
+    "id": "rvq_5d9319f469c5176c",
+    "entity_type": "poll_observation",
+    "entity_id": "17453",
+    "issue_type": "extract_error",
+    "stage": "nesdc_safe_collect_v1",
+    "error_code": "pdf_pending",
+    "error_message": "NESDC adapter parse failed or result items missing; pdf pending retry path scheduled",
+    "source_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17453&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=1",
+    "payload": {
+      "ntt_id": "17453",
+      "pollster": "(주)리서치뷰",
+      "release_policy_hours": 24
+    },
+    "status": "pending",
+    "created_at": "2026-02-27T02:53:31.211017+00:00"
+  },
+  {
+    "id": "rvq_368ef7cfaa0b092f",
+    "entity_type": "poll_observation",
+    "entity_id": "17451",
+    "issue_type": "extract_error",
+    "stage": "nesdc_safe_collect_v1",
+    "error_code": "pdf_pending",
+    "error_message": "NESDC adapter parse failed or result items missing; pdf pending retry path scheduled",
+    "source_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17451&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=1",
+    "payload": {
+      "ntt_id": "17451",
+      "pollster": "입소스 주식회사",
+      "release_policy_hours": 24
+    },
+    "status": "pending",
+    "created_at": "2026-02-27T02:53:31.211044+00:00"
+  },
+  {
+    "id": "rvq_689a746f28bb69de",
+    "entity_type": "poll_observation",
+    "entity_id": "17449",
+    "issue_type": "extract_error",
+    "stage": "nesdc_safe_collect_v1",
+    "error_code": "pdf_pending",
+    "error_message": "NESDC adapter parse failed or result items missing; pdf pending retry path scheduled",
+    "source_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17449&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=2",
+    "payload": {
+      "ntt_id": "17449",
+      "pollster": "입소스 주식회사",
+      "release_policy_hours": 24
+    },
+    "status": "pending",
+    "created_at": "2026-02-27T02:53:31.211068+00:00"
+  },
+  {
+    "id": "rvq_43af4c7ea80d4fe3",
+    "entity_type": "poll_observation",
+    "entity_id": "17448",
+    "issue_type": "extract_error",
+    "stage": "nesdc_safe_collect_v1",
+    "error_code": "pdf_pending",
+    "error_message": "NESDC adapter parse failed or result items missing; pdf pending retry path scheduled",
+    "source_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17448&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=2",
+    "payload": {
+      "ntt_id": "17448",
+      "pollster": "입소스 주식회사",
+      "release_policy_hours": 24
+    },
+    "status": "pending",
+    "created_at": "2026-02-27T02:53:31.211085+00:00"
+  },
+  {
+    "id": "rvq_22779ec6ae14f8e8",
+    "entity_type": "poll_observation",
+    "entity_id": "17450",
+    "issue_type": "extract_error",
+    "stage": "nesdc_safe_collect_v1",
+    "error_code": "pdf_pending",
+    "error_message": "NESDC adapter parse failed or result items missing; pdf pending retry path scheduled",
+    "source_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17450&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=2",
+    "payload": {
+      "ntt_id": "17450",
+      "pollster": "한길리서치",
+      "release_policy_hours": 24
+    },
+    "status": "pending",
+    "created_at": "2026-02-27T02:53:31.211114+00:00"
+  },
+  {
+    "id": "rvq_7fe693b520922da5",
+    "entity_type": "poll_observation",
+    "entity_id": "17445",
+    "issue_type": "extract_error",
+    "stage": "nesdc_safe_collect_v1",
+    "error_code": "pdf_pending",
+    "error_message": "NESDC adapter parse failed or result items missing; pdf pending retry path scheduled",
+    "source_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17445&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=2",
+    "payload": {
+      "ntt_id": "17445",
+      "pollster": "(주)비전코리아",
+      "release_policy_hours": 24
+    },
+    "status": "pending",
+    "created_at": "2026-02-27T02:53:31.211145+00:00"
+  },
+  {
+    "id": "rvq_7bcaa4a96ecba3db",
+    "entity_type": "poll_observation",
+    "entity_id": "17444",
+    "issue_type": "mapping_error",
+    "stage": "nesdc_safe_collect_v1",
+    "error_code": "ADAPTER_TEMPLATE_FALLBACK",
+    "error_message": "exact ntt_id adapter row missing; pollster template fallback applied",
+    "source_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17444&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=2",
+    "payload": {
+      "ntt_id": "17444",
+      "pollster": "(주)코리아리서치인터내셔널",
+      "template_ntt_id": "17446",
+      "release_policy_hours": 24
+    },
+    "status": "pending",
+    "created_at": "2026-02-27T02:53:31.211216+00:00"
+  },
+  {
+    "id": "rvq_b7031200ea7abefd",
+    "entity_type": "poll_observation",
+    "entity_id": "17443",
+    "issue_type": "mapping_error",
+    "stage": "nesdc_safe_collect_v1",
+    "error_code": "ADAPTER_TEMPLATE_FALLBACK",
+    "error_message": "exact ntt_id adapter row missing; pollster template fallback applied",
+    "source_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17443&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=2",
+    "payload": {
+      "ntt_id": "17443",
+      "pollster": "(주)코리아리서치인터내셔널",
+      "template_ntt_id": "17446",
+      "release_policy_hours": 24
+    },
+    "status": "pending",
+    "created_at": "2026-02-27T02:53:31.211269+00:00"
+  },
+  {
+    "id": "rvq_e10a421328de2285",
+    "entity_type": "poll_observation",
+    "entity_id": "17442",
+    "issue_type": "extract_error",
+    "stage": "nesdc_safe_collect_v1",
+    "error_code": "pdf_pending",
+    "error_message": "NESDC adapter parse failed or result items missing; pdf pending retry path scheduled",
+    "source_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17442&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=2",
+    "payload": {
+      "ntt_id": "17442",
+      "pollster": "조원씨앤아이",
+      "release_policy_hours": 24
+    },
+    "status": "pending",
+    "created_at": "2026-02-27T02:53:31.211285+00:00"
+  },
+  {
+    "id": "rvq_a0875327a1e6bb8b",
+    "entity_type": "poll_observation",
+    "entity_id": "17437",
+    "issue_type": "extract_error",
+    "stage": "nesdc_safe_collect_v1",
+    "error_code": "pdf_pending",
+    "error_message": "NESDC adapter parse failed or result items missing; pdf pending retry path scheduled",
+    "source_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17437&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=2",
+    "payload": {
+      "ntt_id": "17437",
+      "pollster": "모노커뮤니케이션즈(모노리서치)",
+      "release_policy_hours": 24
+    },
+    "status": "pending",
+    "created_at": "2026-02-27T02:53:31.211306+00:00"
+  },
+  {
+    "id": "rvq_b3e749ee11fee23c",
+    "entity_type": "poll_observation",
+    "entity_id": "17439",
+    "issue_type": "extract_error",
+    "stage": "nesdc_safe_collect_v1",
+    "error_code": "pdf_pending",
+    "error_message": "NESDC adapter parse failed or result items missing; pdf pending retry path scheduled",
+    "source_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17439&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=2",
+    "payload": {
+      "ntt_id": "17439",
+      "pollster": "(주)코리아정보리서치",
+      "release_policy_hours": 24
+    },
+    "status": "pending",
+    "created_at": "2026-02-27T02:53:31.211322+00:00"
+  },
+  {
+    "id": "rvq_892833ee560db911",
+    "entity_type": "poll_observation",
+    "entity_id": "17436",
+    "issue_type": "mapping_error",
+    "stage": "nesdc_safe_collect_v1",
+    "error_code": "ADAPTER_TEMPLATE_FALLBACK",
+    "error_message": "exact ntt_id adapter row missing; pollster template fallback applied",
+    "source_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17436&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=3",
+    "payload": {
+      "ntt_id": "17436",
+      "pollster": "(주)리얼미터",
+      "template_ntt_id": "17470",
+      "release_policy_hours": 24
+    },
+    "status": "pending",
+    "created_at": "2026-02-27T02:53:31.211367+00:00"
+  },
+  {
+    "id": "rvq_f6a2387a358f3bc2",
+    "entity_type": "poll_observation",
+    "entity_id": "17375",
+    "issue_type": "mapping_error",
+    "stage": "nesdc_safe_collect_v1",
+    "error_code": "ADAPTER_TEMPLATE_FALLBACK",
+    "error_message": "exact ntt_id adapter row missing; pollster template fallback applied",
+    "source_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17375&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=3",
+    "payload": {
+      "ntt_id": "17375",
+      "pollster": "케이스탯리서치",
+      "template_ntt_id": "17435",
+      "release_policy_hours": 24
+    },
+    "status": "pending",
+    "created_at": "2026-02-27T02:53:31.211437+00:00"
+  },
+  {
+    "id": "rvq_d133528260cf9689",
+    "entity_type": "poll_observation",
+    "entity_id": "17374",
+    "issue_type": "mapping_error",
+    "stage": "nesdc_safe_collect_v1",
+    "error_code": "ADAPTER_TEMPLATE_FALLBACK",
+    "error_message": "exact ntt_id adapter row missing; pollster template fallback applied",
+    "source_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17374&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=3",
+    "payload": {
+      "ntt_id": "17374",
+      "pollster": "케이스탯리서치",
+      "template_ntt_id": "17435",
+      "release_policy_hours": 24
+    },
+    "status": "pending",
+    "created_at": "2026-02-27T02:53:31.211474+00:00"
+  },
+  {
+    "id": "rvq_ee624282e65f8625",
+    "entity_type": "poll_observation",
+    "entity_id": "17373",
+    "issue_type": "mapping_error",
+    "stage": "nesdc_safe_collect_v1",
+    "error_code": "ADAPTER_TEMPLATE_FALLBACK",
+    "error_message": "exact ntt_id adapter row missing; pollster template fallback applied",
+    "source_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17373&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=3",
+    "payload": {
+      "ntt_id": "17373",
+      "pollster": "케이스탯리서치",
+      "template_ntt_id": "17435",
+      "release_policy_hours": 24
+    },
+    "status": "pending",
+    "created_at": "2026-02-27T02:53:31.211564+00:00"
+  },
+  {
+    "id": "rvq_994b64a6d04340fe",
+    "entity_type": "poll_observation",
+    "entity_id": "17371",
+    "issue_type": "mapping_error",
+    "stage": "nesdc_safe_collect_v1",
+    "error_code": "ADAPTER_TEMPLATE_FALLBACK",
+    "error_message": "exact ntt_id adapter row missing; pollster template fallback applied",
+    "source_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17371&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=3",
+    "payload": {
+      "ntt_id": "17371",
+      "pollster": "케이스탯리서치",
+      "template_ntt_id": "17435",
+      "release_policy_hours": 24
+    },
+    "status": "pending",
+    "created_at": "2026-02-27T02:53:31.211688+00:00"
+  },
+  {
+    "id": "rvq_ce5c290495b7a563",
+    "entity_type": "poll_observation",
+    "entity_id": "17370",
+    "issue_type": "mapping_error",
+    "stage": "nesdc_safe_collect_v1",
+    "error_code": "ADAPTER_TEMPLATE_FALLBACK",
+    "error_message": "exact ntt_id adapter row missing; pollster template fallback applied",
+    "source_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17370&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=3",
+    "payload": {
+      "ntt_id": "17370",
+      "pollster": "케이스탯리서치",
+      "template_ntt_id": "17435",
+      "release_policy_hours": 24
+    },
+    "status": "pending",
+    "created_at": "2026-02-27T02:53:31.211726+00:00"
+  },
+  {
+    "id": "rvq_ae89b77105e1216b",
+    "entity_type": "poll_observation",
+    "entity_id": "17369",
+    "issue_type": "mapping_error",
+    "stage": "nesdc_safe_collect_v1",
+    "error_code": "ADAPTER_TEMPLATE_FALLBACK",
+    "error_message": "exact ntt_id adapter row missing; pollster template fallback applied",
+    "source_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17369&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=3",
+    "payload": {
+      "ntt_id": "17369",
+      "pollster": "케이스탯리서치",
+      "template_ntt_id": "17435",
+      "release_policy_hours": 24
+    },
+    "status": "pending",
+    "created_at": "2026-02-27T02:53:31.211779+00:00"
+  },
+  {
+    "id": "rvq_e92c7711c3377e0f",
+    "entity_type": "poll_observation",
+    "entity_id": "17368",
+    "issue_type": "mapping_error",
+    "stage": "nesdc_safe_collect_v1",
+    "error_code": "ADAPTER_TEMPLATE_FALLBACK",
+    "error_message": "exact ntt_id adapter row missing; pollster template fallback applied",
+    "source_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17368&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=3",
+    "payload": {
+      "ntt_id": "17368",
+      "pollster": "케이스탯리서치",
+      "template_ntt_id": "17435",
+      "release_policy_hours": 24
+    },
+    "status": "pending",
+    "created_at": "2026-02-27T02:53:31.211882+00:00"
+  },
+  {
+    "id": "rvq_fdf11db211e48210",
+    "entity_type": "poll_observation",
+    "entity_id": "17396",
+    "issue_type": "mapping_error",
+    "stage": "nesdc_safe_collect_v1",
+    "error_code": "ADAPTER_TEMPLATE_FALLBACK",
+    "error_message": "exact ntt_id adapter row missing; pollster template fallback applied",
+    "source_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17396&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=4",
+    "payload": {
+      "ntt_id": "17396",
+      "pollster": "(주)엠브레인퍼블릭",
+      "template_ntt_id": "17469",
+      "release_policy_hours": 24
+    },
+    "status": "pending",
+    "created_at": "2026-02-27T02:53:31.211943+00:00"
+  },
+  {
+    "id": "rvq_bb75a9671969d57d",
+    "entity_type": "poll_observation",
+    "entity_id": "17391",
+    "issue_type": "mapping_error",
+    "stage": "nesdc_safe_collect_v1",
+    "error_code": "ADAPTER_TEMPLATE_FALLBACK",
+    "error_message": "exact ntt_id adapter row missing; pollster template fallback applied",
+    "source_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17391&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=4",
+    "payload": {
+      "ntt_id": "17391",
+      "pollster": "(주)엠브레인퍼블릭",
+      "template_ntt_id": "17469",
+      "release_policy_hours": 24
+    },
+    "status": "pending",
+    "created_at": "2026-02-27T02:53:31.211980+00:00"
+  },
+  {
+    "id": "rvq_af9835675e99752a",
+    "entity_type": "poll_observation",
+    "entity_id": "17382",
+    "issue_type": "mapping_error",
+    "stage": "nesdc_safe_collect_v1",
+    "error_code": "ADAPTER_TEMPLATE_FALLBACK",
+    "error_message": "exact ntt_id adapter row missing; pollster template fallback applied",
+    "source_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17382&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=5",
+    "payload": {
+      "ntt_id": "17382",
+      "pollster": "(주)엠브레인퍼블릭",
+      "template_ntt_id": "17469",
+      "release_policy_hours": 24
+    },
+    "status": "pending",
+    "created_at": "2026-02-27T02:53:31.212055+00:00"
+  },
+  {
+    "id": "rvq_ee6cb427b58cf2eb",
+    "entity_type": "poll_observation",
+    "entity_id": "17392",
+    "issue_type": "mapping_error",
+    "stage": "nesdc_safe_collect_v1",
+    "error_code": "ADAPTER_TEMPLATE_FALLBACK",
+    "error_message": "exact ntt_id adapter row missing; pollster template fallback applied",
+    "source_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17392&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=5",
+    "payload": {
+      "ntt_id": "17392",
+      "pollster": "(주)엠브레인퍼블릭",
+      "template_ntt_id": "17469",
+      "release_policy_hours": 24
+    },
+    "status": "pending",
+    "created_at": "2026-02-27T02:53:31.212096+00:00"
+  },
+  {
+    "id": "rvq_1f7d498b3fc00379",
+    "entity_type": "poll_observation",
+    "entity_id": "17397",
+    "issue_type": "mapping_error",
+    "stage": "nesdc_safe_collect_v1",
+    "error_code": "ADAPTER_TEMPLATE_FALLBACK",
+    "error_message": "exact ntt_id adapter row missing; pollster template fallback applied",
+    "source_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17397&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=5",
+    "payload": {
+      "ntt_id": "17397",
+      "pollster": "(주)엠브레인퍼블릭",
+      "template_ntt_id": "17469",
+      "release_policy_hours": 24
+    },
+    "status": "pending",
+    "created_at": "2026-02-27T02:53:31.212132+00:00"
+  },
+  {
+    "id": "rvq_60ac01efdd8169d0",
+    "entity_type": "poll_observation",
+    "entity_id": "17395",
+    "issue_type": "mapping_error",
+    "stage": "nesdc_safe_collect_v1",
+    "error_code": "ADAPTER_TEMPLATE_FALLBACK",
+    "error_message": "exact ntt_id adapter row missing; pollster template fallback applied",
+    "source_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17395&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=5",
+    "payload": {
+      "ntt_id": "17395",
+      "pollster": "(주)엠브레인퍼블릭",
+      "template_ntt_id": "17469",
+      "release_policy_hours": 24
+    },
+    "status": "pending",
+    "created_at": "2026-02-27T02:53:31.212183+00:00"
+  },
+  {
+    "id": "rvq_e224b3670ae6c5d4",
+    "entity_type": "poll_observation",
+    "entity_id": "17393",
+    "issue_type": "mapping_error",
+    "stage": "nesdc_safe_collect_v1",
+    "error_code": "ADAPTER_TEMPLATE_FALLBACK",
+    "error_message": "exact ntt_id adapter row missing; pollster template fallback applied",
+    "source_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17393&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=5",
+    "payload": {
+      "ntt_id": "17393",
+      "pollster": "(주)엠브레인퍼블릭",
+      "template_ntt_id": "17469",
+      "release_policy_hours": 24
+    },
+    "status": "pending",
+    "created_at": "2026-02-27T02:53:31.212232+00:00"
+  },
+  {
+    "id": "rvq_fbfeee02c38fbac6",
+    "entity_type": "poll_observation",
+    "entity_id": "17394",
+    "issue_type": "mapping_error",
+    "stage": "nesdc_safe_collect_v1",
+    "error_code": "ADAPTER_TEMPLATE_FALLBACK",
+    "error_message": "exact ntt_id adapter row missing; pollster template fallback applied",
+    "source_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17394&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=5",
+    "payload": {
+      "ntt_id": "17394",
+      "pollster": "(주)엠브레인퍼블릭",
+      "template_ntt_id": "17469",
+      "release_policy_hours": 24
+    },
+    "status": "pending",
+    "created_at": "2026-02-27T02:53:31.212301+00:00"
+  },
+  {
+    "id": "rvq_0785e8f16fea4d3f",
+    "entity_type": "poll_observation",
+    "entity_id": "17398",
+    "issue_type": "mapping_error",
+    "stage": "nesdc_safe_collect_v1",
+    "error_code": "ADAPTER_TEMPLATE_FALLBACK",
+    "error_message": "exact ntt_id adapter row missing; pollster template fallback applied",
+    "source_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17398&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=5",
+    "payload": {
+      "ntt_id": "17398",
+      "pollster": "(주)엠브레인퍼블릭",
+      "template_ntt_id": "17469",
+      "release_policy_hours": 24
+    },
+    "status": "pending",
+    "created_at": "2026-02-27T02:53:31.212351+00:00"
+  },
+  {
+    "id": "rvq_223d40a021fb6c62",
+    "entity_type": "poll_observation",
+    "entity_id": "17419",
+    "issue_type": "extract_error",
+    "stage": "nesdc_safe_collect_v1",
+    "error_code": "pdf_pending",
+    "error_message": "NESDC adapter parse failed or result items missing; pdf pending retry path scheduled",
+    "source_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17419&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=5",
+    "payload": {
+      "ntt_id": "17419",
+      "pollster": "(주)피앰아이",
+      "release_policy_hours": 24
+    },
+    "status": "pending",
+    "created_at": "2026-02-27T02:53:31.212407+00:00"
+  },
+  {
+    "id": "rvq_eb19128e09f4ceb6",
+    "entity_type": "poll_observation",
+    "entity_id": "17417",
+    "issue_type": "mapping_error",
+    "stage": "nesdc_safe_collect_v1",
+    "error_code": "ADAPTER_TEMPLATE_FALLBACK",
+    "error_message": "exact ntt_id adapter row missing; pollster template fallback applied",
+    "source_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17417&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=5",
+    "payload": {
+      "ntt_id": "17417",
+      "pollster": "(주)리얼미터",
+      "template_ntt_id": "17470",
+      "release_policy_hours": 24
+    },
+    "status": "pending",
+    "created_at": "2026-02-27T02:53:31.212474+00:00"
+  },
+  {
+    "id": "rvq_2dd8a3ad1049616d",
+    "entity_type": "poll_observation",
+    "entity_id": "17416",
+    "issue_type": "extract_error",
+    "stage": "nesdc_safe_collect_v1",
+    "error_code": "pdf_pending",
+    "error_message": "NESDC adapter parse failed or result items missing; pdf pending retry path scheduled",
+    "source_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17416&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=5",
+    "payload": {
+      "ntt_id": "17416",
+      "pollster": "모노커뮤니케이션즈(모노리서치)",
+      "release_policy_hours": 24
+    },
+    "status": "pending",
+    "created_at": "2026-02-27T02:53:31.212522+00:00"
+  },
+  {
+    "id": "rvq_4ffe9dcd87dc514f",
+    "entity_type": "poll_observation",
+    "entity_id": "17407",
+    "issue_type": "extract_error",
+    "stage": "nesdc_safe_collect_v1",
+    "error_code": "pdf_pending",
+    "error_message": "NESDC adapter parse failed or result items missing; pdf pending retry path scheduled",
+    "source_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17407&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=6",
+    "payload": {
+      "ntt_id": "17407",
+      "pollster": "(주)한국리서치",
+      "release_policy_hours": 24
+    },
+    "status": "pending",
+    "created_at": "2026-02-27T02:53:31.212545+00:00"
+  },
+  {
+    "id": "rvq_866e7ffed44e27a2",
+    "entity_type": "poll_observation",
+    "entity_id": "17405",
+    "issue_type": "extract_error",
+    "stage": "nesdc_safe_collect_v1",
+    "error_code": "pdf_pending",
+    "error_message": "NESDC adapter parse failed or result items missing; pdf pending retry path scheduled",
+    "source_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17405&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=6",
+    "payload": {
+      "ntt_id": "17405",
+      "pollster": "(주)한국리서치",
+      "release_policy_hours": 24
+    },
+    "status": "pending",
+    "created_at": "2026-02-27T02:53:31.212563+00:00"
+  },
+  {
+    "id": "rvq_f1dd92d718657eb9",
+    "entity_type": "poll_observation",
+    "entity_id": "17404",
+    "issue_type": "extract_error",
+    "stage": "nesdc_safe_collect_v1",
+    "error_code": "pdf_pending",
+    "error_message": "NESDC adapter parse failed or result items missing; pdf pending retry path scheduled",
+    "source_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17404&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=6",
+    "payload": {
+      "ntt_id": "17404",
+      "pollster": "한국갤럽조사연구소",
+      "release_policy_hours": 24
+    },
+    "status": "pending",
+    "created_at": "2026-02-27T02:53:31.212580+00:00"
+  },
+  {
+    "id": "rvq_ed755e2cec958ac0",
+    "entity_type": "poll_observation",
+    "entity_id": "17403",
+    "issue_type": "extract_error",
+    "stage": "nesdc_safe_collect_v1",
+    "error_code": "pdf_pending",
+    "error_message": "NESDC adapter parse failed or result items missing; pdf pending retry path scheduled",
+    "source_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17403&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=6",
+    "payload": {
+      "ntt_id": "17403",
+      "pollster": "(주)에브리리서치",
+      "release_policy_hours": 24
+    },
+    "status": "pending",
+    "created_at": "2026-02-27T02:53:31.212598+00:00"
+  },
+  {
+    "id": "rvq_a973b0e19a76d17d",
+    "entity_type": "poll_observation",
+    "entity_id": "17402",
+    "issue_type": "mapping_error",
+    "stage": "nesdc_safe_collect_v1",
+    "error_code": "ADAPTER_TEMPLATE_FALLBACK",
+    "error_message": "exact ntt_id adapter row missing; pollster template fallback applied",
+    "source_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17402&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=6",
+    "payload": {
+      "ntt_id": "17402",
+      "pollster": "(주)리얼미터",
+      "template_ntt_id": "17470",
+      "release_policy_hours": 24
+    },
+    "status": "pending",
+    "created_at": "2026-02-27T02:53:31.212639+00:00"
+  },
+  {
+    "id": "rvq_350b92563a82d885",
+    "entity_type": "poll_observation",
+    "entity_id": "17401",
+    "issue_type": "extract_error",
+    "stage": "nesdc_safe_collect_v1",
+    "error_code": "pdf_pending",
+    "error_message": "NESDC adapter parse failed or result items missing; pdf pending retry path scheduled",
+    "source_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17401&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=6",
+    "payload": {
+      "ntt_id": "17401",
+      "pollster": "한국정책연구원",
+      "release_policy_hours": 24
+    },
+    "status": "pending",
+    "created_at": "2026-02-27T02:53:31.212655+00:00"
+  },
+  {
+    "id": "rvq_f9268262e953bb6d",
+    "entity_type": "poll_observation",
+    "entity_id": "17400",
+    "issue_type": "extract_error",
+    "stage": "nesdc_safe_collect_v1",
+    "error_code": "pdf_pending",
+    "error_message": "NESDC adapter parse failed or result items missing; pdf pending retry path scheduled",
+    "source_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17400&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=6",
+    "payload": {
+      "ntt_id": "17400",
+      "pollster": "(주)리서치앤리서치",
+      "release_policy_hours": 24
+    },
+    "status": "pending",
+    "created_at": "2026-02-27T02:53:31.212681+00:00"
+  },
+  {
+    "id": "rvq_185116946f66c85b",
+    "entity_type": "poll_observation",
+    "entity_id": "17390",
+    "issue_type": "extract_error",
+    "stage": "nesdc_safe_collect_v1",
+    "error_code": "pdf_pending",
+    "error_message": "NESDC adapter parse failed or result items missing; pdf pending retry path scheduled",
+    "source_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17390&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=6",
+    "payload": {
+      "ntt_id": "17390",
+      "pollster": "(주)코리아정보리서치",
+      "release_policy_hours": 24
+    },
+    "status": "pending",
+    "created_at": "2026-02-27T02:53:31.212733+00:00"
+  },
+  {
+    "id": "rvq_8c4af569b523090f",
+    "entity_type": "poll_observation",
+    "entity_id": "17388",
+    "issue_type": "extract_error",
+    "stage": "nesdc_safe_collect_v1",
+    "error_code": "pdf_pending",
+    "error_message": "NESDC adapter parse failed or result items missing; pdf pending retry path scheduled",
+    "source_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17388&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=7",
+    "payload": {
+      "ntt_id": "17388",
+      "pollster": "(주)코리아정보리서치",
+      "release_policy_hours": 24
+    },
+    "status": "pending",
+    "created_at": "2026-02-27T02:53:31.212749+00:00"
+  },
+  {
+    "id": "rvq_fd1756814b399a26",
+    "entity_type": "poll_observation",
+    "entity_id": "17381",
+    "issue_type": "extract_error",
+    "stage": "nesdc_safe_collect_v1",
+    "error_code": "pdf_pending",
+    "error_message": "NESDC adapter parse failed or result items missing; pdf pending retry path scheduled",
+    "source_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17381&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=7",
+    "payload": {
+      "ntt_id": "17381",
+      "pollster": "리서치웰",
+      "release_policy_hours": 24
+    },
+    "status": "pending",
+    "created_at": "2026-02-27T02:53:31.212764+00:00"
+  },
+  {
+    "id": "rvq_1e8cbbb8bd0ba291",
+    "entity_type": "poll_observation",
+    "entity_id": "17379",
+    "issue_type": "extract_error",
+    "stage": "nesdc_safe_collect_v1",
+    "error_code": "pdf_pending",
+    "error_message": "NESDC adapter parse failed or result items missing; pdf pending retry path scheduled",
+    "source_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17379&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=7",
+    "payload": {
+      "ntt_id": "17379",
+      "pollster": "(주)시그널앤펄스",
+      "release_policy_hours": 24
+    },
+    "status": "pending",
+    "created_at": "2026-02-27T02:53:31.212779+00:00"
+  },
+  {
+    "id": "rvq_a5da0aa514662713",
+    "entity_type": "poll_observation",
+    "entity_id": "17378",
+    "issue_type": "mapping_error",
+    "stage": "nesdc_safe_collect_v1",
+    "error_code": "ADAPTER_TEMPLATE_FALLBACK",
+    "error_message": "exact ntt_id adapter row missing; pollster template fallback applied",
+    "source_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17378&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=7",
+    "payload": {
+      "ntt_id": "17378",
+      "pollster": "(주)리얼미터",
+      "template_ntt_id": "17470",
+      "release_policy_hours": 24
+    },
+    "status": "pending",
+    "created_at": "2026-02-27T02:53:31.212833+00:00"
+  },
+  {
+    "id": "rvq_e1841dab7df61f87",
+    "entity_type": "poll_observation",
+    "entity_id": "17376",
+    "issue_type": "mapping_error",
+    "stage": "nesdc_safe_collect_v1",
+    "error_code": "ADAPTER_TEMPLATE_FALLBACK",
+    "error_message": "exact ntt_id adapter row missing; pollster template fallback applied",
+    "source_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17376&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=7",
+    "payload": {
+      "ntt_id": "17376",
+      "pollster": "(주)리얼미터",
+      "template_ntt_id": "17470",
+      "release_policy_hours": 24
+    },
+    "status": "pending",
+    "created_at": "2026-02-27T02:53:31.212870+00:00"
+  },
+  {
+    "id": "rvq_ae8f29ce8c790eb3",
+    "entity_type": "poll_observation",
+    "entity_id": "17372",
+    "issue_type": "extract_error",
+    "stage": "nesdc_safe_collect_v1",
+    "error_code": "pdf_pending",
+    "error_message": "NESDC adapter parse failed or result items missing; pdf pending retry path scheduled",
+    "source_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17372&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=7",
+    "payload": {
+      "ntt_id": "17372",
+      "pollster": "한길리서치",
+      "release_policy_hours": 24
+    },
+    "status": "pending",
+    "created_at": "2026-02-27T02:53:31.212886+00:00"
+  },
+  {
+    "id": "rvq_5966cdccc3ead345",
+    "entity_type": "poll_observation",
+    "entity_id": "17367",
+    "issue_type": "extract_error",
+    "stage": "nesdc_safe_collect_v1",
+    "error_code": "pdf_pending",
+    "error_message": "NESDC adapter parse failed or result items missing; pdf pending retry path scheduled",
+    "source_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17367&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=7",
+    "payload": {
+      "ntt_id": "17367",
+      "pollster": "(주)비전코리아",
+      "release_policy_hours": 24
+    },
+    "status": "pending",
+    "created_at": "2026-02-27T02:53:31.212901+00:00"
+  },
+  {
+    "id": "rvq_8f31318355fd7943",
+    "entity_type": "poll_observation",
+    "entity_id": "17366",
+    "issue_type": "extract_error",
+    "stage": "nesdc_safe_collect_v1",
+    "error_code": "pdf_pending",
+    "error_message": "NESDC adapter parse failed or result items missing; pdf pending retry path scheduled",
+    "source_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17366&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=7",
+    "payload": {
+      "ntt_id": "17366",
+      "pollster": "(주)비전코리아",
+      "release_policy_hours": 24
+    },
+    "status": "pending",
+    "created_at": "2026-02-27T02:53:31.212916+00:00"
+  },
+  {
+    "id": "rvq_9820f8fcc02a977e",
+    "entity_type": "poll_observation",
+    "entity_id": "17365",
+    "issue_type": "extract_error",
+    "stage": "nesdc_safe_collect_v1",
+    "error_code": "pdf_pending",
+    "error_message": "NESDC adapter parse failed or result items missing; pdf pending retry path scheduled",
+    "source_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17365&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=7",
+    "payload": {
+      "ntt_id": "17365",
+      "pollster": "(주)여론조사꽃",
+      "release_policy_hours": 24
+    },
+    "status": "pending",
+    "created_at": "2026-02-27T02:53:31.212932+00:00"
+  },
+  {
+    "id": "rvq_f1306499a8947280",
+    "entity_type": "poll_observation",
+    "entity_id": "17364",
+    "issue_type": "extract_error",
+    "stage": "nesdc_safe_collect_v1",
+    "error_code": "pdf_pending",
+    "error_message": "NESDC adapter parse failed or result items missing; pdf pending retry path scheduled",
+    "source_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17364&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=7",
+    "payload": {
+      "ntt_id": "17364",
+      "pollster": "(주)이너텍시스템즈",
+      "release_policy_hours": 24
+    },
+    "status": "pending",
+    "created_at": "2026-02-27T02:53:31.212948+00:00"
+  },
+  {
+    "id": "rvq_f1044e231836135f",
+    "entity_type": "poll_observation",
+    "entity_id": "17362",
+    "issue_type": "extract_error",
+    "stage": "nesdc_safe_collect_v1",
+    "error_code": "pdf_pending",
+    "error_message": "NESDC adapter parse failed or result items missing; pdf pending retry path scheduled",
+    "source_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17362&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=8",
+    "payload": {
+      "ntt_id": "17362",
+      "pollster": "(주)코리아정보리서치",
+      "release_policy_hours": 24
+    },
+    "status": "pending",
+    "created_at": "2026-02-27T02:53:31.212965+00:00"
+  },
+  {
+    "id": "rvq_56df578d8a487807",
+    "entity_type": "poll_observation",
+    "entity_id": "17354",
+    "issue_type": "extract_error",
+    "stage": "nesdc_safe_collect_v1",
+    "error_code": "pdf_pending",
+    "error_message": "NESDC adapter parse failed or result items missing; pdf pending retry path scheduled",
+    "source_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17354&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=8",
+    "payload": {
+      "ntt_id": "17354",
+      "pollster": "메타보이스(주)",
+      "release_policy_hours": 48
+    },
+    "status": "pending",
+    "created_at": "2026-02-27T02:53:31.212982+00:00"
+  },
+  {
+    "id": "rvq_f2e10a380202d4b9",
+    "entity_type": "poll_observation",
+    "entity_id": "17361",
+    "issue_type": "extract_error",
+    "stage": "nesdc_safe_collect_v1",
+    "error_code": "pdf_pending",
+    "error_message": "NESDC adapter parse failed or result items missing; pdf pending retry path scheduled",
+    "source_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17361&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=8",
+    "payload": {
+      "ntt_id": "17361",
+      "pollster": "미디어토마토",
+      "release_policy_hours": 24
+    },
+    "status": "pending",
+    "created_at": "2026-02-27T02:53:31.212998+00:00"
+  },
+  {
+    "id": "rvq_c9aa350c4a668af7",
+    "entity_type": "poll_observation",
+    "entity_id": "17360",
+    "issue_type": "extract_error",
+    "stage": "nesdc_safe_collect_v1",
+    "error_code": "pdf_pending",
+    "error_message": "NESDC adapter parse failed or result items missing; pdf pending retry path scheduled",
+    "source_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17360&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=8",
+    "payload": {
+      "ntt_id": "17360",
+      "pollster": "(주)코리아정보리서치",
+      "release_policy_hours": 24
+    },
+    "status": "pending",
+    "created_at": "2026-02-27T02:53:31.213030+00:00"
+  },
+  {
+    "id": "rvq_b4f71170e4927cc6",
+    "entity_type": "poll_observation",
+    "entity_id": "17358",
+    "issue_type": "extract_error",
+    "stage": "nesdc_safe_collect_v1",
+    "error_code": "pdf_pending",
+    "error_message": "NESDC adapter parse failed or result items missing; pdf pending retry path scheduled",
+    "source_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17358&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=8",
+    "payload": {
+      "ntt_id": "17358",
+      "pollster": "(주)비전코리아",
+      "release_policy_hours": 24
+    },
+    "status": "pending",
+    "created_at": "2026-02-27T02:53:31.213048+00:00"
+  },
+  {
+    "id": "rvq_537905a094864f2e",
+    "entity_type": "poll_observation",
+    "entity_id": "17355",
+    "issue_type": "extract_error",
+    "stage": "nesdc_safe_collect_v1",
+    "error_code": "pdf_pending",
+    "error_message": "NESDC adapter parse failed or result items missing; pdf pending retry path scheduled",
+    "source_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17355&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=8",
+    "payload": {
+      "ntt_id": "17355",
+      "pollster": "케이에스오아이 주식회사(한국사회여론연구소)",
+      "release_policy_hours": 24
+    },
+    "status": "pending",
+    "created_at": "2026-02-27T02:53:31.213063+00:00"
+  },
+  {
+    "id": "rvq_6eb030b2e96c2200",
+    "entity_type": "poll_observation",
+    "entity_id": "17347",
+    "issue_type": "extract_error",
+    "stage": "nesdc_safe_collect_v1",
+    "error_code": "pdf_pending",
+    "error_message": "NESDC adapter parse failed or result items missing; pdf pending retry path scheduled",
+    "source_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17347&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=8",
+    "payload": {
+      "ntt_id": "17347",
+      "pollster": "케이에스오아이 주식회사(한국사회여론연구소)",
+      "release_policy_hours": 24
+    },
+    "status": "pending",
+    "created_at": "2026-02-27T02:53:31.213078+00:00"
+  },
+  {
+    "id": "rvq_6c76ad4a1c9d2ce1",
+    "entity_type": "poll_observation",
+    "entity_id": "17349",
+    "issue_type": "extract_error",
+    "stage": "nesdc_safe_collect_v1",
+    "error_code": "pdf_pending",
+    "error_message": "NESDC adapter parse failed or result items missing; pdf pending retry path scheduled",
+    "source_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17349&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=8",
+    "payload": {
+      "ntt_id": "17349",
+      "pollster": "케이에스오아이 주식회사(한국사회여론연구소)",
+      "release_policy_hours": 24
+    },
+    "status": "pending",
+    "created_at": "2026-02-27T02:53:31.213135+00:00"
+  },
+  {
+    "id": "rvq_fa6a99c42a17cc9f",
+    "entity_type": "poll_observation",
+    "entity_id": "17348",
+    "issue_type": "extract_error",
+    "stage": "nesdc_safe_collect_v1",
+    "error_code": "pdf_pending",
+    "error_message": "NESDC adapter parse failed or result items missing; pdf pending retry path scheduled",
+    "source_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17348&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=8",
+    "payload": {
+      "ntt_id": "17348",
+      "pollster": "케이에스오아이 주식회사(한국사회여론연구소)",
+      "release_policy_hours": 24
+    },
+    "status": "pending",
+    "created_at": "2026-02-27T02:53:31.213191+00:00"
+  },
+  {
+    "id": "rvq_a48eb3fd183273bf",
+    "entity_type": "poll_observation",
+    "entity_id": "17352",
+    "issue_type": "mapping_error",
+    "stage": "nesdc_safe_collect_v1",
+    "error_code": "ADAPTER_TEMPLATE_FALLBACK",
+    "error_message": "exact ntt_id adapter row missing; pollster template fallback applied",
+    "source_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17352&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=9",
+    "payload": {
+      "ntt_id": "17352",
+      "pollster": "(주)리얼미터",
+      "template_ntt_id": "17470",
+      "release_policy_hours": 24
+    },
+    "status": "pending",
+    "created_at": "2026-02-27T02:53:31.213229+00:00"
+  },
+  {
+    "id": "rvq_24342c3ed944c21f",
+    "entity_type": "poll_observation",
+    "entity_id": "17351",
+    "issue_type": "mapping_error",
+    "stage": "nesdc_safe_collect_v1",
+    "error_code": "ADAPTER_TEMPLATE_FALLBACK",
+    "error_message": "exact ntt_id adapter row missing; pollster template fallback applied",
+    "source_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17351&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=9",
+    "payload": {
+      "ntt_id": "17351",
+      "pollster": "(주)리얼미터",
+      "template_ntt_id": "17470",
+      "release_policy_hours": 24
+    },
+    "status": "pending",
+    "created_at": "2026-02-27T02:53:31.213266+00:00"
+  },
+  {
+    "id": "rvq_f94baaaed7897a8b",
+    "entity_type": "poll_observation",
+    "entity_id": "17350",
+    "issue_type": "extract_error",
+    "stage": "nesdc_safe_collect_v1",
+    "error_code": "pdf_pending",
+    "error_message": "NESDC adapter parse failed or result items missing; pdf pending retry path scheduled",
+    "source_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17350&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=9",
+    "payload": {
+      "ntt_id": "17350",
+      "pollster": "(주)이너텍시스템즈",
+      "release_policy_hours": 24
+    },
+    "status": "pending",
+    "created_at": "2026-02-27T02:53:31.213283+00:00"
+  },
+  {
+    "id": "rvq_16a47b3bc5c80b30",
+    "entity_type": "poll_observation",
+    "entity_id": "17346",
+    "issue_type": "extract_error",
+    "stage": "nesdc_safe_collect_v1",
+    "error_code": "pdf_pending",
+    "error_message": "NESDC adapter parse failed or result items missing; pdf pending retry path scheduled",
+    "source_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17346&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=9",
+    "payload": {
+      "ntt_id": "17346",
+      "pollster": "(주)코리아정보리서치",
+      "release_policy_hours": 24
+    },
+    "status": "pending",
+    "created_at": "2026-02-27T02:53:31.213306+00:00"
+  },
+  {
+    "id": "rvq_73c0105853381148",
+    "entity_type": "poll_observation",
+    "entity_id": "17345",
+    "issue_type": "extract_error",
+    "stage": "nesdc_safe_collect_v1",
+    "error_code": "pdf_pending",
+    "error_message": "NESDC adapter parse failed or result items missing; pdf pending retry path scheduled",
+    "source_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17345&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=9",
+    "payload": {
+      "ntt_id": "17345",
+      "pollster": "(주)에브리리서치",
+      "release_policy_hours": 24
+    },
+    "status": "pending",
+    "created_at": "2026-02-27T02:53:31.213337+00:00"
+  },
+  {
+    "id": "rvq_b6b008e84a15ee92",
+    "entity_type": "poll_observation",
+    "entity_id": "17344",
+    "issue_type": "extract_error",
+    "stage": "nesdc_safe_collect_v1",
+    "error_code": "pdf_pending",
+    "error_message": "NESDC adapter parse failed or result items missing; pdf pending retry path scheduled",
+    "source_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17344&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=9",
+    "payload": {
+      "ntt_id": "17344",
+      "pollster": "(주)에브리리서치",
+      "release_policy_hours": 24
+    },
+    "status": "pending",
+    "created_at": "2026-02-27T02:53:31.213353+00:00"
+  },
+  {
+    "id": "rvq_5d3aced3bc4269bd",
+    "entity_type": "poll_observation",
+    "entity_id": "17342",
+    "issue_type": "extract_error",
+    "stage": "nesdc_safe_collect_v1",
+    "error_code": "pdf_pending",
+    "error_message": "NESDC adapter parse failed or result items missing; pdf pending retry path scheduled",
+    "source_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17342&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=9",
+    "payload": {
+      "ntt_id": "17342",
+      "pollster": "한길리서치",
+      "release_policy_hours": 24
+    },
+    "status": "pending",
+    "created_at": "2026-02-27T02:53:31.213368+00:00"
+  },
+  {
+    "id": "rvq_03ab2dbebb9a63aa",
+    "entity_type": "poll_observation",
+    "entity_id": "17298",
+    "issue_type": "extract_error",
+    "stage": "nesdc_safe_collect_v1",
+    "error_code": "pdf_pending",
+    "error_message": "NESDC adapter parse failed or result items missing; pdf pending retry path scheduled",
+    "source_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17298&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=9",
+    "payload": {
+      "ntt_id": "17298",
+      "pollster": "(주)데일리리서치",
+      "release_policy_hours": 24
+    },
+    "status": "pending",
+    "created_at": "2026-02-27T02:53:31.213397+00:00"
+  },
+  {
+    "id": "rvq_61f6fe8d2f1ec532",
+    "entity_type": "poll_observation",
+    "entity_id": "17340",
+    "issue_type": "extract_error",
+    "stage": "nesdc_safe_collect_v1",
+    "error_code": "pdf_pending",
+    "error_message": "NESDC adapter parse failed or result items missing; pdf pending retry path scheduled",
+    "source_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17340&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=9",
+    "payload": {
+      "ntt_id": "17340",
+      "pollster": "한국갤럽조사연구소",
+      "release_policy_hours": 24
+    },
+    "status": "pending",
+    "created_at": "2026-02-27T02:53:31.213414+00:00"
+  },
+  {
+    "id": "rvq_99bcd3b39be81b10",
+    "entity_type": "poll_observation",
+    "entity_id": "17339",
+    "issue_type": "extract_error",
+    "stage": "nesdc_safe_collect_v1",
+    "error_code": "pdf_pending",
+    "error_message": "NESDC adapter parse failed or result items missing; pdf pending retry path scheduled",
+    "source_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17339&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=10",
+    "payload": {
+      "ntt_id": "17339",
+      "pollster": "한국갤럽조사연구소",
+      "release_policy_hours": 24
+    },
+    "status": "pending",
+    "created_at": "2026-02-27T02:53:31.213429+00:00"
+  },
+  {
+    "id": "rvq_14bc8fca560e2929",
+    "entity_type": "poll_observation",
+    "entity_id": "17311",
+    "issue_type": "extract_error",
+    "stage": "nesdc_safe_collect_v1",
+    "error_code": "pdf_pending",
+    "error_message": "NESDC adapter parse failed or result items missing; pdf pending retry path scheduled",
+    "source_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17311&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=10",
+    "payload": {
+      "ntt_id": "17311",
+      "pollster": "조원씨앤아이",
+      "release_policy_hours": 24
+    },
+    "status": "pending",
+    "created_at": "2026-02-27T02:53:31.213456+00:00"
+  },
+  {
+    "id": "rvq_5dbcdeba9091c2fc",
+    "entity_type": "poll_observation",
+    "entity_id": "17338",
+    "issue_type": "extract_error",
+    "stage": "nesdc_safe_collect_v1",
+    "error_code": "pdf_pending",
+    "error_message": "NESDC adapter parse failed or result items missing; pdf pending retry path scheduled",
+    "source_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17338&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=10",
+    "payload": {
+      "ntt_id": "17338",
+      "pollster": "한국갤럽조사연구소",
+      "release_policy_hours": 24
+    },
+    "status": "pending",
+    "created_at": "2026-02-27T02:53:31.213482+00:00"
+  },
+  {
+    "id": "rvq_44d52fc94bb72618",
+    "entity_type": "poll_observation",
+    "entity_id": "17337",
+    "issue_type": "extract_error",
+    "stage": "nesdc_safe_collect_v1",
+    "error_code": "pdf_pending",
+    "error_message": "NESDC adapter parse failed or result items missing; pdf pending retry path scheduled",
+    "source_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17337&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=10",
+    "payload": {
+      "ntt_id": "17337",
+      "pollster": "한국갤럽조사연구소",
+      "release_policy_hours": 24
+    },
+    "status": "pending",
+    "created_at": "2026-02-27T02:53:31.213498+00:00"
+  },
+  {
+    "id": "rvq_3e3ffe236bd0c3e0",
+    "entity_type": "poll_observation",
+    "entity_id": "17336",
+    "issue_type": "extract_error",
+    "stage": "nesdc_safe_collect_v1",
+    "error_code": "pdf_pending",
+    "error_message": "NESDC adapter parse failed or result items missing; pdf pending retry path scheduled",
+    "source_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17336&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=10",
+    "payload": {
+      "ntt_id": "17336",
+      "pollster": "주식회사 한민리서치",
+      "release_policy_hours": 24
+    },
+    "status": "pending",
+    "created_at": "2026-02-27T02:53:31.213512+00:00"
+  },
+  {
+    "id": "rvq_1e3eba29c28677cf",
+    "entity_type": "poll_observation",
+    "entity_id": "17322",
+    "issue_type": "extract_error",
+    "stage": "nesdc_safe_collect_v1",
+    "error_code": "pdf_pending",
+    "error_message": "NESDC adapter parse failed or result items missing; pdf pending retry path scheduled",
+    "source_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17322&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=10",
+    "payload": {
+      "ntt_id": "17322",
+      "pollster": "(주)시그널앤펄스",
+      "release_policy_hours": 24
+    },
+    "status": "pending",
+    "created_at": "2026-02-27T02:53:31.213528+00:00"
+  },
+  {
+    "id": "rvq_cff645d6b6e08da1",
+    "entity_type": "poll_observation",
+    "entity_id": "17321",
+    "issue_type": "extract_error",
+    "stage": "nesdc_safe_collect_v1",
+    "error_code": "pdf_pending",
+    "error_message": "NESDC adapter parse failed or result items missing; pdf pending retry path scheduled",
+    "source_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17321&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=10",
+    "payload": {
+      "ntt_id": "17321",
+      "pollster": "KPO리서치",
+      "release_policy_hours": 24
+    },
+    "status": "pending",
+    "created_at": "2026-02-27T02:53:31.213545+00:00"
+  },
+  {
+    "id": "rvq_61bf3effb7c0d53f",
+    "entity_type": "poll_observation",
+    "entity_id": "17319",
+    "issue_type": "extract_error",
+    "stage": "nesdc_safe_collect_v1",
+    "error_code": "pdf_pending",
+    "error_message": "NESDC adapter parse failed or result items missing; pdf pending retry path scheduled",
+    "source_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17319&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=10",
+    "payload": {
+      "ntt_id": "17319",
+      "pollster": "KPO리서치",
+      "release_policy_hours": 24
+    },
+    "status": "pending",
+    "created_at": "2026-02-27T02:53:31.213578+00:00"
+  },
+  {
+    "id": "rvq_55d45db14affd5fd",
+    "entity_type": "poll_observation",
+    "entity_id": "17335",
+    "issue_type": "extract_error",
+    "stage": "nesdc_safe_collect_v1",
+    "error_code": "pdf_pending",
+    "error_message": "NESDC adapter parse failed or result items missing; pdf pending retry path scheduled",
+    "source_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17335&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=10",
+    "payload": {
+      "ntt_id": "17335",
+      "pollster": "윈지코리아컨설팅",
+      "release_policy_hours": 24
+    },
+    "status": "pending",
+    "created_at": "2026-02-27T02:53:31.213738+00:00"
+  },
+  {
+    "id": "rvq_16f427917319d780",
+    "entity_type": "poll_observation",
+    "entity_id": "17334",
+    "issue_type": "mapping_error",
+    "stage": "nesdc_safe_collect_v1",
+    "error_code": "ADAPTER_TEMPLATE_FALLBACK",
+    "error_message": "exact ntt_id adapter row missing; pollster template fallback applied",
+    "source_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17334&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=10",
+    "payload": {
+      "ntt_id": "17334",
+      "pollster": "(주)리얼미터",
+      "template_ntt_id": "17470",
+      "release_policy_hours": 24
+    },
+    "status": "pending",
+    "created_at": "2026-02-27T02:53:31.213775+00:00"
+  },
+  {
+    "id": "rvq_ba80f03c77e997e5",
+    "entity_type": "poll_observation",
+    "entity_id": "17333",
+    "issue_type": "mapping_error",
+    "stage": "nesdc_safe_collect_v1",
+    "error_code": "ADAPTER_TEMPLATE_FALLBACK",
+    "error_message": "exact ntt_id adapter row missing; pollster template fallback applied",
+    "source_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17333&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=11",
+    "payload": {
+      "ntt_id": "17333",
+      "pollster": "(주)리얼미터",
+      "template_ntt_id": "17470",
+      "release_policy_hours": 24
+    },
+    "status": "pending",
+    "created_at": "2026-02-27T02:53:31.213810+00:00"
+  },
+  {
+    "id": "rvq_50014893c4194d0c",
+    "entity_type": "poll_observation",
+    "entity_id": "17332",
+    "issue_type": "mapping_error",
+    "stage": "nesdc_safe_collect_v1",
+    "error_code": "ADAPTER_TEMPLATE_FALLBACK",
+    "error_message": "exact ntt_id adapter row missing; pollster template fallback applied",
+    "source_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17332&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=11",
+    "payload": {
+      "ntt_id": "17332",
+      "pollster": "(주)리얼미터",
+      "template_ntt_id": "17470",
+      "release_policy_hours": 24
+    },
+    "status": "pending",
+    "created_at": "2026-02-27T02:53:31.214015+00:00"
+  },
+  {
+    "id": "rvq_ba5e7d2552b8faf9",
+    "entity_type": "poll_observation",
+    "entity_id": "17329",
+    "issue_type": "extract_error",
+    "stage": "nesdc_safe_collect_v1",
+    "error_code": "pdf_pending",
+    "error_message": "NESDC adapter parse failed or result items missing; pdf pending retry path scheduled",
+    "source_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17329&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=11",
+    "payload": {
+      "ntt_id": "17329",
+      "pollster": "조원씨앤아이",
+      "release_policy_hours": 24
+    },
+    "status": "pending",
+    "created_at": "2026-02-27T02:53:31.214092+00:00"
+  },
+  {
+    "id": "rvq_8b15e81f82d97fcc",
+    "entity_type": "poll_observation",
+    "entity_id": "17323",
+    "issue_type": "extract_error",
+    "stage": "nesdc_safe_collect_v1",
+    "error_code": "pdf_pending",
+    "error_message": "NESDC adapter parse failed or result items missing; pdf pending retry path scheduled",
+    "source_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17323&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=11",
+    "payload": {
+      "ntt_id": "17323",
+      "pollster": "여론조사공정(주)",
+      "release_policy_hours": 24
+    },
+    "status": "pending",
+    "created_at": "2026-02-27T02:53:31.214138+00:00"
+  },
+  {
+    "id": "rvq_1b5ada5167d18831",
+    "entity_type": "poll_observation",
+    "entity_id": "17328",
+    "issue_type": "mapping_error",
+    "stage": "nesdc_safe_collect_v1",
+    "error_code": "ADAPTER_TEMPLATE_FALLBACK",
+    "error_message": "exact ntt_id adapter row missing; pollster template fallback applied",
+    "source_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17328&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=11",
+    "payload": {
+      "ntt_id": "17328",
+      "pollster": "(주)리얼미터",
+      "template_ntt_id": "17470",
+      "release_policy_hours": 24
+    },
+    "status": "pending",
+    "created_at": "2026-02-27T02:53:31.214191+00:00"
+  },
+  {
+    "id": "rvq_a0df1659b8b0b40e",
+    "entity_type": "poll_observation",
+    "entity_id": "17325",
+    "issue_type": "extract_error",
+    "stage": "nesdc_safe_collect_v1",
+    "error_code": "pdf_pending",
+    "error_message": "NESDC adapter parse failed or result items missing; pdf pending retry path scheduled",
+    "source_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17325&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=11",
+    "payload": {
+      "ntt_id": "17325",
+      "pollster": "(주)알앤써치",
+      "release_policy_hours": 24
+    },
+    "status": "pending",
+    "created_at": "2026-02-27T02:53:31.214228+00:00"
+  },
+  {
+    "id": "rvq_4b80828e3bdbb0b8",
+    "entity_type": "poll_observation",
+    "entity_id": "17324",
+    "issue_type": "extract_error",
+    "stage": "nesdc_safe_collect_v1",
+    "error_code": "pdf_pending",
+    "error_message": "NESDC adapter parse failed or result items missing; pdf pending retry path scheduled",
+    "source_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17324&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=11",
+    "payload": {
+      "ntt_id": "17324",
+      "pollster": "(주)알앤써치",
+      "release_policy_hours": 24
+    },
+    "status": "pending",
+    "created_at": "2026-02-27T02:53:31.214250+00:00"
+  },
+  {
+    "id": "rvq_d943be95afa3e183",
+    "entity_type": "poll_observation",
+    "entity_id": "17318",
+    "issue_type": "extract_error",
+    "stage": "nesdc_safe_collect_v1",
+    "error_code": "pdf_pending",
+    "error_message": "NESDC adapter parse failed or result items missing; pdf pending retry path scheduled",
+    "source_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17318&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=11",
+    "payload": {
+      "ntt_id": "17318",
+      "pollster": "(주)시그널앤펄스",
+      "release_policy_hours": 24
+    },
+    "status": "pending",
+    "created_at": "2026-02-27T02:53:31.214265+00:00"
+  },
+  {
+    "id": "rvq_c1465c2f07e22b37",
+    "entity_type": "poll_observation",
+    "entity_id": "17320",
+    "issue_type": "extract_error",
+    "stage": "nesdc_safe_collect_v1",
+    "error_code": "pdf_pending",
+    "error_message": "NESDC adapter parse failed or result items missing; pdf pending retry path scheduled",
+    "source_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17320&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=11",
+    "payload": {
+      "ntt_id": "17320",
+      "pollster": "(주)리서치뷰",
+      "release_policy_hours": 24
+    },
+    "status": "pending",
+    "created_at": "2026-02-27T02:53:31.214379+00:00"
+  },
+  {
+    "id": "rvq_f39e1d5acea7b8f9",
+    "entity_type": "poll_observation",
+    "entity_id": "17316",
+    "issue_type": "extract_error",
+    "stage": "nesdc_safe_collect_v1",
+    "error_code": "pdf_pending",
+    "error_message": "NESDC adapter parse failed or result items missing; pdf pending retry path scheduled",
+    "source_url": "https://www.nesdc.go.kr/portal/bbs/B0000005/view.do?nttId=17316&menuNo=200467&searchTime=&sdate=&edate=&pdate=&pollGubuncd=&searchCnd=&searchWrd=&pageIndex=11",
+    "payload": {
+      "ntt_id": "17316",
+      "pollster": "한국갤럽조사연구소",
+      "release_policy_hours": 24
+    },
+    "status": "pending",
+    "created_at": "2026-02-27T02:53:31.214401+00:00"
+  }
+]

@@ -7,7 +7,11 @@ from pathlib import Path
 from typing import Any
 from zoneinfo import ZoneInfo
 
-from src.pipeline.contracts import new_review_queue_item, normalize_value
+from src.pipeline.contracts import new_review_queue_item
+from src.pipeline.nesdc_pdf_adapters import (
+    NesdcPdfAdapterEngine,
+    build_top10_pollster_template_profile,
+)
 
 KST = ZoneInfo("Asia/Seoul")
 
@@ -89,26 +93,6 @@ def _parse_explicit_bool(value: Any) -> bool | None:
     return None
 
 
-def _extract_option_items(adapter_row: dict[str, Any]) -> list[dict[str, Any]]:
-    items = []
-    for item in adapter_row.get("result_items") or []:
-        value_raw = item.get("value_raw")
-        norm = normalize_value(value_raw)
-        items.append(
-            {
-                "question": item.get("question"),
-                "option": item.get("option"),
-                "value_raw": value_raw,
-                "value_min": norm.value_min,
-                "value_max": norm.value_max,
-                "value_mid": norm.value_mid,
-                "is_missing": norm.is_missing,
-                "provenance": item.get("provenance") or {},
-            }
-        )
-    return items
-
-
 def _build_retry_plan(release_at: datetime | None, *, as_of: datetime) -> tuple[list[dict[str, Any]], str | None]:
     if release_at is None:
         return [], None
@@ -149,14 +133,12 @@ def generate_nesdc_safe_collect_v1(
 
     registry_rows = list(registry.get("records") or [])
     adapter_rows = list(adapter.get("records") or [])
-    adapter_map = {str(r.get("ntt_id")): r for r in adapter_rows if r.get("ntt_id") is not None}
-    adapter_pollster_map: dict[str, dict[str, Any]] = {}
-    for row in adapter_rows:
-        pollster = str(row.get("pollster") or "").strip()
-        if not pollster or pollster in adapter_pollster_map:
-            continue
-        if row.get("result_items"):
-            adapter_pollster_map[pollster] = row
+    adapter_engine = NesdcPdfAdapterEngine(adapter_rows=adapter_rows)
+    top10_template_profile = build_top10_pollster_template_profile(
+        registry_rows=registry_rows,
+        adapter_rows=adapter_rows,
+        top_n=10,
+    )
 
     output_records: list[dict[str, Any]] = []
     pending_records: list[dict[str, Any]] = []
@@ -175,8 +157,10 @@ def generate_nesdc_safe_collect_v1(
     exact_success_count = 0
     normalization_ok_option_count = 0
     total_option_count = 0
+    fallback_parser_success_count = 0
 
     pollster_counter: Counter[str] = Counter()
+    adapter_mode_counter: Counter[str] = Counter()
 
     for row in registry_rows:
         ntt_id = str(row.get("ntt_id") or "")
@@ -281,16 +265,9 @@ def generate_nesdc_safe_collect_v1(
     for row, release_policy_hours, release_at in eligible_rows:
         ntt_id = str(row.get("ntt_id") or "")
         pollster = str(row.get("pollster") or "미상조사기관")
-        adapter_row = adapter_map.get(ntt_id)
-        adapter_mode = "adapter_exact"
-        adapter_profile = {"profile_key": f"ntt:{ntt_id}", "pollster": pollster}
-        used_template_fallback = False
-        if adapter_row is None:
-            adapter_row = adapter_pollster_map.get(pollster)
-            if adapter_row is not None:
-                adapter_mode = "adapter_pollster_template_fallback"
-                adapter_profile = {"profile_key": f"pollster:{pollster}", "pollster": pollster}
-                used_template_fallback = True
+        resolution = adapter_engine.resolve(row)
+        adapter_mode = resolution.adapter_mode
+        adapter_profile = resolution.adapter_profile
 
         record = {
             "ntt_id": ntt_id,
@@ -318,24 +295,29 @@ def generate_nesdc_safe_collect_v1(
                 "method": row.get("method"),
             },
             "result_options": [],
-            "adapter_mode": "fallback",
+            "adapter_mode": adapter_mode,
             "adapter_profile": adapter_profile,
-            "fallback_applied": False,
+            "fallback_applied": resolution.fallback_applied,
+            "adapter_parser": resolution.parser_name,
         }
 
-        if adapter_row and (adapter_row.get("result_items") or []):
-            options = _extract_option_items(adapter_row)
+        options = resolution.result_items
+        if options:
             record["result_options"] = options
-            record["adapter_mode"] = adapter_mode
-            record["adapter_profile"] = adapter_profile
-            record["fallback_applied"] = used_template_fallback
+            adapter_mode_counter[adapter_mode] += 1
             success_count += 1
-            if used_template_fallback:
+            if adapter_mode == "adapter_exact":
+                exact_success_count += 1
+            elif adapter_mode == "adapter_pollster_template_fallback":
                 template_fallback_count += 1
                 fallback_count += 1
                 record["collect_status"] = "collected_template_fallback"
+            elif adapter_mode in {"adapter_ocr_fallback", "adapter_rule_fallback"}:
+                fallback_parser_success_count += 1
+                fallback_count += 1
+                record["collect_status"] = "collected_fallback_parser"
             else:
-                exact_success_count += 1
+                fallback_count += 1
             pollster_counter[pollster] += 1
 
             total_option_count += len(options)
@@ -343,7 +325,7 @@ def generate_nesdc_safe_collect_v1(
                 if opt.get("value_raw") and opt.get("value_mid") is not None:
                     normalization_ok_option_count += 1
 
-            if used_template_fallback:
+            if adapter_mode == "adapter_pollster_template_fallback":
                 review_queue_candidates.append(
                     new_review_queue_item(
                         entity_type="poll_observation",
@@ -356,12 +338,32 @@ def generate_nesdc_safe_collect_v1(
                         payload={
                             "ntt_id": ntt_id,
                             "pollster": pollster,
-                            "template_ntt_id": str(adapter_row.get("ntt_id") or ""),
+                            "template_ntt_id": resolution.matched_adapter_ntt_id or "",
+                            "release_policy_hours": release_policy_hours,
+                        },
+                    ).to_dict()
+                )
+            elif adapter_mode in {"adapter_ocr_fallback", "adapter_rule_fallback"}:
+                review_queue_candidates.append(
+                    new_review_queue_item(
+                        entity_type="poll_observation",
+                        entity_id=ntt_id or f"ntt-fallback-parser-{fallback_parser_success_count}",
+                        issue_type="mapping_error",
+                        stage="nesdc_safe_collect_v1",
+                        error_code="ADAPTER_FALLBACK_PARSER_APPLIED",
+                        error_message="no template adapter; fallback parser extracted options",
+                        source_url=row.get("detail_url"),
+                        payload={
+                            "ntt_id": ntt_id,
+                            "pollster": pollster,
+                            "adapter_mode": adapter_mode,
+                            "adapter_parser": resolution.parser_name,
                             "release_policy_hours": release_policy_hours,
                         },
                     ).to_dict()
                 )
         else:
+            adapter_mode_counter["fallback"] += 1
             fallback_count += 1
             hard_fallback_count += 1
             pdf_pending_count += 1
@@ -406,7 +408,7 @@ def generate_nesdc_safe_collect_v1(
             continue
         if as_of <= (release_at_dt + timedelta(hours=2)):
             release_plus2h_window_total += 1
-            if rec.get("collect_status") in {"collected", "collected_template_fallback"}:
+            if rec.get("collect_status") in {"collected", "collected_template_fallback", "collected_fallback_parser"}:
                 release_plus2h_window_success += 1
     release_plus2h_success_rate = (
         round(release_plus2h_window_success / release_plus2h_window_total, 4)
@@ -439,6 +441,7 @@ def generate_nesdc_safe_collect_v1(
             "collected_success_count": success_count,
             "adapter_exact_success_count": exact_success_count,
             "adapter_template_success_count": template_fallback_count,
+            "adapter_fallback_parser_success_count": fallback_parser_success_count,
             "fallback_count": fallback_count,
             "template_fallback_count": template_fallback_count,
             "hard_fallback_count": hard_fallback_count,
@@ -455,8 +458,20 @@ def generate_nesdc_safe_collect_v1(
             "release_plus2h_window_total": release_plus2h_window_total,
             "release_plus2h_window_success": release_plus2h_window_success,
         },
+        "adapter_mode_counts": dict(adapter_mode_counter),
         "pending_reason_counts": pending_reason_counts,
         "adapter_profile_counts": dict(adapter_profile_counter),
+        "pollster_template_top10_profile": top10_template_profile,
+        "failure_comparison": {
+            "fallback_total": template_fallback_count + fallback_parser_success_count + hard_fallback_count,
+            "template_fallback_count": template_fallback_count,
+            "fallback_parser_success_count": fallback_parser_success_count,
+            "hard_fallback_count": hard_fallback_count,
+            "hard_fallback_rate_within_fallback": round(
+                hard_fallback_count / max(1, template_fallback_count + fallback_parser_success_count + hard_fallback_count),
+                4,
+            ),
+        },
         "recollect_within_plus2h": {
             "window_total": release_plus2h_window_total,
             "success_count": release_plus2h_window_success,
@@ -475,6 +490,11 @@ def generate_nesdc_safe_collect_v1(
             "recent20_policy_violation_zero": release_policy_violation_count_recent20 == 0,
             "eligible_collection_success_present": success_count > 0,
             "pollster_coverage_ge_5": unique_pollsters >= 5,
+            "top10_template_profile_present": len(top10_template_profile.get("top_pollsters", [])) == 10,
+            "fallback_chain_defined": all(
+                mode in {"adapter_exact", "adapter_pollster_template_fallback", "adapter_ocr_fallback", "adapter_rule_fallback", "fallback"}
+                for mode in adapter_mode_counter.keys()
+            ),
             "fallback_review_queue_synced": (
                 fallback_count + eligibility_parse_error_count + safe_window_guard_block_count
                 == len(review_queue_candidates)

@@ -1,0 +1,226 @@
+{
+  "run_type": "collector_nesdc_safe_collect_v1",
+  "registry_path": "data/nesdc_registry_snapshot_v1.json",
+  "adapter_path": "data/nesdc_pdf_adapter_v2_5pollsters.json",
+  "as_of_kst": "2026-02-27T11:53:31+09:00",
+  "release_policy_hours": {
+    "general_hours": 24,
+    "periodical_hours": 48
+  },
+  "retry_schedule_hours": [
+    2,
+    6,
+    24
+  ],
+  "counts": {
+    "registry_total": 110,
+    "eligible_48h_total": 92,
+    "release_gate_eligible_total": 92,
+    "pending_official_release_count": 0,
+    "collected_success_count": 34,
+    "adapter_exact_success_count": 3,
+    "adapter_template_success_count": 31,
+    "adapter_fallback_parser_success_count": 0,
+    "fallback_count": 89,
+    "template_fallback_count": 31,
+    "hard_fallback_count": 58,
+    "manual_opt_out_count": 18,
+    "eligibility_parse_error_count": 0,
+    "safe_window_guard_block_count": 0,
+    "review_queue_candidate_count": 89,
+    "unique_pollster_count": 5,
+    "total_option_count": 544,
+    "recent20_pending_official_release_count": 0,
+    "recent20_release_policy_violation_count": 0,
+    "release_not_open_count": 0,
+    "pdf_pending_count": 58,
+    "release_plus2h_window_total": 0,
+    "release_plus2h_window_success": 0
+  },
+  "adapter_mode_counts": {
+    "adapter_exact": 3,
+    "adapter_pollster_template_fallback": 31,
+    "fallback": 58
+  },
+  "pending_reason_counts": {
+    "release_not_open": 0,
+    "pdf_pending": 58
+  },
+  "adapter_profile_counts": {
+    "ntt:17457": 1,
+    "pollster:(주)리얼미터": 12,
+    "pollster:(주)엠브레인퍼블릭": 10,
+    "fallback:none:(주)리서치뷰": 2,
+    "fallback:none:입소스 주식회사": 3,
+    "fallback:none:한길리서치": 3,
+    "fallback:none:(주)비전코리아": 4,
+    "ntt:17446": 1,
+    "pollster:(주)코리아리서치인터내셔널": 2,
+    "fallback:none:조원씨앤아이": 3,
+    "fallback:none:모노커뮤니케이션즈(모노리서치)": 2,
+    "fallback:none:(주)코리아정보리서치": 6,
+    "ntt:17435": 1,
+    "pollster:케이스탯리서치": 7,
+    "fallback:none:(주)피앰아이": 1,
+    "fallback:none:(주)한국리서치": 2,
+    "fallback:none:한국갤럽조사연구소": 6,
+    "fallback:none:(주)에브리리서치": 3,
+    "fallback:none:한국정책연구원": 1,
+    "fallback:none:(주)리서치앤리서치": 1,
+    "fallback:none:리서치웰": 1,
+    "fallback:none:(주)시그널앤펄스": 3,
+    "fallback:none:(주)여론조사꽃": 1,
+    "fallback:none:(주)이너텍시스템즈": 2,
+    "fallback:none:메타보이스(주)": 1,
+    "fallback:none:미디어토마토": 1,
+    "fallback:none:케이에스오아이 주식회사(한국사회여론연구소)": 4,
+    "fallback:none:(주)데일리리서치": 1,
+    "fallback:none:주식회사 한민리서치": 1,
+    "fallback:none:KPO리서치": 2,
+    "fallback:none:윈지코리아컨설팅": 1,
+    "fallback:none:여론조사공정(주)": 1,
+    "fallback:none:(주)알앤써치": 2
+  },
+  "pollster_template_top10_profile": {
+    "top_n": 10,
+    "top_pollsters": [
+      {
+        "pollster": "(주)엠브레인퍼블릭",
+        "registry_count": 20,
+        "adapter_record_count": 1,
+        "adapter_result_item_ready_count": 1,
+        "template_ntt_ids": [
+          "17469"
+        ],
+        "adapter_strategy": "pollster_template"
+      },
+      {
+        "pollster": "(주)리얼미터",
+        "registry_count": 14,
+        "adapter_record_count": 1,
+        "adapter_result_item_ready_count": 1,
+        "template_ntt_ids": [
+          "17470"
+        ],
+        "adapter_strategy": "pollster_template"
+      },
+      {
+        "pollster": "(주)코리아정보리서치",
+        "registry_count": 8,
+        "adapter_record_count": 0,
+        "adapter_result_item_ready_count": 0,
+        "template_ntt_ids": [],
+        "adapter_strategy": "fallback_ocr_rule"
+      },
+      {
+        "pollster": "케이스탯리서치",
+        "registry_count": 8,
+        "adapter_record_count": 1,
+        "adapter_result_item_ready_count": 1,
+        "template_ntt_ids": [
+          "17435"
+        ],
+        "adapter_strategy": "pollster_template"
+      },
+      {
+        "pollster": "한국갤럽조사연구소",
+        "registry_count": 6,
+        "adapter_record_count": 0,
+        "adapter_result_item_ready_count": 0,
+        "template_ntt_ids": [],
+        "adapter_strategy": "fallback_ocr_rule"
+      },
+      {
+        "pollster": "입소스 주식회사",
+        "registry_count": 4,
+        "adapter_record_count": 0,
+        "adapter_result_item_ready_count": 0,
+        "template_ntt_ids": [],
+        "adapter_strategy": "fallback_ocr_rule"
+      },
+      {
+        "pollster": "(주)비전코리아",
+        "registry_count": 4,
+        "adapter_record_count": 0,
+        "adapter_result_item_ready_count": 0,
+        "template_ntt_ids": [],
+        "adapter_strategy": "fallback_ocr_rule"
+      },
+      {
+        "pollster": "(주)한국리서치",
+        "registry_count": 4,
+        "adapter_record_count": 0,
+        "adapter_result_item_ready_count": 0,
+        "template_ntt_ids": [],
+        "adapter_strategy": "fallback_ocr_rule"
+      },
+      {
+        "pollster": "케이에스오아이 주식회사(한국사회여론연구소)",
+        "registry_count": 4,
+        "adapter_record_count": 0,
+        "adapter_result_item_ready_count": 0,
+        "template_ntt_ids": [],
+        "adapter_strategy": "fallback_ocr_rule"
+      },
+      {
+        "pollster": "한길리서치",
+        "registry_count": 3,
+        "adapter_record_count": 0,
+        "adapter_result_item_ready_count": 0,
+        "template_ntt_ids": [],
+        "adapter_strategy": "fallback_ocr_rule"
+      }
+    ],
+    "covered_pollster_count": 3,
+    "coverage_ratio": 0.3,
+    "recommended_seed_pollsters": [
+      "(주)코리아정보리서치",
+      "한국갤럽조사연구소",
+      "입소스 주식회사",
+      "(주)비전코리아",
+      "(주)한국리서치",
+      "케이에스오아이 주식회사(한국사회여론연구소)",
+      "한길리서치"
+    ],
+    "target_reference": [
+      "(주)엠브레인퍼블릭",
+      "(주)리얼미터",
+      "케이스탯리서치",
+      "(주)코리아정보리서치",
+      "한국갤럽조사연구소",
+      "케이에스오아이 주식회사(한국사회여론연구소)",
+      "입소스 주식회사",
+      "(주)한국리서치",
+      "(주)비전코리아",
+      "한길리서치"
+    ]
+  },
+  "failure_comparison": {
+    "fallback_total": 89,
+    "template_fallback_count": 31,
+    "fallback_parser_success_count": 0,
+    "hard_fallback_count": 58,
+    "hard_fallback_rate_within_fallback": 0.6517
+  },
+  "recollect_within_plus2h": {
+    "window_total": 0,
+    "success_count": 0,
+    "success_rate": null
+  },
+  "value_normalization": {
+    "raw_and_normalized_option_count": 544,
+    "raw_and_normalized_ratio": 1.0
+  },
+  "acceptance_checks": {
+    "safe_window_applied_all": true,
+    "release_gate_applied_all": true,
+    "pending_nonpublic_state_preserved": true,
+    "recent20_policy_violation_zero": true,
+    "eligible_collection_success_present": true,
+    "pollster_coverage_ge_5": true,
+    "top10_template_profile_present": true,
+    "fallback_chain_defined": true,
+    "fallback_review_queue_synced": true,
+    "value_raw_and_normalized_present": true
+  }
+}
