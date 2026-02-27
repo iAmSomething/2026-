@@ -13,6 +13,7 @@ class FakeRepo:
         self.regions = []
         self.matchups = []
         self.articles = {}
+        self.matchups = []
         self.observations = {}
         self.options = set()
         self.option_rows = []
@@ -687,7 +688,8 @@ def test_candidate_matchup_scenarios_drop_default_when_explicit_and_multi_coexis
     payload_data = deepcopy(PAYLOAD)
     payload_data["records"][0]["observation"]["survey_name"] = (
         "[2026지방선거] 부산시장 양자대결 전재수 43.4-박형준 32.3%, "
-        "전재수 43.8%-김도읍33.2%...다자대결 전재수26.8% 선두"
+        "전재수 43.8%-김도읍33.2%...다자대결 전재수26.8%, 박형준 19.1%, 김도읍 10.6%, "
+        "조경태 10.1%, 조국 6.7%, 박재호 6.4%, 이재성 5.8%, 윤택근 2.4% 순"
     )
     payload_data["records"][0]["candidates"] = [
         {"candidate_id": "cand-js", "name_ko": "전재수", "party_name": "더불어민주당"},
@@ -748,8 +750,57 @@ def test_candidate_matchup_scenarios_drop_default_when_explicit_and_multi_coexis
     assert "default" not in scenario_keys
 
     multi_rows = [row for row in option_rows if row.get("scenario_key") == "multi-전재수"]
-    assert {row["option_name"] for row in multi_rows} == {"전재수", "박형준", "김도읍"}
+    assert {row["option_name"] for row in multi_rows} == {
+        "전재수",
+        "박형준",
+        "김도읍",
+        "조경태",
+        "조국",
+        "박재호",
+        "이재성",
+        "윤택근",
+    }
+    value_by_name = {row["option_name"]: row["value_mid"] for row in multi_rows}
+    assert value_by_name == {
+        "전재수": 26.8,
+        "박형준": 19.1,
+        "김도읍": 10.6,
+        "조경태": 10.1,
+        "조국": 6.7,
+        "박재호": 6.4,
+        "이재성": 5.8,
+        "윤택근": 2.4,
+    }
     assert {row.get("scenario_type") for row in multi_rows} == {"multi_candidate"}
+
+
+def test_survey_name_correction_promotes_busan_mayor_to_metro_office() -> None:
+    repo = FakeRepo()
+    payload_data = deepcopy(PAYLOAD)
+    payload_data["records"][0]["article"]["title"] = "부산시장 양자대결"
+    payload_data["records"][0]["observation"]["survey_name"] = "부산시장 양자대결 전재수 43.4-박형준 32.3"
+    payload_data["records"][0]["observation"]["region_code"] = "26-710"
+    payload_data["records"][0]["observation"]["office_type"] = "기초자치단체장"
+    payload_data["records"][0]["observation"]["matchup_id"] = "2026_local|기초자치단체장|26-710"
+    payload_data["records"][0]["observation"]["audience_scope"] = None
+    payload_data["records"][0]["observation"]["audience_region_code"] = None
+    payload_data["records"][0]["observation"]["sampling_population_text"] = "부산 만 18세 이상 남녀"
+    payload_data["records"][0]["options"] = [
+        {"option_type": "candidate_matchup", "option_name": "전재수", "value_raw": "43.4%"},
+        {"option_type": "candidate_matchup", "option_name": "박형준", "value_raw": "32.3%"},
+    ]
+    payload = IngestPayload.model_validate(payload_data)
+
+    result = ingest_payload(payload, repo)
+
+    assert result.status == "success"
+    observation = repo.observations["obs-1"]
+    assert observation["region_code"] == "26-000"
+    assert observation["office_type"] == "광역자치단체장"
+    assert observation["matchup_id"] == "2026_local|광역자치단체장|26-000"
+    assert observation["audience_scope"] == "regional"
+    assert observation["audience_region_code"] == "26-000"
+    assert repo.matchups[-1]["matchup_id"] == "2026_local|광역자치단체장|26-000"
 
 
 def test_explicit_candidate_scenario_ingest_cleans_previous_default_rows() -> None:
