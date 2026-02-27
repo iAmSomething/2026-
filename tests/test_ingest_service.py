@@ -434,3 +434,73 @@ def test_candidate_matchup_scenarios_are_split_when_default_would_mix_groups() -
         grouped.setdefault(row.get("scenario_key"), []).append(row["option_name"])
     assert set(grouped["h2h-전재수-박형준"]) == {"전재수", "박형준"}
     assert set(grouped["h2h-전재수-김도읍"]) == {"전재수", "김도읍"}
+
+
+def test_candidate_matchup_scenarios_drop_default_when_explicit_and_multi_coexist() -> None:
+    repo = FakeRepo()
+    payload_data = deepcopy(PAYLOAD)
+    payload_data["records"][0]["observation"]["survey_name"] = (
+        "[2026지방선거] 부산시장 양자대결 전재수 43.4-박형준 32.3%, "
+        "전재수 43.8%-김도읍33.2%...다자대결 전재수26.8% 선두"
+    )
+    payload_data["records"][0]["candidates"] = [
+        {"candidate_id": "cand-js", "name_ko": "전재수", "party_name": "더불어민주당"},
+        {"candidate_id": "cand-phj", "name_ko": "박형준", "party_name": "국민의힘"},
+        {"candidate_id": "cand-kdy", "name_ko": "김도읍", "party_name": "국민의힘"},
+    ]
+    payload_data["records"][0]["options"] = [
+        {
+            "option_type": "candidate_matchup",
+            "option_name": "전재수",
+            "value_raw": "43.4%",
+            "scenario_key": "h2h-전재수-박형준",
+            "scenario_type": "head_to_head",
+            "scenario_title": "전재수 vs 박형준",
+        },
+        {
+            "option_type": "candidate_matchup",
+            "option_name": "박형준",
+            "value_raw": "32.3%",
+            "scenario_key": "h2h-전재수-박형준",
+            "scenario_type": "head_to_head",
+            "scenario_title": "전재수 vs 박형준",
+        },
+        {
+            "option_type": "candidate_matchup",
+            "option_name": "전재수",
+            "value_raw": "43.8%",
+            "scenario_key": "h2h-전재수-김도읍",
+            "scenario_type": "head_to_head",
+            "scenario_title": "전재수 vs 김도읍",
+        },
+        {
+            "option_type": "candidate_matchup",
+            "option_name": "김도읍",
+            "value_raw": "33.2%",
+            "scenario_key": "h2h-전재수-김도읍",
+            "scenario_type": "head_to_head",
+            "scenario_title": "전재수 vs 김도읍",
+        },
+        {
+            "option_type": "candidate_matchup",
+            "option_name": "전재수",
+            "value_raw": "26.8%",
+            "scenario_key": "multi-전재수",
+            "scenario_type": "multi_candidate",
+            "scenario_title": "다자대결",
+        },
+        {"option_type": "candidate_matchup", "option_name": "박형준", "value_raw": "24.0%", "scenario_key": "default"},
+        {"option_type": "candidate_matchup", "option_name": "김도읍", "value_raw": "20.0%", "scenario_key": "default"},
+    ]
+    payload = IngestPayload.model_validate(payload_data)
+
+    result = ingest_payload(payload, repo)
+
+    assert result.status == "success"
+    option_rows = [row for row in repo.option_rows if row["option_type"] == "candidate_matchup"]
+    scenario_keys = {row.get("scenario_key") for row in option_rows}
+    assert "default" not in scenario_keys
+
+    multi_rows = [row for row in option_rows if row.get("scenario_key") == "multi-전재수"]
+    assert {row["option_name"] for row in multi_rows} == {"전재수", "박형준", "김도읍"}
+    assert {row.get("scenario_type") for row in multi_rows} == {"multi_candidate"}
