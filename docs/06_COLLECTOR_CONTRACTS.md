@@ -75,6 +75,11 @@
 1. `source_url`
 2. `payload` (원인 분석용 구조화 컨텍스트)
 
+스코프 추론/정규화 관련 권장 `error_code`:
+1. `AUDIENCE_SCOPE_CONFLICT_POPULATION`
+2. `AUDIENCE_SCOPE_CONFLICT_REGION`
+3. `AUDIENCE_SCOPE_LOW_CONFIDENCE`
+
 `issue_type` 고정 taxonomy:
 1. `discover_error`
 2. `fetch_error`

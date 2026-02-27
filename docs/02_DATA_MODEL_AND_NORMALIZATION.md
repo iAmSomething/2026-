@@ -163,6 +163,15 @@
 2. `audience_scope`, `audience_region_code`도 불명확하면 `null` 저장한다.
 3. API는 DB 값을 그대로 노출하며, 결측은 `null`로 유지한다.
 4. 상대시점 추론 결과는 `date_inference_mode`, `date_inference_confidence`에 저장한다.
+5. 스코프 추론 v3:
+- `sampling_population_text`에서 `전국/광역/기초` 신호를 우선 추론한다.
+- 명시값(`audience_scope`)과 추론값이 고신뢰(`>=0.8`)로 충돌하면 ingest를 중단(hard fail)하고 `review_queue.issue_type='mapping_error'`로 라우팅한다.
+- 충돌 에러코드는 `AUDIENCE_SCOPE_CONFLICT_POPULATION`, `AUDIENCE_SCOPE_CONFLICT_REGION`를 사용한다.
+- 저신뢰 추론(`confidence < 0.75`)은 hard fail 없이 `AUDIENCE_SCOPE_LOW_CONFIDENCE`로 검수 라우팅한다.
+6. `audience_region_code` 정규화 v3:
+- `audience_scope='national'`이면 `audience_region_code=null`로 고정
+- `audience_scope='regional'`이면 `xx-000`(시도코드)로 보정
+- `audience_scope='local'`이면 시군구코드(`xx-yyy`) 우선 보정, 필요 시 `region_code` fallback
 
 ## 10. 정당 추정 메타 정책
 1. 옵션 단위 정당 추론 결과는 `party_inferred`, `party_inference_source`, `party_inference_confidence`로 저장한다.
