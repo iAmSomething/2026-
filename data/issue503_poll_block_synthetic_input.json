@@ -1,0 +1,30 @@
+{
+  "records": [
+    {
+      "article": {
+        "url": "https://example.com/issue503-busan-multi",
+        "title": "[부산시장] 전재수 43.4%-박형준 32.3%, 전재수 43.8%-김도읍 33.2%, 다자대결 전재수 26.8%",
+        "publisher": "테스트",
+        "published_at": "2026-02-07T00:00:00+09:00",
+        "raw_text": "KSOI는 2월 3~4일 조사, 표본 1000명, 응답률 10.1%, 표본오차 ±3.1%, 전재수 43.4%-박형준 32.3%, 전재수 43.8%-김도읍 33.2%, 다자대결 전재수 26.8%를 발표했다. 리얼미터는 2월 5~6일 조사, 표본 800명, 응답률 8.5%, 표본오차 ±3.5%, 전재수 41.0%-박형준 34.0%, 전재수 40.2%-김도읍 30.1%, 다자대결 전재수 24.4%를 발표했다."
+      },
+      "observation": {
+        "observation_key": "obs-issue503-synthetic-1",
+        "region_code": "26-000",
+        "poll_block_id": "legacy-single-block"
+      },
+      "options": [
+        {
+          "option_type": "candidate_matchup",
+          "option_name": "전재수",
+          "value_raw": "43.4%"
+        },
+        {
+          "option_type": "candidate_matchup",
+          "option_name": "박형준",
+          "value_raw": "32.3%"
+        }
+      ]
+    }
+  ]
+}

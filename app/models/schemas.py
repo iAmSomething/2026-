@@ -492,6 +492,7 @@ class CandidateInput(BaseModel):
 
 class PollObservationInput(BaseModel):
     observation_key: str
+    poll_block_id: str | None = None
     survey_name: str
     pollster: str
     survey_start_date: date | None = None
@@ -525,6 +526,7 @@ class PollObservationInput(BaseModel):
 class PollOptionInput(BaseModel):
     option_type: str
     option_name: str
+    poll_block_id: str | None = None
     candidate_id: str | None = None
     party_name: str | None = None
     scenario_key: str | None = None

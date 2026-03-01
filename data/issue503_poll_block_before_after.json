@@ -1,0 +1,173 @@
+{
+  "issue": 503,
+  "input_payload_path": "data/collector_live_coverage_v2_payload.json",
+  "target_region_codes": [
+    "26-710",
+    "26-000",
+    "28-450"
+  ],
+  "items": [
+    {
+      "observation_key": "demo-30d-match-busan",
+      "region_code": "26-000",
+      "article_url": "https://demo.local/poll/match/busan",
+      "article_title": "부산시장 가상대결",
+      "before": {
+        "observation_poll_block_id": null,
+        "option_count": 2,
+        "option_scenario_keys": [
+          "default"
+        ]
+      },
+      "after": {
+        "observation_count": 1,
+        "candidate_option_count": 0,
+        "poll_block_count": 1,
+        "observations": [
+          {
+            "id": "obs_a818cd1a6eab15e4",
+            "poll_block_id": "pblk_08f6dff86f808f03",
+            "pollster": "미상조사기관",
+            "survey_start_date": null,
+            "survey_end_date": "2026-02-14",
+            "sample_size": null,
+            "scenario_keys": [],
+            "candidate_values": []
+          }
+        ]
+      },
+      "dead_letters": [
+        {
+          "id": "rvq_e4681896acc6174a",
+          "entity_type": "poll_observation",
+          "entity_id": "obs_a818cd1a6eab15e4",
+          "issue_type": "extract_error",
+          "stage": "extract",
+          "error_code": "NO_NUMERIC_SIGNAL",
+          "error_message": "no candidate/value pair extracted",
+          "source_url": "https://demo.local/poll/match/busan",
+          "payload": {
+            "article_id": "art_a0a6ab338d0e11ac",
+            "block_index": 0
+          },
+          "status": "pending",
+          "created_at": "2026-03-01T06:24:12.342513+00:00"
+        }
+      ]
+    },
+    {
+      "observation_key": "live30d-v2-12-obs_b61d10f49a5d5fdd",
+      "region_code": "26-710",
+      "article_url": "https://news.google.com/rss/articles/CBMibkFVX3lxTE9tU29Yc0dzaDhTR3BHUFNsaTdhb3h6N3Z2b3M4eEFxVHBtZzYwU3BrZV9DdEdNSWoxZV8wWk1lanEwRk4yLTJucFpwNnBZQ3hZdUNfNFNWOG1SVGdRc21qZjVVY3p0UFR2NHoycjRR0gFyQVVfeXFMUDc1RnNZaFhKeVE1NXMwbUtWSDJNMmYxWWJGY09Ea1Bxb191UlRiblBVWXhwRzNRT1JIWFRuME5DeF9YTjBjRHNOOE1WMFRWVWN5Nlo3U3d2OUVlX2ZzSVJ3bTRTQ3ZjWGRGdExlQTdnV2x3?live_cov_v2=12",
+      "article_title": "[2026지방선거] 부산시장, 전재수 43.4-박형준 32.3%, 전재수 43.8%-김도읍33.2%...다자대결 전재수26.8% 선두",
+      "before": {
+        "observation_poll_block_id": null,
+        "option_count": 5,
+        "option_scenario_keys": [
+          "h2h-전재수-김도읍",
+          "h2h-전재수-박형준",
+          "multi-전재수"
+        ]
+      },
+      "after": {
+        "observation_count": 1,
+        "candidate_option_count": 5,
+        "poll_block_count": 1,
+        "observations": [
+          {
+            "id": "obs_b9a64e99d8c97603",
+            "poll_block_id": "pblk_f6e034ff0b6d9f2e",
+            "pollster": "미상조사기관",
+            "survey_start_date": null,
+            "survey_end_date": "2026-02-10",
+            "sample_size": null,
+            "scenario_keys": [
+              "h2h-전재수-김도읍",
+              "h2h-전재수-박형준",
+              "multi-전재수"
+            ],
+            "candidate_values": [
+              {
+                "option_name": "박형준",
+                "scenario_key": "h2h-전재수-박형준",
+                "value_mid": 32.3,
+                "poll_block_id": "pblk_f6e034ff0b6d9f2e"
+              },
+              {
+                "option_name": "전재수",
+                "scenario_key": "h2h-전재수-김도읍",
+                "value_mid": 43.8,
+                "poll_block_id": "pblk_f6e034ff0b6d9f2e"
+              },
+              {
+                "option_name": "김도읍",
+                "scenario_key": "h2h-전재수-김도읍",
+                "value_mid": 33.2,
+                "poll_block_id": "pblk_f6e034ff0b6d9f2e"
+              },
+              {
+                "option_name": "전재수",
+                "scenario_key": "multi-전재수",
+                "value_mid": 26.8,
+                "poll_block_id": "pblk_f6e034ff0b6d9f2e"
+              },
+              {
+                "option_name": "전재수",
+                "scenario_key": "h2h-전재수-박형준",
+                "value_mid": 43.4,
+                "poll_block_id": "pblk_f6e034ff0b6d9f2e"
+              }
+            ]
+          }
+        ]
+      },
+      "dead_letters": []
+    },
+    {
+      "observation_key": "live30d-v2-18-obs_8dc5d149038ab97c",
+      "region_code": "28-450",
+      "article_url": "https://news.google.com/rss/articles/CBMicEFVX3lxTE9TYVNqLXN0aW1lemlIME05b25KX09HNFYydlg1Zk9iaUgyZ2kwcG12b0tTVHRtSEZNVTBoRm1xYS1zMlVCQzZaSnVYZjJlWjNZSkI2cUZlUVZ4TlY1M1BJUUFLd09UV2hiV0taaERtbi0?live_cov_v2=18",
+      "article_title": "[여론조사] 인천시장 양자대결 박찬대 51.2%, 유정복 37.1% 오차 밖 앞서",
+      "before": {
+        "observation_poll_block_id": null,
+        "option_count": 2,
+        "option_scenario_keys": [
+          "default"
+        ]
+      },
+      "after": {
+        "observation_count": 1,
+        "candidate_option_count": 2,
+        "poll_block_count": 1,
+        "observations": [
+          {
+            "id": "obs_1b52eaaa1ad7f4bf",
+            "poll_block_id": "pblk_9afe86107f0a0ec1",
+            "pollster": "미상조사기관",
+            "survey_start_date": null,
+            "survey_end_date": "2026-02-04",
+            "sample_size": null,
+            "scenario_keys": [
+              "default"
+            ],
+            "candidate_values": [
+              {
+                "option_name": "박찬대",
+                "scenario_key": "default",
+                "value_mid": 51.2,
+                "poll_block_id": "pblk_9afe86107f0a0ec1"
+              },
+              {
+                "option_name": "유정복",
+                "scenario_key": "default",
+                "value_mid": 37.1,
+                "poll_block_id": "pblk_9afe86107f0a0ec1"
+              }
+            ]
+          }
+        ]
+      },
+      "dead_letters": []
+    }
+  ]
+}

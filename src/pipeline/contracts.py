@@ -60,6 +60,7 @@ POLL_OBSERVATION_SCHEMA: dict[str, Any] = {
     "required": [
         "id",
         "article_id",
+        "poll_block_id",
         "region_code",
         "office_type",
         "matchup_id",
@@ -70,6 +71,7 @@ POLL_OBSERVATION_SCHEMA: dict[str, Any] = {
         "article_id": {"type": "string"},
         "survey_name": {"type": ["string", "null"]},
         "pollster": {"type": ["string", "null"]},
+        "poll_block_id": {"type": "string"},
         "survey_start_date": {"type": ["string", "null"], "format": "date"},
         "survey_end_date": {"type": ["string", "null"], "format": "date"},
         "sample_size": {"type": ["integer", "null"]},
@@ -110,6 +112,7 @@ POLL_OPTION_SCHEMA: dict[str, Any] = {
     "required": [
         "id",
         "observation_id",
+        "poll_block_id",
         "option_type",
         "option_name",
         "candidate_id",
@@ -123,6 +126,7 @@ POLL_OPTION_SCHEMA: dict[str, Any] = {
     "properties": {
         "id": {"type": "string"},
         "observation_id": {"type": "string"},
+        "poll_block_id": {"type": "string"},
         "option_type": {"type": "string"},
         "option_name": {"type": "string"},
         "candidate_id": {"type": "string"},
@@ -198,6 +202,7 @@ class Article:
 class PollObservation:
     id: str
     article_id: str
+    poll_block_id: str
     survey_name: str | None
     pollster: str | None
     survey_start_date: str | None
@@ -236,6 +241,7 @@ class PollObservation:
 class PollOption:
     id: str
     observation_id: str
+    poll_block_id: str
     option_type: str
     option_name: str
     candidate_id: str

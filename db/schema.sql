@@ -217,6 +217,7 @@ CREATE TABLE IF NOT EXISTS poll_observations (
     article_id BIGINT NOT NULL REFERENCES articles(id) ON DELETE CASCADE,
     survey_name TEXT NOT NULL,
     pollster TEXT NOT NULL,
+    poll_block_id TEXT NULL,
     survey_start_date DATE NULL,
     survey_end_date DATE NULL,
     confidence_level FLOAT NULL,
@@ -252,6 +253,7 @@ ALTER TABLE poll_observations
     ADD COLUMN IF NOT EXISTS confidence_level FLOAT NULL,
     ADD COLUMN IF NOT EXISTS sponsor TEXT NULL,
     ADD COLUMN IF NOT EXISTS method TEXT NULL,
+    ADD COLUMN IF NOT EXISTS poll_block_id TEXT NULL,
     ADD COLUMN IF NOT EXISTS audience_scope TEXT NULL,
     ADD COLUMN IF NOT EXISTS audience_region_code TEXT NULL,
     ADD COLUMN IF NOT EXISTS sampling_population_text TEXT NULL,
@@ -369,6 +371,7 @@ $$;
 CREATE TABLE IF NOT EXISTS poll_options (
     id BIGSERIAL PRIMARY KEY,
     observation_id BIGINT NOT NULL REFERENCES poll_observations(id) ON DELETE CASCADE,
+    poll_block_id TEXT NULL,
     option_type TEXT NOT NULL,
     option_name TEXT NOT NULL,
     candidate_id TEXT NULL,
@@ -397,6 +400,7 @@ CREATE TABLE IF NOT EXISTS poll_options (
 );
 
 ALTER TABLE poll_options
+    ADD COLUMN IF NOT EXISTS poll_block_id TEXT NULL,
     ADD COLUMN IF NOT EXISTS candidate_id TEXT NULL,
     ADD COLUMN IF NOT EXISTS party_name TEXT NULL,
     ADD COLUMN IF NOT EXISTS scenario_key TEXT NOT NULL DEFAULT 'default',
@@ -523,11 +527,13 @@ CREATE INDEX IF NOT EXISTS idx_poll_observations_verified_region_office_date
     ON poll_observations (region_code, office_type, survey_end_date DESC, id DESC)
     WHERE verified = TRUE;
 CREATE INDEX IF NOT EXISTS idx_poll_observations_fingerprint ON poll_observations (poll_fingerprint);
+CREATE INDEX IF NOT EXISTS idx_poll_observations_poll_block ON poll_observations (poll_block_id);
 CREATE INDEX IF NOT EXISTS idx_poll_observations_source_channels ON poll_observations USING GIN (source_channels);
 CREATE INDEX IF NOT EXISTS idx_candidates_source_channels ON candidates USING GIN (source_channels);
 CREATE INDEX IF NOT EXISTS idx_elections_region_active ON elections (region_code, is_active, office_type);
 CREATE INDEX IF NOT EXISTS idx_elections_latest_matchup ON elections (latest_matchup_id);
 CREATE INDEX IF NOT EXISTS idx_poll_options_type ON poll_options (option_type);
+CREATE INDEX IF NOT EXISTS idx_poll_options_poll_block ON poll_options (poll_block_id);
 CREATE INDEX IF NOT EXISTS idx_poll_options_observation_value
     ON poll_options (observation_id, value_mid DESC, option_name);
 CREATE INDEX IF NOT EXISTS idx_poll_options_summary_type_observation

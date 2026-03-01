@@ -50,6 +50,7 @@ def build_poll_fingerprint(observation: dict) -> str:
         _norm_text(observation.get("region_code") or observation.get("region_text")),
         _norm_int(observation.get("sample_size")),
         _norm_text(observation.get("method")),
+        _norm_text(observation.get("poll_block_id")),
     ]
     base = "|".join(fields)
     return sha256(base.encode("utf-8")).hexdigest()
@@ -124,7 +125,7 @@ def merge_observation_by_priority(existing: dict, incoming: dict) -> dict:
     incoming_pri = SOURCE_PRIORITY.get(incoming_source, 1)
 
     core_conflicts: list[str] = []
-    for field in ("region_code", "office_type", "survey_start_date", "survey_end_date", "sample_size"):
+    for field in ("region_code", "office_type", "survey_start_date", "survey_end_date", "sample_size", "poll_block_id"):
         old = _normalize_core_field(field, existing.get(field))
         new = _normalize_core_field(field, incoming.get(field))
         if old is not None and new is not None and old != new:
@@ -147,6 +148,7 @@ def merge_observation_by_priority(existing: dict, incoming: dict) -> dict:
         "region_code",
         "office_type",
         "matchup_id",
+        "poll_block_id",
         "audience_scope",
         "audience_region_code",
         "sampling_population_text",

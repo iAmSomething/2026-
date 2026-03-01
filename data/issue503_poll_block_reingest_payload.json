@@ -1,0 +1,319 @@
+{
+  "run_type": "collector",
+  "extractor_version": "collector-v1",
+  "llm_model": null,
+  "records": [
+    {
+      "article": {
+        "url": "https://demo.local/poll/match/busan",
+        "title": "부산시장 가상대결",
+        "publisher": "데모뉴스",
+        "published_at": "2026-02-14T09:00:00+09:00",
+        "raw_text": "부산시장 가상대결",
+        "raw_hash": "hash-busan"
+      },
+      "region": {
+        "region_code": "26-000",
+        "sido_name": "부산광역시",
+        "sigungu_name": "전체",
+        "admin_level": "sido",
+        "parent_region_code": null
+      },
+      "candidates": [],
+      "observation": {
+        "observation_key": "obs_a818cd1a6eab15e4",
+        "poll_block_id": "pblk_08f6dff86f808f03",
+        "survey_name": "부산시장 가상대결",
+        "pollster": "미상조사기관",
+        "survey_start_date": null,
+        "survey_end_date": "2026-02-14",
+        "sample_size": null,
+        "response_rate": null,
+        "margin_of_error": null,
+        "sponsor": null,
+        "method": null,
+        "region_code": "26-000",
+        "office_type": "광역자치단체장",
+        "matchup_id": "20260603|광역자치단체장|26-000",
+        "audience_scope": null,
+        "audience_region_code": null,
+        "sampling_population_text": null,
+        "legal_completeness_score": null,
+        "legal_filled_count": null,
+        "legal_required_count": null,
+        "date_resolution": "exact",
+        "date_inference_mode": "published_at_exact",
+        "date_inference_confidence": 1.0,
+        "poll_fingerprint": null,
+        "source_channel": "article",
+        "source_channels": [
+          "article"
+        ],
+        "verified": false,
+        "source_grade": "C"
+      },
+      "options": []
+    },
+    {
+      "article": {
+        "url": "https://news.google.com/rss/articles/CBMibkFVX3lxTE9tU29Yc0dzaDhTR3BHUFNsaTdhb3h6N3Z2b3M4eEFxVHBtZzYwU3BrZV9DdEdNSWoxZV8wWk1lanEwRk4yLTJucFpwNnBZQ3hZdUNfNFNWOG1SVGdRc21qZjVVY3p0UFR2NHoycjRR0gFyQVVfeXFMUDc1RnNZaFhKeVE1NXMwbUtWSDJNMmYxWWJGY09Ea1Bxb191UlRiblBVWXhwRzNRT1JIWFRuME5DeF9YTjBjRHNOOE1WMFRWVWN5Nlo3U3d2OUVlX2ZzSVJ3bTRTQ3ZjWGRGdExlQTdnV2x3?live_cov_v2=12",
+        "title": "[2026지방선거] 부산시장, 전재수 43.4-박형준 32.3%, 전재수 43.8%-김도읍33.2%...다자대결 전재수26.8% 선두",
+        "publisher": "폴리뉴스 Polinews",
+        "published_at": "2026-02-10T12:00:00+09:00",
+        "raw_text": "[2026지방선거] 부산시장, 전재수 43.4-박형준 32.3%, 전재수 43.8%-김도읍33.2%...다자대결 전재수26.8% 선두 - 폴리뉴스 Polinews [2026지방선거] 부산시장, 전재수 43.4-박형준 32.3%, 전재수 43.8%-김도읍33.2%...다자대결 전재수26.8% 선두 &nbsp;&nbsp; 폴리뉴스 Polinews 지방선거 부산 기장군수 여론조사",
+        "raw_hash": "raw_4cd6b2e755f5deb4"
+      },
+      "region": {
+        "region_code": "26-000",
+        "sido_name": "부산광역시",
+        "sigungu_name": "전체",
+        "admin_level": "sido",
+        "parent_region_code": null
+      },
+      "candidates": [
+        {
+          "candidate_id": "cand:박형준",
+          "name_ko": "박형준",
+          "party_name": null,
+          "gender": null,
+          "birth_date": null,
+          "job": null,
+          "career_summary": null,
+          "election_history": null
+        },
+        {
+          "candidate_id": "cand:전재수",
+          "name_ko": "전재수",
+          "party_name": null,
+          "gender": null,
+          "birth_date": null,
+          "job": null,
+          "career_summary": null,
+          "election_history": null
+        },
+        {
+          "candidate_id": "cand:김도읍",
+          "name_ko": "김도읍",
+          "party_name": null,
+          "gender": null,
+          "birth_date": null,
+          "job": null,
+          "career_summary": null,
+          "election_history": null
+        }
+      ],
+      "observation": {
+        "observation_key": "obs_b9a64e99d8c97603",
+        "poll_block_id": "pblk_f6e034ff0b6d9f2e",
+        "survey_name": "[2026지방선거] 부산시장, 전재수 43.4-박형준 32.3%, 전재수 43.8%-김도읍33.2%...다자대결 전재수26.8% 선두",
+        "pollster": "미상조사기관",
+        "survey_start_date": null,
+        "survey_end_date": "2026-02-10",
+        "sample_size": null,
+        "response_rate": null,
+        "margin_of_error": null,
+        "sponsor": null,
+        "method": null,
+        "region_code": "26-000",
+        "office_type": "광역자치단체장",
+        "matchup_id": "20260603|광역자치단체장|26-000",
+        "audience_scope": null,
+        "audience_region_code": null,
+        "sampling_population_text": null,
+        "legal_completeness_score": null,
+        "legal_filled_count": null,
+        "legal_required_count": null,
+        "date_resolution": "exact",
+        "date_inference_mode": "published_at_exact",
+        "date_inference_confidence": 1.0,
+        "poll_fingerprint": null,
+        "source_channel": "article",
+        "source_channels": [
+          "article"
+        ],
+        "verified": false,
+        "source_grade": "C"
+      },
+      "options": [
+        {
+          "option_type": "candidate_matchup",
+          "option_name": "박형준",
+          "poll_block_id": "pblk_f6e034ff0b6d9f2e",
+          "candidate_id": "cand:박형준",
+          "party_name": null,
+          "scenario_key": "h2h-전재수-박형준",
+          "scenario_type": "head_to_head",
+          "scenario_title": "전재수 vs 박형준",
+          "value_raw": "32.3%",
+          "value_min": 32.3,
+          "value_max": 32.3,
+          "value_mid": 32.3,
+          "is_missing": false
+        },
+        {
+          "option_type": "candidate_matchup",
+          "option_name": "전재수",
+          "poll_block_id": "pblk_f6e034ff0b6d9f2e",
+          "candidate_id": "cand:전재수",
+          "party_name": null,
+          "scenario_key": "h2h-전재수-김도읍",
+          "scenario_type": "head_to_head",
+          "scenario_title": "전재수 vs 김도읍",
+          "value_raw": "43.8%",
+          "value_min": 43.8,
+          "value_max": 43.8,
+          "value_mid": 43.8,
+          "is_missing": false
+        },
+        {
+          "option_type": "candidate_matchup",
+          "option_name": "김도읍",
+          "poll_block_id": "pblk_f6e034ff0b6d9f2e",
+          "candidate_id": "cand:김도읍",
+          "party_name": null,
+          "scenario_key": "h2h-전재수-김도읍",
+          "scenario_type": "head_to_head",
+          "scenario_title": "전재수 vs 김도읍",
+          "value_raw": "33.2%",
+          "value_min": 33.2,
+          "value_max": 33.2,
+          "value_mid": 33.2,
+          "is_missing": false
+        },
+        {
+          "option_type": "candidate_matchup",
+          "option_name": "전재수",
+          "poll_block_id": "pblk_f6e034ff0b6d9f2e",
+          "candidate_id": "cand:전재수",
+          "party_name": null,
+          "scenario_key": "multi-전재수",
+          "scenario_type": "multi_candidate",
+          "scenario_title": "다자대결",
+          "value_raw": "26.8%",
+          "value_min": 26.8,
+          "value_max": 26.8,
+          "value_mid": 26.8,
+          "is_missing": false
+        },
+        {
+          "option_type": "candidate_matchup",
+          "option_name": "전재수",
+          "poll_block_id": "pblk_f6e034ff0b6d9f2e",
+          "candidate_id": "cand:전재수",
+          "party_name": null,
+          "scenario_key": "h2h-전재수-박형준",
+          "scenario_type": "head_to_head",
+          "scenario_title": "전재수 vs 박형준",
+          "value_raw": "43.4%",
+          "value_min": 43.4,
+          "value_max": 43.4,
+          "value_mid": 43.4,
+          "is_missing": false
+        }
+      ]
+    },
+    {
+      "article": {
+        "url": "https://news.google.com/rss/articles/CBMicEFVX3lxTE9TYVNqLXN0aW1lemlIME05b25KX09HNFYydlg1Zk9iaUgyZ2kwcG12b0tTVHRtSEZNVTBoRm1xYS1zMlVCQzZaSnVYZjJlWjNZSkI2cUZlUVZ4TlY1M1BJUUFLd09UV2hiV0taaERtbi0?live_cov_v2=18",
+        "title": "[여론조사] 인천시장 양자대결 박찬대 51.2%, 유정복 37.1% 오차 밖 앞서",
+        "publisher": "인천투데이",
+        "published_at": "2026-02-04T12:00:00+09:00",
+        "raw_text": "[여론조사] 인천시장 양자대결 박찬대 51.2%, 유정복 37.1% 오차 밖 앞서 - 인천투데이 [여론조사] 인천시장 양자대결 박찬대 51.2%, 유정복 37.1% 오차 밖 앞서 &nbsp;&nbsp; 인천투데이 지방선거 인천 연수구청장 여론조사",
+        "raw_hash": "raw_b0e1a45d89cbf8ad"
+      },
+      "region": {
+        "region_code": "28-000",
+        "sido_name": "인천광역시",
+        "sigungu_name": "전체",
+        "admin_level": "sido",
+        "parent_region_code": null
+      },
+      "candidates": [
+        {
+          "candidate_id": "cand:박찬대",
+          "name_ko": "박찬대",
+          "party_name": null,
+          "gender": null,
+          "birth_date": null,
+          "job": null,
+          "career_summary": null,
+          "election_history": null
+        },
+        {
+          "candidate_id": "cand:유정복",
+          "name_ko": "유정복",
+          "party_name": null,
+          "gender": null,
+          "birth_date": null,
+          "job": null,
+          "career_summary": null,
+          "election_history": null
+        }
+      ],
+      "observation": {
+        "observation_key": "obs_1b52eaaa1ad7f4bf",
+        "poll_block_id": "pblk_9afe86107f0a0ec1",
+        "survey_name": "[여론조사] 인천시장 양자대결 박찬대 51.2%, 유정복 37.1% 오차 밖 앞서",
+        "pollster": "미상조사기관",
+        "survey_start_date": null,
+        "survey_end_date": "2026-02-04",
+        "sample_size": null,
+        "response_rate": null,
+        "margin_of_error": null,
+        "sponsor": null,
+        "method": null,
+        "region_code": "28-000",
+        "office_type": "광역자치단체장",
+        "matchup_id": "20260603|광역자치단체장|28-000",
+        "audience_scope": null,
+        "audience_region_code": null,
+        "sampling_population_text": null,
+        "legal_completeness_score": null,
+        "legal_filled_count": null,
+        "legal_required_count": null,
+        "date_resolution": "exact",
+        "date_inference_mode": "published_at_exact",
+        "date_inference_confidence": 1.0,
+        "poll_fingerprint": null,
+        "source_channel": "article",
+        "source_channels": [
+          "article"
+        ],
+        "verified": false,
+        "source_grade": "C"
+      },
+      "options": [
+        {
+          "option_type": "candidate_matchup",
+          "option_name": "박찬대",
+          "poll_block_id": "pblk_9afe86107f0a0ec1",
+          "candidate_id": "cand:박찬대",
+          "party_name": null,
+          "scenario_key": "default",
+          "scenario_type": null,
+          "scenario_title": null,
+          "value_raw": "51.2%",
+          "value_min": 51.2,
+          "value_max": 51.2,
+          "value_mid": 51.2,
+          "is_missing": false
+        },
+        {
+          "option_type": "candidate_matchup",
+          "option_name": "유정복",
+          "poll_block_id": "pblk_9afe86107f0a0ec1",
+          "candidate_id": "cand:유정복",
+          "party_name": null,
+          "scenario_key": "default",
+          "scenario_type": null,
+          "scenario_title": null,
+          "value_raw": "37.1%",
+          "value_min": 37.1,
+          "value_max": 37.1,
+          "value_mid": 37.1,
+          "is_missing": false
+        }
+      ]
+    }
+  ]
+}

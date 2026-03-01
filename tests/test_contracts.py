@@ -34,6 +34,8 @@ class ContractTest(unittest.TestCase):
         self.assertIn("scenario_key", POLL_OPTION_SCHEMA["properties"])
         self.assertIn("scenario_type", POLL_OPTION_SCHEMA["properties"])
         self.assertIn("scenario_title", POLL_OPTION_SCHEMA["properties"])
+        self.assertIn("poll_block_id", POLL_OBSERVATION_SCHEMA["required"])
+        self.assertIn("poll_block_id", POLL_OPTION_SCHEMA["required"])
 
     def test_normalization_contract_single(self) -> None:
         out = normalize_value("38%")
