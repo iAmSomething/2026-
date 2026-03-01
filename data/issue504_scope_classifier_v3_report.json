@@ -1,0 +1,97 @@
+{
+  "issue": 504,
+  "algorithm_version": "scope_classifier_v3",
+  "input_path": "data/collector_live_news_v1_payload.json",
+  "trace_sample_count": 20,
+  "trace_limit": 20,
+  "representative_case_count": 5,
+  "representative_pass_count": 5,
+  "acceptance_checks": {
+    "trace_sample_count_ge_20": true,
+    "representative_cases_all_pass": true,
+    "metro_examples_fixed": true,
+    "local_leak_zero_for_28_450_26_710": true
+  },
+  "representative_results": [
+    {
+      "case_id": "metro-busan-mayor",
+      "expected_region_code": "26-000",
+      "expected_office_type": "광역자치단체장",
+      "actual_region_code": "26-000",
+      "actual_office_type": "광역자치단체장",
+      "pass": true,
+      "decision_source": "question_text_or_official_code",
+      "scope_resolution": {
+        "inferred_scope": "local",
+        "inferred_region_code": "26-710",
+        "confidence": 0.92,
+        "hard_fail_reason": null,
+        "low_confidence_reason": "AUDIENCE_SCOPE_CONFLICT_POPULATION declared=regional inferred=local confidence=0.92 sampling_population=부산 기장군 거주 만 18세 이상 override=declared_scope_priority"
+      }
+    },
+    {
+      "case_id": "metro-gyeongnam-governor",
+      "expected_region_code": "48-000",
+      "expected_office_type": "광역자치단체장",
+      "actual_region_code": "48-000",
+      "actual_office_type": "광역자치단체장",
+      "pass": true,
+      "decision_source": "question_text_or_official_code",
+      "scope_resolution": {
+        "inferred_scope": "regional",
+        "inferred_region_code": "48-000",
+        "confidence": 0.92,
+        "hard_fail_reason": null,
+        "low_confidence_reason": null
+      }
+    },
+    {
+      "case_id": "metro-incheon-mayor",
+      "expected_region_code": "28-000",
+      "expected_office_type": "광역자치단체장",
+      "actual_region_code": "28-000",
+      "actual_office_type": "광역자치단체장",
+      "pass": true,
+      "decision_source": "question_text_or_official_code",
+      "scope_resolution": {
+        "inferred_scope": "local",
+        "inferred_region_code": "28-450",
+        "confidence": 0.92,
+        "hard_fail_reason": null,
+        "low_confidence_reason": "AUDIENCE_SCOPE_CONFLICT_POPULATION declared=regional inferred=local confidence=0.92 sampling_population=인천 연수구 거주 만 18세 이상 override=declared_scope_priority"
+      }
+    },
+    {
+      "case_id": "local-yeonsu-gu",
+      "expected_region_code": "28-450",
+      "expected_office_type": "기초자치단체장",
+      "actual_region_code": "28-450",
+      "actual_office_type": "기초자치단체장",
+      "pass": true,
+      "decision_source": "question_text_or_official_code",
+      "scope_resolution": {
+        "inferred_scope": "local",
+        "inferred_region_code": "28-450",
+        "confidence": 0.92,
+        "hard_fail_reason": null,
+        "low_confidence_reason": null
+      }
+    },
+    {
+      "case_id": "local-gijang-gun",
+      "expected_region_code": "26-710",
+      "expected_office_type": "기초자치단체장",
+      "actual_region_code": "26-710",
+      "actual_office_type": "기초자치단체장",
+      "pass": true,
+      "decision_source": "question_text_or_official_code",
+      "scope_resolution": {
+        "inferred_scope": "local",
+        "inferred_region_code": "26-710",
+        "confidence": 0.92,
+        "hard_fail_reason": null,
+        "low_confidence_reason": null
+      }
+    }
+  ]
+}

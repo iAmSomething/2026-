@@ -142,7 +142,9 @@ SORTED_POPULATION_REGION_ALIASES = sorted(
     key=lambda item: len(item[0]),
     reverse=True,
 )
-SURVEY_NAME_OFFICE_RE = re.compile(r"([가-힣]{2,10})(시장|도지사|지사|교육감)")
+SURVEY_NAME_OFFICE_RE = re.compile(r"([가-힣]{2,10})(시장|도지사|지사|교육감|구청장|군수)")
+REGIONAL_OFFICE_TYPES = ("광역자치단체장", "교육감", "광역의회")
+LOCAL_OFFICE_TYPES = ("기초자치단체장", "기초의회")
 
 SCOPE_HARDGUARD_OFFICE_TYPE = "광역자치단체장"
 SCOPE_HARDGUARD_NEEDLES: tuple[tuple[str, str], ...] = (
@@ -251,6 +253,10 @@ def _office_region_from_survey_name(survey_name: str) -> tuple[str, str] | None:
                 f"{prefix}특별자치도",
                 prefix,
             ]
+        elif office_token == "구청장":
+            alias_candidates = [f"{prefix}구", prefix]
+        elif office_token == "군수":
+            alias_candidates = [f"{prefix}군", prefix]
 
         region_code = None
         for alias in alias_candidates:
@@ -271,6 +277,10 @@ def _office_region_from_survey_name(survey_name: str) -> tuple[str, str] | None:
             return _to_sido_region_code(region_code) or region_code, "광역자치단체장"
         if office_token == "교육감":
             return _to_sido_region_code(region_code) or region_code, "교육감"
+        if office_token in {"구청장", "군수"}:
+            if region_code.endswith("-000"):
+                continue
+            return region_code, "기초자치단체장"
     return None
 
 
@@ -278,22 +288,159 @@ def _apply_survey_name_matchup_correction(
     *,
     observation_payload: dict[str, Any],
     article_title: str | None,
-) -> None:
+) -> bool:
     survey_name = str(observation_payload.get("survey_name") or "").strip()
     title_text = str(article_title or "").strip()
     inferred = _office_region_from_survey_name(f"{survey_name} {title_text}".strip())
     if not inferred:
-        return
+        return False
 
     region_code, office_type = inferred
     election_id = _infer_election_id(str(observation_payload.get("matchup_id") or "2026_local"))
-    observation_payload["region_code"] = region_code
-    observation_payload["office_type"] = office_type
-    observation_payload["matchup_id"] = f"{election_id}|{office_type}|{region_code}"
+    changed = False
+
+    if _normalize_region_code(observation_payload.get("region_code")) != region_code:
+        observation_payload["region_code"] = region_code
+        changed = True
+    if str(observation_payload.get("office_type") or "") != office_type:
+        observation_payload["office_type"] = office_type
+        changed = True
+    rebuilt_matchup_id = f"{election_id}|{office_type}|{region_code}"
+    if str(observation_payload.get("matchup_id") or "") != rebuilt_matchup_id:
+        observation_payload["matchup_id"] = rebuilt_matchup_id
+        changed = True
 
     current_scope = observation_payload.get("audience_scope")
+    fallback_scope = "regional" if region_code.endswith("-000") else "local"
     if current_scope not in {"national", "regional", "local"}:
-        observation_payload["audience_scope"] = "regional" if region_code.endswith("-000") else "local"
+        observation_payload["audience_scope"] = fallback_scope
+        changed = True
+    if fallback_scope != "national":
+        current_audience_region = _normalize_region_code(observation_payload.get("audience_region_code"))
+        if current_audience_region is None:
+            observation_payload["audience_region_code"] = region_code
+            changed = True
+    return changed
+
+
+def _apply_scope_region_conflict_resolution(
+    *,
+    observation_payload: dict[str, Any],
+    inferred_region_code: str | None,
+) -> bool:
+    office_type = str(observation_payload.get("office_type") or "")
+    observation_region_code = _normalize_region_code(observation_payload.get("region_code"))
+    inferred_region_code = _normalize_region_code(inferred_region_code)
+    if not observation_region_code or not inferred_region_code:
+        return False
+
+    candidates = [observation_region_code, inferred_region_code]
+    has_sido = any(code.endswith("-000") for code in candidates)
+    has_sigungu = any(not code.endswith("-000") for code in candidates)
+    if not (has_sido and has_sigungu):
+        return False
+
+    election_id = _infer_election_id(str(observation_payload.get("matchup_id") or "2026_local"))
+    changed = False
+    if office_type in REGIONAL_OFFICE_TYPES:
+        selected_region_code = next((code for code in candidates if code.endswith("-000")), _to_sido_region_code(observation_region_code))
+        if selected_region_code and observation_region_code != selected_region_code:
+            observation_payload["region_code"] = selected_region_code
+            changed = True
+        if observation_payload.get("audience_scope") != "regional":
+            observation_payload["audience_scope"] = "regional"
+            changed = True
+        if observation_payload.get("audience_region_code") != selected_region_code:
+            observation_payload["audience_region_code"] = selected_region_code
+            changed = True
+        rebuilt_matchup_id = f"{election_id}|{office_type}|{selected_region_code}"
+        if str(observation_payload.get("matchup_id") or "") != rebuilt_matchup_id:
+            observation_payload["matchup_id"] = rebuilt_matchup_id
+            changed = True
+        return changed
+
+    if office_type in LOCAL_OFFICE_TYPES:
+        selected_region_code = next((code for code in candidates if not code.endswith("-000")), observation_region_code)
+        if observation_region_code != selected_region_code:
+            observation_payload["region_code"] = selected_region_code
+            changed = True
+        if observation_payload.get("audience_scope") != "local":
+            observation_payload["audience_scope"] = "local"
+            changed = True
+        if observation_payload.get("audience_region_code") != selected_region_code:
+            observation_payload["audience_region_code"] = selected_region_code
+            changed = True
+        rebuilt_matchup_id = f"{election_id}|{office_type}|{selected_region_code}"
+        if str(observation_payload.get("matchup_id") or "") != rebuilt_matchup_id:
+            observation_payload["matchup_id"] = rebuilt_matchup_id
+            changed = True
+    return changed
+
+
+def _sync_region_payload_from_observation(
+    *,
+    region_payload: dict[str, Any] | None,
+    observation_payload: dict[str, Any],
+) -> dict[str, Any] | None:
+    if region_payload is None:
+        return None
+    region_code = _normalize_region_code(observation_payload.get("region_code"))
+    if not region_code:
+        return region_payload
+
+    updated = dict(region_payload)
+    updated["region_code"] = region_code
+    if region_code.endswith("-000"):
+        updated["sido_name"] = SCOPE_HARDGUARD_SIDO_NAME_BY_CODE.get(region_code, updated.get("sido_name"))
+        updated["sigungu_name"] = "전체"
+        updated["admin_level"] = "sido"
+        updated["parent_region_code"] = None
+    elif updated.get("admin_level") == "sido":
+        updated["admin_level"] = "sigungu"
+    return updated
+
+
+def _apply_article_scope_hint_fallback(
+    *,
+    observation_payload: dict[str, Any],
+    region_payload: dict[str, Any] | None,
+    article_title: str | None,
+    article_raw_text: str | None,
+) -> tuple[bool, str | None]:
+    resolved = _resolve_scope_hardguard_region_code(article_title, article_raw_text)
+    if resolved is None:
+        return False, None
+
+    region_code, needle = resolved
+    office_type = SCOPE_HARDGUARD_OFFICE_TYPE
+    election_id = _infer_election_id(str(observation_payload.get("matchup_id") or "2026_local"))
+    changed = False
+
+    if _normalize_region_code(observation_payload.get("region_code")) != region_code:
+        observation_payload["region_code"] = region_code
+        changed = True
+    if str(observation_payload.get("office_type") or "") != office_type:
+        observation_payload["office_type"] = office_type
+        changed = True
+    rebuilt_matchup_id = f"{election_id}|{office_type}|{region_code}"
+    if str(observation_payload.get("matchup_id") or "") != rebuilt_matchup_id:
+        observation_payload["matchup_id"] = rebuilt_matchup_id
+        changed = True
+    if observation_payload.get("audience_scope") != "regional":
+        observation_payload["audience_scope"] = "regional"
+        changed = True
+    if _normalize_region_code(observation_payload.get("audience_region_code")) != region_code:
+        observation_payload["audience_region_code"] = region_code
+        changed = True
+
+    if region_payload is not None:
+        region_payload["region_code"] = region_code
+        region_payload["sido_name"] = SCOPE_HARDGUARD_SIDO_NAME_BY_CODE.get(region_code, region_payload.get("sido_name"))
+        region_payload["sigungu_name"] = "전체"
+        region_payload["admin_level"] = "sido"
+        region_payload["parent_region_code"] = None
+
+    return changed, needle
 
 
 def _normalize_region_code(value: Any) -> str | None:
@@ -326,8 +473,6 @@ def _resolve_scope_hardguard_region_code(*texts: Any) -> tuple[str, str] | None:
 
 def _apply_scope_hardguard(record) -> tuple[bool, str | None]:
     resolved = _resolve_scope_hardguard_region_code(
-        record.article.title,
-        record.article.raw_text,
         record.observation.survey_name,
     )
     if resolved is None:
@@ -438,7 +583,11 @@ def _infer_scope_from_sampling_population(
     return top_scope, inferred_region_code, confidence
 
 
-def _resolve_observation_scope(observation_payload: dict[str, Any]) -> ScopeInferenceResolution:
+def _resolve_observation_scope(
+    observation_payload: dict[str, Any],
+    *,
+    prefer_declared_scope: bool = False,
+) -> ScopeInferenceResolution:
     explicit_scope = observation_payload.get("audience_scope")
     explicit_region_code = _normalize_region_code(observation_payload.get("audience_region_code"))
     observation_region_code = _normalize_region_code(observation_payload.get("region_code"))
@@ -447,25 +596,28 @@ def _resolve_observation_scope(observation_payload: dict[str, Any]) -> ScopeInfe
         sampling_population_text=observation_payload.get("sampling_population_text")
     )
 
+    population_conflict_reason = None
     if (
         explicit_scope in {"national", "regional", "local"}
         and inferred_scope in {"national", "regional", "local"}
         and explicit_scope != inferred_scope
         and confidence >= SCOPE_INFERENCE_CONFLICT_THRESHOLD
     ):
-        return ScopeInferenceResolution(
-            scope=explicit_scope,
-            audience_region_code=explicit_region_code,
-            inferred_scope=inferred_scope,
-            inferred_region_code=inferred_region_code,
-            confidence=confidence,
-            hard_fail_reason=(
-                "AUDIENCE_SCOPE_CONFLICT_POPULATION "
-                f"declared={explicit_scope} inferred={inferred_scope} "
-                f"confidence={confidence:.2f} sampling_population={observation_payload.get('sampling_population_text')}"
-            ),
-            low_confidence_reason=None,
+        population_conflict_reason = (
+            "AUDIENCE_SCOPE_CONFLICT_POPULATION "
+            f"declared={explicit_scope} inferred={inferred_scope} "
+            f"confidence={confidence:.2f} sampling_population={observation_payload.get('sampling_population_text')}"
         )
+        if not prefer_declared_scope:
+            return ScopeInferenceResolution(
+                scope=explicit_scope,
+                audience_region_code=explicit_region_code,
+                inferred_scope=inferred_scope,
+                inferred_region_code=inferred_region_code,
+                confidence=confidence,
+                hard_fail_reason=population_conflict_reason,
+                low_confidence_reason=None,
+            )
 
     final_scope = explicit_scope if explicit_scope in {"national", "regional", "local"} else inferred_scope
     if final_scope is None and observation_region_code:
@@ -493,21 +645,27 @@ def _resolve_observation_scope(observation_payload: dict[str, Any]) -> ScopeInfe
         region_conflict = _normalize_region_code(explicit_region_code) != _normalize_region_code(inferred_region_code)
 
     if region_conflict and confidence >= SCOPE_INFERENCE_CONFLICT_THRESHOLD:
-        return ScopeInferenceResolution(
-            scope=final_scope,
-            audience_region_code=final_region_code,
-            inferred_scope=inferred_scope,
-            inferred_region_code=inferred_region_code,
-            confidence=confidence,
-            hard_fail_reason=(
-                "AUDIENCE_SCOPE_CONFLICT_REGION "
-                f"declared_region={explicit_region_code} inferred_region={inferred_region_code} "
-                f"scope={final_scope} confidence={confidence:.2f}"
-            ),
-            low_confidence_reason=None,
+        region_conflict_reason = (
+            "AUDIENCE_SCOPE_CONFLICT_REGION "
+            f"declared_region={explicit_region_code} inferred_region={inferred_region_code} "
+            f"scope={final_scope} confidence={confidence:.2f}"
         )
+        if not prefer_declared_scope:
+            return ScopeInferenceResolution(
+                scope=final_scope,
+                audience_region_code=final_region_code,
+                inferred_scope=inferred_scope,
+                inferred_region_code=inferred_region_code,
+                confidence=confidence,
+                hard_fail_reason=region_conflict_reason,
+                low_confidence_reason=None,
+            )
+        if population_conflict_reason is None:
+            population_conflict_reason = region_conflict_reason
 
     low_confidence_reason = None
+    if population_conflict_reason and prefer_declared_scope:
+        low_confidence_reason = f"{population_conflict_reason} override=declared_scope_priority"
     if (
         inferred_scope is not None
         and confidence < SCOPE_INFERENCE_LOW_CONFIDENCE_THRESHOLD
@@ -1618,15 +1776,16 @@ def ingest_payload(payload: IngestPayload, repo) -> IngestResult:
                     record.observation.matchup_id,
                 )
 
-            if record.region:
-                repo.upsert_region(record.region.model_dump())
-
             observation_payload = record.observation.model_dump()
-            _apply_survey_name_matchup_correction(
+            region_payload = record.region.model_dump() if record.region else None
+            question_signal_applied = _apply_survey_name_matchup_correction(
                 observation_payload=observation_payload,
-                article_title=getattr(record.article, "title", None),
+                article_title=None,
             )
-            scope_resolution = _resolve_observation_scope(observation_payload)
+            scope_resolution = _resolve_observation_scope(
+                observation_payload,
+                prefer_declared_scope=question_signal_applied,
+            )
             if scope_resolution.hard_fail_reason:
                 error_count += 1
                 try:
@@ -1642,6 +1801,37 @@ def ingest_payload(payload: IngestPayload, repo) -> IngestResult:
 
             observation_payload["audience_scope"] = scope_resolution.scope
             observation_payload["audience_region_code"] = scope_resolution.audience_region_code
+            _apply_scope_region_conflict_resolution(
+                observation_payload=observation_payload,
+                inferred_region_code=scope_resolution.inferred_region_code,
+            )
+
+            fallback_applied = False
+            fallback_keyword = None
+            if not question_signal_applied and scope_resolution.inferred_region_code is None:
+                fallback_applied, fallback_keyword = _apply_article_scope_hint_fallback(
+                    observation_payload=observation_payload,
+                    region_payload=region_payload,
+                    article_title=getattr(record.article, "title", None),
+                    article_raw_text=getattr(record.article, "raw_text", None),
+                )
+            if fallback_applied:
+                LOGGER.info(
+                    "collector scope title/body fallback applied: observation_key=%s keyword=%s office_type=%s region_code=%s matchup_id=%s",
+                    record.observation.observation_key,
+                    fallback_keyword,
+                    observation_payload.get("office_type"),
+                    observation_payload.get("region_code"),
+                    observation_payload.get("matchup_id"),
+                )
+
+            region_payload = _sync_region_payload_from_observation(
+                region_payload=region_payload,
+                observation_payload=observation_payload,
+            )
+            if region_payload:
+                repo.upsert_region(region_payload)
+
             repo.upsert_matchup(
                 {
                     "matchup_id": observation_payload["matchup_id"],

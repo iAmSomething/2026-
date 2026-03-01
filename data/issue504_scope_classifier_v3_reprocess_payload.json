@@ -1,0 +1,1496 @@
+{
+  "run_type": "manual",
+  "extractor_version": "issue504_scope_classifier_v3_reprocess",
+  "records": [
+    {
+      "article": {
+        "url": "https://news.google.com/rss/articles/CBMidEFVX3lxTE0tR240RHM3eWhpWHhBUmFDZzl1eUFIRjJZN0JGU185MXBaanpESmxwTUREYThKU3h6anpJRklRelduaHR1UjBLSFhlbDhoNkhJN284eS1RS2lmTm5wUTZXWXZLNFBNWm1vOW03YS1wTmdaRjB5",
+        "title": "부산시장여론조사 전재수 43.3% 또 앞서, 박형준은 34.6%",
+        "publisher": "오마이뉴스",
+        "published_at": null,
+        "raw_text": "부산시장여론조사 전재수 43.3% 또 앞서, 박형준은 34.6% - 오마이뉴스 부산시장여론조사 전재수 43.3% 또 앞서, 박형준은 34.6% &nbsp;&nbsp; 오마이뉴스 지방선거 부산시장 오차범위",
+        "raw_hash": "raw_321af2cbddc97dc8"
+      },
+      "region": {
+        "region_code": "26-000",
+        "sido_name": "부산광역시",
+        "sigungu_name": "전체",
+        "admin_level": "sido",
+        "parent_region_code": null
+      },
+      "candidates": [
+        {
+          "candidate_id": "cand:전재수",
+          "name_ko": "전재수",
+          "party_name": null,
+          "gender": null,
+          "birth_date": null,
+          "job": null,
+          "career_summary": null,
+          "election_history": null
+        },
+        {
+          "candidate_id": "cand:박형준은",
+          "name_ko": "박형준은",
+          "party_name": null,
+          "gender": null,
+          "birth_date": null,
+          "job": null,
+          "career_summary": null,
+          "election_history": null
+        }
+      ],
+      "observation": {
+        "observation_key": "obs_136dffa93edf3413",
+        "survey_name": "부산시장여론조사 전재수 43.3% 또 앞서, 박형준은 34.6%",
+        "pollster": "미상조사기관",
+        "survey_start_date": null,
+        "survey_end_date": null,
+        "sample_size": null,
+        "response_rate": null,
+        "margin_of_error": null,
+        "sponsor": null,
+        "method": null,
+        "region_code": "26-000",
+        "office_type": "광역자치단체장",
+        "matchup_id": "20260603|광역자치단체장|26-000",
+        "audience_scope": "regional",
+        "audience_region_code": "26-000",
+        "sampling_population_text": null,
+        "legal_completeness_score": 0.1667,
+        "legal_filled_count": 1,
+        "legal_required_count": 6,
+        "date_resolution": "missing",
+        "date_inference_mode": "published_at_missing",
+        "date_inference_confidence": 0.0,
+        "poll_fingerprint": null,
+        "source_channel": "article",
+        "source_channels": [
+          "article"
+        ],
+        "verified": false,
+        "source_grade": "C"
+      },
+      "options": [
+        {
+          "option_type": "candidate_matchup",
+          "option_name": "전재수",
+          "value_raw": "43.3%",
+          "value_min": 43.3,
+          "value_max": 43.3,
+          "value_mid": 43.3,
+          "is_missing": false
+        },
+        {
+          "option_type": "candidate_matchup",
+          "option_name": "박형준은",
+          "value_raw": "34.6%",
+          "value_min": 34.6,
+          "value_max": 34.6,
+          "value_mid": 34.6,
+          "is_missing": false
+        }
+      ]
+    },
+    {
+      "article": {
+        "url": "https://news.google.com/rss/articles/CBMiT0FVX3lxTE1TR0RwR3pLa1lTTXY0XzFmaF81SFA3NXhhcHNLWWhTczVrQUtJcDJtOUxaNGxYdnNueXRBU19VSTAzVGpselZMTXVHWUJfYTg",
+        "title": "부산시장 여론조사, 전재수 46.7% vs 박형준 38.4%…오차범위 밖 격차",
+        "publisher": "v.daum.net",
+        "published_at": null,
+        "raw_text": "부산시장 여론조사, 전재수 46.7% vs 박형준 38.4%…오차범위 밖 격차 - v.daum.net 부산시장 여론조사, 전재수 46.7% vs 박형준 38.4%…오차범위 밖 격차 &nbsp;&nbsp; v.daum.net 지방선거 부산시장 오차범위",
+        "raw_hash": "raw_ebc4aa67475cc50f"
+      },
+      "region": {
+        "region_code": "26-000",
+        "sido_name": "부산광역시",
+        "sigungu_name": "전체",
+        "admin_level": "sido",
+        "parent_region_code": null
+      },
+      "candidates": [
+        {
+          "candidate_id": "cand:전재수",
+          "name_ko": "전재수",
+          "party_name": null,
+          "gender": null,
+          "birth_date": null,
+          "job": null,
+          "career_summary": null,
+          "election_history": null
+        },
+        {
+          "candidate_id": "cand:박형준",
+          "name_ko": "박형준",
+          "party_name": null,
+          "gender": null,
+          "birth_date": null,
+          "job": null,
+          "career_summary": null,
+          "election_history": null
+        }
+      ],
+      "observation": {
+        "observation_key": "obs_444bed2fb448053a",
+        "survey_name": "부산시장 여론조사, 전재수 46.7% vs 박형준 38.4%…오차범위 밖 격차",
+        "pollster": "미상조사기관",
+        "survey_start_date": null,
+        "survey_end_date": null,
+        "sample_size": null,
+        "response_rate": null,
+        "margin_of_error": null,
+        "sponsor": null,
+        "method": null,
+        "region_code": "26-000",
+        "office_type": "광역자치단체장",
+        "matchup_id": "20260603|광역자치단체장|26-000",
+        "audience_scope": "regional",
+        "audience_region_code": "26-000",
+        "sampling_population_text": null,
+        "legal_completeness_score": 0.1667,
+        "legal_filled_count": 1,
+        "legal_required_count": 6,
+        "date_resolution": "missing",
+        "date_inference_mode": "published_at_missing",
+        "date_inference_confidence": 0.0,
+        "poll_fingerprint": null,
+        "source_channel": "article",
+        "source_channels": [
+          "article"
+        ],
+        "verified": false,
+        "source_grade": "C"
+      },
+      "options": [
+        {
+          "option_type": "candidate_matchup",
+          "option_name": "전재수",
+          "value_raw": "46.7%",
+          "value_min": 46.7,
+          "value_max": 46.7,
+          "value_mid": 46.7,
+          "is_missing": false
+        },
+        {
+          "option_type": "candidate_matchup",
+          "option_name": "박형준",
+          "value_raw": "38.4%",
+          "value_min": 38.4,
+          "value_max": 38.4,
+          "value_mid": 38.4,
+          "is_missing": false
+        }
+      ]
+    },
+    {
+      "article": {
+        "url": "https://news.google.com/rss/articles/CBMieEFVX3lxTE5YR2RWdVVLempqS2xCZU9WR083VHZWcEFjRnpqUUJpbWd3YjVINFBsNlU2UVRyNHU0UEg0YnBIRl9MLTkwaldWaDVPeE1XVnVKVWdGNlFXNTR5UFlfakR6bXZ4V0hTcVBrNU9oaEpPdWJjY2tpa1I4UQ",
+        "title": "전재수 43.4% vs 박형준 32.3%… 오차범위 밖 격차 [6·3 지방선거 여론조사]",
+        "publisher": "부산일보사",
+        "published_at": null,
+        "raw_text": "전재수 43.4% vs 박형준 32.3%… 오차범위 밖 격차 [6·3 지방선거 여론조사] - 부산일보사 전재수 43.4% vs 박형준 32.3%… 오차범위 밖 격차 [6·3 지방선거 여론조사] &nbsp;&nbsp; 부산일보사 지방선거 부산시장 오차범위",
+        "raw_hash": "raw_720c32cdb6eda98c"
+      },
+      "region": {
+        "region_code": "26-000",
+        "sido_name": "부산광역시",
+        "sigungu_name": "전체",
+        "admin_level": "sido",
+        "parent_region_code": null
+      },
+      "candidates": [
+        {
+          "candidate_id": "cand:전재수",
+          "name_ko": "전재수",
+          "party_name": null,
+          "gender": null,
+          "birth_date": null,
+          "job": null,
+          "career_summary": null,
+          "election_history": null
+        },
+        {
+          "candidate_id": "cand:박형준",
+          "name_ko": "박형준",
+          "party_name": null,
+          "gender": null,
+          "birth_date": null,
+          "job": null,
+          "career_summary": null,
+          "election_history": null
+        }
+      ],
+      "observation": {
+        "observation_key": "obs_82f9da3ac3360057",
+        "survey_name": "전재수 43.4% vs 박형준 32.3%… 오차범위 밖 격차 [6·3 지방선거 여론조사]",
+        "pollster": "미상조사기관",
+        "survey_start_date": null,
+        "survey_end_date": null,
+        "sample_size": null,
+        "response_rate": null,
+        "margin_of_error": null,
+        "sponsor": null,
+        "method": null,
+        "region_code": "26-000",
+        "office_type": "광역자치단체장",
+        "matchup_id": "20260603|광역자치단체장|26-000",
+        "audience_scope": "regional",
+        "audience_region_code": "26-000",
+        "sampling_population_text": null,
+        "legal_completeness_score": 0.1667,
+        "legal_filled_count": 1,
+        "legal_required_count": 6,
+        "date_resolution": "missing",
+        "date_inference_mode": "published_at_missing",
+        "date_inference_confidence": 0.0,
+        "poll_fingerprint": null,
+        "source_channel": "article",
+        "source_channels": [
+          "article"
+        ],
+        "verified": false,
+        "source_grade": "C"
+      },
+      "options": [
+        {
+          "option_type": "candidate_matchup",
+          "option_name": "전재수",
+          "value_raw": "43.4%",
+          "value_min": 43.4,
+          "value_max": 43.4,
+          "value_mid": 43.4,
+          "is_missing": false
+        },
+        {
+          "option_type": "candidate_matchup",
+          "option_name": "박형준",
+          "value_raw": "32.3%",
+          "value_min": 32.3,
+          "value_max": 32.3,
+          "value_mid": 32.3,
+          "is_missing": false
+        }
+      ]
+    },
+    {
+      "article": {
+        "url": "https://news.google.com/rss/articles/CBMiUkFVX3lxTE8zQ29Gc1hUUnRvSXNrdjBsbW1VSERKTVJLa3NPZHFETnkyLUVnMHYwVm9OMFMzVUJBeTBtN192eTZXUThkM1U0RkE5Yk1PUk0yNmc",
+        "title": "[경인일보 여론조사] 민주당내 인천시장 후보 적합도, 박찬대 43% 당내 압도적",
+        "publisher": "경인일보",
+        "published_at": null,
+        "raw_text": "[경인일보 여론조사] 민주당내 인천시장 후보 적합도, 박찬대 43% 당내 압도적 - 경인일보 [경인일보 여론조사] 민주당내 인천시장 후보 적합도, 박찬대 43% 당내 압도적 &nbsp;&nbsp; 경인일보 지방선거 인천시장 여론조사",
+        "raw_hash": "raw_7b179e23d089dd5a"
+      },
+      "region": {
+        "region_code": "28-000",
+        "sido_name": "인천광역시",
+        "sigungu_name": "전체",
+        "admin_level": "sido",
+        "parent_region_code": null
+      },
+      "candidates": [
+        {
+          "candidate_id": "cand:박찬대",
+          "name_ko": "박찬대",
+          "party_name": null,
+          "gender": null,
+          "birth_date": null,
+          "job": null,
+          "career_summary": null,
+          "election_history": null
+        }
+      ],
+      "observation": {
+        "observation_key": "obs_297e45acd1bc8bec",
+        "survey_name": "[경인일보 여론조사] 민주당내 인천시장 후보 적합도, 박찬대 43% 당내 압도적",
+        "pollster": "미상조사기관",
+        "survey_start_date": null,
+        "survey_end_date": null,
+        "sample_size": null,
+        "response_rate": null,
+        "margin_of_error": null,
+        "sponsor": null,
+        "method": null,
+        "region_code": "28-000",
+        "office_type": "광역자치단체장",
+        "matchup_id": "20260603|광역자치단체장|28-000",
+        "audience_scope": "regional",
+        "audience_region_code": "28-000",
+        "sampling_population_text": null,
+        "legal_completeness_score": 0.1667,
+        "legal_filled_count": 1,
+        "legal_required_count": 6,
+        "date_resolution": "missing",
+        "date_inference_mode": "published_at_missing",
+        "date_inference_confidence": 0.0,
+        "poll_fingerprint": null,
+        "source_channel": "article",
+        "source_channels": [
+          "article"
+        ],
+        "verified": false,
+        "source_grade": "C"
+      },
+      "options": [
+        {
+          "option_type": "candidate_matchup",
+          "option_name": "박찬대",
+          "value_raw": "43%",
+          "value_min": 43.0,
+          "value_max": 43.0,
+          "value_mid": 43.0,
+          "is_missing": false
+        }
+      ]
+    },
+    {
+      "article": {
+        "url": "https://news.google.com/rss/articles/CBMicEFVX3lxTE9TYVNqLXN0aW1lemlIME05b25KX09HNFYydlg1Zk9iaUgyZ2kwcG12b0tTVHRtSEZNVTBoRm1xYS1zMlVCQzZaSnVYZjJlWjNZSkI2cUZlUVZ4TlY1M1BJUUFLd09UV2hiV0taaERtbi0",
+        "title": "[여론조사] 인천시장 양자대결 박찬대 51.2%, 유정복 37.1% 오차 밖 앞서",
+        "publisher": "인천투데이",
+        "published_at": null,
+        "raw_text": "[여론조사] 인천시장 양자대결 박찬대 51.2%, 유정복 37.1% 오차 밖 앞서 - 인천투데이 [여론조사] 인천시장 양자대결 박찬대 51.2%, 유정복 37.1% 오차 밖 앞서 &nbsp;&nbsp; 인천투데이 지방선거 인천시장 지지율",
+        "raw_hash": "raw_022407da52efd8ad"
+      },
+      "region": {
+        "region_code": "28-000",
+        "sido_name": "인천광역시",
+        "sigungu_name": "전체",
+        "admin_level": "sido",
+        "parent_region_code": null
+      },
+      "candidates": [
+        {
+          "candidate_id": "cand:박찬대",
+          "name_ko": "박찬대",
+          "party_name": null,
+          "gender": null,
+          "birth_date": null,
+          "job": null,
+          "career_summary": null,
+          "election_history": null
+        },
+        {
+          "candidate_id": "cand:유정복",
+          "name_ko": "유정복",
+          "party_name": null,
+          "gender": null,
+          "birth_date": null,
+          "job": null,
+          "career_summary": null,
+          "election_history": null
+        }
+      ],
+      "observation": {
+        "observation_key": "obs_ff78dcd3a82e1ee0",
+        "survey_name": "[여론조사] 인천시장 양자대결 박찬대 51.2%, 유정복 37.1% 오차 밖 앞서",
+        "pollster": "미상조사기관",
+        "survey_start_date": null,
+        "survey_end_date": null,
+        "sample_size": null,
+        "response_rate": null,
+        "margin_of_error": null,
+        "sponsor": null,
+        "method": null,
+        "region_code": "28-000",
+        "office_type": "광역자치단체장",
+        "matchup_id": "20260603|광역자치단체장|28-000",
+        "audience_scope": "regional",
+        "audience_region_code": "28-000",
+        "sampling_population_text": null,
+        "legal_completeness_score": 0.1667,
+        "legal_filled_count": 1,
+        "legal_required_count": 6,
+        "date_resolution": "missing",
+        "date_inference_mode": "published_at_missing",
+        "date_inference_confidence": 0.0,
+        "poll_fingerprint": null,
+        "source_channel": "article",
+        "source_channels": [
+          "article"
+        ],
+        "verified": false,
+        "source_grade": "C"
+      },
+      "options": [
+        {
+          "option_type": "candidate_matchup",
+          "option_name": "박찬대",
+          "value_raw": "51.2%",
+          "value_min": 51.2,
+          "value_max": 51.2,
+          "value_mid": 51.2,
+          "is_missing": false
+        },
+        {
+          "option_type": "candidate_matchup",
+          "option_name": "유정복",
+          "value_raw": "37.1%",
+          "value_min": 37.1,
+          "value_max": 37.1,
+          "value_mid": 37.1,
+          "is_missing": false
+        }
+      ]
+    },
+    {
+      "article": {
+        "url": "https://news.google.com/rss/articles/CBMiVEFVX3lxTE5rS0JxZXRJT3piMlN2VW5tWnpDVmtZNmFGRDJUZ0dnb0k2NjFsWTRVZkY4NDNHb0pSendnS0FqVUhpMG9JRkhwYUo5Nk92SnZSQWNacw",
+        "title": "[6·3 지방선거 여론조사-수원특례시] 수원시장 이재준 31.5%…국힘 안교재·이봉준 추격",
+        "publisher": "v.daum.net",
+        "published_at": null,
+        "raw_text": "[6·3 지방선거 여론조사-수원특례시] 수원시장 이재준 31.5%…국힘 안교재·이봉준 추격 - v.daum.net [6·3 지방선거 여론조사-수원특례시] 수원시장 이재준 31.5%…국힘 안교재·이봉준 추격 &nbsp;&nbsp; v.daum.net 지방선거 인천시장 가상대결",
+        "raw_hash": "raw_9789c415120c0b69"
+      },
+      "region": {
+        "region_code": "28-000",
+        "sido_name": "인천광역시",
+        "sigungu_name": "전체",
+        "admin_level": "sido",
+        "parent_region_code": null
+      },
+      "candidates": [
+        {
+          "candidate_id": "cand:이재준",
+          "name_ko": "이재준",
+          "party_name": null,
+          "gender": null,
+          "birth_date": null,
+          "job": null,
+          "career_summary": null,
+          "election_history": null
+        }
+      ],
+      "observation": {
+        "observation_key": "obs_0f585774f2b41565",
+        "survey_name": "[6·3 지방선거 여론조사-수원특례시] 수원시장 이재준 31.5%…국힘 안교재·이봉준 추격",
+        "pollster": "미상조사기관",
+        "survey_start_date": null,
+        "survey_end_date": null,
+        "sample_size": null,
+        "response_rate": null,
+        "margin_of_error": null,
+        "sponsor": null,
+        "method": null,
+        "region_code": "28-000",
+        "office_type": "광역자치단체장",
+        "matchup_id": "20260603|광역자치단체장|28-000",
+        "audience_scope": "regional",
+        "audience_region_code": "28-000",
+        "sampling_population_text": null,
+        "legal_completeness_score": 0.1667,
+        "legal_filled_count": 1,
+        "legal_required_count": 6,
+        "date_resolution": "missing",
+        "date_inference_mode": "published_at_missing",
+        "date_inference_confidence": 0.0,
+        "poll_fingerprint": null,
+        "source_channel": "article",
+        "source_channels": [
+          "article"
+        ],
+        "verified": false,
+        "source_grade": "C"
+      },
+      "options": [
+        {
+          "option_type": "candidate_matchup",
+          "option_name": "이재준",
+          "value_raw": "31.5%",
+          "value_min": 31.5,
+          "value_max": 31.5,
+          "value_mid": 31.5,
+          "is_missing": false
+        }
+      ]
+    },
+    {
+      "article": {
+        "url": "https://news.google.com/rss/articles/CBMib0FVX3lxTFBVb1NSZjJ1enV6eDFDLWppUzM4eGlsc2RKRDVxY0pfSmxOUTBLcE1MbGZ0VGdqcVhUMVhHZTBzWk5xanF6Znl4Ym9icFMtX0xweWhsdTlVSzNURjVGUXdsQ1AzTC0xdXJDZDBjaG5TMA",
+        "title": "인천시장 여론조사서 유정복 36.8% vs 박찬대 52.1%",
+        "publisher": "중부일보",
+        "published_at": null,
+        "raw_text": "인천시장 여론조사서 유정복 36.8% vs 박찬대 52.1% - 중부일보 인천시장 여론조사서 유정복 36.8% vs 박찬대 52.1% &nbsp;&nbsp; 중부일보 지방선거 인천시장 가상대결",
+        "raw_hash": "raw_465fb12f6e7974a4"
+      },
+      "region": {
+        "region_code": "28-000",
+        "sido_name": "인천광역시",
+        "sigungu_name": "전체",
+        "admin_level": "sido",
+        "parent_region_code": null
+      },
+      "candidates": [
+        {
+          "candidate_id": "cand:유정복",
+          "name_ko": "유정복",
+          "party_name": null,
+          "gender": null,
+          "birth_date": null,
+          "job": null,
+          "career_summary": null,
+          "election_history": null
+        },
+        {
+          "candidate_id": "cand:박찬대",
+          "name_ko": "박찬대",
+          "party_name": null,
+          "gender": null,
+          "birth_date": null,
+          "job": null,
+          "career_summary": null,
+          "election_history": null
+        }
+      ],
+      "observation": {
+        "observation_key": "obs_0cc203a71a596743",
+        "survey_name": "인천시장 여론조사서 유정복 36.8% vs 박찬대 52.1%",
+        "pollster": "미상조사기관",
+        "survey_start_date": null,
+        "survey_end_date": null,
+        "sample_size": null,
+        "response_rate": null,
+        "margin_of_error": null,
+        "sponsor": null,
+        "method": null,
+        "region_code": "28-000",
+        "office_type": "광역자치단체장",
+        "matchup_id": "20260603|광역자치단체장|28-000",
+        "audience_scope": "regional",
+        "audience_region_code": "28-000",
+        "sampling_population_text": null,
+        "legal_completeness_score": 0.1667,
+        "legal_filled_count": 1,
+        "legal_required_count": 6,
+        "date_resolution": "missing",
+        "date_inference_mode": "published_at_missing",
+        "date_inference_confidence": 0.0,
+        "poll_fingerprint": null,
+        "source_channel": "article",
+        "source_channels": [
+          "article"
+        ],
+        "verified": false,
+        "source_grade": "C"
+      },
+      "options": [
+        {
+          "option_type": "candidate_matchup",
+          "option_name": "유정복",
+          "value_raw": "36.8%",
+          "value_min": 36.8,
+          "value_max": 36.8,
+          "value_mid": 36.8,
+          "is_missing": false
+        },
+        {
+          "option_type": "candidate_matchup",
+          "option_name": "박찬대",
+          "value_raw": "52.1%",
+          "value_min": 52.1,
+          "value_max": 52.1,
+          "value_mid": 52.1,
+          "is_missing": false
+        }
+      ]
+    },
+    {
+      "article": {
+        "url": "https://news.google.com/rss/articles/CBMiZ0FVX3lxTE9VTlluWEJ1dFcydUhIa2M4YlhNSVloa1JmNkdtRHVEbGgxQzl5THhmaEY5Vlk3WTFIQTRUYmdVZjQ1SjRHRGF3YnA0MlFQQVB1UE1MY3lBdlVZM3IyS3FyMGhaelNaWFk",
+        "title": "[6·3 지방선거] 인천시장 여론조사...민주 박찬대 40.5% ‘압도’, 국힘 유정복 29.2% 1위",
+        "publisher": "M이코노미뉴스",
+        "published_at": null,
+        "raw_text": "[6·3 지방선거] 인천시장 여론조사...민주 박찬대 40.5% ‘압도’, 국힘 유정복 29.2% 1위 - M이코노미뉴스 [6·3 지방선거] 인천시장 여론조사...민주 박찬대 40.5% ‘압도’, 국힘 유정복 29.2% 1위 &nbsp;&nbsp; M이코노미뉴스 지방선거 인천시장 가상대결",
+        "raw_hash": "raw_47a5c84614475252"
+      },
+      "region": {
+        "region_code": "28-000",
+        "sido_name": "인천광역시",
+        "sigungu_name": "전체",
+        "admin_level": "sido",
+        "parent_region_code": null
+      },
+      "candidates": [
+        {
+          "candidate_id": "cand:박찬대",
+          "name_ko": "박찬대",
+          "party_name": null,
+          "gender": null,
+          "birth_date": null,
+          "job": null,
+          "career_summary": null,
+          "election_history": null
+        },
+        {
+          "candidate_id": "cand:유정복",
+          "name_ko": "유정복",
+          "party_name": null,
+          "gender": null,
+          "birth_date": null,
+          "job": null,
+          "career_summary": null,
+          "election_history": null
+        }
+      ],
+      "observation": {
+        "observation_key": "obs_57d26088f1d9972c",
+        "survey_name": "[6·3 지방선거] 인천시장 여론조사...민주 박찬대 40.5% ‘압도’, 국힘 유정복 29.2% 1위",
+        "pollster": "미상조사기관",
+        "survey_start_date": null,
+        "survey_end_date": null,
+        "sample_size": null,
+        "response_rate": null,
+        "margin_of_error": null,
+        "sponsor": null,
+        "method": null,
+        "region_code": "28-000",
+        "office_type": "광역자치단체장",
+        "matchup_id": "20260603|광역자치단체장|28-000",
+        "audience_scope": "regional",
+        "audience_region_code": "28-000",
+        "sampling_population_text": null,
+        "legal_completeness_score": 0.1667,
+        "legal_filled_count": 1,
+        "legal_required_count": 6,
+        "date_resolution": "missing",
+        "date_inference_mode": "published_at_missing",
+        "date_inference_confidence": 0.0,
+        "poll_fingerprint": null,
+        "source_channel": "article",
+        "source_channels": [
+          "article"
+        ],
+        "verified": false,
+        "source_grade": "C"
+      },
+      "options": [
+        {
+          "option_type": "candidate_matchup",
+          "option_name": "박찬대",
+          "value_raw": "40.5%",
+          "value_min": 40.5,
+          "value_max": 40.5,
+          "value_mid": 40.5,
+          "is_missing": false
+        },
+        {
+          "option_type": "candidate_matchup",
+          "option_name": "유정복",
+          "value_raw": "29.2%",
+          "value_min": 29.2,
+          "value_max": 29.2,
+          "value_mid": 29.2,
+          "is_missing": false
+        }
+      ]
+    },
+    {
+      "article": {
+        "url": "https://news.google.com/rss/articles/CBMiT0FVX3lxTE1hbjFpMFNxZGdfSnNlZ1NmTmdyVkpqbUJOMC1YQmp4cV9HWWRVOWZ4VzBTdEVsamdhN21JalI3NWY3eWdTTE5xS0FjT3drQTQ",
+        "title": "[6·3 지방선거 여론조사-성남시] 성남시장 신상진 35% 김병욱 32%…오차 내 접전",
+        "publisher": "v.daum.net",
+        "published_at": null,
+        "raw_text": "[6·3 지방선거 여론조사-성남시] 성남시장 신상진 35% 김병욱 32%…오차 내 접전 - v.daum.net [6·3 지방선거 여론조사-성남시] 성남시장 신상진 35% 김병욱 32%…오차 내 접전 &nbsp;&nbsp; v.daum.net 지방선거 인천시장 오차범위",
+        "raw_hash": "raw_e49585072da15aa7"
+      },
+      "region": {
+        "region_code": "28-000",
+        "sido_name": "인천광역시",
+        "sigungu_name": "전체",
+        "admin_level": "sido",
+        "parent_region_code": null
+      },
+      "candidates": [
+        {
+          "candidate_id": "cand:신상진",
+          "name_ko": "신상진",
+          "party_name": null,
+          "gender": null,
+          "birth_date": null,
+          "job": null,
+          "career_summary": null,
+          "election_history": null
+        },
+        {
+          "candidate_id": "cand:김병욱",
+          "name_ko": "김병욱",
+          "party_name": null,
+          "gender": null,
+          "birth_date": null,
+          "job": null,
+          "career_summary": null,
+          "election_history": null
+        }
+      ],
+      "observation": {
+        "observation_key": "obs_a12b7fcd9b903160",
+        "survey_name": "[6·3 지방선거 여론조사-성남시] 성남시장 신상진 35% 김병욱 32%…오차 내 접전",
+        "pollster": "미상조사기관",
+        "survey_start_date": null,
+        "survey_end_date": null,
+        "sample_size": null,
+        "response_rate": null,
+        "margin_of_error": null,
+        "sponsor": null,
+        "method": null,
+        "region_code": "28-000",
+        "office_type": "광역자치단체장",
+        "matchup_id": "20260603|광역자치단체장|28-000",
+        "audience_scope": "regional",
+        "audience_region_code": "28-000",
+        "sampling_population_text": null,
+        "legal_completeness_score": 0.1667,
+        "legal_filled_count": 1,
+        "legal_required_count": 6,
+        "date_resolution": "missing",
+        "date_inference_mode": "published_at_missing",
+        "date_inference_confidence": 0.0,
+        "poll_fingerprint": null,
+        "source_channel": "article",
+        "source_channels": [
+          "article"
+        ],
+        "verified": false,
+        "source_grade": "C"
+      },
+      "options": [
+        {
+          "option_type": "candidate_matchup",
+          "option_name": "신상진",
+          "value_raw": "35%",
+          "value_min": 35.0,
+          "value_max": 35.0,
+          "value_mid": 35.0,
+          "is_missing": false
+        },
+        {
+          "option_type": "candidate_matchup",
+          "option_name": "김병욱",
+          "value_raw": "32%",
+          "value_min": 32.0,
+          "value_max": 32.0,
+          "value_mid": 32.0,
+          "is_missing": false
+        }
+      ]
+    },
+    {
+      "article": {
+        "url": "https://news.google.com/rss/articles/CBMicEFVX3lxTE5SVTdnNi1DU3hFdmF1S3ZjbHdidU9tOVktNE1TZ095c2hMdmMxODNHckNxd0ZSQjVtYUZHeVg0TExGUU1jUUotdTFRUUJRZldLb1BSeTFueGhSM1p2WURuZnBUa3JHLVh3Q3FCcXJhdnM",
+        "title": "[6·3 지방선거 여론조사-시흥시] 시흥시장 임병택 27.3%-김윤식 22.3%…오차 내 박빙",
+        "publisher": "인천일보",
+        "published_at": null,
+        "raw_text": "[6·3 지방선거 여론조사-시흥시] 시흥시장 임병택 27.3%-김윤식 22.3%…오차 내 박빙 - 인천일보 [6·3 지방선거 여론조사-시흥시] 시흥시장 임병택 27.3%-김윤식 22.3%…오차 내 박빙 &nbsp;&nbsp; 인천일보 지방선거 인천시장 오차범위",
+        "raw_hash": "raw_3ef508d4ef79bd90"
+      },
+      "region": {
+        "region_code": "28-000",
+        "sido_name": "인천광역시",
+        "sigungu_name": "전체",
+        "admin_level": "sido",
+        "parent_region_code": null
+      },
+      "candidates": [
+        {
+          "candidate_id": "cand:임병택",
+          "name_ko": "임병택",
+          "party_name": null,
+          "gender": null,
+          "birth_date": null,
+          "job": null,
+          "career_summary": null,
+          "election_history": null
+        },
+        {
+          "candidate_id": "cand:김윤식",
+          "name_ko": "김윤식",
+          "party_name": null,
+          "gender": null,
+          "birth_date": null,
+          "job": null,
+          "career_summary": null,
+          "election_history": null
+        }
+      ],
+      "observation": {
+        "observation_key": "obs_3937ad1c6457214f",
+        "survey_name": "[6·3 지방선거 여론조사-시흥시] 시흥시장 임병택 27.3%-김윤식 22.3%…오차 내 박빙",
+        "pollster": "미상조사기관",
+        "survey_start_date": null,
+        "survey_end_date": null,
+        "sample_size": null,
+        "response_rate": null,
+        "margin_of_error": null,
+        "sponsor": null,
+        "method": null,
+        "region_code": "28-000",
+        "office_type": "광역자치단체장",
+        "matchup_id": "20260603|광역자치단체장|28-000",
+        "audience_scope": "regional",
+        "audience_region_code": "28-000",
+        "sampling_population_text": null,
+        "legal_completeness_score": 0.1667,
+        "legal_filled_count": 1,
+        "legal_required_count": 6,
+        "date_resolution": "missing",
+        "date_inference_mode": "published_at_missing",
+        "date_inference_confidence": 0.0,
+        "poll_fingerprint": null,
+        "source_channel": "article",
+        "source_channels": [
+          "article"
+        ],
+        "verified": false,
+        "source_grade": "C"
+      },
+      "options": [
+        {
+          "option_type": "candidate_matchup",
+          "option_name": "임병택",
+          "value_raw": "27.3%",
+          "value_min": 27.3,
+          "value_max": 27.3,
+          "value_mid": 27.3,
+          "is_missing": false
+        },
+        {
+          "option_type": "candidate_matchup",
+          "option_name": "김윤식",
+          "value_raw": "22.3%",
+          "value_min": 22.3,
+          "value_max": 22.3,
+          "value_mid": 22.3,
+          "is_missing": false
+        }
+      ]
+    },
+    {
+      "article": {
+        "url": "https://news.google.com/rss/articles/CBMiVEFVX3lxTE94Y2dsVWhMMENURWtmMmNOaGFpWUZBdG1GY3lzYlY3enFsOUthWkFkT0hrb1JnN09iMW5rUzliWFJQU1hXaHllQ1NwY0lSVkFnb1p5TQ",
+        "title": "[6·3 지방선거 여론조사-시흥시] 시흥시 정당 지지도, 민주당 46.9%로 오차범위 밖 우세…국민의힘 30.2%",
+        "publisher": "v.daum.net",
+        "published_at": null,
+        "raw_text": "[6·3 지방선거 여론조사-시흥시] 시흥시 정당 지지도, 민주당 46.9%로 오차범위 밖 우세…국민의힘 30.2% - v.daum.net [6·3 지방선거 여론조사-시흥시] 시흥시 정당 지지도, 민주당 46.9%로 오차범위 밖 우세…국민의힘 30.2% &nbsp;&nbsp; v.daum.net 지방선거 인천시장 오차범위",
+        "raw_hash": "raw_afc59770cc22bf10"
+      },
+      "region": {
+        "region_code": "28-000",
+        "sido_name": "인천광역시",
+        "sigungu_name": "전체",
+        "admin_level": "sido",
+        "parent_region_code": null
+      },
+      "candidates": [],
+      "observation": {
+        "observation_key": "obs_056d1438fa2bc3ff",
+        "survey_name": "[6·3 지방선거 여론조사-시흥시] 시흥시 정당 지지도, 민주당 46.9%로 오차범위 밖 우세…국민의힘 30.2%",
+        "pollster": "미상조사기관",
+        "survey_start_date": null,
+        "survey_end_date": null,
+        "sample_size": null,
+        "response_rate": null,
+        "margin_of_error": null,
+        "sponsor": null,
+        "method": null,
+        "region_code": "28-000",
+        "office_type": "광역자치단체장",
+        "matchup_id": "20260603|광역자치단체장|28-000",
+        "audience_scope": "regional",
+        "audience_region_code": "28-000",
+        "sampling_population_text": null,
+        "legal_completeness_score": 0.1667,
+        "legal_filled_count": 1,
+        "legal_required_count": 6,
+        "date_resolution": "missing",
+        "date_inference_mode": "published_at_missing",
+        "date_inference_confidence": 0.0,
+        "poll_fingerprint": null,
+        "source_channel": "article",
+        "source_channels": [
+          "article"
+        ],
+        "verified": false,
+        "source_grade": "C"
+      },
+      "options": []
+    },
+    {
+      "article": {
+        "url": "https://news.google.com/rss/articles/CBMiT0FVX3lxTE9nVmxoSnkzMUNfX1V5YTZyYktkSm5WUEk0ZGVyOEZxc3Y2cVF4cko5NjdsUklaLUpROGVRUGh4NFVzY2s0T3JWcjI1ZXgzNVE",
+        "title": "부산시장 후보 가상 대결…전재수 40%·박형준 30%",
+        "publisher": "v.daum.net",
+        "published_at": null,
+        "raw_text": "부산시장 후보 가상 대결…전재수 40%·박형준 30% - v.daum.net 부산시장 후보 가상 대결…전재수 40%·박형준 30% &nbsp;&nbsp; v.daum.net 지방선거 부산시장 가상대결",
+        "raw_hash": "raw_0432a859f4f454d7"
+      },
+      "region": {
+        "region_code": "26-000",
+        "sido_name": "부산광역시",
+        "sigungu_name": "전체",
+        "admin_level": "sido",
+        "parent_region_code": null
+      },
+      "candidates": [
+        {
+          "candidate_id": "cand:전재수",
+          "name_ko": "전재수",
+          "party_name": null,
+          "gender": null,
+          "birth_date": null,
+          "job": null,
+          "career_summary": null,
+          "election_history": null
+        },
+        {
+          "candidate_id": "cand:박형준",
+          "name_ko": "박형준",
+          "party_name": null,
+          "gender": null,
+          "birth_date": null,
+          "job": null,
+          "career_summary": null,
+          "election_history": null
+        }
+      ],
+      "observation": {
+        "observation_key": "obs_bf18847149fb4b56",
+        "survey_name": "부산시장 후보 가상 대결…전재수 40%·박형준 30%",
+        "pollster": "미상조사기관",
+        "survey_start_date": null,
+        "survey_end_date": null,
+        "sample_size": null,
+        "response_rate": null,
+        "margin_of_error": null,
+        "sponsor": null,
+        "method": null,
+        "region_code": "26-000",
+        "office_type": "광역자치단체장",
+        "matchup_id": "20260603|광역자치단체장|26-000",
+        "audience_scope": "regional",
+        "audience_region_code": "26-000",
+        "sampling_population_text": null,
+        "legal_completeness_score": 0.1667,
+        "legal_filled_count": 1,
+        "legal_required_count": 6,
+        "date_resolution": "missing",
+        "date_inference_mode": "published_at_missing",
+        "date_inference_confidence": 0.0,
+        "poll_fingerprint": null,
+        "source_channel": "article",
+        "source_channels": [
+          "article"
+        ],
+        "verified": false,
+        "source_grade": "C"
+      },
+      "options": [
+        {
+          "option_type": "candidate_matchup",
+          "option_name": "전재수",
+          "value_raw": "40%",
+          "value_min": 40.0,
+          "value_max": 40.0,
+          "value_mid": 40.0,
+          "is_missing": false
+        },
+        {
+          "option_type": "candidate_matchup",
+          "option_name": "박형준",
+          "value_raw": "30%",
+          "value_min": 30.0,
+          "value_max": 30.0,
+          "value_mid": 30.0,
+          "is_missing": false
+        }
+      ]
+    },
+    {
+      "article": {
+        "url": "https://news.google.com/rss/articles/CBMia0FVX3lxTE8tUG1uOHA3ZWJCRy1iMVo0REtRemFjLS1BYWdPVmN3emZxSzFJd2x3NTNsdWF3Z0w3THJjdWQ5dDdRb0xiODlPendYRjlRMkc3ejVHN1FGd2hfWUJ0V2tqLU5aMnFsalFxUE1v",
+        "title": "차기 인천시장, 민주 박찬대 51.2% vs. 국힘 유정복 37.1% 오차범위 밖",
+        "publisher": "프레시안",
+        "published_at": null,
+        "raw_text": "차기 인천시장, 민주 박찬대 51.2% vs. 국힘 유정복 37.1% 오차범위 밖 - 프레시안 차기 인천시장, 민주 박찬대 51.2% vs. 국힘 유정복 37.1% 오차범위 밖 &nbsp;&nbsp; 프레시안 지방선거 인천시장 가상대결",
+        "raw_hash": "raw_bccd4d4bacd2319f"
+      },
+      "region": {
+        "region_code": "28-000",
+        "sido_name": "인천광역시",
+        "sigungu_name": "전체",
+        "admin_level": "sido",
+        "parent_region_code": null
+      },
+      "candidates": [
+        {
+          "candidate_id": "cand:박찬대",
+          "name_ko": "박찬대",
+          "party_name": null,
+          "gender": null,
+          "birth_date": null,
+          "job": null,
+          "career_summary": null,
+          "election_history": null
+        },
+        {
+          "candidate_id": "cand:유정복",
+          "name_ko": "유정복",
+          "party_name": null,
+          "gender": null,
+          "birth_date": null,
+          "job": null,
+          "career_summary": null,
+          "election_history": null
+        }
+      ],
+      "observation": {
+        "observation_key": "obs_f319176068c072a1",
+        "survey_name": "차기 인천시장, 민주 박찬대 51.2% vs. 국힘 유정복 37.1% 오차범위 밖",
+        "pollster": "미상조사기관",
+        "survey_start_date": null,
+        "survey_end_date": null,
+        "sample_size": null,
+        "response_rate": null,
+        "margin_of_error": null,
+        "sponsor": null,
+        "method": null,
+        "region_code": "28-000",
+        "office_type": "광역자치단체장",
+        "matchup_id": "20260603|광역자치단체장|28-000",
+        "audience_scope": "regional",
+        "audience_region_code": "28-000",
+        "sampling_population_text": null,
+        "legal_completeness_score": 0.1667,
+        "legal_filled_count": 1,
+        "legal_required_count": 6,
+        "date_resolution": "missing",
+        "date_inference_mode": "published_at_missing",
+        "date_inference_confidence": 0.0,
+        "poll_fingerprint": null,
+        "source_channel": "article",
+        "source_channels": [
+          "article"
+        ],
+        "verified": false,
+        "source_grade": "C"
+      },
+      "options": [
+        {
+          "option_type": "candidate_matchup",
+          "option_name": "박찬대",
+          "value_raw": "51.2%",
+          "value_min": 51.2,
+          "value_max": 51.2,
+          "value_mid": 51.2,
+          "is_missing": false
+        },
+        {
+          "option_type": "candidate_matchup",
+          "option_name": "유정복",
+          "value_raw": "37.1%",
+          "value_min": 37.1,
+          "value_max": 37.1,
+          "value_mid": 37.1,
+          "is_missing": false
+        }
+      ]
+    },
+    {
+      "article": {
+        "url": "https://news.google.com/rss/articles/CBMiT0FVX3lxTE1vR3J3MG5kX1BtLTdfUzFaZ0J2M3JtaUtmZnpFMG5fb3pkNHM4ODZTX2JqcjIzQTJPYm8zcTQwSy16ZG9ETzN2eFVrSE9qdnM",
+        "title": "[부산시장여론조사] 전재수 43.3% 또 앞서, 박형준은 34.6%",
+        "publisher": "v.daum.net",
+        "published_at": null,
+        "raw_text": "[부산시장여론조사] 전재수 43.3% 또 앞서, 박형준은 34.6% - v.daum.net [부산시장여론조사] 전재수 43.3% 또 앞서, 박형준은 34.6% &nbsp;&nbsp; v.daum.net 지방선거 부산시장 여론조사",
+        "raw_hash": "raw_65dca88e26f57623"
+      },
+      "region": {
+        "region_code": "26-000",
+        "sido_name": "부산광역시",
+        "sigungu_name": "전체",
+        "admin_level": "sido",
+        "parent_region_code": null
+      },
+      "candidates": [
+        {
+          "candidate_id": "cand:전재수",
+          "name_ko": "전재수",
+          "party_name": null,
+          "gender": null,
+          "birth_date": null,
+          "job": null,
+          "career_summary": null,
+          "election_history": null
+        },
+        {
+          "candidate_id": "cand:박형준은",
+          "name_ko": "박형준은",
+          "party_name": null,
+          "gender": null,
+          "birth_date": null,
+          "job": null,
+          "career_summary": null,
+          "election_history": null
+        }
+      ],
+      "observation": {
+        "observation_key": "obs_1c24b60a3d52a6f4",
+        "survey_name": "[부산시장여론조사] 전재수 43.3% 또 앞서, 박형준은 34.6%",
+        "pollster": "미상조사기관",
+        "survey_start_date": null,
+        "survey_end_date": null,
+        "sample_size": null,
+        "response_rate": null,
+        "margin_of_error": null,
+        "sponsor": null,
+        "method": null,
+        "region_code": "26-000",
+        "office_type": "광역자치단체장",
+        "matchup_id": "20260603|광역자치단체장|26-000",
+        "audience_scope": "regional",
+        "audience_region_code": "26-000",
+        "sampling_population_text": null,
+        "legal_completeness_score": 0.1667,
+        "legal_filled_count": 1,
+        "legal_required_count": 6,
+        "date_resolution": "missing",
+        "date_inference_mode": "published_at_missing",
+        "date_inference_confidence": 0.0,
+        "poll_fingerprint": null,
+        "source_channel": "article",
+        "source_channels": [
+          "article"
+        ],
+        "verified": false,
+        "source_grade": "C"
+      },
+      "options": [
+        {
+          "option_type": "candidate_matchup",
+          "option_name": "전재수",
+          "value_raw": "43.3%",
+          "value_min": 43.3,
+          "value_max": 43.3,
+          "value_mid": 43.3,
+          "is_missing": false
+        },
+        {
+          "option_type": "candidate_matchup",
+          "option_name": "박형준은",
+          "value_raw": "34.6%",
+          "value_min": 34.6,
+          "value_max": 34.6,
+          "value_mid": 34.6,
+          "is_missing": false
+        }
+      ]
+    },
+    {
+      "article": {
+        "url": "https://news.google.com/rss/articles/CBMieEFVX3lxTE1Tdmg3TFdqS3NUN21RSTVtdXU2RG90czEtQmN0MWs1RFpabTYzOFctYXdGYU1DZExRMUZ2S2xfY3gydkJ3VjdyTTAwZ2F1ak5RWHN1d3A2ZXJiYnlnaW1nNm40Z2NJZHhSZUsyaEp5TUhVUGR6bXA4X9IBeEFVX3lxTE5INHczQnc2WlFxcF9iel9LN1doU01jOXJjbm9FS1kwTU9kZ0FTcHkzTzV2OWlLYmJiX1otNnNqTk5xMGMtdm5TNnRnYnlYR3VMaEp5UVZ2aUV3bnUwTVkxLXVhT01oRjJDRmVuNGlDOG80NlZscllVYg",
+        "title": "부산시장 가상 양자대결서 전재수 43.3% vs 박형준 34.6%",
+        "publisher": "MBC 뉴스",
+        "published_at": null,
+        "raw_text": "부산시장 가상 양자대결서 전재수 43.3% vs 박형준 34.6% - MBC 뉴스 부산시장 가상 양자대결서 전재수 43.3% vs 박형준 34.6% &nbsp;&nbsp; MBC 뉴스 지방선거 부산시장 여론조사",
+        "raw_hash": "raw_e9ef17270691910a"
+      },
+      "region": {
+        "region_code": "26-000",
+        "sido_name": "부산광역시",
+        "sigungu_name": "전체",
+        "admin_level": "sido",
+        "parent_region_code": null
+      },
+      "candidates": [
+        {
+          "candidate_id": "cand:전재수",
+          "name_ko": "전재수",
+          "party_name": null,
+          "gender": null,
+          "birth_date": null,
+          "job": null,
+          "career_summary": null,
+          "election_history": null
+        },
+        {
+          "candidate_id": "cand:박형준",
+          "name_ko": "박형준",
+          "party_name": null,
+          "gender": null,
+          "birth_date": null,
+          "job": null,
+          "career_summary": null,
+          "election_history": null
+        }
+      ],
+      "observation": {
+        "observation_key": "obs_3b0cf776632dd287",
+        "survey_name": "부산시장 가상 양자대결서 전재수 43.3% vs 박형준 34.6%",
+        "pollster": "MBC",
+        "survey_start_date": null,
+        "survey_end_date": null,
+        "sample_size": null,
+        "response_rate": null,
+        "margin_of_error": null,
+        "sponsor": null,
+        "method": null,
+        "region_code": "26-000",
+        "office_type": "광역자치단체장",
+        "matchup_id": "20260603|광역자치단체장|26-000",
+        "audience_scope": "regional",
+        "audience_region_code": "26-000",
+        "sampling_population_text": null,
+        "legal_completeness_score": 0.1667,
+        "legal_filled_count": 1,
+        "legal_required_count": 6,
+        "date_resolution": "missing",
+        "date_inference_mode": "published_at_missing",
+        "date_inference_confidence": 0.0,
+        "poll_fingerprint": null,
+        "source_channel": "article",
+        "source_channels": [
+          "article"
+        ],
+        "verified": false,
+        "source_grade": "C"
+      },
+      "options": [
+        {
+          "option_type": "candidate_matchup",
+          "option_name": "전재수",
+          "value_raw": "43.3%",
+          "value_min": 43.3,
+          "value_max": 43.3,
+          "value_mid": 43.3,
+          "is_missing": false
+        },
+        {
+          "option_type": "candidate_matchup",
+          "option_name": "박형준",
+          "value_raw": "34.6%",
+          "value_min": 34.6,
+          "value_max": 34.6,
+          "value_mid": 34.6,
+          "is_missing": false
+        }
+      ]
+    },
+    {
+      "article": {
+        "url": "https://news.google.com/rss/articles/CBMiUkFVX3lxTE1BaU42T0NXektTMGdZOTlQRVVxTXRRRWZpLWh1alN1dkpOaEdHbk5keG56U3dwd2tVTlFrVHJKNDNrMGpoZGowa2UxNTdvWHBJcFE",
+        "title": "[경인일보 여론조사] 인천시장, 박찬대 45% vs 유정복 27%… 김교흥 27% vs 유정복 30%",
+        "publisher": "경인일보",
+        "published_at": null,
+        "raw_text": "[경인일보 여론조사] 인천시장, 박찬대 45% vs 유정복 27%… 김교흥 27% vs 유정복 30% - 경인일보 [경인일보 여론조사] 인천시장, 박찬대 45% vs 유정복 27%… 김교흥 27% vs 유정복 30% &nbsp;&nbsp; 경인일보 지방선거 인천시장 여론조사",
+        "raw_hash": "raw_d8e5f157ce006a8f"
+      },
+      "region": {
+        "region_code": "28-000",
+        "sido_name": "인천광역시",
+        "sigungu_name": "전체",
+        "admin_level": "sido",
+        "parent_region_code": null
+      },
+      "candidates": [
+        {
+          "candidate_id": "cand:박찬대",
+          "name_ko": "박찬대",
+          "party_name": null,
+          "gender": null,
+          "birth_date": null,
+          "job": null,
+          "career_summary": null,
+          "election_history": null
+        },
+        {
+          "candidate_id": "cand:유정복",
+          "name_ko": "유정복",
+          "party_name": null,
+          "gender": null,
+          "birth_date": null,
+          "job": null,
+          "career_summary": null,
+          "election_history": null
+        },
+        {
+          "candidate_id": "cand:김교흥",
+          "name_ko": "김교흥",
+          "party_name": null,
+          "gender": null,
+          "birth_date": null,
+          "job": null,
+          "career_summary": null,
+          "election_history": null
+        }
+      ],
+      "observation": {
+        "observation_key": "obs_73e9db6baf85b5d3",
+        "survey_name": "[경인일보 여론조사] 인천시장, 박찬대 45% vs 유정복 27%… 김교흥 27% vs 유정복 30%",
+        "pollster": "미상조사기관",
+        "survey_start_date": null,
+        "survey_end_date": null,
+        "sample_size": null,
+        "response_rate": null,
+        "margin_of_error": null,
+        "sponsor": null,
+        "method": null,
+        "region_code": "28-000",
+        "office_type": "광역자치단체장",
+        "matchup_id": "20260603|광역자치단체장|28-000",
+        "audience_scope": "regional",
+        "audience_region_code": "28-000",
+        "sampling_population_text": null,
+        "legal_completeness_score": 0.1667,
+        "legal_filled_count": 1,
+        "legal_required_count": 6,
+        "date_resolution": "missing",
+        "date_inference_mode": "published_at_missing",
+        "date_inference_confidence": 0.0,
+        "poll_fingerprint": null,
+        "source_channel": "article",
+        "source_channels": [
+          "article"
+        ],
+        "verified": false,
+        "source_grade": "C"
+      },
+      "options": [
+        {
+          "option_type": "candidate_matchup",
+          "option_name": "박찬대",
+          "value_raw": "45%",
+          "value_min": 45.0,
+          "value_max": 45.0,
+          "value_mid": 45.0,
+          "is_missing": false
+        },
+        {
+          "option_type": "candidate_matchup",
+          "option_name": "유정복",
+          "value_raw": "27%",
+          "value_min": 27.0,
+          "value_max": 27.0,
+          "value_mid": 27.0,
+          "is_missing": false
+        },
+        {
+          "option_type": "candidate_matchup",
+          "option_name": "김교흥",
+          "value_raw": "27%",
+          "value_min": 27.0,
+          "value_max": 27.0,
+          "value_mid": 27.0,
+          "is_missing": false
+        },
+        {
+          "option_type": "candidate_matchup",
+          "option_name": "유정복",
+          "value_raw": "30%",
+          "value_min": 30.0,
+          "value_max": 30.0,
+          "value_mid": 30.0,
+          "is_missing": false
+        }
+      ]
+    },
+    {
+      "article": {
+        "url": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE43YUpldmVfcHp3QlZFeWNTTFQ2UllWLXFscm91WGdRRVJYNTVxYXdSVlVlLWJjczc5VTZvQ0wzb2VTZlBWTzktc0kyOVkwUi1Wa3dzTlltOFlUakk",
+        "title": "부산·경남 행정통합…“6월 지방선거 이후” 73%",
+        "publisher": "KBS 뉴스",
+        "published_at": null,
+        "raw_text": "부산·경남 행정통합…“6월 지방선거 이후” 73% - KBS 뉴스 부산·경남 행정통합…“6월 지방선거 이후” 73% &nbsp;&nbsp; KBS 뉴스 지방선거 부산시장 가상대결",
+        "raw_hash": "raw_9bb6338622f7c2d9"
+      },
+      "region": {
+        "region_code": "26-000",
+        "sido_name": "부산광역시",
+        "sigungu_name": "전체",
+        "admin_level": "sido",
+        "parent_region_code": null
+      },
+      "candidates": [],
+      "observation": {
+        "observation_key": "obs_3f6ca2ed23cdeb99",
+        "survey_name": "부산·경남 행정통합…“6월 지방선거 이후” 73%",
+        "pollster": "KBS",
+        "survey_start_date": null,
+        "survey_end_date": null,
+        "sample_size": null,
+        "response_rate": null,
+        "margin_of_error": null,
+        "sponsor": null,
+        "method": null,
+        "region_code": "26-000",
+        "office_type": "광역자치단체장",
+        "matchup_id": "20260603|광역자치단체장|26-000",
+        "audience_scope": "regional",
+        "audience_region_code": "26-000",
+        "sampling_population_text": null,
+        "legal_completeness_score": 0.1667,
+        "legal_filled_count": 1,
+        "legal_required_count": 6,
+        "date_resolution": "missing",
+        "date_inference_mode": "published_at_missing",
+        "date_inference_confidence": 0.0,
+        "poll_fingerprint": null,
+        "source_channel": "article",
+        "source_channels": [
+          "article"
+        ],
+        "verified": false,
+        "source_grade": "C"
+      },
+      "options": []
+    },
+    {
+      "article": {
+        "url": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE5iM0Z6YzdVTU1hNHZHb0dXRWJxb0dPU2RoQlV1bHQ5Vk93OXlGQW1najU3TEE0UVVSd2RYT0s5Q0VYVnBnR2hscV9ac1pFUng5RjZSUUlpNjdtRHFRV25pMw",
+        "title": "6.3지방선거 인천시장 누구 선호? ‘박찬대’ 52.1% vs ‘유정복’ 36.8%",
+        "publisher": "CNB뉴스",
+        "published_at": null,
+        "raw_text": "6.3지방선거 인천시장 누구 선호? ‘박찬대’ 52.1% vs ‘유정복’ 36.8% - CNB뉴스 6.3지방선거 인천시장 누구 선호? ‘박찬대’ 52.1% vs ‘유정복’ 36.8% &nbsp;&nbsp; CNB뉴스 지방선거 인천시장 가상대결",
+        "raw_hash": "raw_d5f9b103d3eaf4f4"
+      },
+      "region": {
+        "region_code": "28-000",
+        "sido_name": "인천광역시",
+        "sigungu_name": "전체",
+        "admin_level": "sido",
+        "parent_region_code": null
+      },
+      "candidates": [],
+      "observation": {
+        "observation_key": "obs_2a69111033285a20",
+        "survey_name": "6.3지방선거 인천시장 누구 선호? ‘박찬대’ 52.1% vs ‘유정복’ 36.8%",
+        "pollster": "미상조사기관",
+        "survey_start_date": null,
+        "survey_end_date": null,
+        "sample_size": null,
+        "response_rate": null,
+        "margin_of_error": null,
+        "sponsor": null,
+        "method": null,
+        "region_code": "28-000",
+        "office_type": "광역자치단체장",
+        "matchup_id": "20260603|광역자치단체장|28-000",
+        "audience_scope": "regional",
+        "audience_region_code": "28-000",
+        "sampling_population_text": null,
+        "legal_completeness_score": 0.1667,
+        "legal_filled_count": 1,
+        "legal_required_count": 6,
+        "date_resolution": "missing",
+        "date_inference_mode": "published_at_missing",
+        "date_inference_confidence": 0.0,
+        "poll_fingerprint": null,
+        "source_channel": "article",
+        "source_channels": [
+          "article"
+        ],
+        "verified": false,
+        "source_grade": "C"
+      },
+      "options": []
+    }
+  ]
+}
