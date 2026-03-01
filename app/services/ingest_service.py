@@ -1687,6 +1687,13 @@ def ingest_payload(payload: IngestPayload, repo) -> IngestResult:
                         pass
 
             article_id = repo.upsert_article(record.article.model_dump())
+            observation_poll_block_id = str(
+                observation_payload.get("poll_block_id")
+                or observation_payload.get("observation_key")
+                or ""
+            ).strip()
+            if observation_poll_block_id:
+                observation_payload["poll_block_id"] = observation_poll_block_id
             if not observation_payload.get("poll_fingerprint"):
                 observation_payload["poll_fingerprint"] = build_poll_fingerprint(observation_payload)
 
@@ -1738,6 +1745,24 @@ def ingest_payload(payload: IngestPayload, repo) -> IngestResult:
             classification_reason_by_id: dict[int, str | None] = {}
             for option in record.options:
                 normalized_option, classification_reason = _normalize_option(option)
+                option_poll_block_id = str(normalized_option.get("poll_block_id") or "").strip()
+                if not option_poll_block_id:
+                    normalized_option["poll_block_id"] = observation_poll_block_id or None
+                elif observation_poll_block_id and option_poll_block_id != observation_poll_block_id:
+                    normalized_option["poll_block_id"] = observation_poll_block_id
+                    try:
+                        repo.insert_review_queue(
+                            entity_type="poll_observation",
+                            entity_id=record.observation.observation_key,
+                            issue_type="metadata_cross_contamination",
+                            review_note=(
+                                "POLL_BLOCK_ID_MISMATCH_IN_OBSERVATION "
+                                f"observation_poll_block_id={observation_poll_block_id} "
+                                f"option_poll_block_id={option_poll_block_id}"
+                            ),
+                        )
+                    except Exception:  # noqa: BLE001
+                        pass
                 normalized_options.append(normalized_option)
                 classification_reason_by_id[id(normalized_option)] = classification_reason
             _repair_candidate_matchup_scenarios(

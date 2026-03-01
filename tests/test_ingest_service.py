@@ -135,6 +135,7 @@ PAYLOAD = {
             },
             "observation": {
                 "observation_key": "obs-1",
+                "poll_block_id": "pblk-obs-1",
                 "survey_name": "survey",
                 "pollster": "MBC",
                 "confidence_level": 95.0,
@@ -171,9 +172,11 @@ def test_idempotent_ingest_no_duplicate_records():
     assert len(repo.observations) == 1
     assert len(repo.options) == 1
     assert repo.option_rows[0]["option_type"] == "election_frame"
+    assert repo.option_rows[0]["poll_block_id"] == "pblk-obs-1"
     assert repo.option_rows[0]["candidate_verified"] is True
     assert repo.option_rows[0]["scenario_key"] == "default"
     assert repo.observations["obs-1"]["audience_scope"] == "national"
+    assert repo.observations["obs-1"]["poll_block_id"] == "pblk-obs-1"
     assert repo.observations["obs-1"]["legal_filled_count"] == 6
     assert len(repo.observations["obs-1"]["poll_fingerprint"]) == 64
     assert repo.observations["obs-1"]["source_channels"] == ["article"]
@@ -193,6 +196,29 @@ def test_ingest_error_pushes_review_queue():
     assert result.error_count == 1
     assert len(repo.review) == 1
     assert repo.review[0][2] == "ingestion_error"
+
+
+def test_option_poll_block_mismatch_is_normalized_and_reviewed():
+    repo = FakeRepo()
+    payload_data = deepcopy(PAYLOAD)
+    payload_data["records"][0]["options"] = [
+        {
+            "option_type": "candidate_matchup",
+            "option_name": "전재수",
+            "value_raw": "43.4%",
+            "poll_block_id": "pblk-other",
+        }
+    ]
+    payload = IngestPayload.model_validate(payload_data)
+
+    result = ingest_payload(payload, repo)
+
+    assert result.status == "success"
+    assert repo.option_rows[0]["poll_block_id"] == "pblk-obs-1"
+    assert any(
+        row[2] == "metadata_cross_contamination" and "POLL_BLOCK_ID_MISMATCH_IN_OBSERVATION" in row[3]
+        for row in repo.review
+    )
 
 
 def test_scope_inference_from_population_text_sets_regional_scope_and_region_code():

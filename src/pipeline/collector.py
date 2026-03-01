@@ -482,9 +482,23 @@ class PollCollector:
                     block_response_rate = response_rate
 
             block_start_date, block_end_date = self._extract_survey_period(block_text, article=article)
+            block_question_group = self._extract_poll_block_question_group(
+                article_title=article.title,
+                block_text=block_text,
+                has_multi_blocks=has_multi_blocks,
+            )
+            poll_block_id = self._build_poll_block_id(
+                block_index=block_index,
+                pollster=pollster,
+                survey_start_date=block_start_date,
+                survey_end_date=block_end_date or survey_end_date,
+                sample_size=block_sample,
+                question_group=block_question_group,
+            )
             observation = PollObservation(
                 id=stable_id("obs", article.id, matchup_id, pollster or "unknown", str(block_index)),
                 article_id=article.id,
+                poll_block_id=poll_block_id,
                 survey_name=article.title,
                 pollster=pollster or "미상조사기관",
                 survey_start_date=block_start_date,
@@ -545,6 +559,7 @@ class PollCollector:
                             option_name=pair["name"],
                             value_raw=pair["value_raw"],
                             evidence_text=pair["evidence_text"],
+                            poll_block_id=poll_block_id,
                         )
                     )
 
@@ -564,7 +579,7 @@ class PollCollector:
                     )
                 else:
                     self._split_candidate_matchup_scenarios(
-                        survey_name=article.title,
+                        survey_name=None if has_multi_blocks else article.title,
                         body_text=block_text,
                         observation=observation,
                         options=block_options,
@@ -682,6 +697,7 @@ class PollCollector:
         option_name: str,
         value_raw: str,
         evidence_text: str,
+        poll_block_id: str | None = None,
         scenario_key: str | None = "default",
         scenario_type: str | None = None,
         scenario_title: str | None = None,
@@ -692,6 +708,7 @@ class PollCollector:
         return PollOption(
             id=stable_id("opt", observation.id, candidate_id, value_raw, normalized_scenario_key),
             observation_id=observation.id,
+            poll_block_id=poll_block_id or observation.poll_block_id,
             option_type=option_type,
             option_name=option_name,
             candidate_id=candidate_id,
@@ -705,6 +722,42 @@ class PollCollector:
             scenario_key=normalized_scenario_key,
             scenario_type=scenario_type,
             scenario_title=scenario_title,
+        )
+
+    def _extract_poll_block_question_group(
+        self,
+        *,
+        article_title: str,
+        block_text: str,
+        has_multi_blocks: bool,
+    ) -> str:
+        if not has_multi_blocks:
+            return self._cleanup_space(article_title)[:120]
+        focus = self._candidate_value_signals(block_text, title=None)
+        if focus:
+            return self._cleanup_space(focus)[:120]
+        return self._cleanup_space(article_title)[:120]
+
+    def _build_poll_block_id(
+        self,
+        *,
+        block_index: int,
+        pollster: str | None,
+        survey_start_date: str | None,
+        survey_end_date: str | None,
+        sample_size: int | None,
+        question_group: str,
+    ) -> str:
+        question_token = self._cleanup_space(question_group)
+        if not question_token:
+            question_token = f"block-{block_index}"
+        return stable_id(
+            "pblk",
+            pollster or "미상조사기관",
+            survey_start_date or "",
+            survey_end_date or "",
+            str(sample_size or ""),
+            question_token,
         )
 
     def _split_candidate_matchup_scenarios(

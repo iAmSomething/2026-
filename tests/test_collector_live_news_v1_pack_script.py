@@ -59,6 +59,7 @@ class FakeCollector:
         obs = PollObservation(
             id=stable_id("obs", article.id),
             article_id=article.id,
+            poll_block_id=stable_id("pblk", article.id, "한국갤럽", "2026-02-24", "서울시장"),
             survey_name=article.title,
             pollster="한국갤럽",
             survey_start_date=None,
@@ -80,6 +81,7 @@ class FakeCollector:
         opt = PollOption(
             id=stable_id("opt", article.id),
             observation_id=obs.id,
+            poll_block_id=obs.poll_block_id,
             option_type="candidate",
             option_name="정원오",
             candidate_id="cand:jungwonoh",

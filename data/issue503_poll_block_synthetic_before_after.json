@@ -1,0 +1,122 @@
+{
+  "issue": 503,
+  "input_payload_path": "data/issue503_poll_block_synthetic_input.json",
+  "target_region_codes": [
+    "26-000",
+    "28-450",
+    "26-710"
+  ],
+  "items": [
+    {
+      "observation_key": "obs-issue503-synthetic-1",
+      "region_code": "26-000",
+      "article_url": "https://example.com/issue503-busan-multi",
+      "article_title": "[부산시장] 전재수 43.4%-박형준 32.3%, 전재수 43.8%-김도읍 33.2%, 다자대결 전재수 26.8%",
+      "before": {
+        "observation_poll_block_id": "legacy-single-block",
+        "option_count": 2,
+        "option_scenario_keys": [
+          "default"
+        ]
+      },
+      "after": {
+        "observation_count": 2,
+        "candidate_option_count": 10,
+        "poll_block_count": 2,
+        "observations": [
+          {
+            "id": "obs_612216a78d501c73",
+            "poll_block_id": "pblk_d3edf877e867aadc",
+            "pollster": "KSOI",
+            "survey_start_date": "2026-02-03",
+            "survey_end_date": "2026-02-04",
+            "sample_size": 1000,
+            "scenario_keys": [
+              "h2h-전재수-김도읍",
+              "h2h-전재수-박형준",
+              "multi-전재수"
+            ],
+            "candidate_values": [
+              {
+                "option_name": "전재수",
+                "scenario_key": "h2h-전재수-박형준",
+                "value_mid": 43.4,
+                "poll_block_id": "pblk_d3edf877e867aadc"
+              },
+              {
+                "option_name": "박형준",
+                "scenario_key": "h2h-전재수-박형준",
+                "value_mid": 32.3,
+                "poll_block_id": "pblk_d3edf877e867aadc"
+              },
+              {
+                "option_name": "전재수",
+                "scenario_key": "h2h-전재수-김도읍",
+                "value_mid": 43.8,
+                "poll_block_id": "pblk_d3edf877e867aadc"
+              },
+              {
+                "option_name": "김도읍",
+                "scenario_key": "h2h-전재수-김도읍",
+                "value_mid": 33.2,
+                "poll_block_id": "pblk_d3edf877e867aadc"
+              },
+              {
+                "option_name": "전재수",
+                "scenario_key": "multi-전재수",
+                "value_mid": 26.8,
+                "poll_block_id": "pblk_d3edf877e867aadc"
+              }
+            ]
+          },
+          {
+            "id": "obs_c3c340beaf01fb22",
+            "poll_block_id": "pblk_4de0219f635d06e2",
+            "pollster": "리얼미터",
+            "survey_start_date": "2026-02-05",
+            "survey_end_date": "2026-02-06",
+            "sample_size": 800,
+            "scenario_keys": [
+              "h2h-전재수-김도읍",
+              "h2h-전재수-박형준",
+              "multi-전재수"
+            ],
+            "candidate_values": [
+              {
+                "option_name": "전재수",
+                "scenario_key": "h2h-전재수-박형준",
+                "value_mid": 41.0,
+                "poll_block_id": "pblk_4de0219f635d06e2"
+              },
+              {
+                "option_name": "박형준",
+                "scenario_key": "h2h-전재수-박형준",
+                "value_mid": 34.0,
+                "poll_block_id": "pblk_4de0219f635d06e2"
+              },
+              {
+                "option_name": "전재수",
+                "scenario_key": "h2h-전재수-김도읍",
+                "value_mid": 40.2,
+                "poll_block_id": "pblk_4de0219f635d06e2"
+              },
+              {
+                "option_name": "김도읍",
+                "scenario_key": "h2h-전재수-김도읍",
+                "value_mid": 30.1,
+                "poll_block_id": "pblk_4de0219f635d06e2"
+              },
+              {
+                "option_name": "전재수",
+                "scenario_key": "multi-전재수",
+                "value_mid": 24.4,
+                "poll_block_id": "pblk_4de0219f635d06e2"
+              }
+            ]
+          }
+        ]
+      },
+      "dead_letters": []
+    }
+  ]
+}

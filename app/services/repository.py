@@ -268,7 +268,7 @@ class PostgresRepository:
                 """
                 SELECT
                     id, observation_key, article_id, survey_name, pollster, sponsor,
-                    survey_start_date, survey_end_date, confidence_level, sample_size, response_rate,
+                    poll_block_id, survey_start_date, survey_end_date, confidence_level, sample_size, response_rate,
                     margin_of_error, method, region_code, office_type, matchup_id,
                     audience_scope, audience_region_code, sampling_population_text,
                     legal_completeness_score, legal_filled_count, legal_required_count,
@@ -305,6 +305,10 @@ class PostgresRepository:
             payload["source_channels"] = [payload["source_channel"]]
         payload.setdefault("sponsor", None)
         payload.setdefault("method", None)
+        poll_block_id = payload.get("poll_block_id")
+        if isinstance(poll_block_id, str):
+            poll_block_id = poll_block_id.strip() or None
+        payload["poll_block_id"] = poll_block_id or payload.get("observation_key")
         return payload
 
     def upsert_poll_observation(self, observation: dict, article_id: int, ingestion_run_id: int) -> int:
@@ -321,6 +325,7 @@ class PostgresRepository:
                 """
                 INSERT INTO poll_observations (
                     observation_key, article_id, survey_name, pollster,
+                    poll_block_id,
                     survey_start_date, survey_end_date, confidence_level, sample_size,
                     response_rate, margin_of_error, sponsor, method, region_code,
                     office_type, matchup_id, audience_scope, audience_region_code,
@@ -333,6 +338,7 @@ class PostgresRepository:
                 )
                 VALUES (
                     %(observation_key)s, %(article_id)s, %(survey_name)s, %(pollster)s,
+                    %(poll_block_id)s,
                     %(survey_start_date)s, %(survey_end_date)s, %(confidence_level)s, %(sample_size)s,
                     %(response_rate)s, %(margin_of_error)s, %(sponsor)s, %(method)s, %(region_code)s,
                     %(office_type)s, %(matchup_id)s, %(audience_scope)s, %(audience_region_code)s,
@@ -347,6 +353,7 @@ class PostgresRepository:
                 SET article_id=EXCLUDED.article_id,
                     survey_name=EXCLUDED.survey_name,
                     pollster=EXCLUDED.pollster,
+                    poll_block_id=COALESCE(EXCLUDED.poll_block_id, poll_observations.poll_block_id),
                     survey_start_date=EXCLUDED.survey_start_date,
                     survey_end_date=EXCLUDED.survey_end_date,
                     confidence_level=EXCLUDED.confidence_level,
@@ -435,6 +442,10 @@ class PostgresRepository:
         if isinstance(scenario_key, str):
             scenario_key = scenario_key.strip()
         payload["scenario_key"] = scenario_key or "default"
+        poll_block_id = payload.get("poll_block_id")
+        if isinstance(poll_block_id, str):
+            poll_block_id = poll_block_id.strip() or None
+        payload["poll_block_id"] = poll_block_id
         payload.setdefault("scenario_type", None)
         payload.setdefault("scenario_title", None)
         payload.setdefault("party_inferred", False)
@@ -457,7 +468,7 @@ class PostgresRepository:
             cur.execute(
                 """
                 INSERT INTO poll_options (
-                    observation_id, option_type, option_name,
+                    observation_id, poll_block_id, option_type, option_name,
                     candidate_id, party_name, scenario_key, scenario_type, scenario_title,
                     value_raw, value_min, value_max, value_mid, is_missing,
                     party_inferred, party_inference_source, party_inference_confidence, party_inference_evidence,
@@ -465,7 +476,7 @@ class PostgresRepository:
                     needs_manual_review
                 )
                 VALUES (
-                    %(observation_id)s, %(option_type)s, %(option_name)s,
+                    %(observation_id)s, %(poll_block_id)s, %(option_type)s, %(option_name)s,
                     %(candidate_id)s, %(party_name)s, %(scenario_key)s, %(scenario_type)s, %(scenario_title)s,
                     %(value_raw)s, %(value_min)s, %(value_max)s, %(value_mid)s, %(is_missing)s,
                     %(party_inferred)s, %(party_inference_source)s, %(party_inference_confidence)s, %(party_inference_evidence)s,
@@ -473,7 +484,8 @@ class PostgresRepository:
                     %(needs_manual_review)s
                 )
                 ON CONFLICT (observation_id, option_type, option_name, scenario_key) DO UPDATE
-                SET candidate_id=COALESCE(EXCLUDED.candidate_id, poll_options.candidate_id),
+                SET poll_block_id=COALESCE(EXCLUDED.poll_block_id, poll_options.poll_block_id),
+                    candidate_id=COALESCE(EXCLUDED.candidate_id, poll_options.candidate_id),
                     party_name=COALESCE(EXCLUDED.party_name, poll_options.party_name),
                     scenario_type=COALESCE(EXCLUDED.scenario_type, poll_options.scenario_type),
                     scenario_title=COALESCE(EXCLUDED.scenario_title, poll_options.scenario_title),
@@ -1766,6 +1778,7 @@ class PostgresRepository:
                     o.office_type,
                     COALESCE(m.title, o.matchup_id) AS title,
                     o.observation_key,
+                    o.poll_block_id,
                     o.pollster,
                     o.survey_start_date,
                     o.survey_end_date,
@@ -1812,6 +1825,7 @@ class PostgresRepository:
                         json_agg(
                             json_build_object(
                                 'option_name', po.option_name,
+                                'poll_block_id', po.poll_block_id,
                                 'candidate_id', COALESCE(po.candidate_id, c.candidate_id),
                                 'party_name', CASE
                                     WHEN COALESCE(c.party_name, '') <> '' THEN c.party_name

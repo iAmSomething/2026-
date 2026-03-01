@@ -128,6 +128,9 @@ class CollectorExtractTest(unittest.TestCase):
         observations, options, errors = collector.extract(article)
         self.assertEqual(len(errors), 0)
         self.assertEqual(len(observations), 2)
+        self.assertEqual(len({row.poll_block_id for row in observations}), 2)
+        for row in observations:
+            self.assertTrue(row.poll_block_id.startswith("pblk_"))
 
         by_pollster = {row.pollster: row for row in observations}
         self.assertIn("KSOI", by_pollster)
@@ -152,6 +155,60 @@ class CollectorExtractTest(unittest.TestCase):
             options_by_observation.setdefault(row.observation_id, []).append(row)
         self.assertEqual(len(options_by_observation.get(ksoi.id, [])), 2)
         self.assertEqual(len(options_by_observation.get(realmeter.id, [])), 2)
+        for row in options_by_observation.get(ksoi.id, []):
+            self.assertEqual(row.poll_block_id, ksoi.poll_block_id)
+        for row in options_by_observation.get(realmeter.id, []):
+            self.assertEqual(row.poll_block_id, realmeter.poll_block_id)
+
+    def test_extract_multi_blocks_do_not_leak_title_scenario_into_other_poll_block(self) -> None:
+        collector = PollCollector(election_id="20260603")
+        title = (
+            "[부산시장] 전재수 43.4%-박형준 32.3%, "
+            "전재수 43.8%-김도읍 33.2%, 다자대결 전재수 26.8%"
+        )
+        article_text = (
+            "KSOI는 2월 3~4일 조사, 표본 1000명, 응답률 10.1%, 표본오차 ±3.1%, "
+            "전재수 43.4%-박형준 32.3%, 전재수 43.8%-김도읍 33.2%, 다자대결 전재수 26.8%를 발표했다. "
+            "리얼미터는 2월 5~6일 조사, 표본 800명, 응답률 8.5%, 표본오차 ±3.5%, "
+            "전재수 41.0%-박형준 34.0%, 전재수 40.2%-김도읍 30.1%, 다자대결 전재수 24.4%를 발표했다."
+        )
+        article = Article(
+            id=stable_id("art", "https://example.com/busan-multi-poll-block"),
+            url="https://example.com/busan-multi-poll-block",
+            title=title,
+            publisher="테스트",
+            published_at="2026-02-07T00:00:00+09:00",
+            snippet=article_text[:120],
+            collected_at="2026-02-07T00:00:00+00:00",
+            raw_hash="h-busan-poll-block",
+            raw_text=article_text,
+        )
+
+        observations, options, errors = collector.extract(article)
+        self.assertEqual(len(errors), 0)
+        self.assertEqual(len(observations), 2)
+
+        by_pollster = {row.pollster: row for row in observations}
+        self.assertIn("KSOI", by_pollster)
+        self.assertIn("리얼미터", by_pollster)
+
+        by_observation: dict[str, list] = {}
+        for row in options:
+            if row.option_type != "candidate":
+                continue
+            by_observation.setdefault(row.observation_id, []).append(row)
+
+        ipsos_rows = by_observation[by_pollster["KSOI"].id]
+        real_rows = by_observation[by_pollster["리얼미터"].id]
+        self.assertTrue(all(row.poll_block_id == by_pollster["KSOI"].poll_block_id for row in ipsos_rows))
+        self.assertTrue(all(row.poll_block_id == by_pollster["리얼미터"].poll_block_id for row in real_rows))
+
+        ipsos_multi = [row for row in ipsos_rows if row.scenario_key == "multi-전재수" and row.option_name == "전재수"]
+        real_multi = [row for row in real_rows if row.scenario_key == "multi-전재수" and row.option_name == "전재수"]
+        self.assertEqual(len(ipsos_multi), 1)
+        self.assertEqual(len(real_multi), 1)
+        self.assertAlmostEqual(float(ipsos_multi[0].value_mid or 0.0), 26.8, places=1)
+        self.assertAlmostEqual(float(real_multi[0].value_mid or 0.0), 24.4, places=1)
 
     def test_extract_routes_metadata_cross_contamination_when_two_pollsters_in_one_block(self) -> None:
         collector = PollCollector(election_id="20260603")

@@ -1,0 +1,22 @@
+{
+  "issue": 503,
+  "input_payload_path": "data/collector_live_coverage_v2_payload.json",
+  "before_after_output_path": "data/issue503_poll_block_before_after.json",
+  "reingest_output_path": "data/issue503_poll_block_reingest_payload.json",
+  "reingest_record_count": 3,
+  "target_region_codes": [
+    "26-710",
+    "26-000",
+    "28-450"
+  ],
+  "matched_record_count": 3,
+  "dead_letter_count": 1,
+  "metadata_cross_contamination_count": 0,
+  "acceptance_checks": {
+    "matched_records_present": true,
+    "multi_poll_block_split_present": false,
+    "scenario_split_present": true,
+    "all_options_bound_to_poll_block": true,
+    "metadata_cross_contamination_zero": true
+  }
+}

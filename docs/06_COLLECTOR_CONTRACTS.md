@@ -17,6 +17,12 @@
 - `src/pipeline/contracts.py`의 `POLL_OPTION_SCHEMA`
 - 통합 레지스트리: `INPUT_CONTRACT_SCHEMAS`
 
+`poll_block_id` 최소 계약:
+1. `poll_observation.poll_block_id` 필수
+2. `poll_option.poll_block_id` 필수
+3. 생성 기준: 조사기관+조사기간+표본수+질문군(후보/시나리오 문맥) 조합
+4. 같은 관측(observation) 내 option은 observation의 `poll_block_id`와 동일해야 함
+
 ## 2. 식별자 계약
 아래 식별자는 최소 필수 계약입니다.
 
@@ -24,6 +30,7 @@
 2. `office_type`: 기획 표준 enum
 3. `matchup_id`: `election_id|office_type|region_code` 조합 키
 4. `candidate_id`: 후보 식별자 (`cand:<normalized_name>`)
+5. `poll_block_id`: 기사 내 조사단위 식별자 (`pblk_...`)
 
 `office_type` 허용값:
 1. `광역자치단체장`

@@ -78,6 +78,7 @@ def collector_output_to_ingest_payload(
                 "candidates": candidates,
                 "observation": {
                     "observation_key": observation.id,
+                    "poll_block_id": observation.poll_block_id,
                     "survey_name": observation.survey_name or article.title,
                     "pollster": observation.pollster or "미상조사기관",
                     "survey_start_date": observation.survey_start_date,
@@ -109,6 +110,7 @@ def collector_output_to_ingest_payload(
                     {
                         "option_type": _option_type_for_ingest(option["option_type"]),
                         "option_name": option["option_name"],
+                        "poll_block_id": option.get("poll_block_id") or observation.poll_block_id,
                         "candidate_id": option.get("candidate_id"),
                         "party_name": option.get("party_name"),
                         "scenario_key": option.get("scenario_key"),
