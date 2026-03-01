@@ -8,7 +8,7 @@ on:
 jobs:
   collector-live-news-ingest:
     runs-on: ubuntu-latest
-    timeout-minutes: 25
+    timeout-minutes: 35
     env:
       SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
       SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
@@ -62,19 +62,71 @@ jobs:
           exit 1
 
       - name: Run ingest with retry
-        timeout-minutes: 15
+        timeout-minutes: 22
         run: |
           .venv/bin/python scripts/qa/run_ingest_with_retry.py \
             --api-base "$API_BASE_URL" \
             --input data/collector_live_news_v1_payload.json \
-            --max-retries 2 \
+            --max-retries 1 \
             --backoff-seconds 1 \
             --timeout 180 \
             --timeout-scale-on-timeout 1.5 \
             --timeout-max 360 \
             --heartbeat-interval-seconds 20 \
+            --enable-timeout-chunk-downshift \
+            --chunk-target-records 80 \
+            --chunk-min-records 15 \
+            --chunk-downshift-factor 0.5 \
+            --max-chunk-splits 8 \
+            --max-total-chunks 20 \
             --classification-artifact data/collector_live_news_v1_failure_classification.json \
             --report data/collector_live_news_v1_ingest_runner_report.json
+
+      - name: Build latency profile artifact
+        if: always()
+        run: |
+          .venv/bin/python - <<'PY'
+          import json
+          from pathlib import Path
+
+          report_path = Path("data/collector_live_news_v1_ingest_runner_report.json")
+          out_path = Path("data/collector_live_news_v1_latency_profile.json")
+
+          if not report_path.exists():
+              out_path.write_text(
+                  json.dumps(
+                      {
+                          "status": "missing_report",
+                          "report_path": str(report_path),
+                      },
+                      ensure_ascii=False,
+                      indent=2,
+                  ) + "\\n",
+                  encoding="utf-8",
+              )
+              raise SystemExit(0)
+
+          report = json.loads(report_path.read_text(encoding="utf-8"))
+          payload = {
+              "status": "ok",
+              "success": report.get("effective_success", report.get("success")),
+              "raw_success": report.get("raw_success", report.get("success")),
+              "attempt_count": len(report.get("attempts") or []),
+              "latency_profile": report.get("latency_profile") or {},
+              "chunking": {
+                  "initial_record_count": (report.get("chunking") or {}).get("initial_record_count"),
+                  "initial_chunk_count": (report.get("chunking") or {}).get("initial_chunk_count"),
+                  "completed_chunk_count": (report.get("chunking") or {}).get("completed_chunk_count"),
+                  "split_count": (report.get("chunking") or {}).get("split_count"),
+                  "max_queue_depth": (report.get("chunking") or {}).get("max_queue_depth"),
+              },
+              "failure_class": report.get("failure_class"),
+              "cause_code": report.get("cause_code"),
+              "failure_reason": report.get("failure_reason"),
+          }
+          out_path.write_text(json.dumps(payload, ensure_ascii=False, indent=2) + "\\n", encoding="utf-8")
+          print(json.dumps(payload, ensure_ascii=False))
+          PY
 
       - name: Capture API log snapshot
         if: always()
@@ -159,6 +211,7 @@ jobs:
             data/collector_live_news_v1_review_queue_candidates.json
             data/collector_live_news_v1_ingest_runner_report.json
             data/collector_live_news_v1_failure_classification.json
+            data/collector_live_news_v1_latency_profile.json
             data/collector_live_news_api.log
             data/dead_letter/*.json
           if-no-files-found: warn
