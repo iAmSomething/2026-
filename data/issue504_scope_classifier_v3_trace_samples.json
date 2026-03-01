@@ -1,0 +1,762 @@
+[
+  {
+    "before": {
+      "region_code": "41-000",
+      "office_type": "광역자치단체장",
+      "matchup_id": "20260603|광역자치단체장|41-000",
+      "audience_scope": null,
+      "audience_region_code": null,
+      "sampling_population_text": null
+    },
+    "after": {
+      "region_code": "41-000",
+      "office_type": "광역자치단체장",
+      "matchup_id": "20260603|광역자치단체장|41-000",
+      "audience_scope": "regional",
+      "audience_region_code": "41-000",
+      "sampling_population_text": null
+    },
+    "question_signal_applied": true,
+    "scope_resolution": {
+      "inferred_scope": null,
+      "inferred_region_code": null,
+      "confidence": 0.0,
+      "hard_fail_reason": null,
+      "low_confidence_reason": null
+    },
+    "conflict_resolution_applied": false,
+    "title_body_fallback_applied": false,
+    "title_body_keyword": null,
+    "decision_source": "question_text_or_official_code",
+    "region_after_sync": {
+      "region_code": "41-000",
+      "sido_name": "경기도",
+      "sigungu_name": "전체",
+      "admin_level": "sido",
+      "parent_region_code": null
+    },
+    "observation_key": "obs_3923340f5af55d45"
+  },
+  {
+    "before": {
+      "region_code": "41-000",
+      "office_type": "광역자치단체장",
+      "matchup_id": "20260603|광역자치단체장|41-000",
+      "audience_scope": null,
+      "audience_region_code": null,
+      "sampling_population_text": null
+    },
+    "after": {
+      "region_code": "41-000",
+      "office_type": "광역자치단체장",
+      "matchup_id": "20260603|광역자치단체장|41-000",
+      "audience_scope": "regional",
+      "audience_region_code": "41-000",
+      "sampling_population_text": null
+    },
+    "question_signal_applied": true,
+    "scope_resolution": {
+      "inferred_scope": null,
+      "inferred_region_code": null,
+      "confidence": 0.0,
+      "hard_fail_reason": null,
+      "low_confidence_reason": null
+    },
+    "conflict_resolution_applied": false,
+    "title_body_fallback_applied": false,
+    "title_body_keyword": null,
+    "decision_source": "question_text_or_official_code",
+    "region_after_sync": {
+      "region_code": "41-000",
+      "sido_name": "경기도",
+      "sigungu_name": "전체",
+      "admin_level": "sido",
+      "parent_region_code": null
+    },
+    "observation_key": "obs_1a9d3bc2062fbfd4"
+  },
+  {
+    "before": {
+      "region_code": "41-000",
+      "office_type": "광역자치단체장",
+      "matchup_id": "20260603|광역자치단체장|41-000",
+      "audience_scope": null,
+      "audience_region_code": null,
+      "sampling_population_text": null
+    },
+    "after": {
+      "region_code": "41-000",
+      "office_type": "광역자치단체장",
+      "matchup_id": "20260603|광역자치단체장|41-000",
+      "audience_scope": "regional",
+      "audience_region_code": "41-000",
+      "sampling_population_text": null
+    },
+    "question_signal_applied": true,
+    "scope_resolution": {
+      "inferred_scope": null,
+      "inferred_region_code": null,
+      "confidence": 0.0,
+      "hard_fail_reason": null,
+      "low_confidence_reason": null
+    },
+    "conflict_resolution_applied": false,
+    "title_body_fallback_applied": false,
+    "title_body_keyword": null,
+    "decision_source": "question_text_or_official_code",
+    "region_after_sync": {
+      "region_code": "41-000",
+      "sido_name": "경기도",
+      "sigungu_name": "전체",
+      "admin_level": "sido",
+      "parent_region_code": null
+    },
+    "observation_key": "obs_1b476b3c9acf3ed0"
+  },
+  {
+    "before": {
+      "region_code": "41-000",
+      "office_type": "광역자치단체장",
+      "matchup_id": "20260603|광역자치단체장|41-000",
+      "audience_scope": null,
+      "audience_region_code": null,
+      "sampling_population_text": null
+    },
+    "after": {
+      "region_code": "41-000",
+      "office_type": "광역자치단체장",
+      "matchup_id": "20260603|광역자치단체장|41-000",
+      "audience_scope": "regional",
+      "audience_region_code": "41-000",
+      "sampling_population_text": null
+    },
+    "question_signal_applied": false,
+    "scope_resolution": {
+      "inferred_scope": null,
+      "inferred_region_code": null,
+      "confidence": 0.0,
+      "hard_fail_reason": null,
+      "low_confidence_reason": null
+    },
+    "conflict_resolution_applied": false,
+    "title_body_fallback_applied": false,
+    "title_body_keyword": "경기지사",
+    "decision_source": "observation_default",
+    "region_after_sync": {
+      "region_code": "41-000",
+      "sido_name": "경기도",
+      "sigungu_name": "전체",
+      "admin_level": "sido",
+      "parent_region_code": null
+    },
+    "observation_key": "obs_259e580fdbc42986"
+  },
+  {
+    "before": {
+      "region_code": "11-000",
+      "office_type": "광역자치단체장",
+      "matchup_id": "20260603|광역자치단체장|11-000",
+      "audience_scope": null,
+      "audience_region_code": null,
+      "sampling_population_text": null
+    },
+    "after": {
+      "region_code": "11-000",
+      "office_type": "광역자치단체장",
+      "matchup_id": "20260603|광역자치단체장|11-000",
+      "audience_scope": "regional",
+      "audience_region_code": "11-000",
+      "sampling_population_text": null
+    },
+    "question_signal_applied": true,
+    "scope_resolution": {
+      "inferred_scope": null,
+      "inferred_region_code": null,
+      "confidence": 0.0,
+      "hard_fail_reason": null,
+      "low_confidence_reason": null
+    },
+    "conflict_resolution_applied": false,
+    "title_body_fallback_applied": false,
+    "title_body_keyword": null,
+    "decision_source": "question_text_or_official_code",
+    "region_after_sync": {
+      "region_code": "11-000",
+      "sido_name": "서울특별시",
+      "sigungu_name": "전체",
+      "admin_level": "sido",
+      "parent_region_code": null
+    },
+    "observation_key": "obs_7f29a3027242a383"
+  },
+  {
+    "before": {
+      "region_code": "11-000",
+      "office_type": "광역자치단체장",
+      "matchup_id": "20260603|광역자치단체장|11-000",
+      "audience_scope": null,
+      "audience_region_code": null,
+      "sampling_population_text": null
+    },
+    "after": {
+      "region_code": "11-000",
+      "office_type": "광역자치단체장",
+      "matchup_id": "20260603|광역자치단체장|11-000",
+      "audience_scope": "regional",
+      "audience_region_code": "11-000",
+      "sampling_population_text": null
+    },
+    "question_signal_applied": true,
+    "scope_resolution": {
+      "inferred_scope": null,
+      "inferred_region_code": null,
+      "confidence": 0.0,
+      "hard_fail_reason": null,
+      "low_confidence_reason": null
+    },
+    "conflict_resolution_applied": false,
+    "title_body_fallback_applied": false,
+    "title_body_keyword": null,
+    "decision_source": "question_text_or_official_code",
+    "region_after_sync": {
+      "region_code": "11-000",
+      "sido_name": "서울특별시",
+      "sigungu_name": "전체",
+      "admin_level": "sido",
+      "parent_region_code": null
+    },
+    "observation_key": "obs_c98ca4f5973f8d49"
+  },
+  {
+    "before": {
+      "region_code": "11-000",
+      "office_type": "광역자치단체장",
+      "matchup_id": "20260603|광역자치단체장|11-000",
+      "audience_scope": null,
+      "audience_region_code": null,
+      "sampling_population_text": null
+    },
+    "after": {
+      "region_code": "11-000",
+      "office_type": "광역자치단체장",
+      "matchup_id": "20260603|광역자치단체장|11-000",
+      "audience_scope": "regional",
+      "audience_region_code": "11-000",
+      "sampling_population_text": null
+    },
+    "question_signal_applied": true,
+    "scope_resolution": {
+      "inferred_scope": null,
+      "inferred_region_code": null,
+      "confidence": 0.0,
+      "hard_fail_reason": null,
+      "low_confidence_reason": null
+    },
+    "conflict_resolution_applied": false,
+    "title_body_fallback_applied": false,
+    "title_body_keyword": null,
+    "decision_source": "question_text_or_official_code",
+    "region_after_sync": {
+      "region_code": "11-000",
+      "sido_name": "서울특별시",
+      "sigungu_name": "전체",
+      "admin_level": "sido",
+      "parent_region_code": null
+    },
+    "observation_key": "obs_f5aefbfbb344c0d1"
+  },
+  {
+    "before": {
+      "region_code": "26-000",
+      "office_type": "광역자치단체장",
+      "matchup_id": "20260603|광역자치단체장|26-000",
+      "audience_scope": null,
+      "audience_region_code": null,
+      "sampling_population_text": null
+    },
+    "after": {
+      "region_code": "26-000",
+      "office_type": "광역자치단체장",
+      "matchup_id": "20260603|광역자치단체장|26-000",
+      "audience_scope": "regional",
+      "audience_region_code": "26-000",
+      "sampling_population_text": null
+    },
+    "question_signal_applied": true,
+    "scope_resolution": {
+      "inferred_scope": null,
+      "inferred_region_code": null,
+      "confidence": 0.0,
+      "hard_fail_reason": null,
+      "low_confidence_reason": null
+    },
+    "conflict_resolution_applied": false,
+    "title_body_fallback_applied": false,
+    "title_body_keyword": null,
+    "decision_source": "question_text_or_official_code",
+    "region_after_sync": {
+      "region_code": "26-000",
+      "sido_name": "부산광역시",
+      "sigungu_name": "전체",
+      "admin_level": "sido",
+      "parent_region_code": null
+    },
+    "observation_key": "obs_136dffa93edf3413"
+  },
+  {
+    "before": {
+      "region_code": "26-000",
+      "office_type": "광역자치단체장",
+      "matchup_id": "20260603|광역자치단체장|26-000",
+      "audience_scope": null,
+      "audience_region_code": null,
+      "sampling_population_text": null
+    },
+    "after": {
+      "region_code": "26-000",
+      "office_type": "광역자치단체장",
+      "matchup_id": "20260603|광역자치단체장|26-000",
+      "audience_scope": "regional",
+      "audience_region_code": "26-000",
+      "sampling_population_text": null
+    },
+    "question_signal_applied": true,
+    "scope_resolution": {
+      "inferred_scope": null,
+      "inferred_region_code": null,
+      "confidence": 0.0,
+      "hard_fail_reason": null,
+      "low_confidence_reason": null
+    },
+    "conflict_resolution_applied": false,
+    "title_body_fallback_applied": false,
+    "title_body_keyword": null,
+    "decision_source": "question_text_or_official_code",
+    "region_after_sync": {
+      "region_code": "26-000",
+      "sido_name": "부산광역시",
+      "sigungu_name": "전체",
+      "admin_level": "sido",
+      "parent_region_code": null
+    },
+    "observation_key": "obs_444bed2fb448053a"
+  },
+  {
+    "before": {
+      "region_code": "26-000",
+      "office_type": "광역자치단체장",
+      "matchup_id": "20260603|광역자치단체장|26-000",
+      "audience_scope": null,
+      "audience_region_code": null,
+      "sampling_population_text": null
+    },
+    "after": {
+      "region_code": "26-000",
+      "office_type": "광역자치단체장",
+      "matchup_id": "20260603|광역자치단체장|26-000",
+      "audience_scope": "regional",
+      "audience_region_code": "26-000",
+      "sampling_population_text": null
+    },
+    "question_signal_applied": false,
+    "scope_resolution": {
+      "inferred_scope": null,
+      "inferred_region_code": null,
+      "confidence": 0.0,
+      "hard_fail_reason": null,
+      "low_confidence_reason": null
+    },
+    "conflict_resolution_applied": false,
+    "title_body_fallback_applied": false,
+    "title_body_keyword": "부산시장",
+    "decision_source": "observation_default",
+    "region_after_sync": {
+      "region_code": "26-000",
+      "sido_name": "부산광역시",
+      "sigungu_name": "전체",
+      "admin_level": "sido",
+      "parent_region_code": null
+    },
+    "observation_key": "obs_82f9da3ac3360057"
+  },
+  {
+    "before": {
+      "region_code": "41-000",
+      "office_type": "광역자치단체장",
+      "matchup_id": "20260603|광역자치단체장|41-000",
+      "audience_scope": null,
+      "audience_region_code": null,
+      "sampling_population_text": null
+    },
+    "after": {
+      "region_code": "41-000",
+      "office_type": "광역자치단체장",
+      "matchup_id": "20260603|광역자치단체장|41-000",
+      "audience_scope": "regional",
+      "audience_region_code": "41-000",
+      "sampling_population_text": null
+    },
+    "question_signal_applied": true,
+    "scope_resolution": {
+      "inferred_scope": null,
+      "inferred_region_code": null,
+      "confidence": 0.0,
+      "hard_fail_reason": null,
+      "low_confidence_reason": null
+    },
+    "conflict_resolution_applied": false,
+    "title_body_fallback_applied": false,
+    "title_body_keyword": null,
+    "decision_source": "question_text_or_official_code",
+    "region_after_sync": {
+      "region_code": "41-000",
+      "sido_name": "경기도",
+      "sigungu_name": "전체",
+      "admin_level": "sido",
+      "parent_region_code": null
+    },
+    "observation_key": "obs_6348089eeaf5b9f8"
+  },
+  {
+    "before": {
+      "region_code": "41-000",
+      "office_type": "광역자치단체장",
+      "matchup_id": "20260603|광역자치단체장|41-000",
+      "audience_scope": null,
+      "audience_region_code": null,
+      "sampling_population_text": null
+    },
+    "after": {
+      "region_code": "41-000",
+      "office_type": "광역자치단체장",
+      "matchup_id": "20260603|광역자치단체장|41-000",
+      "audience_scope": "regional",
+      "audience_region_code": "41-000",
+      "sampling_population_text": null
+    },
+    "question_signal_applied": false,
+    "scope_resolution": {
+      "inferred_scope": null,
+      "inferred_region_code": null,
+      "confidence": 0.0,
+      "hard_fail_reason": null,
+      "low_confidence_reason": null
+    },
+    "conflict_resolution_applied": false,
+    "title_body_fallback_applied": false,
+    "title_body_keyword": "경기지사",
+    "decision_source": "observation_default",
+    "region_after_sync": {
+      "region_code": "41-000",
+      "sido_name": "경기도",
+      "sigungu_name": "전체",
+      "admin_level": "sido",
+      "parent_region_code": null
+    },
+    "observation_key": "obs_85c4e876cf8b2a2a"
+  },
+  {
+    "before": {
+      "region_code": "28-000",
+      "office_type": "광역자치단체장",
+      "matchup_id": "20260603|광역자치단체장|28-000",
+      "audience_scope": null,
+      "audience_region_code": null,
+      "sampling_population_text": null
+    },
+    "after": {
+      "region_code": "28-000",
+      "office_type": "광역자치단체장",
+      "matchup_id": "20260603|광역자치단체장|28-000",
+      "audience_scope": "regional",
+      "audience_region_code": "28-000",
+      "sampling_population_text": null
+    },
+    "question_signal_applied": true,
+    "scope_resolution": {
+      "inferred_scope": null,
+      "inferred_region_code": null,
+      "confidence": 0.0,
+      "hard_fail_reason": null,
+      "low_confidence_reason": null
+    },
+    "conflict_resolution_applied": false,
+    "title_body_fallback_applied": false,
+    "title_body_keyword": null,
+    "decision_source": "question_text_or_official_code",
+    "region_after_sync": {
+      "region_code": "28-000",
+      "sido_name": "인천광역시",
+      "sigungu_name": "전체",
+      "admin_level": "sido",
+      "parent_region_code": null
+    },
+    "observation_key": "obs_297e45acd1bc8bec"
+  },
+  {
+    "before": {
+      "region_code": "28-000",
+      "office_type": "광역자치단체장",
+      "matchup_id": "20260603|광역자치단체장|28-000",
+      "audience_scope": null,
+      "audience_region_code": null,
+      "sampling_population_text": null
+    },
+    "after": {
+      "region_code": "28-000",
+      "office_type": "광역자치단체장",
+      "matchup_id": "20260603|광역자치단체장|28-000",
+      "audience_scope": "regional",
+      "audience_region_code": "28-000",
+      "sampling_population_text": null
+    },
+    "question_signal_applied": true,
+    "scope_resolution": {
+      "inferred_scope": null,
+      "inferred_region_code": null,
+      "confidence": 0.0,
+      "hard_fail_reason": null,
+      "low_confidence_reason": null
+    },
+    "conflict_resolution_applied": false,
+    "title_body_fallback_applied": false,
+    "title_body_keyword": null,
+    "decision_source": "question_text_or_official_code",
+    "region_after_sync": {
+      "region_code": "28-000",
+      "sido_name": "인천광역시",
+      "sigungu_name": "전체",
+      "admin_level": "sido",
+      "parent_region_code": null
+    },
+    "observation_key": "obs_ff78dcd3a82e1ee0"
+  },
+  {
+    "before": {
+      "region_code": "28-000",
+      "office_type": "광역자치단체장",
+      "matchup_id": "20260603|광역자치단체장|28-000",
+      "audience_scope": null,
+      "audience_region_code": null,
+      "sampling_population_text": null
+    },
+    "after": {
+      "region_code": "28-000",
+      "office_type": "광역자치단체장",
+      "matchup_id": "20260603|광역자치단체장|28-000",
+      "audience_scope": "regional",
+      "audience_region_code": "28-000",
+      "sampling_population_text": null
+    },
+    "question_signal_applied": false,
+    "scope_resolution": {
+      "inferred_scope": null,
+      "inferred_region_code": null,
+      "confidence": 0.0,
+      "hard_fail_reason": null,
+      "low_confidence_reason": null
+    },
+    "conflict_resolution_applied": false,
+    "title_body_fallback_applied": false,
+    "title_body_keyword": "인천시장",
+    "decision_source": "observation_default",
+    "region_after_sync": {
+      "region_code": "28-000",
+      "sido_name": "인천광역시",
+      "sigungu_name": "전체",
+      "admin_level": "sido",
+      "parent_region_code": null
+    },
+    "observation_key": "obs_0f585774f2b41565"
+  },
+  {
+    "before": {
+      "region_code": "28-000",
+      "office_type": "광역자치단체장",
+      "matchup_id": "20260603|광역자치단체장|28-000",
+      "audience_scope": null,
+      "audience_region_code": null,
+      "sampling_population_text": null
+    },
+    "after": {
+      "region_code": "28-000",
+      "office_type": "광역자치단체장",
+      "matchup_id": "20260603|광역자치단체장|28-000",
+      "audience_scope": "regional",
+      "audience_region_code": "28-000",
+      "sampling_population_text": null
+    },
+    "question_signal_applied": true,
+    "scope_resolution": {
+      "inferred_scope": null,
+      "inferred_region_code": null,
+      "confidence": 0.0,
+      "hard_fail_reason": null,
+      "low_confidence_reason": null
+    },
+    "conflict_resolution_applied": false,
+    "title_body_fallback_applied": false,
+    "title_body_keyword": null,
+    "decision_source": "question_text_or_official_code",
+    "region_after_sync": {
+      "region_code": "28-000",
+      "sido_name": "인천광역시",
+      "sigungu_name": "전체",
+      "admin_level": "sido",
+      "parent_region_code": null
+    },
+    "observation_key": "obs_0cc203a71a596743"
+  },
+  {
+    "before": {
+      "region_code": "28-000",
+      "office_type": "광역자치단체장",
+      "matchup_id": "20260603|광역자치단체장|28-000",
+      "audience_scope": null,
+      "audience_region_code": null,
+      "sampling_population_text": null
+    },
+    "after": {
+      "region_code": "28-000",
+      "office_type": "광역자치단체장",
+      "matchup_id": "20260603|광역자치단체장|28-000",
+      "audience_scope": "regional",
+      "audience_region_code": "28-000",
+      "sampling_population_text": null
+    },
+    "question_signal_applied": true,
+    "scope_resolution": {
+      "inferred_scope": null,
+      "inferred_region_code": null,
+      "confidence": 0.0,
+      "hard_fail_reason": null,
+      "low_confidence_reason": null
+    },
+    "conflict_resolution_applied": false,
+    "title_body_fallback_applied": false,
+    "title_body_keyword": null,
+    "decision_source": "question_text_or_official_code",
+    "region_after_sync": {
+      "region_code": "28-000",
+      "sido_name": "인천광역시",
+      "sigungu_name": "전체",
+      "admin_level": "sido",
+      "parent_region_code": null
+    },
+    "observation_key": "obs_57d26088f1d9972c"
+  },
+  {
+    "before": {
+      "region_code": "28-000",
+      "office_type": "광역자치단체장",
+      "matchup_id": "20260603|광역자치단체장|28-000",
+      "audience_scope": null,
+      "audience_region_code": null,
+      "sampling_population_text": null
+    },
+    "after": {
+      "region_code": "28-000",
+      "office_type": "광역자치단체장",
+      "matchup_id": "20260603|광역자치단체장|28-000",
+      "audience_scope": "regional",
+      "audience_region_code": "28-000",
+      "sampling_population_text": null
+    },
+    "question_signal_applied": false,
+    "scope_resolution": {
+      "inferred_scope": null,
+      "inferred_region_code": null,
+      "confidence": 0.0,
+      "hard_fail_reason": null,
+      "low_confidence_reason": null
+    },
+    "conflict_resolution_applied": false,
+    "title_body_fallback_applied": false,
+    "title_body_keyword": "인천시장",
+    "decision_source": "observation_default",
+    "region_after_sync": {
+      "region_code": "28-000",
+      "sido_name": "인천광역시",
+      "sigungu_name": "전체",
+      "admin_level": "sido",
+      "parent_region_code": null
+    },
+    "observation_key": "obs_a12b7fcd9b903160"
+  },
+  {
+    "before": {
+      "region_code": "28-000",
+      "office_type": "광역자치단체장",
+      "matchup_id": "20260603|광역자치단체장|28-000",
+      "audience_scope": null,
+      "audience_region_code": null,
+      "sampling_population_text": null
+    },
+    "after": {
+      "region_code": "28-000",
+      "office_type": "광역자치단체장",
+      "matchup_id": "20260603|광역자치단체장|28-000",
+      "audience_scope": "regional",
+      "audience_region_code": "28-000",
+      "sampling_population_text": null
+    },
+    "question_signal_applied": false,
+    "scope_resolution": {
+      "inferred_scope": null,
+      "inferred_region_code": null,
+      "confidence": 0.0,
+      "hard_fail_reason": null,
+      "low_confidence_reason": null
+    },
+    "conflict_resolution_applied": false,
+    "title_body_fallback_applied": false,
+    "title_body_keyword": "인천시장",
+    "decision_source": "observation_default",
+    "region_after_sync": {
+      "region_code": "28-000",
+      "sido_name": "인천광역시",
+      "sigungu_name": "전체",
+      "admin_level": "sido",
+      "parent_region_code": null
+    },
+    "observation_key": "obs_3937ad1c6457214f"
+  },
+  {
+    "before": {
+      "region_code": "28-000",
+      "office_type": "광역자치단체장",
+      "matchup_id": "20260603|광역자치단체장|28-000",
+      "audience_scope": null,
+      "audience_region_code": null,
+      "sampling_population_text": null
+    },
+    "after": {
+      "region_code": "28-000",
+      "office_type": "광역자치단체장",
+      "matchup_id": "20260603|광역자치단체장|28-000",
+      "audience_scope": "regional",
+      "audience_region_code": "28-000",
+      "sampling_population_text": null
+    },
+    "question_signal_applied": false,
+    "scope_resolution": {
+      "inferred_scope": null,
+      "inferred_region_code": null,
+      "confidence": 0.0,
+      "hard_fail_reason": null,
+      "low_confidence_reason": null
+    },
+    "conflict_resolution_applied": false,
+    "title_body_fallback_applied": false,
+    "title_body_keyword": "인천시장",
+    "decision_source": "observation_default",
+    "region_after_sync": {
+      "region_code": "28-000",
+      "sido_name": "인천광역시",
+      "sigungu_name": "전체",
+      "admin_level": "sido",
+      "parent_region_code": null
+    },
+    "observation_key": "obs_056d1438fa2bc3ff"
+  }
+]

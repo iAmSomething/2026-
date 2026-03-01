@@ -1,0 +1,13 @@
+{
+  "issue": 504,
+  "algorithm_version": "scope_classifier_v3",
+  "input_path": "data/collector_live_news_v1_payload.json",
+  "target_record_count": 18,
+  "before_after_count": 18,
+  "quarantine_count": 0,
+  "acceptance_checks": {
+    "target_records_found": true,
+    "quarantine_zero": true
+  },
+  "quarantine_records": []
+}

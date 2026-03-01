@@ -803,6 +803,82 @@ def test_survey_name_correction_promotes_busan_mayor_to_metro_office() -> None:
     assert repo.matchups[-1]["matchup_id"] == "2026_local|광역자치단체장|26-000"
 
 
+def test_question_text_priority_overrides_population_conflict_without_hard_fail() -> None:
+    repo = FakeRepo()
+    payload_data = deepcopy(PAYLOAD)
+    payload_data["records"][0]["article"]["title"] = "부산시장 양자대결"
+    payload_data["records"][0]["observation"]["survey_name"] = "부산시장 양자대결"
+    payload_data["records"][0]["observation"]["region_code"] = "26-710"
+    payload_data["records"][0]["observation"]["office_type"] = "기초자치단체장"
+    payload_data["records"][0]["observation"]["matchup_id"] = "2026_local|기초자치단체장|26-710"
+    payload_data["records"][0]["observation"]["audience_scope"] = None
+    payload_data["records"][0]["observation"]["audience_region_code"] = None
+    payload_data["records"][0]["observation"]["sampling_population_text"] = "부산 기장군 거주 만 18세 이상 남녀"
+    payload = IngestPayload.model_validate(payload_data)
+
+    result = ingest_payload(payload, repo)
+
+    assert result.status == "success"
+    observation = repo.observations["obs-1"]
+    assert observation["region_code"] == "26-000"
+    assert observation["office_type"] == "광역자치단체장"
+    assert observation["audience_scope"] == "regional"
+    assert observation["audience_region_code"] == "26-000"
+    assert any(
+        row[2] == "mapping_error"
+        and "AUDIENCE_SCOPE_CONFLICT_POPULATION" in row[3]
+        and "override=declared_scope_priority" in row[3]
+        for row in repo.review
+    )
+
+
+def test_survey_name_correction_parses_gucheongjang_as_local_office() -> None:
+    repo = FakeRepo()
+    payload_data = deepcopy(PAYLOAD)
+    payload_data["records"][0]["article"]["title"] = "연수구청장 적합도"
+    payload_data["records"][0]["observation"]["survey_name"] = "연수구청장 적합도 조사"
+    payload_data["records"][0]["observation"]["region_code"] = "28-000"
+    payload_data["records"][0]["observation"]["office_type"] = "광역자치단체장"
+    payload_data["records"][0]["observation"]["matchup_id"] = "2026_local|광역자치단체장|28-000"
+    payload_data["records"][0]["observation"]["audience_scope"] = None
+    payload_data["records"][0]["observation"]["audience_region_code"] = None
+    payload_data["records"][0]["observation"]["sampling_population_text"] = "인천 연수구 거주 만 18세 이상"
+    payload = IngestPayload.model_validate(payload_data)
+
+    result = ingest_payload(payload, repo)
+
+    assert result.status == "success"
+    observation = repo.observations["obs-1"]
+    assert observation["region_code"] == "28-450"
+    assert observation["office_type"] == "기초자치단체장"
+    assert observation["audience_scope"] == "local"
+    assert observation["audience_region_code"] == "28-450"
+    assert repo.matchups[-1]["matchup_id"] == "2026_local|기초자치단체장|28-450"
+
+
+def test_scope_conflict_resolution_prefers_sido_code_for_regional_office() -> None:
+    repo = FakeRepo()
+    payload_data = deepcopy(PAYLOAD)
+    payload_data["records"][0]["observation"]["survey_name"] = "부산시장 여론조사"
+    payload_data["records"][0]["observation"]["region_code"] = "26-710"
+    payload_data["records"][0]["observation"]["office_type"] = "광역자치단체장"
+    payload_data["records"][0]["observation"]["matchup_id"] = "2026_local|광역자치단체장|26-710"
+    payload_data["records"][0]["observation"]["audience_scope"] = None
+    payload_data["records"][0]["observation"]["audience_region_code"] = None
+    payload_data["records"][0]["observation"]["sampling_population_text"] = "부산광역시 거주 만 18세 이상 남녀"
+    payload = IngestPayload.model_validate(payload_data)
+
+    result = ingest_payload(payload, repo)
+
+    assert result.status == "success"
+    observation = repo.observations["obs-1"]
+    assert observation["office_type"] == "광역자치단체장"
+    assert observation["region_code"] == "26-000"
+    assert observation["audience_scope"] == "regional"
+    assert observation["audience_region_code"] == "26-000"
+    assert observation["matchup_id"] == "2026_local|광역자치단체장|26-000"
+
+
 def test_explicit_candidate_scenario_ingest_cleans_previous_default_rows() -> None:
     repo = FakeRepo()
 

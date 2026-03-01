@@ -1,0 +1,560 @@
+[
+  {
+    "before": {
+      "observation_key": "obs_136dffa93edf3413",
+      "survey_name": "부산시장여론조사 전재수 43.3% 또 앞서, 박형준은 34.6%",
+      "region_code": "26-000",
+      "office_type": "광역자치단체장",
+      "matchup_id": "20260603|광역자치단체장|26-000",
+      "audience_scope": null,
+      "audience_region_code": null
+    },
+    "after": {
+      "observation_key": "obs_136dffa93edf3413",
+      "survey_name": "부산시장여론조사 전재수 43.3% 또 앞서, 박형준은 34.6%",
+      "region_code": "26-000",
+      "office_type": "광역자치단체장",
+      "matchup_id": "20260603|광역자치단체장|26-000",
+      "audience_scope": "regional",
+      "audience_region_code": "26-000"
+    },
+    "trace": {
+      "question_signal_applied": true,
+      "inferred_scope": null,
+      "inferred_region_code": null,
+      "confidence": 0.0,
+      "hard_fail_reason": null,
+      "low_confidence_reason": null,
+      "conflict_resolution_applied": false,
+      "title_body_fallback_applied": false,
+      "title_body_keyword": null
+    }
+  },
+  {
+    "before": {
+      "observation_key": "obs_444bed2fb448053a",
+      "survey_name": "부산시장 여론조사, 전재수 46.7% vs 박형준 38.4%…오차범위 밖 격차",
+      "region_code": "26-000",
+      "office_type": "광역자치단체장",
+      "matchup_id": "20260603|광역자치단체장|26-000",
+      "audience_scope": null,
+      "audience_region_code": null
+    },
+    "after": {
+      "observation_key": "obs_444bed2fb448053a",
+      "survey_name": "부산시장 여론조사, 전재수 46.7% vs 박형준 38.4%…오차범위 밖 격차",
+      "region_code": "26-000",
+      "office_type": "광역자치단체장",
+      "matchup_id": "20260603|광역자치단체장|26-000",
+      "audience_scope": "regional",
+      "audience_region_code": "26-000"
+    },
+    "trace": {
+      "question_signal_applied": true,
+      "inferred_scope": null,
+      "inferred_region_code": null,
+      "confidence": 0.0,
+      "hard_fail_reason": null,
+      "low_confidence_reason": null,
+      "conflict_resolution_applied": false,
+      "title_body_fallback_applied": false,
+      "title_body_keyword": null
+    }
+  },
+  {
+    "before": {
+      "observation_key": "obs_82f9da3ac3360057",
+      "survey_name": "전재수 43.4% vs 박형준 32.3%… 오차범위 밖 격차 [6·3 지방선거 여론조사]",
+      "region_code": "26-000",
+      "office_type": "광역자치단체장",
+      "matchup_id": "20260603|광역자치단체장|26-000",
+      "audience_scope": null,
+      "audience_region_code": null
+    },
+    "after": {
+      "observation_key": "obs_82f9da3ac3360057",
+      "survey_name": "전재수 43.4% vs 박형준 32.3%… 오차범위 밖 격차 [6·3 지방선거 여론조사]",
+      "region_code": "26-000",
+      "office_type": "광역자치단체장",
+      "matchup_id": "20260603|광역자치단체장|26-000",
+      "audience_scope": "regional",
+      "audience_region_code": "26-000"
+    },
+    "trace": {
+      "question_signal_applied": false,
+      "inferred_scope": null,
+      "inferred_region_code": null,
+      "confidence": 0.0,
+      "hard_fail_reason": null,
+      "low_confidence_reason": null,
+      "conflict_resolution_applied": false,
+      "title_body_fallback_applied": false,
+      "title_body_keyword": "부산시장"
+    }
+  },
+  {
+    "before": {
+      "observation_key": "obs_297e45acd1bc8bec",
+      "survey_name": "[경인일보 여론조사] 민주당내 인천시장 후보 적합도, 박찬대 43% 당내 압도적",
+      "region_code": "28-000",
+      "office_type": "광역자치단체장",
+      "matchup_id": "20260603|광역자치단체장|28-000",
+      "audience_scope": null,
+      "audience_region_code": null
+    },
+    "after": {
+      "observation_key": "obs_297e45acd1bc8bec",
+      "survey_name": "[경인일보 여론조사] 민주당내 인천시장 후보 적합도, 박찬대 43% 당내 압도적",
+      "region_code": "28-000",
+      "office_type": "광역자치단체장",
+      "matchup_id": "20260603|광역자치단체장|28-000",
+      "audience_scope": "regional",
+      "audience_region_code": "28-000"
+    },
+    "trace": {
+      "question_signal_applied": true,
+      "inferred_scope": null,
+      "inferred_region_code": null,
+      "confidence": 0.0,
+      "hard_fail_reason": null,
+      "low_confidence_reason": null,
+      "conflict_resolution_applied": false,
+      "title_body_fallback_applied": false,
+      "title_body_keyword": null
+    }
+  },
+  {
+    "before": {
+      "observation_key": "obs_ff78dcd3a82e1ee0",
+      "survey_name": "[여론조사] 인천시장 양자대결 박찬대 51.2%, 유정복 37.1% 오차 밖 앞서",
+      "region_code": "28-000",
+      "office_type": "광역자치단체장",
+      "matchup_id": "20260603|광역자치단체장|28-000",
+      "audience_scope": null,
+      "audience_region_code": null
+    },
+    "after": {
+      "observation_key": "obs_ff78dcd3a82e1ee0",
+      "survey_name": "[여론조사] 인천시장 양자대결 박찬대 51.2%, 유정복 37.1% 오차 밖 앞서",
+      "region_code": "28-000",
+      "office_type": "광역자치단체장",
+      "matchup_id": "20260603|광역자치단체장|28-000",
+      "audience_scope": "regional",
+      "audience_region_code": "28-000"
+    },
+    "trace": {
+      "question_signal_applied": true,
+      "inferred_scope": null,
+      "inferred_region_code": null,
+      "confidence": 0.0,
+      "hard_fail_reason": null,
+      "low_confidence_reason": null,
+      "conflict_resolution_applied": false,
+      "title_body_fallback_applied": false,
+      "title_body_keyword": null
+    }
+  },
+  {
+    "before": {
+      "observation_key": "obs_0f585774f2b41565",
+      "survey_name": "[6·3 지방선거 여론조사-수원특례시] 수원시장 이재준 31.5%…국힘 안교재·이봉준 추격",
+      "region_code": "28-000",
+      "office_type": "광역자치단체장",
+      "matchup_id": "20260603|광역자치단체장|28-000",
+      "audience_scope": null,
+      "audience_region_code": null
+    },
+    "after": {
+      "observation_key": "obs_0f585774f2b41565",
+      "survey_name": "[6·3 지방선거 여론조사-수원특례시] 수원시장 이재준 31.5%…국힘 안교재·이봉준 추격",
+      "region_code": "28-000",
+      "office_type": "광역자치단체장",
+      "matchup_id": "20260603|광역자치단체장|28-000",
+      "audience_scope": "regional",
+      "audience_region_code": "28-000"
+    },
+    "trace": {
+      "question_signal_applied": false,
+      "inferred_scope": null,
+      "inferred_region_code": null,
+      "confidence": 0.0,
+      "hard_fail_reason": null,
+      "low_confidence_reason": null,
+      "conflict_resolution_applied": false,
+      "title_body_fallback_applied": false,
+      "title_body_keyword": "인천시장"
+    }
+  },
+  {
+    "before": {
+      "observation_key": "obs_0cc203a71a596743",
+      "survey_name": "인천시장 여론조사서 유정복 36.8% vs 박찬대 52.1%",
+      "region_code": "28-000",
+      "office_type": "광역자치단체장",
+      "matchup_id": "20260603|광역자치단체장|28-000",
+      "audience_scope": null,
+      "audience_region_code": null
+    },
+    "after": {
+      "observation_key": "obs_0cc203a71a596743",
+      "survey_name": "인천시장 여론조사서 유정복 36.8% vs 박찬대 52.1%",
+      "region_code": "28-000",
+      "office_type": "광역자치단체장",
+      "matchup_id": "20260603|광역자치단체장|28-000",
+      "audience_scope": "regional",
+      "audience_region_code": "28-000"
+    },
+    "trace": {
+      "question_signal_applied": true,
+      "inferred_scope": null,
+      "inferred_region_code": null,
+      "confidence": 0.0,
+      "hard_fail_reason": null,
+      "low_confidence_reason": null,
+      "conflict_resolution_applied": false,
+      "title_body_fallback_applied": false,
+      "title_body_keyword": null
+    }
+  },
+  {
+    "before": {
+      "observation_key": "obs_57d26088f1d9972c",
+      "survey_name": "[6·3 지방선거] 인천시장 여론조사...민주 박찬대 40.5% ‘압도’, 국힘 유정복 29.2% 1위",
+      "region_code": "28-000",
+      "office_type": "광역자치단체장",
+      "matchup_id": "20260603|광역자치단체장|28-000",
+      "audience_scope": null,
+      "audience_region_code": null
+    },
+    "after": {
+      "observation_key": "obs_57d26088f1d9972c",
+      "survey_name": "[6·3 지방선거] 인천시장 여론조사...민주 박찬대 40.5% ‘압도’, 국힘 유정복 29.2% 1위",
+      "region_code": "28-000",
+      "office_type": "광역자치단체장",
+      "matchup_id": "20260603|광역자치단체장|28-000",
+      "audience_scope": "regional",
+      "audience_region_code": "28-000"
+    },
+    "trace": {
+      "question_signal_applied": true,
+      "inferred_scope": null,
+      "inferred_region_code": null,
+      "confidence": 0.0,
+      "hard_fail_reason": null,
+      "low_confidence_reason": null,
+      "conflict_resolution_applied": false,
+      "title_body_fallback_applied": false,
+      "title_body_keyword": null
+    }
+  },
+  {
+    "before": {
+      "observation_key": "obs_a12b7fcd9b903160",
+      "survey_name": "[6·3 지방선거 여론조사-성남시] 성남시장 신상진 35% 김병욱 32%…오차 내 접전",
+      "region_code": "28-000",
+      "office_type": "광역자치단체장",
+      "matchup_id": "20260603|광역자치단체장|28-000",
+      "audience_scope": null,
+      "audience_region_code": null
+    },
+    "after": {
+      "observation_key": "obs_a12b7fcd9b903160",
+      "survey_name": "[6·3 지방선거 여론조사-성남시] 성남시장 신상진 35% 김병욱 32%…오차 내 접전",
+      "region_code": "28-000",
+      "office_type": "광역자치단체장",
+      "matchup_id": "20260603|광역자치단체장|28-000",
+      "audience_scope": "regional",
+      "audience_region_code": "28-000"
+    },
+    "trace": {
+      "question_signal_applied": false,
+      "inferred_scope": null,
+      "inferred_region_code": null,
+      "confidence": 0.0,
+      "hard_fail_reason": null,
+      "low_confidence_reason": null,
+      "conflict_resolution_applied": false,
+      "title_body_fallback_applied": false,
+      "title_body_keyword": "인천시장"
+    }
+  },
+  {
+    "before": {
+      "observation_key": "obs_3937ad1c6457214f",
+      "survey_name": "[6·3 지방선거 여론조사-시흥시] 시흥시장 임병택 27.3%-김윤식 22.3%…오차 내 박빙",
+      "region_code": "28-000",
+      "office_type": "광역자치단체장",
+      "matchup_id": "20260603|광역자치단체장|28-000",
+      "audience_scope": null,
+      "audience_region_code": null
+    },
+    "after": {
+      "observation_key": "obs_3937ad1c6457214f",
+      "survey_name": "[6·3 지방선거 여론조사-시흥시] 시흥시장 임병택 27.3%-김윤식 22.3%…오차 내 박빙",
+      "region_code": "28-000",
+      "office_type": "광역자치단체장",
+      "matchup_id": "20260603|광역자치단체장|28-000",
+      "audience_scope": "regional",
+      "audience_region_code": "28-000"
+    },
+    "trace": {
+      "question_signal_applied": false,
+      "inferred_scope": null,
+      "inferred_region_code": null,
+      "confidence": 0.0,
+      "hard_fail_reason": null,
+      "low_confidence_reason": null,
+      "conflict_resolution_applied": false,
+      "title_body_fallback_applied": false,
+      "title_body_keyword": "인천시장"
+    }
+  },
+  {
+    "before": {
+      "observation_key": "obs_056d1438fa2bc3ff",
+      "survey_name": "[6·3 지방선거 여론조사-시흥시] 시흥시 정당 지지도, 민주당 46.9%로 오차범위 밖 우세…국민의힘 30.2%",
+      "region_code": "28-000",
+      "office_type": "광역자치단체장",
+      "matchup_id": "20260603|광역자치단체장|28-000",
+      "audience_scope": null,
+      "audience_region_code": null
+    },
+    "after": {
+      "observation_key": "obs_056d1438fa2bc3ff",
+      "survey_name": "[6·3 지방선거 여론조사-시흥시] 시흥시 정당 지지도, 민주당 46.9%로 오차범위 밖 우세…국민의힘 30.2%",
+      "region_code": "28-000",
+      "office_type": "광역자치단체장",
+      "matchup_id": "20260603|광역자치단체장|28-000",
+      "audience_scope": "regional",
+      "audience_region_code": "28-000"
+    },
+    "trace": {
+      "question_signal_applied": false,
+      "inferred_scope": null,
+      "inferred_region_code": null,
+      "confidence": 0.0,
+      "hard_fail_reason": null,
+      "low_confidence_reason": null,
+      "conflict_resolution_applied": false,
+      "title_body_fallback_applied": false,
+      "title_body_keyword": "인천시장"
+    }
+  },
+  {
+    "before": {
+      "observation_key": "obs_bf18847149fb4b56",
+      "survey_name": "부산시장 후보 가상 대결…전재수 40%·박형준 30%",
+      "region_code": "26-000",
+      "office_type": "광역자치단체장",
+      "matchup_id": "20260603|광역자치단체장|26-000",
+      "audience_scope": null,
+      "audience_region_code": null
+    },
+    "after": {
+      "observation_key": "obs_bf18847149fb4b56",
+      "survey_name": "부산시장 후보 가상 대결…전재수 40%·박형준 30%",
+      "region_code": "26-000",
+      "office_type": "광역자치단체장",
+      "matchup_id": "20260603|광역자치단체장|26-000",
+      "audience_scope": "regional",
+      "audience_region_code": "26-000"
+    },
+    "trace": {
+      "question_signal_applied": true,
+      "inferred_scope": null,
+      "inferred_region_code": null,
+      "confidence": 0.0,
+      "hard_fail_reason": null,
+      "low_confidence_reason": null,
+      "conflict_resolution_applied": false,
+      "title_body_fallback_applied": false,
+      "title_body_keyword": null
+    }
+  },
+  {
+    "before": {
+      "observation_key": "obs_f319176068c072a1",
+      "survey_name": "차기 인천시장, 민주 박찬대 51.2% vs. 국힘 유정복 37.1% 오차범위 밖",
+      "region_code": "28-000",
+      "office_type": "광역자치단체장",
+      "matchup_id": "20260603|광역자치단체장|28-000",
+      "audience_scope": null,
+      "audience_region_code": null
+    },
+    "after": {
+      "observation_key": "obs_f319176068c072a1",
+      "survey_name": "차기 인천시장, 민주 박찬대 51.2% vs. 국힘 유정복 37.1% 오차범위 밖",
+      "region_code": "28-000",
+      "office_type": "광역자치단체장",
+      "matchup_id": "20260603|광역자치단체장|28-000",
+      "audience_scope": "regional",
+      "audience_region_code": "28-000"
+    },
+    "trace": {
+      "question_signal_applied": true,
+      "inferred_scope": null,
+      "inferred_region_code": null,
+      "confidence": 0.0,
+      "hard_fail_reason": null,
+      "low_confidence_reason": null,
+      "conflict_resolution_applied": false,
+      "title_body_fallback_applied": false,
+      "title_body_keyword": null
+    }
+  },
+  {
+    "before": {
+      "observation_key": "obs_1c24b60a3d52a6f4",
+      "survey_name": "[부산시장여론조사] 전재수 43.3% 또 앞서, 박형준은 34.6%",
+      "region_code": "26-000",
+      "office_type": "광역자치단체장",
+      "matchup_id": "20260603|광역자치단체장|26-000",
+      "audience_scope": null,
+      "audience_region_code": null
+    },
+    "after": {
+      "observation_key": "obs_1c24b60a3d52a6f4",
+      "survey_name": "[부산시장여론조사] 전재수 43.3% 또 앞서, 박형준은 34.6%",
+      "region_code": "26-000",
+      "office_type": "광역자치단체장",
+      "matchup_id": "20260603|광역자치단체장|26-000",
+      "audience_scope": "regional",
+      "audience_region_code": "26-000"
+    },
+    "trace": {
+      "question_signal_applied": true,
+      "inferred_scope": null,
+      "inferred_region_code": null,
+      "confidence": 0.0,
+      "hard_fail_reason": null,
+      "low_confidence_reason": null,
+      "conflict_resolution_applied": false,
+      "title_body_fallback_applied": false,
+      "title_body_keyword": null
+    }
+  },
+  {
+    "before": {
+      "observation_key": "obs_3b0cf776632dd287",
+      "survey_name": "부산시장 가상 양자대결서 전재수 43.3% vs 박형준 34.6%",
+      "region_code": "26-000",
+      "office_type": "광역자치단체장",
+      "matchup_id": "20260603|광역자치단체장|26-000",
+      "audience_scope": null,
+      "audience_region_code": null
+    },
+    "after": {
+      "observation_key": "obs_3b0cf776632dd287",
+      "survey_name": "부산시장 가상 양자대결서 전재수 43.3% vs 박형준 34.6%",
+      "region_code": "26-000",
+      "office_type": "광역자치단체장",
+      "matchup_id": "20260603|광역자치단체장|26-000",
+      "audience_scope": "regional",
+      "audience_region_code": "26-000"
+    },
+    "trace": {
+      "question_signal_applied": true,
+      "inferred_scope": null,
+      "inferred_region_code": null,
+      "confidence": 0.0,
+      "hard_fail_reason": null,
+      "low_confidence_reason": null,
+      "conflict_resolution_applied": false,
+      "title_body_fallback_applied": false,
+      "title_body_keyword": null
+    }
+  },
+  {
+    "before": {
+      "observation_key": "obs_73e9db6baf85b5d3",
+      "survey_name": "[경인일보 여론조사] 인천시장, 박찬대 45% vs 유정복 27%… 김교흥 27% vs 유정복 30%",
+      "region_code": "28-000",
+      "office_type": "광역자치단체장",
+      "matchup_id": "20260603|광역자치단체장|28-000",
+      "audience_scope": null,
+      "audience_region_code": null
+    },
+    "after": {
+      "observation_key": "obs_73e9db6baf85b5d3",
+      "survey_name": "[경인일보 여론조사] 인천시장, 박찬대 45% vs 유정복 27%… 김교흥 27% vs 유정복 30%",
+      "region_code": "28-000",
+      "office_type": "광역자치단체장",
+      "matchup_id": "20260603|광역자치단체장|28-000",
+      "audience_scope": "regional",
+      "audience_region_code": "28-000"
+    },
+    "trace": {
+      "question_signal_applied": true,
+      "inferred_scope": null,
+      "inferred_region_code": null,
+      "confidence": 0.0,
+      "hard_fail_reason": null,
+      "low_confidence_reason": null,
+      "conflict_resolution_applied": false,
+      "title_body_fallback_applied": false,
+      "title_body_keyword": null
+    }
+  },
+  {
+    "before": {
+      "observation_key": "obs_3f6ca2ed23cdeb99",
+      "survey_name": "부산·경남 행정통합…“6월 지방선거 이후” 73%",
+      "region_code": "26-000",
+      "office_type": "광역자치단체장",
+      "matchup_id": "20260603|광역자치단체장|26-000",
+      "audience_scope": null,
+      "audience_region_code": null
+    },
+    "after": {
+      "observation_key": "obs_3f6ca2ed23cdeb99",
+      "survey_name": "부산·경남 행정통합…“6월 지방선거 이후” 73%",
+      "region_code": "26-000",
+      "office_type": "광역자치단체장",
+      "matchup_id": "20260603|광역자치단체장|26-000",
+      "audience_scope": "regional",
+      "audience_region_code": "26-000"
+    },
+    "trace": {
+      "question_signal_applied": false,
+      "inferred_scope": null,
+      "inferred_region_code": null,
+      "confidence": 0.0,
+      "hard_fail_reason": null,
+      "low_confidence_reason": null,
+      "conflict_resolution_applied": false,
+      "title_body_fallback_applied": false,
+      "title_body_keyword": "부산시장"
+    }
+  },
+  {
+    "before": {
+      "observation_key": "obs_2a69111033285a20",
+      "survey_name": "6.3지방선거 인천시장 누구 선호? ‘박찬대’ 52.1% vs ‘유정복’ 36.8%",
+      "region_code": "28-000",
+      "office_type": "광역자치단체장",
+      "matchup_id": "20260603|광역자치단체장|28-000",
+      "audience_scope": null,
+      "audience_region_code": null
+    },
+    "after": {
+      "observation_key": "obs_2a69111033285a20",
+      "survey_name": "6.3지방선거 인천시장 누구 선호? ‘박찬대’ 52.1% vs ‘유정복’ 36.8%",
+      "region_code": "28-000",
+      "office_type": "광역자치단체장",
+      "matchup_id": "20260603|광역자치단체장|28-000",
+      "audience_scope": "regional",
+      "audience_region_code": "28-000"
+    },
+    "trace": {
+      "question_signal_applied": true,
+      "inferred_scope": null,
+      "inferred_region_code": null,
+      "confidence": 0.0,
+      "hard_fail_reason": null,
+      "low_confidence_reason": null,
+      "conflict_resolution_applied": false,
+      "title_body_fallback_applied": false,
+      "title_body_keyword": null
+    }
+  }
+]
