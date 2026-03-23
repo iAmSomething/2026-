@@ -1,0 +1,149 @@
+{
+  "run_type": "collector_live_news_v1",
+  "extractor_version": "collector-live-news-v1",
+  "llm_model": null,
+  "records": [
+    {
+      "article": {
+        "url": "https://news.google.com/rss/articles/CBMiZkFVX3lxTE9oNUFjcktRS0p1ZENLRHVJdTdiQlZCVkY1T0dOWU55MjBBOUlKU3ZXWGZrVDBqeTlLMDFUUVJmNzc1anJ5VVJDNHdyUjR3TWhmZi1GRkR6WkczRHVpU01jWldPM3pldw",
+        "title": "[6·3 지방선거 여론조사]서울·부산·강원서 여당 '우세'…국정안정론 50%대 중반",
+        "publisher": "이로운넷",
+        "published_at": null,
+        "raw_text": "[6·3 지방선거 여론조사]서울·부산·강원서 여당 '우세'…국정안정론 50%대 중반 - 이로운넷 [6·3 지방선거 여론조사]서울·부산·강원서 여당 '우세'…국정안정론 50%대 중반 &nbsp;&nbsp; 이로운넷 지방선거 서울시장 여론조사",
+        "raw_hash": "raw_72adbb846abfc849"
+      },
+      "region": {
+        "region_code": "11-000",
+        "sido_name": "서울특별시",
+        "sigungu_name": "전체",
+        "admin_level": "sido",
+        "parent_region_code": null
+      },
+      "candidates": [
+        {
+          "candidate_id": "cand:국정안정론",
+          "name_ko": "국정안정론",
+          "party_name": null,
+          "gender": null,
+          "birth_date": null,
+          "job": null,
+          "career_summary": null,
+          "election_history": null
+        }
+      ],
+      "observation": {
+        "observation_key": "obs_d8cd4d8f6a0f22b8",
+        "survey_name": "[6·3 지방선거 여론조사]서울·부산·강원서 여당 '우세'…국정안정론 50%대 중반",
+        "pollster": "미상조사기관",
+        "survey_start_date": null,
+        "survey_end_date": null,
+        "sample_size": null,
+        "response_rate": null,
+        "margin_of_error": null,
+        "sponsor": null,
+        "method": null,
+        "region_code": "11-000",
+        "office_type": "광역자치단체장",
+        "matchup_id": "20260603|광역자치단체장|11-000",
+        "audience_scope": null,
+        "audience_region_code": null,
+        "sampling_population_text": null,
+        "legal_completeness_score": 0.1667,
+        "legal_filled_count": 1,
+        "legal_required_count": 6,
+        "date_resolution": "missing",
+        "date_inference_mode": "published_at_missing",
+        "date_inference_confidence": 0.0,
+        "poll_fingerprint": null,
+        "source_channel": "article",
+        "source_channels": [
+          "article"
+        ],
+        "verified": false,
+        "source_grade": "C"
+      },
+      "options": []
+    },
+    {
+      "article": {
+        "url": "https://news.google.com/rss/articles/CBMiVEFVX3lxTE1IVU9vU0VXNTM3RndSNUpkTzFmVWJCYWNXRzdkNjJoQ19SeEZ6ZzBVenIzUXpBTlFRckVNZVVIQXAzR1dXVmIyY1lJa3JjVHRJYnBUQw",
+        "title": "정원오 vs 오세훈…KBS 44%:31%·MBC 40%:36%·SBS 38%:36%",
+        "publisher": "v.daum.net",
+        "published_at": null,
+        "raw_text": "정원오 vs 오세훈…KBS 44%:31%·MBC 40%:36%·SBS 38%:36% - v.daum.net 정원오 vs 오세훈…KBS 44%:31%·MBC 40%:36%·SBS 38%:36% &nbsp;&nbsp; v.daum.net 지방선거 서울시장 오차범위",
+        "raw_hash": "raw_2a048880e2d04040"
+      },
+      "region": {
+        "region_code": "11-000",
+        "sido_name": "서울특별시",
+        "sigungu_name": "전체",
+        "admin_level": "sido",
+        "parent_region_code": null
+      },
+      "candidates": [
+        {
+          "candidate_id": "cand:kbs",
+          "name_ko": "KBS",
+          "party_name": null,
+          "gender": null,
+          "birth_date": null,
+          "job": null,
+          "career_summary": null,
+          "election_history": null
+        },
+        {
+          "candidate_id": "cand:mbc",
+          "name_ko": "MBC",
+          "party_name": null,
+          "gender": null,
+          "birth_date": null,
+          "job": null,
+          "career_summary": null,
+          "election_history": null
+        },
+        {
+          "candidate_id": "cand:sbs",
+          "name_ko": "SBS",
+          "party_name": null,
+          "gender": null,
+          "birth_date": null,
+          "job": null,
+          "career_summary": null,
+          "election_history": null
+        }
+      ],
+      "observation": {
+        "observation_key": "obs_7e3a173859cf577d",
+        "survey_name": "정원오 vs 오세훈…KBS 44%:31%·MBC 40%:36%·SBS 38%:36%",
+        "pollster": "KBS",
+        "survey_start_date": null,
+        "survey_end_date": null,
+        "sample_size": null,
+        "response_rate": null,
+        "margin_of_error": null,
+        "sponsor": null,
+        "method": null,
+        "region_code": "11-000",
+        "office_type": "광역자치단체장",
+        "matchup_id": "20260603|광역자치단체장|11-000",
+        "audience_scope": null,
+        "audience_region_code": null,
+        "sampling_population_text": null,
+        "legal_completeness_score": 0.1667,
+        "legal_filled_count": 1,
+        "legal_required_count": 6,
+        "date_resolution": "missing",
+        "date_inference_mode": "published_at_missing",
+        "date_inference_confidence": 0.0,
+        "poll_fingerprint": null,
+        "source_channel": "article",
+        "source_channels": [
+          "article"
+        ],
+        "verified": false,
+        "source_grade": "C"
+      },
+      "options": []
+    }
+  ]
+}

@@ -288,6 +288,8 @@ python scripts/qa/run_candidate_token_backfill.py \
 - 분류:
   - `noise_token`: 후보명 정책(`is_noise_candidate_token`)에 걸리는 토큰
   - `low_quality_manual_candidate`: 수동 검증 + synthetic 후보(`cand:`) + 근거 빈약 행
+- ingest 가드:
+  - 후보 토큰이 `noise_token`으로 판정되면 옵션 적재를 건너뛰고 `review_queue(issue_type='candidate_name_noise')`로 라우팅
 - apply 시 업데이트:
   - `candidate_verified=false`
   - `candidate_verify_confidence=0.0`

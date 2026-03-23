@@ -1,0 +1,67 @@
+{
+  "issue": 486,
+  "target_filters": {
+    "region_code": "11-000",
+    "office_type": "광역자치단체장"
+  },
+  "input_payload_path": "data/collector_live_news_v1_payload.json",
+  "keyset_output_path": "data/issue486_candidate_noise_keys.json",
+  "reprocess_payload_output_path": "data/issue486_candidate_noise_reprocess_payload.json",
+  "total_input_record_count": 40,
+  "target_record_count": 10,
+  "noise_record_count": 2,
+  "total_removed_noise_option_count": 4,
+  "acceptance_checks": {
+    "target_keyset_extracted": true,
+    "seoul_mayor_candidate_only_names": true,
+    "noise_reingest_block_ready": true
+  },
+  "review_queue_candidates": [
+    {
+      "entity_type": "poll_observation",
+      "entity_id": "obs_d8cd4d8f6a0f22b8",
+      "issue_type": "candidate_name_noise",
+      "review_note": "candidate noise token filtered and skipped: 국정안정론"
+    },
+    {
+      "entity_type": "poll_observation",
+      "entity_id": "obs_7e3a173859cf577d",
+      "issue_type": "candidate_name_noise",
+      "review_note": "candidate noise token filtered and skipped: KBS, MBC, SBS"
+    }
+  ],
+  "items": [
+    {
+      "observation_key": "obs_d8cd4d8f6a0f22b8",
+      "article_url": "https://news.google.com/rss/articles/CBMiZkFVX3lxTE9oNUFjcktRS0p1ZENLRHVJdTdiQlZCVkY1T0dOWU55MjBBOUlKU3ZXWGZrVDBqeTlLMDFUUVJmNzc1anJ5VVJDNHdyUjR3TWhmZi1GRkR6WkczRHVpU01jWldPM3pldw",
+      "article_title": "[6·3 지방선거 여론조사]서울·부산·강원서 여당 '우세'…국정안정론 50%대 중반",
+      "before_candidate_options": [
+        "국정안정론"
+      ],
+      "after_candidate_options": [],
+      "removed_noise_tokens": [
+        "국정안정론"
+      ],
+      "before_option_count": 1,
+      "after_option_count": 0
+    },
+    {
+      "observation_key": "obs_7e3a173859cf577d",
+      "article_url": "https://news.google.com/rss/articles/CBMiVEFVX3lxTE1IVU9vU0VXNTM3RndSNUpkTzFmVWJCYWNXRzdkNjJoQ19SeEZ6ZzBVenIzUXpBTlFRckVNZVVIQXAzR1dXVmIyY1lJa3JjVHRJYnBUQw",
+      "article_title": "정원오 vs 오세훈…KBS 44%:31%·MBC 40%:36%·SBS 38%:36%",
+      "before_candidate_options": [
+        "KBS",
+        "MBC",
+        "SBS"
+      ],
+      "after_candidate_options": [],
+      "removed_noise_tokens": [
+        "KBS",
+        "MBC",
+        "SBS"
+      ],
+      "before_option_count": 3,
+      "after_option_count": 0
+    }
+  ]
+}
