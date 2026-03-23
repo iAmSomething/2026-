@@ -1,0 +1,17 @@
+{
+  "regional_count": 17,
+  "total_record_count": 51,
+  "by_office_count": {
+    "광역자치단체장": 17,
+    "광역의회": 17,
+    "교육감": 17
+  },
+  "manual_review_count": 17,
+  "term_limit_true_count": 4,
+  "acceptance_checks": {
+    "regional_coverage_no_missing": true,
+    "term_uncertainty_marked": true,
+    "poll_observation_key_collision_zero": true,
+    "source_channel_separated": true
+  }
+}

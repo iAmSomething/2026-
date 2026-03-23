@@ -366,6 +366,48 @@ BEGIN
 END;
 $$;
 
+CREATE TABLE IF NOT EXISTS incumbent_registry (
+    id BIGSERIAL PRIMARY KEY,
+    region_code TEXT NOT NULL REFERENCES regions(region_code) ON DELETE CASCADE,
+    office_type TEXT NOT NULL,
+    incumbent_name TEXT NOT NULL,
+    party_name TEXT NULL,
+    term_seq INT NULL,
+    term_limit_flag BOOLEAN NULL,
+    needs_manual_review BOOLEAN NOT NULL DEFAULT FALSE,
+    source_url TEXT NOT NULL,
+    source_channel TEXT NOT NULL DEFAULT 'incumbent_registry',
+    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    UNIQUE (region_code, office_type)
+);
+
+ALTER TABLE incumbent_registry
+    ADD COLUMN IF NOT EXISTS party_name TEXT NULL,
+    ADD COLUMN IF NOT EXISTS term_seq INT NULL,
+    ADD COLUMN IF NOT EXISTS term_limit_flag BOOLEAN NULL,
+    ADD COLUMN IF NOT EXISTS needs_manual_review BOOLEAN NOT NULL DEFAULT FALSE,
+    ADD COLUMN IF NOT EXISTS source_url TEXT,
+    ADD COLUMN IF NOT EXISTS source_channel TEXT NOT NULL DEFAULT 'incumbent_registry';
+
+UPDATE incumbent_registry
+SET source_url = COALESCE(NULLIF(source_url, ''), 'https://www.nec.go.kr')
+WHERE source_url IS NULL OR source_url = '';
+
+DO $$
+BEGIN
+    IF NOT EXISTS (
+        SELECT 1
+        FROM pg_constraint
+        WHERE conname = 'incumbent_registry_source_channel_check'
+    ) THEN
+        ALTER TABLE incumbent_registry
+            ADD CONSTRAINT incumbent_registry_source_channel_check
+            CHECK (source_channel = 'incumbent_registry');
+    END IF;
+END;
+$$;
+
 CREATE TABLE IF NOT EXISTS poll_options (
     id BIGSERIAL PRIMARY KEY,
     observation_id BIGINT NOT NULL REFERENCES poll_observations(id) ON DELETE CASCADE,
@@ -527,6 +569,8 @@ CREATE INDEX IF NOT EXISTS idx_poll_observations_source_channels ON poll_observa
 CREATE INDEX IF NOT EXISTS idx_candidates_source_channels ON candidates USING GIN (source_channels);
 CREATE INDEX IF NOT EXISTS idx_elections_region_active ON elections (region_code, is_active, office_type);
 CREATE INDEX IF NOT EXISTS idx_elections_latest_matchup ON elections (latest_matchup_id);
+CREATE INDEX IF NOT EXISTS idx_incumbent_registry_region_office
+    ON incumbent_registry (region_code, office_type);
 CREATE INDEX IF NOT EXISTS idx_poll_options_type ON poll_options (option_type);
 CREATE INDEX IF NOT EXISTS idx_poll_options_observation_value
     ON poll_options (observation_id, value_mid DESC, option_name);

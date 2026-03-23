@@ -50,7 +50,14 @@
 - 목적: 수동 검수 대상 관리
 - 주요 컬럼: `id`, `entity_type`, `entity_id`, `issue_type`, `status`, `assigned_to`, `review_note`, `created_at`
 
-## 1.10 `ingestion_runs`
+## 1.10 `incumbent_registry`
+- 목적: 여론조사 공백 시 노출할 현직자 fallback 레지스트리 저장(광역단위)
+- 주요 컬럼: `region_code`, `office_type`, `incumbent_name`, `party_name`, `term_seq`, `term_limit_flag`, `needs_manual_review`, `source_url`, `source_channel`, `updated_at`
+- 제약:
+- `UNIQUE(region_code, office_type)`
+- `source_channel='incumbent_registry'` 고정
+
+## 1.11 `ingestion_runs`
 - 목적: 배치 실행 이력
 - 주요 컬럼: `id`, `run_type`, `started_at`, `ended_at`, `status`, `processed_count`, `error_count`, `extractor_version`, `llm_model`
 

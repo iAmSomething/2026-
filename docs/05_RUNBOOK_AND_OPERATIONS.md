@@ -297,6 +297,29 @@ python scripts/qa/run_candidate_token_backfill.py \
 - `report.json` (`target_count`, `reason_counts`, `apply_result`, `idempotency`)
 - `targets.json` (변경 대상 샘플)
 
+## 7.5 현직자 fallback 레지스트리 구축 CLI (Issue #482)
+1. 목적:
+- 여론조사 부재 시 사용 가능한 광역단위 현직자 fallback 레코드 구축
+- poll observation과 혼합되지 않도록 `source_channel='incumbent_registry'`로 분리
+2. 엔트리포인트:
+- `scripts/run_issue482_incumbent_registry_fallback.py`
+3. 기본 실행(파일 산출만):
+```bash
+python scripts/run_issue482_incumbent_registry_fallback.py
+```
+4. DB 반영 실행:
+```bash
+python scripts/run_issue482_incumbent_registry_fallback.py --apply-db
+```
+5. 산출물:
+- `data/issue482_incumbent_registry_fallback.json`
+- `data/issue482_incumbent_registry_fallback_report.json`
+- `data/issue482_incumbent_registry_publish_result.json`
+6. 운영 체크:
+- `regional_coverage_no_missing=true` (17개 광역코드 x 3개 office)
+- `term_uncertainty_marked=true` (`term_limit_flag` 미확정 건은 `needs_manual_review=true`)
+- `source_channel_separated=true` (`incumbent_registry` 외 채널 혼입 없음)
+
 ## 8. 모니터링 체크리스트
 1. 배치 성공률
 2. 기사 수집량 대비 추출 성공률

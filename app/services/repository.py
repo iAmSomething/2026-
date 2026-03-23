@@ -1673,6 +1673,81 @@ class PostgresRepository:
         self.conn.commit()
         self._invalidate_api_read_cache()
 
+    def upsert_incumbent_registry(self, row: dict) -> None:
+        payload = dict(row)
+        payload.setdefault("party_name", None)
+        payload.setdefault("term_seq", None)
+        payload.setdefault("term_limit_flag", None)
+        payload.setdefault("needs_manual_review", False)
+        payload.setdefault("source_url", "https://www.nec.go.kr")
+        payload.setdefault("source_channel", "incumbent_registry")
+
+        with self.conn.cursor() as cur:
+            cur.execute(
+                """
+                INSERT INTO incumbent_registry (
+                    region_code, office_type, incumbent_name, party_name,
+                    term_seq, term_limit_flag, needs_manual_review,
+                    source_url, source_channel
+                )
+                VALUES (
+                    %(region_code)s, %(office_type)s, %(incumbent_name)s, %(party_name)s,
+                    %(term_seq)s, %(term_limit_flag)s, %(needs_manual_review)s,
+                    %(source_url)s, %(source_channel)s
+                )
+                ON CONFLICT (region_code, office_type) DO UPDATE
+                SET incumbent_name=EXCLUDED.incumbent_name,
+                    party_name=EXCLUDED.party_name,
+                    term_seq=EXCLUDED.term_seq,
+                    term_limit_flag=EXCLUDED.term_limit_flag,
+                    needs_manual_review=EXCLUDED.needs_manual_review,
+                    source_url=EXCLUDED.source_url,
+                    source_channel=EXCLUDED.source_channel,
+                    updated_at=NOW()
+                """,
+                payload,
+            )
+        self.conn.commit()
+        self._invalidate_api_read_cache()
+
+    def fetch_incumbent_registry(
+        self,
+        *,
+        region_code: str | None = None,
+        office_type: str | None = None,
+    ) -> list[dict]:
+        clauses: list[str] = []
+        params: list[Any] = []
+        if region_code:
+            clauses.append("region_code = %s")
+            params.append(region_code)
+        if office_type:
+            clauses.append("office_type = %s")
+            params.append(office_type)
+
+        where_sql = f"WHERE {' AND '.join(clauses)}" if clauses else ""
+        with self.conn.cursor() as cur:
+            cur.execute(
+                f"""
+                SELECT
+                    region_code,
+                    office_type,
+                    incumbent_name,
+                    party_name,
+                    term_seq,
+                    term_limit_flag,
+                    needs_manual_review,
+                    source_url,
+                    source_channel,
+                    updated_at
+                FROM incumbent_registry
+                {where_sql}
+                ORDER BY region_code, office_type
+                """,
+                tuple(params),
+            )
+            return cur.fetchall() or []
+
     def fetch_all_regions(self) -> list[dict]:
         with self.conn.cursor() as cur:
             cur.execute(
