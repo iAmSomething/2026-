@@ -1,0 +1,58 @@
+{
+  "issue": 481,
+  "input_payload_path": "data/collector_live_coverage_v2_payload.json",
+  "target_region_codes": [
+    "26-710",
+    "28-450"
+  ],
+  "contains_reference_719065": false,
+  "ingest_processed_count": 30,
+  "ingest_error_count": 0,
+  "target_record_count": 2,
+  "corrected_record_count": 2,
+  "qa_failure_count": 0,
+  "leak_keyword_still_local_count": 0,
+  "acceptance_checks": {
+    "target_keyset_reprocess_ready": true,
+    "scope_leak_keywords_removed_for_target_locals": true,
+    "scope_related_fail_zero_for_targets": true
+  },
+  "items": [
+    {
+      "observation_key": "live30d-v2-12-obs_b61d10f49a5d5fdd",
+      "before": {
+        "region_code": "26-710",
+        "office_type": "기초자치단체장",
+        "matchup_id": "2026_local|기초자치단체장|26-710",
+        "article_title": "[2026지방선거] 부산시장, 전재수 43.4-박형준 32.3%, 전재수 43.8%-김도읍33.2%...다자대결 전재수26.8% 선두",
+        "canonical_title": "기장군수"
+      },
+      "after": {
+        "region_code": "26-000",
+        "office_type": "광역자치단체장",
+        "matchup_id": "2026_local|광역자치단체장|26-000",
+        "article_title": "[2026지방선거] 부산시장, 전재수 43.4-박형준 32.3%, 전재수 43.8%-김도읍33.2%...다자대결 전재수26.8% 선두",
+        "canonical_title": "부산시장"
+      },
+      "leak_keyword_detected_before": true
+    },
+    {
+      "observation_key": "live30d-v2-18-obs_8dc5d149038ab97c",
+      "before": {
+        "region_code": "28-450",
+        "office_type": "기초자치단체장",
+        "matchup_id": "2026_local|기초자치단체장|28-450",
+        "article_title": "[여론조사] 인천시장 양자대결 박찬대 51.2%, 유정복 37.1% 오차 밖 앞서",
+        "canonical_title": "연수구청장"
+      },
+      "after": {
+        "region_code": "28-000",
+        "office_type": "광역자치단체장",
+        "matchup_id": "2026_local|광역자치단체장|28-000",
+        "article_title": "[여론조사] 인천시장 양자대결 박찬대 51.2%, 유정복 37.1% 오차 밖 앞서",
+        "canonical_title": "인천시장"
+      },
+      "leak_keyword_detected_before": true
+    }
+  ]
+}
